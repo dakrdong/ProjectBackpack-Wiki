@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="PackBound의 개발 문서와 변경 이력을 탐색하는 프로젝트 위키"
+    />
+    <meta name="theme-color" content="#101b2c" />
+    <title>PackBound 개발 위키</title>
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="icon-button mobile-only" id="menu-button" aria-label="문서 메뉴 열기">
+          <span></span><span></span><span></span>
+        </button>
+        <a class="brand" href="#/page/project-overview" aria-label="PackBound 위키 홈">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>
+            <strong>PACKBOUND</strong>
+            <small>DEVELOPMENT WIKI</small>
+          </span>
+        </a>
+        <button class="search-trigger" id="search-trigger" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m21 21-4.7-4.7m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+          </svg>
+          <span>문서 검색</span>
+          <kbd>/</kbd>
+        </button>
+        <section class="rojo-control" id="rojo-control" aria-label="Rojo 서버 제어" hidden>
+          <span class="rojo-state-dot unknown" id="rojo-state-dot" aria-hidden="true"></span>
+          <label class="visually-hidden" for="rojo-place-select">Rojo 플레이스 선택</label>
+          <select id="rojo-place-select" disabled>
+            <option>상태 확인 중…</option>
+          </select>
+          <button id="rojo-toggle" type="button" disabled>확인 중</button>
+          <span class="rojo-status-text" id="rojo-status-text" role="status" aria-live="polite">Rojo 상태 확인 중</span>
+        </section>
+        <div class="build-status" title="Markdown에서 생성된 정적 위키">
+          <span></span> 기록 동기화됨
+        </div>
+      </header>
+
+      <aside class="sidebar" id="sidebar" aria-label="위키 문서">
+        <div class="sidebar-scroll">
+          <div class="sidebar-heading">
+            <span>문서 탐색</span>
+            <span id="page-count"></span>
+          </div>
+          <nav id="page-navigation"></nav>
+        </div>
+        <div class="sidebar-footer">
+          <span class="status-dot"></span>
+          <div>
+            <strong>불변 이력 저장</strong>
+            <small id="revision-count"></small>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main" id="main-content" tabindex="-1">
+        <div class="loading">위키 데이터를 불러오는 중…</div>
+      </main>
+    </div>
+
+    <div class="sidebar-scrim" id="sidebar-scrim"></div>
+    <div class="search-dialog" id="search-dialog" aria-hidden="true">
+      <button class="dialog-scrim" data-close-search aria-label="검색 닫기"></button>
+      <section class="search-panel" role="dialog" aria-modal="true" aria-label="위키 검색">
+        <label class="search-field">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m21 21-4.7-4.7m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+          </svg>
+          <input id="search-input" type="search" placeholder="제목, 내용, 태그 검색…" autocomplete="off" />
+          <kbd>ESC</kbd>
+        </label>
+        <section class="date-filter" id="date-filter" aria-label="문서 날짜 필터">
+          <div class="date-filter-heading">
+            <strong>날짜 필터</strong>
+            <span id="date-filter-summary" aria-live="polite"></span>
+          </div>
+          <div class="date-filter-fields">
+            <label>
+              <span>시작일</span>
+              <input id="date-filter-from" type="date" aria-label="필터 시작일" />
+            </label>
+            <span class="date-filter-arrow" aria-hidden="true">→</span>
+            <label>
+              <span>종료일</span>
+              <input id="date-filter-to" type="date" aria-label="필터 종료일" />
+            </label>
+            <button id="date-filter-clear" type="button" disabled>초기화</button>
+          </div>
+        </section>
+        <div class="search-mode-tabs" role="tablist" aria-label="검색 방식">
+          <button id="search-mode-pages" type="button" role="tab" aria-selected="true" data-search-mode="pages">문서 검색</button>
+          <button id="search-mode-tags" type="button" role="tab" aria-selected="false" data-search-mode="tags">태그 탐색 <span id="tag-count"></span></button>
+        </div>
+        <div class="tag-toolbar" id="tag-toolbar" hidden>
+          <div>
+            <strong>태그 정렬</strong>
+            <span>입력하지 않아도 전체 태그를 볼 수 있습니다.</span>
+          </div>
+          <div class="tag-sort-options" role="group" aria-label="태그 정렬 방식">
+            <button type="button" class="active" data-tag-sort="recent">최신순</button>
+            <button type="button" data-tag-sort="popular">최다순</button>
+            <button type="button" data-tag-sort="theme">테마순</button>
+          </div>
+        </div>
+        <div class="search-results" id="search-results"></div>
+      </section>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="tag-explorer.js"></script>
+    <script src="local-access.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
