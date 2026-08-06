@@ -33,6 +33,7 @@
   const rojoToggle = document.getElementById("rojo-toggle");
   const rojoStatusText = document.getElementById("rojo-status-text");
   const publicWikiLink = document.getElementById("public-wiki-link");
+  const wikiThemeHero = "theme/packbound-wiki-hero.webp";
   const canControlRojo = Boolean(localAccess?.canUseRojoControl(window.location.hostname));
   const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
   const canEditItemDb = canControlRojo;
@@ -535,16 +536,21 @@
   function renderHeader(page, revision, route) {
     const oldVersion = revision.version !== page.version;
     return `
-      <div class="page-eyebrow">${escapeHtml(categoryLabels[revision.category] || revision.category)}</div>
-      <h1 class="page-title">${escapeHtml(revision.title)}</h1>
-      <p class="page-summary">${escapeHtml(revision.summary)}</p>
-      <div class="page-stats">
-        <span class="version-badge">v${String(revision.version).padStart(3, "0")}</span>
-        <span><i></i>${formatDate(revision.updated_at, true)} 업데이트</span>
-        <span><i></i>${escapeHtml(revision.change_summary)}</span>
-      </div>
-      ${oldVersion ? `<div class="history-intro">과거 버전 v${String(revision.version).padStart(3, "0")}을 열람 중입니다. <a href="${pageHref(page.id)}">최신 v${String(page.version).padStart(3, "0")} 보기</a></div>` : ""}
-      <nav class="view-tabs" aria-label="문서 보기 방식">
+      <header class="page-hero">
+        <img class="page-hero-art" src="${wikiThemeHero}" alt="" width="2172" height="724" decoding="async">
+        <div class="page-hero-content">
+          <div class="page-eyebrow">${escapeHtml(categoryLabels[revision.category] || revision.category)}</div>
+          <h1 class="page-title">${escapeHtml(revision.title)}</h1>
+          <p class="page-summary">${escapeHtml(revision.summary)}</p>
+          <div class="page-stats">
+            <span class="version-badge">v${String(revision.version).padStart(3, "0")}</span>
+            <span><i></i>${formatDate(revision.updated_at, true)} 업데이트</span>
+            <span><i></i>${escapeHtml(revision.change_summary)}</span>
+          </div>
+        </div>
+      </header>
+      ${oldVersion ? `<div class="history-intro page-grid-notice">과거 버전 v${String(revision.version).padStart(3, "0")}을 열람 중입니다. <a href="${pageHref(page.id)}">최신 v${String(page.version).padStart(3, "0")} 보기</a></div>` : ""}
+      <nav class="view-tabs page-grid-tabs" aria-label="문서 보기 방식">
         <a class="view-tab ${route.view === "article" ? "active" : ""}" href="${pageHref(page.id, "article", route.version)}">문서</a>
         <a class="view-tab ${route.view === "history" ? "active" : ""}" href="${pageHref(page.id, "history", route.version)}">변경 이력 <span>${page.revisions.length}</span></a>
       </nav>
@@ -680,15 +686,18 @@
     return `
       <div class="tree-layout">
         <header class="tree-hero">
-          <div class="page-eyebrow">Wiki map</div>
-          <div class="tree-hero-row">
-            <div>
-              <h1>전체 위키 트리</h1>
-              <p>프로젝트 문서의 구조, 최신 상태, 버전 계보와 연결 관계를 한 화면에서 탐색합니다.</p>
-            </div>
-            <div class="tree-actions" aria-label="트리 펼침 설정">
-              <button type="button" data-tree-action="expand">모두 펼치기</button>
-              <button type="button" data-tree-action="collapse">모두 접기</button>
+          <img class="tree-hero-art" src="${wikiThemeHero}" alt="" width="2172" height="724" decoding="async">
+          <div class="tree-hero-content">
+            <div class="page-eyebrow">Wiki map</div>
+            <div class="tree-hero-row">
+              <div>
+                <h1>전체 위키 트리</h1>
+                <p>PackBound의 세계, 시스템과 제작 결정을 하나의 살아 있는 지도에서 탐색합니다.</p>
+              </div>
+              <div class="tree-actions" aria-label="트리 펼침 설정">
+                <button type="button" data-tree-action="expand">모두 펼치기</button>
+                <button type="button" data-tree-action="collapse">모두 접기</button>
+              </div>
             </div>
           </div>
         </header>
@@ -1179,8 +1188,8 @@
     renderNavigation(page.id, "page");
     main.innerHTML = `
       <div class="page-grid">
+        ${renderHeader(page, revision, route)}
         <article class="article-column">
-          ${renderHeader(page, revision, route)}
           ${route.view === "history" ? renderHistory(page, revision) : `<div class="markdown">${renderMarkdown(revision.body)}</div>`}
         </article>
         ${renderMeta(page, revision)}

@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
   "generated_at": "2026-08-06",
-  "page_count": 6,
-  "revision_count": 19,
+  "page_count": 7,
+  "revision_count": 22,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -72,6 +72,106 @@ window.PACKBOUND_WIKI = {
           ],
           "body": "# Roblox Studio MCP 우선 조작 규칙\n\n## 결과\n\nRoblox Studio의 라이브 상태를 읽거나 바꾸는 모든 작업은 구성된\n`Roblox_Studio` MCP를 첫 번째이자 권위 있는 조작 경로로 사용합니다.\nComputer Use는 편의상 선택할 수 있는 대체 경로가 아니며, 필요한 기능이\nMCP에 없거나 실제 MCP 호출이 구체적으로 실패한 경우에만 사용합니다.\n\n## 적용 범위\n\n다음 작업은 모두 Studio MCP를 먼저 사용합니다.\n\n- 실행 중인 Studio 탐색과 대상 플레이스 선택\n- DataModel, 인스턴스, 속성 및 스크립트 검사와 변경\n- Luau 실행, 플레이 시작·정지, 콘솔 확인\n- 스크린 캡처와 런타임 시각 검증\n- 에셋 삽입 및 이미지 업로드\n\nRojo와 저장소 도구는 소스 작성, 빌드, 정적 검증에 계속 사용합니다. 하지만\n이 결과만으로 라이브 Studio 상태가 적용되었다고 주장하지 않습니다. 라이브\n상태에 관한 완료 판정에는 가능한 경우 Studio MCP 증거가 필요합니다.\n\n## Computer Use 예외\n\nComputer Use로 넘어가기 전에 MCP에서 필요한 기능을 찾고 실제 호출을\n시도합니다. 기능 부재 또는 구체적인 실패가 확인되면 사용자에게 그 이유를\n먼저 알리고, 지원되지 않는 UI 단계에만 Computer Use를 사용합니다. 그 단계가\n끝나면 검사와 검증은 다시 Studio MCP로 돌아갑니다.\n\n현재 Codex 작업에 MCP 서버 설정은 있으나 Studio 도구가 노출되지 않은 경우,\nStudio 자동화는 일시적으로 차단된 것으로 처리합니다. 이 상태에서 Computer\nUse, AppleScript, 키보드 합성, 셸 명령 또는 파일 편집으로 라이브 Studio\n조작을 몰래 대체하지 않습니다.\n\n## 구현 내용\n\n저장소 루트 `AGENTS.md`에 이 규칙을 필수 라우팅 정책으로 추가했습니다.\n향후 작업자는 Studio 기능별 선호도가 아니라 동일한 강제 순서를 따릅니다.\n\n```text\nStudio MCP 기능 확인 및 호출\n  ├─ 성공 → MCP로 작업·검증 완료\n  ├─ 기능 없음 → 이유 공유 → 해당 UI 단계만 Computer Use → MCP 복귀\n  └─ 구체적 실패 → 오류 공유 → 해당 UI 단계만 Computer Use → MCP 복귀\n```\n\n## 변경 파일\n\n- `AGENTS.md`: MCP 우선 조작, 예외 조건, 사용자 고지, 라이브 검증 근거를\n  강제하는 저장소 규칙을 추가했습니다.\n- `wiki/content/pages/studio-automation-routing/v001.md`: 규칙과 적용 범위를\n  불변 문서로 기록합니다.\n\n## 검증\n\n- `Roblox_Studio` MCP 서버가 로컬 Codex 설정에 구성되어 있음을 확인했습니다.\n- StudioMCP 실행 파일이 존재하고 실행 가능한 상태임을 확인했습니다.\n- 현재 작업의 도구 표면에는 Studio MCP의 개별 조작 도구가 노출되지 않아,\n  규칙대로 Computer Use로 우회하지 않았습니다.\n\n## 결정 사항\n\n- 라이브 Studio 상태의 권위 있는 증거는 Studio MCP 호출 결과로 삼습니다.\n- Computer Use는 MCP의 영구 대체재가 아니라 확인된 공백을 메우는 좁은\n  예외입니다.\n- 도구 노출 문제는 자동 우회의 근거가 아니라 작업 일시 차단 사유입니다.\n\n## 후속 작업\n\n- Studio MCP 도구가 다시 노출되면 캐릭터 이미지 업로드와 라이브 플레이\n  검증을 MCP로 이어서 수행합니다.\n",
           "source_path": "wiki/content/pages/studio-automation-routing/v001.md"
+        }
+      ]
+    },
+    {
+      "id": "world-art-bible",
+      "title": "PackBound 캐릭터·월드 아트 바이블",
+      "summary": "여성형 루키와 심술궂지만 귀여운 스코티시 폴드 뚱냥이 참, 고물바람 초원, 역할이 읽히는 지형·지물 및 6종 몬스터를 하나의 제작 기준으로 정리했습니다.",
+      "status": "active",
+      "category": "art",
+      "tags": [
+        "art",
+        "concept",
+        "character",
+        "environment",
+        "monster",
+        "field",
+        "visual-language",
+        "mobile",
+        "roblox"
+      ],
+      "created_at": "2026-08-06",
+      "updated_at": "2026-08-06",
+      "authors": [
+        "Codex"
+      ],
+      "version": 1,
+      "change_type": "created",
+      "change_summary": "남성형 중심 아트 방향을 여성형 플레이어, 스코티시 폴드 뚱냥이 참, 첫 필드, 환경 키트와 역할별 몬스터 로스터까지 확장함",
+      "supersedes": null,
+      "sources": [
+        "docs/art/character-world-art-direction.md",
+        "Assets/Characters/Player/Reference/player_chibi_absurd_8direction_concept_v2.png",
+        "Assets/Characters/Player/Reference/player_female_chibi_absurd_8direction_concept_v2.png",
+        "Assets/World/Concepts/junkwind_meadow_field_concept_v1.png",
+        "Assets/World/Concepts/junkwind_meadow_terrain_props_concept_v1.png",
+        "Assets/Monsters/Concepts/junkwind_meadow_monster_roster_concept_v1.png"
+      ],
+      "related": [
+        "character-2d-rendering",
+        "project-overview"
+      ],
+      "validation": [
+        "최종 콘셉트 PNG 4종: 1536×1024 RGB, 저장소 자산과 위키 미디어 사본 SHA-256 일치",
+        "python3 tools/wiki.py build",
+        "python3 tools/wiki.py check",
+        "python3 -m unittest tests/test_wiki.py",
+        "node tests/markdown-media.spec.js",
+        "git diff --check"
+      ],
+      "source_path": "wiki/content/pages/world-art-bible/v001.md",
+      "body": "# PackBound 캐릭터·월드 아트 바이블\n\n## 결과\n\nPackBound의 기존 아트 방향을 한 명의 남성형 플레이어 참고 이미지에서 게임 세계\n전체를 제작할 수 있는 기준으로 확장했습니다. 여성형 루키는 같은 판정과 같은\n가방 가독성을 유지하면서 얼굴과 머리 실루엣만으로 분명히 구분되며, 개인 장식은\n노란 오리 대신 무심하고 심술궂은 표정의 스코티시 폴드 뚱냥이 참을 사용합니다.\n\n첫 필드 `고물바람 초원`은 보라색 전투 바닥, 청록·코럴 경계, 시안 상호작용,\n주황 위험과 분홍·보라·금색 보상이라는 색 문법을 가르칩니다. 지형과 지물은 이\n문법을 실제 제작 단위로 나눴고, 여섯 몬스터는 장착한 폐품의 실루엣만 보고도\n근접, 돌진, 정면 방어, 원거리, 엘리트와 미니보스 역할을 알 수 있게 설계했습니다.\n\n## 제품 목표와 플레이 경험\n\n- 세로형 모바일 화면과 높은 쿼터탑 카메라에서 플레이어, 이동 바닥, 위험 방향과\n  보상이 한눈에 분리되어야 합니다.\n- 폐품 세계는 잔혹하거나 사실적인 폐허가 아니라 두툼한 장난감 디오라마처럼\n  우습고 만지고 싶게 보여야 합니다.\n- 캐릭터 선택지는 성별에 따라 전투 가독성이나 능력의 차이를 만들지 않습니다.\n- 배경 오브젝트는 장식 수량을 늘리기보다 이동 경계, 상호작용, 위험과 보상의\n  위치를 설명해야 합니다.\n- 몬스터의 전투 역할은 이름이나 UI 설명이 없어도 색과 전면 실루엣으로 먼저\n  전달되어야 합니다.\n\n## 여성형 루키\n\n여성형은 남성형을 가늘게 만들거나 색만 바꾼 파생형이 아닙니다. 같은 2등신,\n같은 화면상 어깨·신발 크기, 같은 접지점과 큰 전기 보라색 가방을 유지합니다.\n검보라 비대칭 보브와 짧은 사이드 포니테일, 큰 아몬드형 눈, 짧은 속눈썹, 얇고\n완만한 눈썹과 부드러운 턱선이 여성형의 핵심 식별자입니다.\n\n![여성형 루키 8방향 콘셉트](./media/world-art-bible/v001/female-rookie-turnaround.png \"부드러운 여성형 얼굴과 심술궂지만 귀여운 스코티시 폴드 뚱냥이 참이 반영된 최종 8방향 디자인 시트\")\n\n가방 장식은 둥근 만두형 몸과 볼, 앞으로 낮게 접힌 귀, 반쯤 감긴 눈, 작게 심술\n난 입, 짧은 발, 말린 꼬리와 코럴 목줄을 가진 노란 스코티시 폴드 뚱냥이\n참입니다. 무심하고 조금 고약해 보이지만 계속 보면 귀여운 표정을 모든 방향에서\n유지하며, 같은 고리에 매달리고 가방 외곽을 가리지 않습니다. 필드의 대형 오리\n조형물은 월드 랜드마크로 남기며 여성형의 개인 장식과 서로 교체하지 않습니다.\n\n## 첫 필드: 고물바람 초원\n\n고물바람 초원은 하단 진입부, 넓은 중앙 전투 공터, 양옆 자원 포켓과 상단의\n망가진 중계문을 순환 동선으로 잇는 초반 필드입니다. 캐릭터 주변은 디테일 밀도를\n낮추고 수풀, 절벽, 웅덩이와 울타리를 길 가장자리로 보내 이동 가능 영역을\n명확하게 유지합니다.\n\n![고물바람 초원 필드 콘셉트](./media/world-art-bible/v001/junkwind-meadow-field.png \"여성형 루키와 초반 몬스터가 배치된 고물바람 초원 최종 키아트\")\n\n중앙 위의 중계탑과 상단 중계문은 진행 방향을 잡고, 대형 오리 조형물과 수풀에\n묻힌 쇼핑카트는 구역을 기억하게 합니다. 시안 발광은 작동 가능한 대상, 주황은\n위험, 분홍·보라 상자는 보상으로 제한해 전투 중의 해석 비용을 줄입니다.\n\n## 지형과 지물 키트\n\n![고물바람 초원 지형·지물 키트](./media/world-art-bible/v001/junkwind-meadow-terrain-props.png \"경계·상호작용·위험·보상 역할별 12종 모듈 콘셉트\")\n\n| 역할 | 제작 단위 | 승인 기준 |\n| --- | --- | --- |\n| 이동면 | 잔디 절벽, 보라 길 T자, 청록 웅덩이 | 이동 가능한 윗면과 낙차가 쿼터탑에서 분리됨 |\n| 경계 | 수풀 벽, 바위 군집, 폐품 울타리 | 보이지 않는 벽 없이 통과 불가를 설명함 |\n| 상호작용 | 자판기, 시안 코일 파일런 | 시안 발광점이 작고 반복 가능함 |\n| 탐색 | 쇼핑카트 수풀, 통·타이어·볼트 | 자원 포켓을 암시하되 길을 덮지 않음 |\n| 위험 | 원뿔, 차단판, 스프링 플레이트 | 따뜻한 주황이 피해 위치에 집중됨 |\n| 보상·랜드마크 | 보급 상자, 대형 오리 | 화면에서 희소한 강색으로 기억점을 만듦 |\n\n## 몬스터 로스터\n\n![고물바람 초원 몬스터 로스터](./media/world-art-bible/v001/junkwind-meadow-monsters.png \"폐품 실루엣으로 전투 역할을 구분하는 6종 몬스터 최종 콘셉트\")\n\n| 몬스터 | 전투 역할 | 핵심 시각 예고 |\n| --- | --- | --- |\n| 머그먹 `Mugmuck` | 근접 추적 | 크림색 머그 손잡이가 옆 실루엣을 만듦 |\n| 꼬깔박치기 `Conebonk` | 직선 돌진 | 큰 주황 원뿔이 공격 방향을 가리킴 |\n| 깡통딱정 `Tinback` | 정면 방어 | 캔 뚜껑 정면판과 뒤쪽 시안 태엽이 약점을 나눔 |\n| 플러그퐁 `Plugpop` | 원거리 전기 | 플러그 귀와 시안 코일 코어가 사거리를 예고함 |\n| 카트꿀꺽 `Cartmaw` | 엘리트 공간 압박 | 넓은 카트 입과 붉은 손잡이 뿔이 길목 점유를 보임 |\n| 자판두꺼비 `Vendatoad` | 미니보스 구역 제어 | 위성 접시, 시안 목 코일과 큰 자판기 몸이 범위를 암시함 |\n\n초반에는 머그먹, 꼬깔박치기와 깡통딱정으로 이동, 회피 방향과 후면 공략을\n학습시킵니다. 이후 플러그퐁으로 원거리 압박을 더하고 카트꿀꺽과 자판두꺼비는\n이미 익힌 실루엣 문법을 큰 공간 제어 패턴으로 확장합니다.\n\n## 제작 결정과 경계\n\n- 네 콘셉트 이미지는 최종 디자인 기준이지만 런타임 스프라이트나 Roblox 모델은\n  아닙니다.\n- 여성형도 현재 `Head`와 `Body` 두 슬롯을 사용하며 새로운 성별 전용 런타임\n  시스템을 만들지 않습니다.\n- 기존 남성형 오리 참을 소급 교체하지 않고 여성형의 스코티시 폴드 뚱냥이 참을\n  개인 식별자로 사용합니다.\n- 필드 구현은 지물 장식보다 이동 바닥과 경계 그레이박스를 먼저 승인합니다.\n- 몬스터 구현은 일반 3종, 상호작용 지물, 원거리, 엘리트, 미니보스 순으로\n  확장해 한 번에 과도한 제작 범위를 열지 않습니다.\n- 후속 이미지 생성은 원본을 덮어쓰지 않고 버전 파일을 추가한 뒤 기준 문서에서\n  승인 경로를 승격합니다.\n\n## 검증과 후속 작업\n\n최종 이미지 네 장은 모두 1536×1024 RGB PNG이며 저장소 기준 자산과 위키 미디어\n사본의 SHA-256이 일치합니다. 위키 파서 테스트, 위키 빌드와 생성 데이터·미디어\n동기화 검사, 공백 오류 검사를 통과해야 이 버전을 활성 상태로 유지합니다.\n\n다음 제작 단계는 고물바람 초원의 Roblox 그레이박스, 일반 몬스터 세 종의 크기\n비교 시트, 여성형 South Walk 8프레임의 별도 승인 게이트입니다. 실제 Studio\n결과를 만드는 후속 변경에서는 대표 플레이 화면을 새 위키 버전의 최종 증거로\n추가해야 합니다.\n",
+      "revisions": [
+        {
+          "id": "world-art-bible",
+          "title": "PackBound 캐릭터·월드 아트 바이블",
+          "summary": "여성형 루키와 심술궂지만 귀여운 스코티시 폴드 뚱냥이 참, 고물바람 초원, 역할이 읽히는 지형·지물 및 6종 몬스터를 하나의 제작 기준으로 정리했습니다.",
+          "status": "active",
+          "category": "art",
+          "tags": [
+            "art",
+            "concept",
+            "character",
+            "environment",
+            "monster",
+            "field",
+            "visual-language",
+            "mobile",
+            "roblox"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
+          "authors": [
+            "Codex"
+          ],
+          "version": 1,
+          "change_type": "created",
+          "change_summary": "남성형 중심 아트 방향을 여성형 플레이어, 스코티시 폴드 뚱냥이 참, 첫 필드, 환경 키트와 역할별 몬스터 로스터까지 확장함",
+          "supersedes": null,
+          "sources": [
+            "docs/art/character-world-art-direction.md",
+            "Assets/Characters/Player/Reference/player_chibi_absurd_8direction_concept_v2.png",
+            "Assets/Characters/Player/Reference/player_female_chibi_absurd_8direction_concept_v2.png",
+            "Assets/World/Concepts/junkwind_meadow_field_concept_v1.png",
+            "Assets/World/Concepts/junkwind_meadow_terrain_props_concept_v1.png",
+            "Assets/Monsters/Concepts/junkwind_meadow_monster_roster_concept_v1.png"
+          ],
+          "related": [
+            "character-2d-rendering",
+            "project-overview"
+          ],
+          "validation": [
+            "최종 콘셉트 PNG 4종: 1536×1024 RGB, 저장소 자산과 위키 미디어 사본 SHA-256 일치",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "node tests/markdown-media.spec.js",
+            "git diff --check"
+          ],
+          "body": "# PackBound 캐릭터·월드 아트 바이블\n\n## 결과\n\nPackBound의 기존 아트 방향을 한 명의 남성형 플레이어 참고 이미지에서 게임 세계\n전체를 제작할 수 있는 기준으로 확장했습니다. 여성형 루키는 같은 판정과 같은\n가방 가독성을 유지하면서 얼굴과 머리 실루엣만으로 분명히 구분되며, 개인 장식은\n노란 오리 대신 무심하고 심술궂은 표정의 스코티시 폴드 뚱냥이 참을 사용합니다.\n\n첫 필드 `고물바람 초원`은 보라색 전투 바닥, 청록·코럴 경계, 시안 상호작용,\n주황 위험과 분홍·보라·금색 보상이라는 색 문법을 가르칩니다. 지형과 지물은 이\n문법을 실제 제작 단위로 나눴고, 여섯 몬스터는 장착한 폐품의 실루엣만 보고도\n근접, 돌진, 정면 방어, 원거리, 엘리트와 미니보스 역할을 알 수 있게 설계했습니다.\n\n## 제품 목표와 플레이 경험\n\n- 세로형 모바일 화면과 높은 쿼터탑 카메라에서 플레이어, 이동 바닥, 위험 방향과\n  보상이 한눈에 분리되어야 합니다.\n- 폐품 세계는 잔혹하거나 사실적인 폐허가 아니라 두툼한 장난감 디오라마처럼\n  우습고 만지고 싶게 보여야 합니다.\n- 캐릭터 선택지는 성별에 따라 전투 가독성이나 능력의 차이를 만들지 않습니다.\n- 배경 오브젝트는 장식 수량을 늘리기보다 이동 경계, 상호작용, 위험과 보상의\n  위치를 설명해야 합니다.\n- 몬스터의 전투 역할은 이름이나 UI 설명이 없어도 색과 전면 실루엣으로 먼저\n  전달되어야 합니다.\n\n## 여성형 루키\n\n여성형은 남성형을 가늘게 만들거나 색만 바꾼 파생형이 아닙니다. 같은 2등신,\n같은 화면상 어깨·신발 크기, 같은 접지점과 큰 전기 보라색 가방을 유지합니다.\n검보라 비대칭 보브와 짧은 사이드 포니테일, 큰 아몬드형 눈, 짧은 속눈썹, 얇고\n완만한 눈썹과 부드러운 턱선이 여성형의 핵심 식별자입니다.\n\n![여성형 루키 8방향 콘셉트](./media/world-art-bible/v001/female-rookie-turnaround.png \"부드러운 여성형 얼굴과 심술궂지만 귀여운 스코티시 폴드 뚱냥이 참이 반영된 최종 8방향 디자인 시트\")\n\n가방 장식은 둥근 만두형 몸과 볼, 앞으로 낮게 접힌 귀, 반쯤 감긴 눈, 작게 심술\n난 입, 짧은 발, 말린 꼬리와 코럴 목줄을 가진 노란 스코티시 폴드 뚱냥이\n참입니다. 무심하고 조금 고약해 보이지만 계속 보면 귀여운 표정을 모든 방향에서\n유지하며, 같은 고리에 매달리고 가방 외곽을 가리지 않습니다. 필드의 대형 오리\n조형물은 월드 랜드마크로 남기며 여성형의 개인 장식과 서로 교체하지 않습니다.\n\n## 첫 필드: 고물바람 초원\n\n고물바람 초원은 하단 진입부, 넓은 중앙 전투 공터, 양옆 자원 포켓과 상단의\n망가진 중계문을 순환 동선으로 잇는 초반 필드입니다. 캐릭터 주변은 디테일 밀도를\n낮추고 수풀, 절벽, 웅덩이와 울타리를 길 가장자리로 보내 이동 가능 영역을\n명확하게 유지합니다.\n\n![고물바람 초원 필드 콘셉트](./media/world-art-bible/v001/junkwind-meadow-field.png \"여성형 루키와 초반 몬스터가 배치된 고물바람 초원 최종 키아트\")\n\n중앙 위의 중계탑과 상단 중계문은 진행 방향을 잡고, 대형 오리 조형물과 수풀에\n묻힌 쇼핑카트는 구역을 기억하게 합니다. 시안 발광은 작동 가능한 대상, 주황은\n위험, 분홍·보라 상자는 보상으로 제한해 전투 중의 해석 비용을 줄입니다.\n\n## 지형과 지물 키트\n\n![고물바람 초원 지형·지물 키트](./media/world-art-bible/v001/junkwind-meadow-terrain-props.png \"경계·상호작용·위험·보상 역할별 12종 모듈 콘셉트\")\n\n| 역할 | 제작 단위 | 승인 기준 |\n| --- | --- | --- |\n| 이동면 | 잔디 절벽, 보라 길 T자, 청록 웅덩이 | 이동 가능한 윗면과 낙차가 쿼터탑에서 분리됨 |\n| 경계 | 수풀 벽, 바위 군집, 폐품 울타리 | 보이지 않는 벽 없이 통과 불가를 설명함 |\n| 상호작용 | 자판기, 시안 코일 파일런 | 시안 발광점이 작고 반복 가능함 |\n| 탐색 | 쇼핑카트 수풀, 통·타이어·볼트 | 자원 포켓을 암시하되 길을 덮지 않음 |\n| 위험 | 원뿔, 차단판, 스프링 플레이트 | 따뜻한 주황이 피해 위치에 집중됨 |\n| 보상·랜드마크 | 보급 상자, 대형 오리 | 화면에서 희소한 강색으로 기억점을 만듦 |\n\n## 몬스터 로스터\n\n![고물바람 초원 몬스터 로스터](./media/world-art-bible/v001/junkwind-meadow-monsters.png \"폐품 실루엣으로 전투 역할을 구분하는 6종 몬스터 최종 콘셉트\")\n\n| 몬스터 | 전투 역할 | 핵심 시각 예고 |\n| --- | --- | --- |\n| 머그먹 `Mugmuck` | 근접 추적 | 크림색 머그 손잡이가 옆 실루엣을 만듦 |\n| 꼬깔박치기 `Conebonk` | 직선 돌진 | 큰 주황 원뿔이 공격 방향을 가리킴 |\n| 깡통딱정 `Tinback` | 정면 방어 | 캔 뚜껑 정면판과 뒤쪽 시안 태엽이 약점을 나눔 |\n| 플러그퐁 `Plugpop` | 원거리 전기 | 플러그 귀와 시안 코일 코어가 사거리를 예고함 |\n| 카트꿀꺽 `Cartmaw` | 엘리트 공간 압박 | 넓은 카트 입과 붉은 손잡이 뿔이 길목 점유를 보임 |\n| 자판두꺼비 `Vendatoad` | 미니보스 구역 제어 | 위성 접시, 시안 목 코일과 큰 자판기 몸이 범위를 암시함 |\n\n초반에는 머그먹, 꼬깔박치기와 깡통딱정으로 이동, 회피 방향과 후면 공략을\n학습시킵니다. 이후 플러그퐁으로 원거리 압박을 더하고 카트꿀꺽과 자판두꺼비는\n이미 익힌 실루엣 문법을 큰 공간 제어 패턴으로 확장합니다.\n\n## 제작 결정과 경계\n\n- 네 콘셉트 이미지는 최종 디자인 기준이지만 런타임 스프라이트나 Roblox 모델은\n  아닙니다.\n- 여성형도 현재 `Head`와 `Body` 두 슬롯을 사용하며 새로운 성별 전용 런타임\n  시스템을 만들지 않습니다.\n- 기존 남성형 오리 참을 소급 교체하지 않고 여성형의 스코티시 폴드 뚱냥이 참을\n  개인 식별자로 사용합니다.\n- 필드 구현은 지물 장식보다 이동 바닥과 경계 그레이박스를 먼저 승인합니다.\n- 몬스터 구현은 일반 3종, 상호작용 지물, 원거리, 엘리트, 미니보스 순으로\n  확장해 한 번에 과도한 제작 범위를 열지 않습니다.\n- 후속 이미지 생성은 원본을 덮어쓰지 않고 버전 파일을 추가한 뒤 기준 문서에서\n  승인 경로를 승격합니다.\n\n## 검증과 후속 작업\n\n최종 이미지 네 장은 모두 1536×1024 RGB PNG이며 저장소 기준 자산과 위키 미디어\n사본의 SHA-256이 일치합니다. 위키 파서 테스트, 위키 빌드와 생성 데이터·미디어\n동기화 검사, 공백 오류 검사를 통과해야 이 버전을 활성 상태로 유지합니다.\n\n다음 제작 단계는 고물바람 초원의 Roblox 그레이박스, 일반 몬스터 세 종의 크기\n비교 시트, 여성형 South Walk 8프레임의 별도 승인 게이트입니다. 실제 Studio\n결과를 만드는 후속 변경에서는 대표 플레이 화면을 새 위키 버전의 최종 증거로\n추가해야 합니다.\n",
+          "source_path": "wiki/content/pages/world-art-bible/v001.md"
         }
       ]
     },
@@ -174,43 +274,36 @@ window.PACKBOUND_WIKI = {
     {
       "id": "inventory-item-concept",
       "title": "인벤토리와 아이템 개념",
-      "summary": "아이템의 점유 칸과 이미지 배치를 로컬 ItemDB에서 직접 조정하고, 검증된 저장 결과가 동일한 원본을 통해 게임 인벤토리에 적용되도록 연결했습니다.",
+      "summary": "백팩 UI의 실제 소비 에셋과 생성 원본을 일치시키고, 이후 모든 UI 변경을 PC와 모바일에서 함께 완성하도록 검증 기준을 고정했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
         "inventory",
         "item",
         "backpack",
-        "grid",
-        "footprint",
-        "itemdb",
-        "editor",
-        "runtime"
+        "ui",
+        "asset-lifecycle",
+        "responsive",
+        "pc",
+        "mobile"
       ],
       "created_at": "2026-08-06",
       "updated_at": "2026-08-06",
       "authors": [
         "Codex"
       ],
-      "version": 3,
+      "version": 4,
       "change_type": "updated",
-      "change_summary": "아이콘과 점유 형태를 눈으로 맞추는 로컬 편집 흐름을 만들고, 저장된 연결형 칸·배율·위치를 게임 UI가 사용하는 생성 데이터로 이어 붙였습니다.",
-      "supersedes": "inventory-item-concept@v002",
+      "change_summary": "사용되지 않는 백팩 UI 에셋을 생성기·매니페스트·런타임 등록부에서 함께 제거하고 PC·모바일 동시 검증을 UI 완료 조건으로 명문화했습니다.",
+      "supersedes": "inventory-item-concept@v003",
       "sources": [
-        "docs/gameplay/inventory-item-art-catalog.md",
-        "docs/gameplay/inventory-item-layouts.json",
-        "tools/item_db.py",
-        "wiki/site/item-db.js",
-        "wiki/site/item-db-data.js",
-        "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
-        "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
-        "src/ReplicatedStorage/BackpackUI/GridModel.luau",
-        "src/ReplicatedStorage/BackpackUI/Screen.luau",
-        "tests/test_item_db.py",
-        "tests/item-db.spec.js",
-        "wiki/content/media/inventory-item-concept/v003/inventory-concept.png",
-        "wiki/content/media/inventory-item-concept/v003/itemdb-layout-editor-result.jpg",
-        "wiki/content/media/inventory-item-concept/v003/studio-backpack-runtime-result.jpg"
+        "AGENTS.md",
+        "Assets/UI/Backpack/asset_cleanup_audit.md",
+        "Assets/UI/Backpack/asset_manifest.json",
+        "Assets/UI/Backpack/uploaded_asset_ids.json",
+        "tools/generate_backpack_ui_assets.py",
+        "src/ReplicatedStorage/BackpackUI/Assets.luau",
+        "src/ReplicatedStorage/BackpackUI/Screen.luau"
       ],
       "related": [
         "development-wiki",
@@ -218,19 +311,68 @@ window.PACKBOUND_WIKI = {
         "project-overview"
       ],
       "validation": [
-        "python3 tools/item_db.py build",
-        "python3 tools/item_db.py check",
-        "python3 -m unittest tests.test_item_db",
-        "node --test tests/item-db.spec.js",
-        "luau-compile --null로 BackpackUI ModuleScript와 bootstrap 문법 검증",
-        "rojo build default.project.json --output /tmp/packbound-itemdb-default.rbxlx",
-        "rojo build packbound.project.json --output /tmp/packbound-itemdb-packbound.rbxlx",
-        "Roblox Studio MCP 플레이에서 PackBoundBackpackGui 로드와 다칸 아이템 배치 확인",
-        "브라우저에서 로컬 Edit 32개, 5x5 편집기와 선택 칸 표시 확인"
+        "python3 tools/generate_backpack_ui_assets.py",
+        "luau-compile로 BackpackUI ModuleScript 문법 검증",
+        "rojo build default.project.json --output /tmp/packbound-cleanup-default.rbxlx",
+        "rojo build packbound.project.json --output /tmp/packbound-cleanup-packbound.rbxlx",
+        "Roblox Studio MCP PC Average Laptop 1366x765 플레이 검증",
+        "Roblox Studio MCP Samsung Galaxy S25 Ultra 세로 1079x1878 플레이 검증",
+        "Roblox Creator Dashboard에서 Image 에셋의 보관 기능 미제공 확인"
       ],
-      "source_path": "wiki/content/pages/inventory-item-concept/v003.md",
-      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템은 그림과 점유 칸이 따로 노는 데이터가 아니라, 외형 자체가 공간\n퍼즐의 규칙을 설명해야 합니다. 32종 아이콘과 칸 배열을 표로 확정한 뒤에는 실제 UI에서\n이미지가 칸 중심과 미세하게 어긋나거나 실루엣에 맞는 점유 형태를 다시 조정해야 하는\n운영 단계가 남습니다. 이 조정을 코드 좌표로만 반복하면 기획자가 결과를 즉시 확인하기\n어렵고 이미지와 게임 데이터가 다시 갈라질 위험이 있습니다.\n\n이번 목표는 아이템을 눈으로 보면서 배율, 위치와 점유 칸을 한 화면에서 맞추고, 저장한\n최종 결과만 게임에 적용하는 것입니다. 편집 도구는 로컬 개발 환경에 두고 공개 위키는\n카탈로그를 읽는 용도로 제한합니다.\n\n## 사용자 경험\n\n- ItemDB의 각 아이템에서 `Edit`을 누르면 선택한 아이콘과 5x5 칸 편집기가 열립니다.\n- 이미지 배율 숫자를 바꾸면 즉시 크기가 변하고, 이미지를 드래그해 칸 기준 위치를\n  조정할 수 있습니다.\n- `칸 설정하기`를 누르면 이미지는 반투명·비선택 상태가 되고 바닥 칸만 선택됩니다.\n- 저장 전에 점유 칸 없음, 5칸 범위 초과, 대각선으로만 분리된 영역을 명확한 오류로\n  막습니다.\n- 저장된 배율·위치·점유 형태는 다음 위키 빌드와 게임 인벤토리에서 같은 결과로\n  재현됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 시각 조정과 규칙 검증을 한 흐름으로 묶는다\n\n아이콘 배치는 눈으로 조정하지만 점유 형태는 게임 규칙을 따라야 합니다. 선택 칸은 한\n칸 이상이어야 하며 가로·세로 각각 5칸을 넘을 수 없고 모든 칸이 상하좌우로 연결되어야\n합니다. 대각선 접촉만으로는 하나의 아이템으로 인정하지 않습니다.\n\n### 저장 전에는 게임을 바꾸지 않는다\n\n편집기를 열거나 값을 시험하는 동안에는 기존 게임 배치가 유지됩니다. `저장`이 성공한\n아이템만 명시적인 override가 되어 런타임 기본값 위에 적용됩니다. 중간 조정이 게임에\n새어 들어가지 않아 시각 실험과 제품 상태를 분리합니다.\n\n### 원본은 하나이고 출력은 용도별로 생성한다\n\n점유 칸은 아이템 아트 카탈로그, 배율·상대 위치는 작은 layout 문서가 소유합니다.\n생성기는 두 원본을 결합해 위키용 ItemDB와 게임용 Luau 데이터를 만듭니다. 브라우저와\n게임이 서로 다른 수기 값을 갖지 않으므로 한 번 저장한 최종 배치를 같은 방식으로\n검증할 수 있습니다.\n\n## 결정 사항과 범위\n\n편집 권한은 `localhost`, `127.0.0.1`, 로컬 IPv6 주소에서만 허용합니다. 공개 위키에는\n아이템 이미지, 제원과 점유 형태는 보이지만 `Edit` 열, 편집 팝업과 저장 API는 없습니다.\n저장 API도 로컬 Host·Origin과 JSON 요청을 확인합니다.\n\n편집 캔버스는 현재 게임의 최대 아이템 범위에 맞춰 5x5로 고정했습니다. 임의 회전,\n아이템 능력치 편집과 신규 아이템 생성은 이번 범위에 포함하지 않습니다. 이 기능은\n이미 존재하는 아이템의 이미지 배치와 점유 형태를 안전하게 조정하는 도구입니다.\n\n## 시안과 현재 결과\n\n![모바일 백팩 인벤토리 시안](./media/inventory-item-concept/v003/inventory-concept.png \"상단 자원, 중앙 다칸 격자, 하단 아이템 목록으로 구성한 승인 시안\")\n\n시안의 핵심은 아이템 실루엣과 점유 칸을 중앙 격자에서 동시에 읽는 구조입니다. 로컬\n편집기는 같은 원칙을 운영 도구로 옮겨 이미지와 칸을 한 화면에서 직접 맞춥니다.\n\n![로컬 ItemDB 칸 편집기](./media/inventory-item-concept/v003/itemdb-layout-editor-result.jpg \"안테나 리커브 보우의 배율, 이미지 위치와 여섯 연결 칸을 함께 조정하는 로컬 전용 편집 화면\")\n\n![Roblox Studio 인벤토리 적용 결과](./media/inventory-item-concept/v003/studio-backpack-runtime-result.jpg \"Studio 플레이에서 아이템 이미지와 다칸 점유 형태가 동일한 배치 계약으로 표시된 최종 결과\")\n\n현재 게임 인벤토리는 승인 시안의 정보 계층을 유지하면서 6x6 보드, 열린 칸, 아이템\n점유 형태, 선택 아이템 정보와 하단 목록을 표시합니다. ItemDB에서 저장된 아이템은\n생성된 layout을 사용하고 아직 저장하지 않은 아이템은 검증된 기존 런타임 기본값을\n사용합니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 32종 카탈로그의 ID, 이미지, 256픽셀 칸 단위, 좌표 연결성과 크기\n계약을 검증합니다. 로컬 저장 요청은 선택 좌표를 좌상단 원점으로 정규화하고 카탈로그의\n상세·요약 배열과 layout 문서를 함께 갱신한 뒤 위키 데이터와\n`GeneratedItemLayouts.luau`를 다시 생성합니다. 실패하면 원본을 복구해 반쪽 저장을\n남기지 않습니다.\n\n게임에서는 `ItemCatalog`가 저장된 생성 layout을 우선 사용하고 기존 형태를 fallback으로\n유지합니다. `Screen`은 배율, 상대 위치, 이미지 캔버스 크기와 점유 좌표를 함께 사용해\n보드와 하단 아이템 카드에 동일한 실루엣을 배치합니다.\n\n## 검증\n\nPython과 JavaScript 테스트로 빈 선택, 대각선 분리, 5x5 범위 밖 좌표, 중복 좌표와 잘못된\n배율을 거부하는지 확인했습니다. 카탈로그 32행, 실제 PNG, 점유 패턴과 좌표, 생성된\n게임 layout이 서로 일치하는지도 검사했습니다.\n\n브라우저에서 로컬 ItemDB의 32개 `Edit` 버튼, 5x5 편집기, 선택 아이템 이미지, 배율 입력,\n여섯 선택 칸과 저장 규칙을 확인했습니다. Roblox Studio MCP 플레이에서는\n`PackBoundBackpackGui`가 로드되고 여러 형태의 아이템이 연결된 다칸 영역에 표시되는 것을\n확인했습니다.\n\n## 후속 기획\n\n- 실제 밸런스 조정에서 아이템 크기가 바뀔 때 능력치·희귀도와 점유 비용을 함께 검토합니다.\n- 회전별 별도 이미지가 필요해질 때 현재 단일 방향 계약을 확장하되 동일한 연결성 검증을\n  유지합니다.\n- 신규 아이템 생성은 이미지 제작, ID·태그·능력치 승인과 점유 편집을 하나의 별도 등록\n  흐름으로 설계합니다.\n",
+      "source_path": "wiki/content/pages/inventory-item-concept/v004.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 백팩은 장식 이미지가 많은 화면이지만, 실제 플레이 경험은 격자와 아이템을\n즉시 읽고 PC와 모바일 어디서든 같은 행동을 수행하는 데 달려 있습니다. 사용하지 않는\n이미지가 생성기와 Roblox 등록부에 계속 남으면 어떤 에셋이 제품 계약인지 판단하기\n어려워지고, 다음 수정에서 과거 이미지를 다시 연결하거나 불필요한 업로드를 반복할 수\n있습니다.\n\n이번 목표는 화면을 바꾸는 것이 아니라 현재 백팩 UI가 사용하는 에셋만 명확한 제품\n원본으로 남기는 것입니다. 동시에 앞으로의 UI 작업은 데스크톱과 모바일을 별도\n완성 대상으로 보고 두 환경을 모두 검증해야 종료할 수 있도록 프로젝트 규칙을\n강화했습니다.\n\n## 사용자 경험\n\n- 플레이어가 보는 백팩의 외형, 아이템 배치, 선택 상태와 조작 흐름은 그대로 유지됩니다.\n- PC에서는 넓은 16:9 화면 안에 읽기 좋은 데스크톱 배율로 중앙 배치됩니다.\n- 모바일에서는 세로 화면과 안전 영역에 맞춰 백팩이 크게 표시되고 상단 정보와 닫기\n  버튼이 Roblox Core UI에 가려지지 않습니다.\n- 제거된 에셋 때문에 빈 이미지, 잘못된 버튼 상태나 로딩 경고가 나타나지 않습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 제품에서 쓰는 에셋만 런타임 계약으로 유지한다\n\n로컬 PNG만 지우거나 코드의 ID만 지우는 반쪽 정리는 허용하지 않습니다. 에셋을 제거할\n때는 생성기, 생성 매니페스트, Roblox ID 등록부와 Luau 런타임 선언을 한 단위로\n갱신합니다. 이후 생성기를 다시 실행해도 삭제된 파일이 되살아나지 않아야 합니다.\n\n### 계획된 상태와 편집 원본은 미사용 에셋과 구분한다\n\n현재 화면에서 직접 쓰지 않는다고 모두 삭제하지 않습니다. 잠긴 칸과 경고 상태에\n필요한 `lock`, `warning` 아이콘은 기획된 기능 자산으로 유지했습니다. 두 대형 프레임의\n크로마 이미지는 Roblox 런타임 에셋이 아니라 최종 프레임을 다시 만들기 위한 편집\n원본이므로 로컬에 남깁니다.\n\n### PC와 모바일은 하나의 캔버스 배율이 아니라 두 개의 완성 조건이다\n\nPC는 넓은 화면, 마우스와 키보드, 높은 정보 밀도를 기준으로 창 크기와 배율을\n결정합니다. 모바일은 현재 뷰포트, 세로 비율, 안전 영역과 터치 크기를 기준으로\n동적으로 구성합니다. 한 환경에서만 맞는 UI는 완료로 판단하지 않으며, Roblox Studio\nMCP의 대표 PC와 최신 세로 휴대폰 플레이 검증을 필수 관문으로 둡니다.\n\n## 결정 사항과 범위\n\n실제 소비가 없던 둥근 주황 버튼의 기본·눌림 이미지와 좌상단 뒤로가기 아이콘을\n제거했습니다. 이 세 파일은 생성기, `asset_manifest.json`,\n`uploaded_asset_ids.json`, `Assets.luau`에서도 함께 분리했습니다. 생성 결과는 버튼\n스킨 20개, 아이콘 19개, 타일 5개이며 이 가운데 런타임 소비 에셋은 44개입니다.\n\n현재 미사용이지만 기획에 필요한 아이콘 2개와 프레임 편집 원본 2개는 유지했습니다.\n이 구분과 Roblox ID 목록은 `asset_cleanup_audit.md`에 기록해 다음 정리에서 같은 조사를\n반복하지 않도록 했습니다.\n\n## Roblox 클라우드 에셋 정책\n\n프로젝트에서 분리된 Roblox Image ID는 모두 저장소와 현재 Studio DataModel에서 참조가\n없습니다. 그러나 소유 계정의 Creator Dashboard에서 이 시스템 생성 Image 카드에\n제공되는 작업은 에셋 상세 열기와 ID 복사뿐이며 Archive가 없습니다. Open Cloud의\n보관 API도 API 키 또는 OAuth 2.0 인증이 필요하지만 이 프로젝트에는 해당 인증이\n구성되어 있지 않습니다.\n\n따라서 로컬과 런타임 연결은 제거했지만 Roblox 클라우드의 25개 고아 Image는 보관하지\n못했습니다. 이 상태를 삭제 성공으로 가장하지 않고 감사 문서에 ID와 제한을 남겼습니다.\n추후 Roblox가 Image 보관 UI를 제공하거나 소유자가 전용 Open Cloud 인증 정책을\n승인하면 별도 정리 작업으로 처리합니다.\n\n## 검증\n\n에셋 생성기를 다시 실행해 삭제한 세 PNG가 재생성되지 않는 것을 확인했습니다. Backpack\nUI Luau 모듈은 컴파일됐고 기본·PackBound Rojo 프로젝트가 모두 빌드됐습니다.\n\nRoblox Studio MCP 플레이에서 일반 노트북 프리셋의 1366x765 뷰포트와 Samsung Galaxy\nS25 Ultra 세로 모드의 1079x1878 뷰포트를 각각 확인했습니다. 두 환경 모두 백팩 프레임,\n탭, 격자 타일, 상태 버튼과 아이콘이 빠짐없이 표시됐습니다. 모바일에서는 상단 정보와\n닫기 버튼이 안전한 중앙·우측 영역에 유지됐습니다. 출력창에는 Backpack UI 에셋 오류가\n없었고, 별도 개발 플러그인인 `WeaponAnimationTester`의 기존 모듈 경고만 남았습니다.\n\n## 후속 기획\n\n- 잠긴 칸 확장과 부족 재화 경고를 구현할 때 유지한 `lock`, `warning` 에셋을 우선\n  사용하고 실제 소비 여부를 다시 매니페스트에 반영합니다.\n- 새 버튼이나 아이콘은 기본·눌림 상태, 투명 배경, 재사용 가능한 조각과 런타임 텍스트\n  분리 원칙을 유지합니다.\n- UI 완료 보고에는 검증한 PC 뷰포트와 모바일 기기·방향, 입력 경로와 출력창 결과를\n  항상 남깁니다.\n",
       "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "백팩 UI의 실제 소비 에셋과 생성 원본을 일치시키고, 이후 모든 UI 변경을 PC와 모바일에서 함께 완성하도록 검증 기준을 고정했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "ui",
+            "asset-lifecycle",
+            "responsive",
+            "pc",
+            "mobile"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
+          "authors": [
+            "Codex"
+          ],
+          "version": 4,
+          "change_type": "updated",
+          "change_summary": "사용되지 않는 백팩 UI 에셋을 생성기·매니페스트·런타임 등록부에서 함께 제거하고 PC·모바일 동시 검증을 UI 완료 조건으로 명문화했습니다.",
+          "supersedes": "inventory-item-concept@v003",
+          "sources": [
+            "AGENTS.md",
+            "Assets/UI/Backpack/asset_cleanup_audit.md",
+            "Assets/UI/Backpack/asset_manifest.json",
+            "Assets/UI/Backpack/uploaded_asset_ids.json",
+            "tools/generate_backpack_ui_assets.py",
+            "src/ReplicatedStorage/BackpackUI/Assets.luau",
+            "src/ReplicatedStorage/BackpackUI/Screen.luau"
+          ],
+          "related": [
+            "development-wiki",
+            "backpack-combat-stat-database",
+            "project-overview"
+          ],
+          "validation": [
+            "python3 tools/generate_backpack_ui_assets.py",
+            "luau-compile로 BackpackUI ModuleScript 문법 검증",
+            "rojo build default.project.json --output /tmp/packbound-cleanup-default.rbxlx",
+            "rojo build packbound.project.json --output /tmp/packbound-cleanup-packbound.rbxlx",
+            "Roblox Studio MCP PC Average Laptop 1366x765 플레이 검증",
+            "Roblox Studio MCP Samsung Galaxy S25 Ultra 세로 1079x1878 플레이 검증",
+            "Roblox Creator Dashboard에서 Image 에셋의 보관 기능 미제공 확인"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 백팩은 장식 이미지가 많은 화면이지만, 실제 플레이 경험은 격자와 아이템을\n즉시 읽고 PC와 모바일 어디서든 같은 행동을 수행하는 데 달려 있습니다. 사용하지 않는\n이미지가 생성기와 Roblox 등록부에 계속 남으면 어떤 에셋이 제품 계약인지 판단하기\n어려워지고, 다음 수정에서 과거 이미지를 다시 연결하거나 불필요한 업로드를 반복할 수\n있습니다.\n\n이번 목표는 화면을 바꾸는 것이 아니라 현재 백팩 UI가 사용하는 에셋만 명확한 제품\n원본으로 남기는 것입니다. 동시에 앞으로의 UI 작업은 데스크톱과 모바일을 별도\n완성 대상으로 보고 두 환경을 모두 검증해야 종료할 수 있도록 프로젝트 규칙을\n강화했습니다.\n\n## 사용자 경험\n\n- 플레이어가 보는 백팩의 외형, 아이템 배치, 선택 상태와 조작 흐름은 그대로 유지됩니다.\n- PC에서는 넓은 16:9 화면 안에 읽기 좋은 데스크톱 배율로 중앙 배치됩니다.\n- 모바일에서는 세로 화면과 안전 영역에 맞춰 백팩이 크게 표시되고 상단 정보와 닫기\n  버튼이 Roblox Core UI에 가려지지 않습니다.\n- 제거된 에셋 때문에 빈 이미지, 잘못된 버튼 상태나 로딩 경고가 나타나지 않습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 제품에서 쓰는 에셋만 런타임 계약으로 유지한다\n\n로컬 PNG만 지우거나 코드의 ID만 지우는 반쪽 정리는 허용하지 않습니다. 에셋을 제거할\n때는 생성기, 생성 매니페스트, Roblox ID 등록부와 Luau 런타임 선언을 한 단위로\n갱신합니다. 이후 생성기를 다시 실행해도 삭제된 파일이 되살아나지 않아야 합니다.\n\n### 계획된 상태와 편집 원본은 미사용 에셋과 구분한다\n\n현재 화면에서 직접 쓰지 않는다고 모두 삭제하지 않습니다. 잠긴 칸과 경고 상태에\n필요한 `lock`, `warning` 아이콘은 기획된 기능 자산으로 유지했습니다. 두 대형 프레임의\n크로마 이미지는 Roblox 런타임 에셋이 아니라 최종 프레임을 다시 만들기 위한 편집\n원본이므로 로컬에 남깁니다.\n\n### PC와 모바일은 하나의 캔버스 배율이 아니라 두 개의 완성 조건이다\n\nPC는 넓은 화면, 마우스와 키보드, 높은 정보 밀도를 기준으로 창 크기와 배율을\n결정합니다. 모바일은 현재 뷰포트, 세로 비율, 안전 영역과 터치 크기를 기준으로\n동적으로 구성합니다. 한 환경에서만 맞는 UI는 완료로 판단하지 않으며, Roblox Studio\nMCP의 대표 PC와 최신 세로 휴대폰 플레이 검증을 필수 관문으로 둡니다.\n\n## 결정 사항과 범위\n\n실제 소비가 없던 둥근 주황 버튼의 기본·눌림 이미지와 좌상단 뒤로가기 아이콘을\n제거했습니다. 이 세 파일은 생성기, `asset_manifest.json`,\n`uploaded_asset_ids.json`, `Assets.luau`에서도 함께 분리했습니다. 생성 결과는 버튼\n스킨 20개, 아이콘 19개, 타일 5개이며 이 가운데 런타임 소비 에셋은 44개입니다.\n\n현재 미사용이지만 기획에 필요한 아이콘 2개와 프레임 편집 원본 2개는 유지했습니다.\n이 구분과 Roblox ID 목록은 `asset_cleanup_audit.md`에 기록해 다음 정리에서 같은 조사를\n반복하지 않도록 했습니다.\n\n## Roblox 클라우드 에셋 정책\n\n프로젝트에서 분리된 Roblox Image ID는 모두 저장소와 현재 Studio DataModel에서 참조가\n없습니다. 그러나 소유 계정의 Creator Dashboard에서 이 시스템 생성 Image 카드에\n제공되는 작업은 에셋 상세 열기와 ID 복사뿐이며 Archive가 없습니다. Open Cloud의\n보관 API도 API 키 또는 OAuth 2.0 인증이 필요하지만 이 프로젝트에는 해당 인증이\n구성되어 있지 않습니다.\n\n따라서 로컬과 런타임 연결은 제거했지만 Roblox 클라우드의 25개 고아 Image는 보관하지\n못했습니다. 이 상태를 삭제 성공으로 가장하지 않고 감사 문서에 ID와 제한을 남겼습니다.\n추후 Roblox가 Image 보관 UI를 제공하거나 소유자가 전용 Open Cloud 인증 정책을\n승인하면 별도 정리 작업으로 처리합니다.\n\n## 검증\n\n에셋 생성기를 다시 실행해 삭제한 세 PNG가 재생성되지 않는 것을 확인했습니다. Backpack\nUI Luau 모듈은 컴파일됐고 기본·PackBound Rojo 프로젝트가 모두 빌드됐습니다.\n\nRoblox Studio MCP 플레이에서 일반 노트북 프리셋의 1366x765 뷰포트와 Samsung Galaxy\nS25 Ultra 세로 모드의 1079x1878 뷰포트를 각각 확인했습니다. 두 환경 모두 백팩 프레임,\n탭, 격자 타일, 상태 버튼과 아이콘이 빠짐없이 표시됐습니다. 모바일에서는 상단 정보와\n닫기 버튼이 안전한 중앙·우측 영역에 유지됐습니다. 출력창에는 Backpack UI 에셋 오류가\n없었고, 별도 개발 플러그인인 `WeaponAnimationTester`의 기존 모듈 경고만 남았습니다.\n\n## 후속 기획\n\n- 잠긴 칸 확장과 부족 재화 경고를 구현할 때 유지한 `lock`, `warning` 에셋을 우선\n  사용하고 실제 소비 여부를 다시 매니페스트에 반영합니다.\n- 새 버튼이나 아이콘은 기본·눌림 상태, 투명 배경, 재사용 가능한 조각과 런타임 텍스트\n  분리 원칙을 유지합니다.\n- UI 완료 보고에는 검증한 PC 뷰포트와 모바일 기기·방향, 입력 경로와 출력창 결과를\n  항상 남깁니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v004.md"
+        },
         {
           "id": "inventory-item-concept",
           "title": "인벤토리와 아이템 개념",
@@ -946,50 +1088,113 @@ window.PACKBOUND_WIKI = {
     {
       "id": "development-wiki",
       "title": "개발 위키와 변경 이력 시스템",
-      "summary": "공개 위키는 화면뿐 아니라 배포 데이터에서도 작업 시각을 제거하고 날짜만 전달하며, 로컬 원본은 정확한 이력을 유지합니다.",
+      "summary": "문서 가독성을 보존하면서 PackBound 전용 히어로, 브랜드 엠블럼과 스코티시 폴드 사이드바 비네트를 데스크톱·모바일 위키에 적용했습니다.",
       "status": "active",
       "category": "tooling",
       "tags": [
         "documentation",
         "wiki",
-        "privacy",
-        "public-hosting",
-        "security"
+        "visual-design",
+        "responsive",
+        "concept-art",
+        "mobile"
       ],
       "created_at": "2026-08-06",
       "updated_at": "2026-08-06",
       "authors": [
         "Codex"
       ],
-      "version": 6,
-      "change_type": "corrected",
-      "change_summary": "공개 화면에서만 시각을 숨기던 정책을 보강해 공개 정적 파일의 ISO 타임스탬프도 날짜로 축약하고, 정확한 시각이 남으면 배포를 중단하도록 했습니다.",
-      "supersedes": "development-wiki@v005",
+      "version": 7,
+      "change_type": "updated",
+      "change_summary": "게임 아트를 통제된 세 영역에 배치해 위키를 PackBound 전용 페이지로 브랜딩하고, 긴 경로와 초광폭 아트가 PC·모바일에서 넘치지 않도록 반응형 레이아웃을 보강했습니다.",
+      "supersedes": "development-wiki@v006",
       "sources": [
-        "tools/publish_public_wiki.py",
-        "wiki/site/local-access.js",
+        "wiki/site/index.html",
+        "wiki/site/app.css",
         "wiki/site/app.js",
-        "tests/test_publish_public_wiki.py",
-        "tests/local-access.spec.js",
-        "wiki/content/media/development-wiki/v006/public-date-only-result.jpg"
+        "wiki/site/theme/README.md",
+        "wiki/site/theme/packbound-wiki-hero.webp",
+        "wiki/site/theme/packbound-sidebar-vignette.webp",
+        "wiki/site/theme/packbound-brand-emblem.webp",
+        "wiki/content/media/development-wiki/v007/wiki-theme-hero-concept.webp",
+        "wiki/content/media/development-wiki/v007/wiki-themed-desktop-result.png",
+        "wiki/content/media/development-wiki/v007/wiki-themed-mobile-result.png"
       ],
       "related": [
-        "inventory-item-concept",
+        "world-art-bible",
         "project-overview"
       ],
       "validation": [
-        "python3 -m unittest tests.test_publish_public_wiki tests.test_wiki",
-        "node --test tests/local-access.spec.js",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
+        "python3 -m unittest tests/test_wiki.py",
+        "node tests/markdown-media.spec.js",
+        "node --test tests/local-access.spec.js",
         "python3 tools/publish_public_wiki.py --check",
-        "공개 배포본의 data.js와 combat-db-data.js에 시·분·초·시간대가 남지 않는지 검사",
-        "공개 호스트 미리보기에서 생성·변경 정보가 날짜로만 표시되고 Rojo 제어와 ItemDB Edit가 숨겨지는지 브라우저 확인",
+        "브라우저 1440×900 데스크톱: 트리 히어로·브랜드·사이드바 비네트, 가로 넘침 없음",
+        "브라우저 390×844 모바일 세로: 문서 히어로 크롭·제목·본문·탭, 가로 넘침 없음",
+        "브라우저 844×390 모바일 가로 스트레스: 히어로·사이드바·본문 진입, 가로 넘침 없음",
+        "브라우저 콘솔 error/warning 0건",
         "git diff --check"
       ],
-      "source_path": "wiki/content/pages/development-wiki/v006.md",
-      "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\n공개 위키의 목적은 팀이 개발 결과와 기획 흐름을 함께 이해하도록 돕는 것입니다. 작업이\n추가되거나 바뀐 날짜는 문서 탐색에 필요하지만, 개인이 어느 시각에 작업했는지는 이 목적에\n필요하지 않습니다. 따라서 공개 범위는 날짜로 제한하고 정확한 시각은 로컬 개발 이력에만\n남기는 것이 원칙입니다.\n\n이전 버전은 브라우저 화면에서 시·분을 숨겼지만 공개 정적 파일에는 원본 ISO 타임스탬프가\n포함되어 있었습니다. 일반 독자에게 보이지 않더라도 파일을 직접 열면 확인할 수 있으므로\n프라이버시 경계가 충분하지 않았습니다. 이번 수정은 화면 표현이 아니라 공개 배포물 자체를\n날짜 단위 데이터로 만드는 데 목적이 있습니다.\n\n## 사용자 경험\n\n- 공개 페이지의 최초 생성, 마지막 변경, 버전 이력과 DB 원본 변경 정보는 날짜까지만 봅니다.\n- 공개 저장소의 생성 데이터 파일을 직접 확인해도 시·분·초와 시간대를 알 수 없습니다.\n- 로컬 위키에서는 기존처럼 정확한 시간을 확인해 개발 이력을 세밀하게 추적할 수 있습니다.\n- Rojo 서버 제어와 ItemDB 편집은 계속 로컬에서만 제공됩니다.\n\n![공개 위키의 날짜 단위 변경 정보](./media/development-wiki/v006/public-date-only-result.jpg \"공개 호스트 조건에서 시각 없이 날짜만 표시되고 로컬 제어가 숨겨진 최종 화면\")\n\n## 핵심 원칙과 설계 철학\n\n### 공개 데이터는 화면보다 먼저 안전해야 한다\n\nCSS나 날짜 포맷터는 표시만 바꿀 뿐 전송된 값을 지우지 않습니다. 공개 배포 단계에서\n모든 텍스트 자산의 ISO 타임스탬프를 `YYYY-MM-DD`로 축약해 브라우저가 처음부터 정확한\n시각을 받지 않도록 합니다. 화면의 로컬·공개 표시 분기는 이 데이터 경계를 보조하는\n두 번째 방어선입니다.\n\n### 로컬 원본과 공개 사본의 책임을 나눈다\n\n불변 Markdown 원본과 로컬 `wiki/site` 생성물은 커밋 시각과 버전 계보를 정확히 보존합니다.\n공개 저장소는 이 원본의 읽기 전용 사본이지만, 공유 목적에 필요하지 않은 시간 정밀도는\n제거합니다. 따라서 이력 추적 능력과 외부 공개 프라이버시를 동시에 유지합니다.\n\n### 실수하면 공개하지 않는다\n\n배포 준비가 끝난 뒤 공개 텍스트 자산 전체를 다시 검사합니다. 정확한 ISO 타임스탬프가\n하나라도 남아 있으면 파일명과 함께 실패하고 커밋·푸시를 시작하지 않습니다. 새 데이터\n모듈이 추가되어도 별도 목록 등록 없이 같은 검사를 받습니다.\n\n## 결정 사항과 범위\n\n배포 도구가 복사하는 HTML, CSS, JavaScript, JSON, source map, Markdown, text와 XML을\n검사 대상으로 삼았습니다. 이미지 같은 바이너리는 텍스트로 해석하거나 다시 쓰지 않습니다.\n타임스탬프는 날짜 부분만 보존하므로 최신순 정렬과 날짜 필터는 계속 동작합니다.\n\n공개 Git 이력의 재작성은 범위에 포함하지 않습니다. 최신 공개 배포본에서 정확한 시각을\n제거하고, 앞으로의 모든 배포가 같은 비노출 검사를 통과하도록 하는 데 집중합니다.\n\n## 현재 결과\n\n`tools/publish_public_wiki.py`는 공개 저장소에 파일을 올리기 전에 별도 임시 트리를 만들고\n정확한 타임스탬프를 날짜로 축약합니다. 이어서 잔여 타임스탬프 검사를 통과해야만 공개\n커밋과 푸시를 수행합니다. `--check`도 실제 공개 트리 준비 과정을 실행하므로 배포 전에\n동일한 프라이버시 조건을 확인할 수 있습니다.\n\n로컬 사이트의 `data.js`와 `combat-db-data.js`는 정확한 시간을 유지합니다. 공개 사본에서는\n같은 필드가 `2026-08-06`처럼 날짜만 가지며 화면도 날짜까지만 렌더링합니다.\n\n## 구현 참고\n\n정규식은 초와 소수 초가 있거나 없는 ISO 시각, `Z` 또는 숫자 시간대를 모두 인식합니다.\n치환과 검증을 독립된 함수로 나눠 단위 테스트가 실제 배포 없이 정상 축약, 바이너리 보존과\n잔여 시각 차단을 각각 확인합니다.\n\n## 검증\n\n단위 테스트에서 서로 다른 ISO 형식을 같은 날짜로 축약하고, 이미지 파일은 변경하지 않으며,\n잔여 시각이 있는 JavaScript 파일은 공개 검증을 실패시키는지 확인했습니다. 공개 호스트\n미리보기에서는 생성·변경 정보가 날짜만 표시되고 Rojo 영역과 ItemDB 편집 버튼이 보이지\n않는지 확인했습니다.\n\n## 후속 기획\n\n- 공개해야 할 메타데이터 종류가 늘어나면 허용 필드 중심의 공개 스키마를 검토합니다.\n- 공개 저장소의 과거 커밋까지 제거해야 하는 상황이 생기면 별도의 이력 재작성 작업으로\n  범위와 영향도를 먼저 검토합니다.\n",
+      "source_path": "wiki/content/pages/development-wiki/v007.md",
+      "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\nPackBound 위키는 개발 기록을 읽는 도구이면서 게임의 방향을 처음 접하는 입구입니다.\n기존 화면은 문서 구조가 분명했지만 일반적인 다크 테마 문서 사이트에 가까워 캐릭터,\n폐품 세계와 장난스러운 분위기를 전달하지 못했습니다. 이번 변경의 목표는 본문을 그림으로\n뒤덮지 않고도 어느 화면에서든 PackBound의 페이지라는 인상을 즉시 주는 것입니다.\n\n이를 위해 아트를 많이 넣는 대신 시선이 원래 멈추는 브랜드 표식, 문서·트리의 첫 화면,\n사이드바 끝이라는 세 영역만 전용 이미지 슬롯으로 정했습니다. 아트 바이블의 여성형 루키,\n고물바람 초원과 폐품 몬스터를 재사용하고, 뚱냥이 장식은 낮게 접힌 귀와 반쯤 감긴 눈,\n작게 심술 난 입을 가진 스코티시 폴드로 통일했습니다.\n\n## 플레이어와 독자 경험\n\n- 위키를 열자마자 가방, 남녀 루키, 고물바람 초원과 몬스터가 PackBound의 세계를 설명합니다.\n- 문서 제목과 요약은 어두운 여백 위에 남아 아트와 겹쳐도 먼저 읽힙니다.\n- 본문과 증거 이미지는 기존 폭과 계층을 유지해 장시간 읽을 때 장식이 방해하지 않습니다.\n- 휴대폰에서는 같은 초광폭 이미지를 단순 축소하지 않고 캐릭터 중심으로 자르고, 설명은\n  하단 그라데이션 위로 재배치합니다.\n- 스코티시 폴드 참은 무심하고 조금 고약한 표정이지만 둥근 볼과 작은 입으로 귀여움을\n  잃지 않으며, 엠블럼·히어로·사이드바에서 같은 디자인으로 보입니다.\n\n## 디자인 원칙과 결정\n\n### 통제된 세 개의 아트 영역\n\n상단 브랜드 엠블럼은 34–36px에서도 가방과 고양이 실루엣이 읽히는 정사각형으로 만들고,\n사이드바 비네트는 상태 문구가 놓이는 왼쪽을 어둡게 비웠습니다. 문서와 전체 트리는 같은\n3:1 키아트를 공유해 새 페이지마다 임의의 배경을 추가하지 않아도 시각적 연속성을 유지합니다.\n\n![PackBound 위키 초광폭 히어로 원화](./media/development-wiki/v007/wiki-theme-hero-concept.webp \"왼쪽 문구 여백과 오른쪽 캐릭터·필드 앙상블을 함께 설계한 2172×724 히어로 이미지\")\n\n### 읽기 표면과 장식 표면의 분리\n\n아트는 페이지 헤더 밖으로 번지지 않습니다. 본문, 표, 이력 비교와 메타 정보는 기존의 단색\n패널과 명도 대비를 유지합니다. 제목과 요약에는 방향성 그라데이션을 적용하고 한국어 단어\n중간이 임의로 끊기지 않도록 줄바꿈 규칙을 보강했습니다. 긴 자산 경로는 메타 패널 안에서\n줄바꿈해 데스크톱 전체에 가로 스크롤을 만들지 않습니다.\n\n### 크롭 가능한 원본 계약\n\n히어로는 2172×724, 사이드바는 940×418, 엠블럼은 256×256 WebP로 고정했습니다. 히어로의\n왼쪽은 제목용 음영, 중앙·오른쪽은 캐릭터와 랜드마크를 배치해 데스크톱과 모바일이 서로 다른\n영역을 잘라도 핵심 정보가 남습니다. 구체적인 크롭과 재생성 기준은 테마 README에 기록해\n후속 이미지가 현재 레이아웃을 우연히 깨뜨리지 않게 했습니다.\n\n## 최종 결과\n\n![PackBound 위키 데스크톱 최종 화면](./media/development-wiki/v007/wiki-themed-desktop-result.png \"1440×900에서 브랜드 엠블럼, 전체 트리 히어로와 스코티시 폴드 사이드바 비네트가 적용된 최종 화면\")\n\n데스크톱에서는 272px 사이드바와 넓은 히어로가 동시에 보이고, 제목은 왼쪽 음영 영역에서\n한 덩어리로 읽힙니다. 캐릭터와 필드 랜드마크는 오른쪽에 남아 문서 구조와 경쟁하지 않습니다.\n\n![PackBound 위키 모바일 최종 화면](./media/development-wiki/v007/wiki-themed-mobile-result.png \"390×844에서 캐릭터 중심으로 크롭되고 제목·요약이 하단 그라데이션 위에 재배치된 아트 바이블 화면\")\n\n모바일 세로에서는 히어로 높이를 확보하고 이미지 초점을 캐릭터 쪽으로 옮겼습니다. 제목,\n요약과 버전 정보는 하단에 쌓이며 가로 넘침 없이 본문으로 이어집니다. 844×390 가로 화면도\n별도로 확인해 짧은 높이에서 상단, 사이드바와 히어로가 잘리지 않고 스크롤로 접근 가능하게\n유지했습니다.\n\n## 구현과 운영 참고\n\n`index.html`은 CSS 도형 대신 실제 브랜드 엠블럼을 사용하고 사이드바 상태 영역에 장식\n이미지를 추가합니다. `app.js`는 전체 트리와 모든 문서의 헤더를 공통 히어로 컴포지션으로\n렌더링합니다. `app.css`는 데스크톱 2열 문서, 중간 폭 1열 메타 정보, 모바일 하단 텍스트\n오버레이를 각각 정의하며 소스 경로와 표의 넘침을 제한합니다.\n\n테마 이미지는 장식이므로 빈 대체 텍스트를 사용합니다. 페이지 내용의 콘셉트 원화는 기존처럼\n의미 있는 캡션과 함께 위키 미디어 파이프라인을 거칩니다. 따라서 시각 장식과 개발 증거의\n접근성·버전 책임이 섞이지 않습니다.\n\n## 검증과 후속 작업\n\n정적 빌드와 미디어 동기화 검사, 위키 단위 테스트, 로컬 접근 제어 테스트와 공개 배포 사전\n검사를 실행했습니다. 실제 브라우저에서는 데스크톱 1440×900, 모바일 세로 390×844,\n모바일 가로 844×390을 확인했으며 가로 넘침과 콘솔 오류가 없었습니다.\n\n후속 테마 변경은 세 슬롯의 크롭 계약을 먼저 유지해야 합니다. 필드나 플레이어의 기준 디자인이\n바뀌면 아트 바이블에 새 버전을 추가한 뒤 테마 원본을 갱신하고, 같은 세 화면 크기에서 다시\n검증합니다.\n",
       "revisions": [
+        {
+          "id": "development-wiki",
+          "title": "개발 위키와 변경 이력 시스템",
+          "summary": "문서 가독성을 보존하면서 PackBound 전용 히어로, 브랜드 엠블럼과 스코티시 폴드 사이드바 비네트를 데스크톱·모바일 위키에 적용했습니다.",
+          "status": "active",
+          "category": "tooling",
+          "tags": [
+            "documentation",
+            "wiki",
+            "visual-design",
+            "responsive",
+            "concept-art",
+            "mobile"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
+          "authors": [
+            "Codex"
+          ],
+          "version": 7,
+          "change_type": "updated",
+          "change_summary": "게임 아트를 통제된 세 영역에 배치해 위키를 PackBound 전용 페이지로 브랜딩하고, 긴 경로와 초광폭 아트가 PC·모바일에서 넘치지 않도록 반응형 레이아웃을 보강했습니다.",
+          "supersedes": "development-wiki@v006",
+          "sources": [
+            "wiki/site/index.html",
+            "wiki/site/app.css",
+            "wiki/site/app.js",
+            "wiki/site/theme/README.md",
+            "wiki/site/theme/packbound-wiki-hero.webp",
+            "wiki/site/theme/packbound-sidebar-vignette.webp",
+            "wiki/site/theme/packbound-brand-emblem.webp",
+            "wiki/content/media/development-wiki/v007/wiki-theme-hero-concept.webp",
+            "wiki/content/media/development-wiki/v007/wiki-themed-desktop-result.png",
+            "wiki/content/media/development-wiki/v007/wiki-themed-mobile-result.png"
+          ],
+          "related": [
+            "world-art-bible",
+            "project-overview"
+          ],
+          "validation": [
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "node tests/markdown-media.spec.js",
+            "node --test tests/local-access.spec.js",
+            "python3 tools/publish_public_wiki.py --check",
+            "브라우저 1440×900 데스크톱: 트리 히어로·브랜드·사이드바 비네트, 가로 넘침 없음",
+            "브라우저 390×844 모바일 세로: 문서 히어로 크롭·제목·본문·탭, 가로 넘침 없음",
+            "브라우저 844×390 모바일 가로 스트레스: 히어로·사이드바·본문 진입, 가로 넘침 없음",
+            "브라우저 콘솔 error/warning 0건",
+            "git diff --check"
+          ],
+          "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\nPackBound 위키는 개발 기록을 읽는 도구이면서 게임의 방향을 처음 접하는 입구입니다.\n기존 화면은 문서 구조가 분명했지만 일반적인 다크 테마 문서 사이트에 가까워 캐릭터,\n폐품 세계와 장난스러운 분위기를 전달하지 못했습니다. 이번 변경의 목표는 본문을 그림으로\n뒤덮지 않고도 어느 화면에서든 PackBound의 페이지라는 인상을 즉시 주는 것입니다.\n\n이를 위해 아트를 많이 넣는 대신 시선이 원래 멈추는 브랜드 표식, 문서·트리의 첫 화면,\n사이드바 끝이라는 세 영역만 전용 이미지 슬롯으로 정했습니다. 아트 바이블의 여성형 루키,\n고물바람 초원과 폐품 몬스터를 재사용하고, 뚱냥이 장식은 낮게 접힌 귀와 반쯤 감긴 눈,\n작게 심술 난 입을 가진 스코티시 폴드로 통일했습니다.\n\n## 플레이어와 독자 경험\n\n- 위키를 열자마자 가방, 남녀 루키, 고물바람 초원과 몬스터가 PackBound의 세계를 설명합니다.\n- 문서 제목과 요약은 어두운 여백 위에 남아 아트와 겹쳐도 먼저 읽힙니다.\n- 본문과 증거 이미지는 기존 폭과 계층을 유지해 장시간 읽을 때 장식이 방해하지 않습니다.\n- 휴대폰에서는 같은 초광폭 이미지를 단순 축소하지 않고 캐릭터 중심으로 자르고, 설명은\n  하단 그라데이션 위로 재배치합니다.\n- 스코티시 폴드 참은 무심하고 조금 고약한 표정이지만 둥근 볼과 작은 입으로 귀여움을\n  잃지 않으며, 엠블럼·히어로·사이드바에서 같은 디자인으로 보입니다.\n\n## 디자인 원칙과 결정\n\n### 통제된 세 개의 아트 영역\n\n상단 브랜드 엠블럼은 34–36px에서도 가방과 고양이 실루엣이 읽히는 정사각형으로 만들고,\n사이드바 비네트는 상태 문구가 놓이는 왼쪽을 어둡게 비웠습니다. 문서와 전체 트리는 같은\n3:1 키아트를 공유해 새 페이지마다 임의의 배경을 추가하지 않아도 시각적 연속성을 유지합니다.\n\n![PackBound 위키 초광폭 히어로 원화](./media/development-wiki/v007/wiki-theme-hero-concept.webp \"왼쪽 문구 여백과 오른쪽 캐릭터·필드 앙상블을 함께 설계한 2172×724 히어로 이미지\")\n\n### 읽기 표면과 장식 표면의 분리\n\n아트는 페이지 헤더 밖으로 번지지 않습니다. 본문, 표, 이력 비교와 메타 정보는 기존의 단색\n패널과 명도 대비를 유지합니다. 제목과 요약에는 방향성 그라데이션을 적용하고 한국어 단어\n중간이 임의로 끊기지 않도록 줄바꿈 규칙을 보강했습니다. 긴 자산 경로는 메타 패널 안에서\n줄바꿈해 데스크톱 전체에 가로 스크롤을 만들지 않습니다.\n\n### 크롭 가능한 원본 계약\n\n히어로는 2172×724, 사이드바는 940×418, 엠블럼은 256×256 WebP로 고정했습니다. 히어로의\n왼쪽은 제목용 음영, 중앙·오른쪽은 캐릭터와 랜드마크를 배치해 데스크톱과 모바일이 서로 다른\n영역을 잘라도 핵심 정보가 남습니다. 구체적인 크롭과 재생성 기준은 테마 README에 기록해\n후속 이미지가 현재 레이아웃을 우연히 깨뜨리지 않게 했습니다.\n\n## 최종 결과\n\n![PackBound 위키 데스크톱 최종 화면](./media/development-wiki/v007/wiki-themed-desktop-result.png \"1440×900에서 브랜드 엠블럼, 전체 트리 히어로와 스코티시 폴드 사이드바 비네트가 적용된 최종 화면\")\n\n데스크톱에서는 272px 사이드바와 넓은 히어로가 동시에 보이고, 제목은 왼쪽 음영 영역에서\n한 덩어리로 읽힙니다. 캐릭터와 필드 랜드마크는 오른쪽에 남아 문서 구조와 경쟁하지 않습니다.\n\n![PackBound 위키 모바일 최종 화면](./media/development-wiki/v007/wiki-themed-mobile-result.png \"390×844에서 캐릭터 중심으로 크롭되고 제목·요약이 하단 그라데이션 위에 재배치된 아트 바이블 화면\")\n\n모바일 세로에서는 히어로 높이를 확보하고 이미지 초점을 캐릭터 쪽으로 옮겼습니다. 제목,\n요약과 버전 정보는 하단에 쌓이며 가로 넘침 없이 본문으로 이어집니다. 844×390 가로 화면도\n별도로 확인해 짧은 높이에서 상단, 사이드바와 히어로가 잘리지 않고 스크롤로 접근 가능하게\n유지했습니다.\n\n## 구현과 운영 참고\n\n`index.html`은 CSS 도형 대신 실제 브랜드 엠블럼을 사용하고 사이드바 상태 영역에 장식\n이미지를 추가합니다. `app.js`는 전체 트리와 모든 문서의 헤더를 공통 히어로 컴포지션으로\n렌더링합니다. `app.css`는 데스크톱 2열 문서, 중간 폭 1열 메타 정보, 모바일 하단 텍스트\n오버레이를 각각 정의하며 소스 경로와 표의 넘침을 제한합니다.\n\n테마 이미지는 장식이므로 빈 대체 텍스트를 사용합니다. 페이지 내용의 콘셉트 원화는 기존처럼\n의미 있는 캡션과 함께 위키 미디어 파이프라인을 거칩니다. 따라서 시각 장식과 개발 증거의\n접근성·버전 책임이 섞이지 않습니다.\n\n## 검증과 후속 작업\n\n정적 빌드와 미디어 동기화 검사, 위키 단위 테스트, 로컬 접근 제어 테스트와 공개 배포 사전\n검사를 실행했습니다. 실제 브라우저에서는 데스크톱 1440×900, 모바일 세로 390×844,\n모바일 가로 844×390을 확인했으며 가로 넘침과 콘솔 오류가 없었습니다.\n\n후속 테마 변경은 세 슬롯의 크롭 계약을 먼저 유지해야 합니다. 필드나 플레이어의 기준 디자인이\n바뀌면 아트 바이블에 새 버전을 추가한 뒤 테마 원본을 갱신하고, 같은 세 화면 크기에서 다시\n검증합니다.\n",
+          "source_path": "wiki/content/pages/development-wiki/v007.md"
+        },
         {
           "id": "development-wiki",
           "title": "개발 위키와 변경 이력 시스템",
