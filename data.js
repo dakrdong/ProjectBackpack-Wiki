@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-06T05:24:23+00:00",
+  "generated_at": "2026-08-06T05:35:07+00:00",
   "page_count": 4,
-  "revision_count": 10,
+  "revision_count": 11,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -77,65 +77,116 @@ window.PACKBOUND_WIKI = {
     },
     {
       "id": "character-2d-rendering",
-      "title": "프레임 캐릭터 렌더링과 모바일 액션 입력",
-      "summary": "고정 속도 이동, 중앙 패리, 조이스틱 밖 대시, 반응형 하단 배치와 배경 가시성을 함께 설계한 세로형 플레이 시스템입니다.",
+      "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
+      "summary": "모바일용 프레임 캐릭터의 런타임 계약과 승인된 아트 방향을 잇는 1파일 1프레임 제작·검증 파이프라인을 구축했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
         "character",
         "sprite",
         "rendering",
+        "animation",
+        "art",
+        "pipeline",
+        "validation",
         "roblox",
-        "mobile",
-        "controls",
-        "combat",
-        "camera",
-        "ux"
+        "mobile"
       ],
       "created_at": "2026-08-06T10:36:02+09:00",
-      "updated_at": "2026-08-06T14:03:03+09:00",
+      "updated_at": "2026-08-06T14:33:35+09:00",
       "authors": [
         "Codex"
       ],
-      "version": 3,
+      "version": 4,
       "change_type": "updated",
-      "change_summary": "모바일 이동을 중앙 데드존 밖 고정 속도로 바꾸고 대시 영역을 조이스틱 외부로 분리했으며, 화면 비율·하단 메뉴 공간·카메라와 캐릭터 가독성을 함께 조정함",
-      "supersedes": "character-2d-rendering@v002",
+      "change_summary": "승인된 캐릭터·월드 아트 방향을 고정하고, 8방향 8프레임 보행을 포함한 개별 원화·앵커·QA·패킹 계약을 자동 검증하도록 구성했으며 South 보행만 첫 승인 게이트를 통과시킴",
+      "supersedes": "character-2d-rendering@v003",
       "sources": [
-        "default.project.json",
-        "packbound.project.json",
-        "src/ReplicatedStorage/Character2D/Config.luau",
-        "src/ReplicatedStorage/Character2D/CutoutRig.luau",
-        "src/ReplicatedStorage/Character2D/FrameSpriteRig.luau",
-        "src/ReplicatedStorage/Character2D/MobileJoystickController.luau",
-        "src/ReplicatedStorage/Character2D/MobileJoystickGate.luau",
-        "src/ReplicatedStorage/Character2D/MobileJoystickGesture.luau",
-        "src/ReplicatedStorage/Character2D/MobileJoystickMovement.luau",
-        "src/ReplicatedStorage/Character2D/PlayerActionController.luau",
-        "src/ServerScriptService/ParryService.server.luau",
-        "src/StarterPlayer/StarterPlayerScripts/PlayerActionBootstrap.client.luau",
-        "tests/MobileJoystickGate.spec.luau",
-        "tests/MobileJoystickGesture.spec.luau",
-        "tests/MobileJoystickMovement.spec.luau"
+        "Assets/Characters/Player/README.md",
+        "Assets/Characters/Player/SpriteProduction/README.md",
+        "Assets/Characters/Player/SpriteProduction/production_manifest.json",
+        "Assets/Characters/Player/SpriteProduction/Metadata/frame_metadata.json",
+        "Assets/Characters/Player/SpriteProduction/SourceGenerated/South/generation_record.md",
+        "docs/art/character-world-art-direction.md",
+        "docs/art/sprite-animation-production.md",
+        "tools/sprite_animation_pipeline.py",
+        "tools/normalize_sprite_master.py",
+        "tools/normalize_head_master.py",
+        "tools/remove_connected_chroma.py",
+        "tools/update_sprite_metadata.py",
+        "tools/test_character_assets.sh",
+        "tests/test_sprite_animation_pipeline.py"
       ],
       "related": [
         "project-overview",
         "studio-automation-routing"
       ],
       "validation": [
-        "luau tests/MobileJoystickMovement.spec.luau",
-        "luau tests/MobileJoystickGate.spec.luau",
-        "luau tests/MobileJoystickGesture.spec.luau",
-        "luau tests/DirectionResolver.spec.luau",
-        "luau tests/AnimationLibrary.spec.luau",
-        "luau-compile --null src/ReplicatedStorage/Character2D/Config.luau src/ReplicatedStorage/Character2D/CutoutRig.luau src/ReplicatedStorage/Character2D/FrameSpriteRig.luau src/ReplicatedStorage/Character2D/MobileJoystickController.luau src/ReplicatedStorage/Character2D/MobileJoystickGate.luau src/ReplicatedStorage/Character2D/MobileJoystickMovement.luau",
-        "rojo build default.project.json -o /tmp/projectbackpack_mobile_controls_commit_default.rbxlx",
-        "rojo build packbound.project.json -o /tmp/projectbackpack_mobile_controls_commit_packbound.rbxlx",
-        "Studio MCP iPhone 17 Pro 세로 플레이테스트: 데드존 0, 외부 이동 1.0, 중립 간격 대시 차단, 외곽 링 대시 승인, 하단 빈 공간 164.5px 확인"
+        "python3 -m unittest tests/test_sprite_animation_pipeline.py",
+        "python3 tools/sprite_animation_pipeline.py validate --allow-missing",
+        "./tools/test_character_assets.sh",
+        "PYTHONPYCACHEPREFIX=/tmp/projectbackpack-pycache python3 -m py_compile tools/sprite_animation_pipeline.py tools/normalize_head_master.py tools/normalize_sprite_master.py tools/remove_connected_chroma.py tools/update_sprite_metadata.py",
+        "git diff --check"
       ],
-      "source_path": "wiki/content/pages/character-2d-rendering/v003.md",
-      "body": "# 프레임 캐릭터 렌더링과 모바일 액션 입력\n\n## 결과\n\nPackBound의 세로형 모바일 조작은 하나의 원형 컨트롤에서 이동, 대시와 패리를\n처리합니다. 이동은 아날로그 속도 보간을 사용하지 않습니다. 중앙 데드존에서는\n정지하고, 그 경계를 벗어나면 손가락 위치와 관계없이 같은 기본 이동 속도를\n사용합니다. 대시는 일반 이동 원과 물리적으로 떨어진 외부 링까지 끌어야 하며,\n중앙의 짧은 탭은 패리로 해석합니다.\n\n조이스틱 본체는 화면 너비의 20%를 지름으로 사용하되 160px을 넘지 않습니다.\n컨트롤 아래에는 향후 메뉴바 72px과 조작 여백 46px을 예약합니다. 카메라는\n128 studs 거리의 고정 쿼터뷰를 사용하고, 고정 픽셀 Billboard 캐릭터는 별도의\n0.1875 화면 스케일로 렌더링해 배경 가시성과 캐릭터 판독성을 독립적으로\n조정합니다.\n\n## 구현 내용\n\n### 고정 속도 이동과 중앙 데드존\n\n`MobileJoystickMovement`는 이동 반경을 두 상태로만 해석합니다.\n\n- 정규화 반경 `0.4` 이하: 이동량 `0`\n- 정규화 반경 `0.4` 초과: 이동량 `1`\n\n따라서 중심 근처에서 의도하지 않은 미세 이동은 차단하면서, 이동을 시작한 뒤에는\n손가락이 중심에서 얼마나 떨어졌는지와 무관하게 같은 속도를 유지합니다. 데드존은\n조이스틱 중앙에 별도 원으로 표시되어 정지 구간을 시각적으로 알 수 있습니다.\n\n### 의도적인 외부 대시\n\n대시는 기본 이동 손잡이의 최대점이나 조이스틱 외곽에 닿는 것만으로 발생하지\n않습니다. `MobileJoystickGate`는 다음 세 경계를 분리합니다.\n\n- 외부 피드백 시작 반경: `1.93`\n- 대시 발동 반경: `2.48`\n- 다음 대시 재무장 반경: `0.38`\n\n외부 링은 조이스틱 본체보다 크게 그려지고 실제 대시 임계점과 같은 반경에\n배치됩니다. iPhone 17 Pro 세로 뷰포트에서는 일반 이동 최대점에서 약 30.7px을\n더 끌고, 조이스틱 원의 바깥도 약 11.4px 넘어야 대시가 승인됩니다. 그 사이\n구간에서는 기본 이동만 계속됩니다.\n\n바깥 위치에서 터치를 시작한 입력은 대시로 무장하지 않습니다. 정상 이동 영역에서\n시작해 외부 링을 통과한 경우에만 한 번 발동하고, 중앙으로 돌아오기 전에는 같은\n드래그에서 반복 발동하지 않습니다. 대시 콜백이 실제로 승인된 순간에만 링과\n손잡이가 밝은 보라색으로 확정 표시됩니다.\n\n### 중앙 탭 패리와 입력 의도\n\n중앙에서 시작한 입력은 0.35초 이내에 놓고 의도적인 드래그가 없을 때 패리로\n처리합니다. 길게 누르거나 드래그 거리가 임계값을 넘으면 이동 제스처로\n승격합니다. 이 경계는 손가락 크기와 짧은 흔들림 때문에 이동이나 패리가 잘못\n발동하는 것을 줄이면서, 별도 전투 버튼 없이 한 손 조작을 유지하기 위한\n계약입니다.\n\n패리의 즉시 애니메이션과 반투명 보호 효과는 클라이언트가 표시하고, 유효 시간과\n재사용 검증은 서버 `ParryService`가 소유합니다. 실제 피해 취소와 공격자에게\n돌려주는 반사 피해는 이후 서버 전투 해결기가 패리 속성을 소비해 처리해야 합니다.\n\n### 반응형 크기와 하단 메뉴 예약\n\n조이스틱 본체 지름은 `viewport.X × 0.2`로 계산하고 최대 160px로 제한합니다.\n대시 링은 의도적인 오버드래그를 표현하기 위해 본체 밖으로 확장되지만, 시작\n터치는 본체 안에서만 받습니다.\n\n하단 배치는 임의의 단일 좌표 대신 두 의미 있는 값으로 관리합니다.\n\n- `BOTTOM_MENU_RESERVE = 72`: 향후 하단 메뉴바 소유 영역\n- `BOTTOM_CONTROL_PADDING = 46`: 메뉴바와 조이스틱 사이 조작 여백\n\n최종 iPhone 17 Pro 세로 플레이테스트에서 외부 대시 링 아래부터 화면 끝까지\n약 164.5px의 빈 공간을 확인했습니다. 실제 메뉴바가 추가되면 같은 72px 계약을\n공유하고, 조이스틱 위치에 별도 보정값을 중복해서 추가하지 않아야 합니다.\n\n### 카메라와 고정 픽셀 캐릭터\n\n캐릭터는 3D 메시가 아니라 `BillboardGui` 기반 프레임 스프라이트이므로 카메라를\n멀리 옮겨도 화면상의 픽셀 크기는 자동으로 줄지 않습니다. 배경 범위와 캐릭터\n가독성을 독립적으로 제어하기 위해 다음 값을 분리했습니다.\n\n- 카메라 거리: `128`\n- 카메라 FOV: `38`\n- 캐릭터 화면 스케일: `0.1875`\n- Billboard 최대 렌더 거리: `512`\n\n`FrameSpriteRig`과 호환용 `CutoutRig` 모두 중앙 기준 `UIScale`을 사용합니다.\n현재 프레임 스프라이트의 실효 캔버스는 48×48px이며, 넓은 배경을 보여주면서도\n직전 32×32px 기준보다 1.5배 크게 읽힙니다.\n\n## 변경 파일\n\n- `Config.luau`: 카메라 거리, 캐릭터 화면 스케일과 원거리 렌더 범위를 정의합니다.\n- `FrameSpriteRig.luau`, `CutoutRig.luau`: 고정 픽셀 캐릭터를 중앙 기준 화면\n  스케일로 렌더링합니다.\n- `MobileJoystickController.luau`: 반응형 크기, 데드존 표시, 외부 대시 링과\n  하단 메뉴 예약 배치를 적용합니다.\n- `MobileJoystickMovement.luau`: 데드존 밖 고정 이동량을 순수 로직으로\n  제공합니다.\n- `MobileJoystickGate.luau`: 외부 피드백, 대시 발동과 재무장 경계를 관리합니다.\n- `tests/MobileJoystickMovement.spec.luau`: 정지와 고정 이동 속도 경계를 검증합니다.\n- `tests/MobileJoystickGate.spec.luau`: 외부 중립 간격, 단발 대시와 재무장을\n  검증합니다.\n\n## 검증\n\n- 이동, 대시 게이트, 탭·드래그 제스처, 방향과 애니메이션 Luau 테스트를\n  통과했습니다.\n- 변경된 Character2D 모듈의 Luau 바이트코드 컴파일을 통과했습니다.\n- `default.project.json`과 `packbound.project.json`의 Rojo 빌드를 통과했습니다.\n- Studio MCP의 iPhone 17 Pro 세로 플레이에서 데드존 내부 이동량 `0`, 외부\n  이동량 약 `1.0`, 중립 간격의 대시 차단과 외부 링의 대시 승인을 확인했습니다.\n- 같은 플레이에서 방향키 본체 80.2px, 데드존 16.5px, 대시 링 103.1px과\n  최종 하단 빈 공간 약 164.5px을 확인했습니다.\n- Studio 기기 시뮬레이터는 검증 후 기본 뷰포트로 복구했습니다.\n\n## 제품 이유와 설계 철학\n\n- 기본 이동은 위치에 따라 느려지는 정밀 조작보다 전투 중 예측 가능한 일정 속도를\n  우선합니다. 중앙 데드존은 이 원칙을 유지하면서 손가락 흔들림만 제거합니다.\n- 대시는 향후 긴 재사용 대기시간을 갖는 비상 행동입니다. 그러므로 빠르게 쓸 수\n  있어야 하지만 실수로 소비되어서는 안 됩니다. 시간 지연 확인 대신 물리적 거리와\n  외부 링 통과를 사용해 긴급 반응성과 의도 확인을 함께 확보합니다.\n- 이동, 대시와 패리를 한 컨트롤에 통합해 세로 화면의 전투 시야와 한 손 도달성을\n  보존합니다. 기능이 많아져도 무조건 별도 버튼을 추가하지 않고 제스처 간 의미와\n  공간을 먼저 분리합니다.\n- 카메라 거리와 Billboard 픽셀 크기는 서로 다른 문제로 취급합니다. 배경을 더\n  보여주기 위한 카메라 설계가 캐릭터 판독성을 우연히 결정하지 않도록 두 값을\n  독립 제어합니다.\n- 아직 존재하지 않는 하단 메뉴도 예약 영역을 먼저 정의합니다. 후속 UI가 들어올\n  자리를 현재 조작계가 침범하지 않게 해 레이아웃 재작업과 좌표 충돌을 줄입니다.\n\n## 결정 사항\n\n- 모바일 기본 이동은 데드존 밖에서 디지털 고정 속도를 사용합니다.\n- 대시는 조이스틱 본체 밖의 별도 링을 완전히 통과해야 발동합니다.\n- 대시 확인을 위한 추가 홀드 시간은 두지 않습니다.\n- 바깥에서 시작한 터치는 대시로 인정하지 않고, 중앙 복귀를 재무장 조건으로\n  유지합니다.\n- 조이스틱 크기는 화면 너비 비율과 최대 지름으로 관리합니다.\n- 하단 메뉴 예약값과 조작 여백을 명시적 상수로 유지합니다.\n- 고정 픽셀 캐릭터의 화면 스케일과 쿼터뷰 카메라 거리를 분리합니다.\n- 패리 시각 반응은 클라이언트, 판정 창은 서버가 소유합니다.\n\n## 후속 작업\n\n- 대시에 긴 재사용 대기시간을 추가하고 외부 링에 사용 가능, 소진과 재충전 상태를\n  표시해야 합니다.\n- 실제 하단 메뉴바는 72px 예약 계약을 재사용하고 다양한 안전 영역에서 조이스틱과\n  겹치지 않는지 검증해야 합니다.\n- 다양한 실제 휴대폰에서 데드존, 외부 중립 간격과 한 손 도달성을 플레이테스트해\n  현재 임계값을 조정해야 합니다.\n- 서버 전투 해결기가 패리 유효 창을 읽어 피격 취소와 공격자 반사 피해를 적용해야\n  합니다.\n- 실제 전투 밀도와 맵 스케일에서 카메라 거리 128, 캐릭터 48px이 적과 위험 요소를\n  함께 판독하기 적절한지 검증해야 합니다.\n",
+      "source_path": "wiki/content/pages/character-2d-rendering/v004.md",
+      "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 결과\n\nPackBound의 플레이어는 `BillboardGui` 기반 프레임 스프라이트로 표시되며 머리와\n몸을 독립적으로 교체할 수 있습니다. 기존 라이브 프레임 시트는 현재 게임을\n표시하는 프로토타입으로 유지하되, 후속 최종 원화는 한 파일에 한 방향·한 프레임만\n담는 별도 제작 파이프라인을 통과해야 합니다.\n\n승인된 2등신 캐릭터, 전기 보라색 가방, 높은 쿼터탑 카메라 가독성과 장난감 같은\n폐품 세계의 아트 방향을 문서로 고정했습니다. 제작 매니페스트는 몸 192프레임과\n머리 10포즈의 파일 경로, 방향, 프레임 수, 재생 속도와 품질 게이트를 정의합니다.\n2026-08-06 현재 South 걷기 8프레임과 South 중립 머리만 승인됐으며, 나머지\n193개 원화는 제작 전 상태입니다. 따라서 이번 변경은 라이브 아틀라스를 교체하지\n않습니다.\n\n## 런타임과 아트 계약\n\n런타임 외형은 `Head`와 `Body` 두 슬롯으로 나뉩니다. 머리는 머리카락, 얼굴,\n머리 장식과 표정을 소유하고, 몸은 목 아래 의상, 팔다리, 신발, 가방과 가방 장식을\n소유합니다. 모든 제작물은 다음 공통 규격을 따릅니다.\n\n- 원본: 투명 배경 256×256 RGBA PNG\n- 런타임 셀: 128×128 RGBA PNG\n- 몸 루트: 마스터 좌표 `(128, 224)`\n- 안전 여백: 네 변에서 최소 16px\n- 방향: South부터 시계 방향으로 정의한 8방향\n- 머리 합성: 프레임별 사람이 승인한 목 앵커 사용\n\n바운딩박스 중심은 가방과 큰 신발 때문에 방향과 포즈마다 달라지므로 자동 정렬\n기준으로 사용하지 않습니다. 고정 루트, 실제 접지 발과 목 앵커를 기준으로 몸과\n머리를 합성합니다.\n\n## 애니메이션 제작 계약\n\n걷기는 `left_contact`, `left_down`, `left_passing`, `left_up`,\n`right_contact`, `right_down`, `right_passing`, `right_up`의 8단계로 구성하고\n8fps로 재생합니다. 두 반주기는 서로 다른 발이 앞서야 하며 마지막 프레임에서 첫\n프레임으로 연결될 때도 루트와 목이 튀지 않아야 합니다.\n\n전체 몸 모션 계약은 다음과 같습니다.\n\n- Idle: 8방향 × 4프레임, 6fps\n- Walk: 8방향 × 8프레임, 8fps\n- Dash: 8방향 × 6프레임, 15fps\n- Hit: 8방향 × 4프레임, 12fps\n- Death: West 8프레임 제작 후 East 전체 합성 반전, 12fps\n- Clear: South 8프레임, 12fps\n\n머리는 8방향 중립 포즈와 East·West 피격 포즈를 개별 파일로 관리합니다. 공격은\n자동 공격 시스템의 책임이므로 플레이어 스프라이트 모션 계약에 포함하지 않습니다.\n\n## 제작 도구와 검증\n\n`sprite_animation_pipeline.py`는 제작 폴더 생성, 메타데이터 병합, 원화 검증,\n컨택트시트·방향별 스트립·GIF 생성과 최종 패킹을 담당합니다. 검증기는 이미지\n크기와 RGBA 모드뿐 아니라 다음 항목도 검사합니다.\n\n- 파일 경로, 방향 순서, 프레임 수와 보행 위상 순서\n- 안전 여백 침범과 잘못 남은 연결 조각\n- 접지 발, 루트와 목 앵커의 유효성\n- 양발 교대, 루프 연결과 발 미끄러짐\n- 고정 상체 폭, 전체 실루엣 폭과 높이 드리프트\n- 프레임·방향 승인 상태와 South 보행 승인 게이트\n- 중복 프레임과 머리·몸 합성 연속성\n\n균일 크기 보정은 목과 발 사이 길이만 보고 전체 이미지를 늘리지 않습니다. 상체\n폭을 유지한 채 하체를 접지선에 맞추는 조정 도구를 제공해 포즈마다 가방과 어깨가\n커졌다 작아지는 현상을 줄입니다. 별도 크로마 제거 도구는 이미지 테두리에 연결된\n배경색만 제거해 캐릭터 내부의 같은 계열 색상을 보존합니다.\n\n`validate --allow-missing`은 사전 제작 단계에서 존재하는 파일을 엄격히 검사하면서\n아직 만들지 않은 파일만 경고로 허용합니다. `pack`은 전체 64개 걷기 프레임과\n8개 중립 머리가 모두 준비되고 승인되기 전에는 실패합니다. 성공하더라도 결과는\n`Build`에만 생성하며 현재 라이브 아틀라스를 자동 덮어쓰지 않습니다.\n\n## 현재 승인 상태\n\nSouth 걷기 8프레임과 South 중립 머리는 정규화, 개별 메타데이터 입력과 QA\n스트립·GIF 검수를 거쳤고 `southWalkGateApproved=true`로 기록됐습니다. 이\nSouth 전용 QA 자료는 제작 승인 증거이며 게임에서 사용하는 라이브 아틀라스가\n아닙니다.\n\n현재 검사에서는 준비된 모든 파일과 계약이 통과했고, 아직 제작하지 않은 193개\n원화만 사전 제작 경고로 보고됐습니다. 다음 제작 우선순위는 East와 North 걷기이며,\n두 방향을 승인한 뒤 대각선과 반대 방향으로 확장합니다. Walk 전체 승인 전에는\nIdle, Dash, Hit, Death와 Clear 제작 및 런타임 승격을 진행하지 않습니다.\n\n## 모바일 렌더링과 조작의 기존 결정\n\n캐릭터는 화면상 고정 픽셀 크기를 사용하고 쿼터뷰 카메라 거리와 캐릭터 화면\n스케일을 독립적으로 제어합니다. 현재 카메라 거리는 128, FOV는 38, 캐릭터 화면\n스케일은 0.1875입니다.\n\n모바일 이동은 중앙 데드존 밖에서 고정 속도로 동작하고, 대시는 조이스틱 바깥의\n별도 링을 통과할 때만 발동합니다. 중앙의 짧은 탭은 패리로 처리합니다. 이 입력과\n카메라 계약은 이번 아트 제작 파이프라인 변경으로 수정하지 않았습니다.\n\n## 결정 사항\n\n- 승인된 캐릭터와 세계 아트 방향을 후속 제작의 기준으로 유지합니다.\n- 기존 다중 포즈 생성 시트는 디자인 참고용으로만 사용하고 최종 모션 원본으로\n  보정하거나 트레이싱하지 않습니다.\n- 최종 애니메이션은 한 파일에 한 프레임을 제작하고 명시적 루트·접지·목 앵커로\n  정렬합니다.\n- 매니페스트와 프레임 메타데이터를 방향, 프레임 수, 경로와 승인 상태의 단일\n  기준으로 사용합니다.\n- 부분 완성 결과는 QA에만 사용하며 전체 계약을 통과하기 전 라이브 아틀라스를\n  교체하지 않습니다.\n- 이미지 생성 모델은 캐릭터 디자인과 단일 키포즈 참고에 사용하되 프레임 연속성과\n  좌우 발 일관성은 제작·검증 단계에서 별도로 보장합니다.\n\n## 후속 작업\n\n- East와 North 걷기 8프레임을 같은 승인 절차로 제작합니다.\n- 대각선과 반대 방향에서 헤드밴드, 짝짝이 양말, 가방과 오리 장식의 소유 방향을\n  수동 검수합니다.\n- 8방향 Walk가 모두 승인된 뒤 Idle, Dash, Hit, Death와 Clear를 제작합니다.\n- 전체 strict validation과 게임 내 방향·합성 테스트를 통과한 결과만 라이브\n  런타임 후보로 승격합니다.\n",
       "revisions": [
+        {
+          "id": "character-2d-rendering",
+          "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
+          "summary": "모바일용 프레임 캐릭터의 런타임 계약과 승인된 아트 방향을 잇는 1파일 1프레임 제작·검증 파이프라인을 구축했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "character",
+            "sprite",
+            "rendering",
+            "animation",
+            "art",
+            "pipeline",
+            "validation",
+            "roblox",
+            "mobile"
+          ],
+          "created_at": "2026-08-06T10:36:02+09:00",
+          "updated_at": "2026-08-06T14:33:35+09:00",
+          "authors": [
+            "Codex"
+          ],
+          "version": 4,
+          "change_type": "updated",
+          "change_summary": "승인된 캐릭터·월드 아트 방향을 고정하고, 8방향 8프레임 보행을 포함한 개별 원화·앵커·QA·패킹 계약을 자동 검증하도록 구성했으며 South 보행만 첫 승인 게이트를 통과시킴",
+          "supersedes": "character-2d-rendering@v003",
+          "sources": [
+            "Assets/Characters/Player/README.md",
+            "Assets/Characters/Player/SpriteProduction/README.md",
+            "Assets/Characters/Player/SpriteProduction/production_manifest.json",
+            "Assets/Characters/Player/SpriteProduction/Metadata/frame_metadata.json",
+            "Assets/Characters/Player/SpriteProduction/SourceGenerated/South/generation_record.md",
+            "docs/art/character-world-art-direction.md",
+            "docs/art/sprite-animation-production.md",
+            "tools/sprite_animation_pipeline.py",
+            "tools/normalize_sprite_master.py",
+            "tools/normalize_head_master.py",
+            "tools/remove_connected_chroma.py",
+            "tools/update_sprite_metadata.py",
+            "tools/test_character_assets.sh",
+            "tests/test_sprite_animation_pipeline.py"
+          ],
+          "related": [
+            "project-overview",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "python3 -m unittest tests/test_sprite_animation_pipeline.py",
+            "python3 tools/sprite_animation_pipeline.py validate --allow-missing",
+            "./tools/test_character_assets.sh",
+            "PYTHONPYCACHEPREFIX=/tmp/projectbackpack-pycache python3 -m py_compile tools/sprite_animation_pipeline.py tools/normalize_head_master.py tools/normalize_sprite_master.py tools/remove_connected_chroma.py tools/update_sprite_metadata.py",
+            "git diff --check"
+          ],
+          "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 결과\n\nPackBound의 플레이어는 `BillboardGui` 기반 프레임 스프라이트로 표시되며 머리와\n몸을 독립적으로 교체할 수 있습니다. 기존 라이브 프레임 시트는 현재 게임을\n표시하는 프로토타입으로 유지하되, 후속 최종 원화는 한 파일에 한 방향·한 프레임만\n담는 별도 제작 파이프라인을 통과해야 합니다.\n\n승인된 2등신 캐릭터, 전기 보라색 가방, 높은 쿼터탑 카메라 가독성과 장난감 같은\n폐품 세계의 아트 방향을 문서로 고정했습니다. 제작 매니페스트는 몸 192프레임과\n머리 10포즈의 파일 경로, 방향, 프레임 수, 재생 속도와 품질 게이트를 정의합니다.\n2026-08-06 현재 South 걷기 8프레임과 South 중립 머리만 승인됐으며, 나머지\n193개 원화는 제작 전 상태입니다. 따라서 이번 변경은 라이브 아틀라스를 교체하지\n않습니다.\n\n## 런타임과 아트 계약\n\n런타임 외형은 `Head`와 `Body` 두 슬롯으로 나뉩니다. 머리는 머리카락, 얼굴,\n머리 장식과 표정을 소유하고, 몸은 목 아래 의상, 팔다리, 신발, 가방과 가방 장식을\n소유합니다. 모든 제작물은 다음 공통 규격을 따릅니다.\n\n- 원본: 투명 배경 256×256 RGBA PNG\n- 런타임 셀: 128×128 RGBA PNG\n- 몸 루트: 마스터 좌표 `(128, 224)`\n- 안전 여백: 네 변에서 최소 16px\n- 방향: South부터 시계 방향으로 정의한 8방향\n- 머리 합성: 프레임별 사람이 승인한 목 앵커 사용\n\n바운딩박스 중심은 가방과 큰 신발 때문에 방향과 포즈마다 달라지므로 자동 정렬\n기준으로 사용하지 않습니다. 고정 루트, 실제 접지 발과 목 앵커를 기준으로 몸과\n머리를 합성합니다.\n\n## 애니메이션 제작 계약\n\n걷기는 `left_contact`, `left_down`, `left_passing`, `left_up`,\n`right_contact`, `right_down`, `right_passing`, `right_up`의 8단계로 구성하고\n8fps로 재생합니다. 두 반주기는 서로 다른 발이 앞서야 하며 마지막 프레임에서 첫\n프레임으로 연결될 때도 루트와 목이 튀지 않아야 합니다.\n\n전체 몸 모션 계약은 다음과 같습니다.\n\n- Idle: 8방향 × 4프레임, 6fps\n- Walk: 8방향 × 8프레임, 8fps\n- Dash: 8방향 × 6프레임, 15fps\n- Hit: 8방향 × 4프레임, 12fps\n- Death: West 8프레임 제작 후 East 전체 합성 반전, 12fps\n- Clear: South 8프레임, 12fps\n\n머리는 8방향 중립 포즈와 East·West 피격 포즈를 개별 파일로 관리합니다. 공격은\n자동 공격 시스템의 책임이므로 플레이어 스프라이트 모션 계약에 포함하지 않습니다.\n\n## 제작 도구와 검증\n\n`sprite_animation_pipeline.py`는 제작 폴더 생성, 메타데이터 병합, 원화 검증,\n컨택트시트·방향별 스트립·GIF 생성과 최종 패킹을 담당합니다. 검증기는 이미지\n크기와 RGBA 모드뿐 아니라 다음 항목도 검사합니다.\n\n- 파일 경로, 방향 순서, 프레임 수와 보행 위상 순서\n- 안전 여백 침범과 잘못 남은 연결 조각\n- 접지 발, 루트와 목 앵커의 유효성\n- 양발 교대, 루프 연결과 발 미끄러짐\n- 고정 상체 폭, 전체 실루엣 폭과 높이 드리프트\n- 프레임·방향 승인 상태와 South 보행 승인 게이트\n- 중복 프레임과 머리·몸 합성 연속성\n\n균일 크기 보정은 목과 발 사이 길이만 보고 전체 이미지를 늘리지 않습니다. 상체\n폭을 유지한 채 하체를 접지선에 맞추는 조정 도구를 제공해 포즈마다 가방과 어깨가\n커졌다 작아지는 현상을 줄입니다. 별도 크로마 제거 도구는 이미지 테두리에 연결된\n배경색만 제거해 캐릭터 내부의 같은 계열 색상을 보존합니다.\n\n`validate --allow-missing`은 사전 제작 단계에서 존재하는 파일을 엄격히 검사하면서\n아직 만들지 않은 파일만 경고로 허용합니다. `pack`은 전체 64개 걷기 프레임과\n8개 중립 머리가 모두 준비되고 승인되기 전에는 실패합니다. 성공하더라도 결과는\n`Build`에만 생성하며 현재 라이브 아틀라스를 자동 덮어쓰지 않습니다.\n\n## 현재 승인 상태\n\nSouth 걷기 8프레임과 South 중립 머리는 정규화, 개별 메타데이터 입력과 QA\n스트립·GIF 검수를 거쳤고 `southWalkGateApproved=true`로 기록됐습니다. 이\nSouth 전용 QA 자료는 제작 승인 증거이며 게임에서 사용하는 라이브 아틀라스가\n아닙니다.\n\n현재 검사에서는 준비된 모든 파일과 계약이 통과했고, 아직 제작하지 않은 193개\n원화만 사전 제작 경고로 보고됐습니다. 다음 제작 우선순위는 East와 North 걷기이며,\n두 방향을 승인한 뒤 대각선과 반대 방향으로 확장합니다. Walk 전체 승인 전에는\nIdle, Dash, Hit, Death와 Clear 제작 및 런타임 승격을 진행하지 않습니다.\n\n## 모바일 렌더링과 조작의 기존 결정\n\n캐릭터는 화면상 고정 픽셀 크기를 사용하고 쿼터뷰 카메라 거리와 캐릭터 화면\n스케일을 독립적으로 제어합니다. 현재 카메라 거리는 128, FOV는 38, 캐릭터 화면\n스케일은 0.1875입니다.\n\n모바일 이동은 중앙 데드존 밖에서 고정 속도로 동작하고, 대시는 조이스틱 바깥의\n별도 링을 통과할 때만 발동합니다. 중앙의 짧은 탭은 패리로 처리합니다. 이 입력과\n카메라 계약은 이번 아트 제작 파이프라인 변경으로 수정하지 않았습니다.\n\n## 결정 사항\n\n- 승인된 캐릭터와 세계 아트 방향을 후속 제작의 기준으로 유지합니다.\n- 기존 다중 포즈 생성 시트는 디자인 참고용으로만 사용하고 최종 모션 원본으로\n  보정하거나 트레이싱하지 않습니다.\n- 최종 애니메이션은 한 파일에 한 프레임을 제작하고 명시적 루트·접지·목 앵커로\n  정렬합니다.\n- 매니페스트와 프레임 메타데이터를 방향, 프레임 수, 경로와 승인 상태의 단일\n  기준으로 사용합니다.\n- 부분 완성 결과는 QA에만 사용하며 전체 계약을 통과하기 전 라이브 아틀라스를\n  교체하지 않습니다.\n- 이미지 생성 모델은 캐릭터 디자인과 단일 키포즈 참고에 사용하되 프레임 연속성과\n  좌우 발 일관성은 제작·검증 단계에서 별도로 보장합니다.\n\n## 후속 작업\n\n- East와 North 걷기 8프레임을 같은 승인 절차로 제작합니다.\n- 대각선과 반대 방향에서 헤드밴드, 짝짝이 양말, 가방과 오리 장식의 소유 방향을\n  수동 검수합니다.\n- 8방향 Walk가 모두 승인된 뒤 Idle, Dash, Hit, Death와 Clear를 제작합니다.\n- 전체 strict validation과 게임 내 방향·합성 테스트를 통과한 결과만 라이브\n  런타임 후보로 승격합니다.\n",
+          "source_path": "wiki/content/pages/character-2d-rendering/v004.md"
+        },
         {
           "id": "character-2d-rendering",
           "title": "프레임 캐릭터 렌더링과 모바일 액션 입력",
