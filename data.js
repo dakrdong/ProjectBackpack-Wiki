@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
   "generated_at": "2026-08-06",
   "page_count": 7,
-  "revision_count": 22,
+  "revision_count": 23,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -1088,58 +1088,91 @@ window.PACKBOUND_WIKI = {
     {
       "id": "development-wiki",
       "title": "개발 위키와 변경 이력 시스템",
-      "summary": "문서 가독성을 보존하면서 PackBound 전용 히어로, 브랜드 엠블럼과 스코티시 폴드 사이드바 비네트를 데스크톱·모바일 위키에 적용했습니다.",
+      "summary": "공개 미러 푸시와 실제 GitHub Pages 노출을 분리해 검증하고, 실패 자동 재시도와 원본 리비전 대조를 거쳐야 발행 성공으로 판정하도록 강화했습니다.",
       "status": "active",
       "category": "tooling",
       "tags": [
         "documentation",
         "wiki",
-        "visual-design",
-        "responsive",
-        "concept-art",
-        "mobile"
+        "publishing",
+        "reliability",
+        "github-pages"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-06",
+      "updated_at": "2026-08-07",
       "authors": [
         "Codex"
       ],
-      "version": 7,
+      "version": 8,
       "change_type": "updated",
-      "change_summary": "게임 아트를 통제된 세 영역에 배치해 위키를 PackBound 전용 페이지로 브랜딩하고, 긴 경로와 초광폭 아트가 PC·모바일에서 넘치지 않도록 반응형 레이아웃을 보강했습니다.",
-      "supersedes": "development-wiki@v006",
+      "change_summary": "공개 저장소 동기화만으로 발행 완료를 선언하던 구조를 폐기하고, Pages 실행 성공과 실제 공개 URL의 원본 리비전 일치까지 확인하는 실패 폐쇄형 발행 게이트를 추가했습니다.",
+      "supersedes": "development-wiki@v007",
       "sources": [
-        "wiki/site/index.html",
-        "wiki/site/app.css",
-        "wiki/site/app.js",
-        "wiki/site/theme/README.md",
-        "wiki/site/theme/packbound-wiki-hero.webp",
-        "wiki/site/theme/packbound-sidebar-vignette.webp",
-        "wiki/site/theme/packbound-brand-emblem.webp",
-        "wiki/content/media/development-wiki/v007/wiki-theme-hero-concept.webp",
-        "wiki/content/media/development-wiki/v007/wiki-themed-desktop-result.png",
-        "wiki/content/media/development-wiki/v007/wiki-themed-mobile-result.png"
+        "tools/publish_public_wiki.py",
+        "wiki/public-publishing.json",
+        "tests/test_publish_public_wiki.py"
       ],
       "related": [
-        "world-art-bible",
         "project-overview"
       ],
       "validation": [
+        "python3 -m unittest tests.test_publish_public_wiki",
+        "python3 tools/publish_public_wiki.py --check",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
-        "python3 -m unittest tests/test_wiki.py",
+        "python3 -m unittest tests.test_publish_public_wiki tests.test_wiki",
         "node tests/markdown-media.spec.js",
         "node --test tests/local-access.spec.js",
-        "python3 tools/publish_public_wiki.py --check",
-        "브라우저 1440×900 데스크톱: 트리 히어로·브랜드·사이드바 비네트, 가로 넘침 없음",
-        "브라우저 390×844 모바일 세로: 문서 히어로 크롭·제목·본문·탭, 가로 넘침 없음",
-        "브라우저 844×390 모바일 가로 스트레스: 히어로·사이드바·본문 진입, 가로 넘침 없음",
-        "브라우저 콘솔 error/warning 0건",
+        "GitHub API: github-pages 환경 재생성 후 main 브랜치 정책 확인",
         "git diff --check"
       ],
-      "source_path": "wiki/content/pages/development-wiki/v007.md",
-      "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\nPackBound 위키는 개발 기록을 읽는 도구이면서 게임의 방향을 처음 접하는 입구입니다.\n기존 화면은 문서 구조가 분명했지만 일반적인 다크 테마 문서 사이트에 가까워 캐릭터,\n폐품 세계와 장난스러운 분위기를 전달하지 못했습니다. 이번 변경의 목표는 본문을 그림으로\n뒤덮지 않고도 어느 화면에서든 PackBound의 페이지라는 인상을 즉시 주는 것입니다.\n\n이를 위해 아트를 많이 넣는 대신 시선이 원래 멈추는 브랜드 표식, 문서·트리의 첫 화면,\n사이드바 끝이라는 세 영역만 전용 이미지 슬롯으로 정했습니다. 아트 바이블의 여성형 루키,\n고물바람 초원과 폐품 몬스터를 재사용하고, 뚱냥이 장식은 낮게 접힌 귀와 반쯤 감긴 눈,\n작게 심술 난 입을 가진 스코티시 폴드로 통일했습니다.\n\n## 플레이어와 독자 경험\n\n- 위키를 열자마자 가방, 남녀 루키, 고물바람 초원과 몬스터가 PackBound의 세계를 설명합니다.\n- 문서 제목과 요약은 어두운 여백 위에 남아 아트와 겹쳐도 먼저 읽힙니다.\n- 본문과 증거 이미지는 기존 폭과 계층을 유지해 장시간 읽을 때 장식이 방해하지 않습니다.\n- 휴대폰에서는 같은 초광폭 이미지를 단순 축소하지 않고 캐릭터 중심으로 자르고, 설명은\n  하단 그라데이션 위로 재배치합니다.\n- 스코티시 폴드 참은 무심하고 조금 고약한 표정이지만 둥근 볼과 작은 입으로 귀여움을\n  잃지 않으며, 엠블럼·히어로·사이드바에서 같은 디자인으로 보입니다.\n\n## 디자인 원칙과 결정\n\n### 통제된 세 개의 아트 영역\n\n상단 브랜드 엠블럼은 34–36px에서도 가방과 고양이 실루엣이 읽히는 정사각형으로 만들고,\n사이드바 비네트는 상태 문구가 놓이는 왼쪽을 어둡게 비웠습니다. 문서와 전체 트리는 같은\n3:1 키아트를 공유해 새 페이지마다 임의의 배경을 추가하지 않아도 시각적 연속성을 유지합니다.\n\n![PackBound 위키 초광폭 히어로 원화](./media/development-wiki/v007/wiki-theme-hero-concept.webp \"왼쪽 문구 여백과 오른쪽 캐릭터·필드 앙상블을 함께 설계한 2172×724 히어로 이미지\")\n\n### 읽기 표면과 장식 표면의 분리\n\n아트는 페이지 헤더 밖으로 번지지 않습니다. 본문, 표, 이력 비교와 메타 정보는 기존의 단색\n패널과 명도 대비를 유지합니다. 제목과 요약에는 방향성 그라데이션을 적용하고 한국어 단어\n중간이 임의로 끊기지 않도록 줄바꿈 규칙을 보강했습니다. 긴 자산 경로는 메타 패널 안에서\n줄바꿈해 데스크톱 전체에 가로 스크롤을 만들지 않습니다.\n\n### 크롭 가능한 원본 계약\n\n히어로는 2172×724, 사이드바는 940×418, 엠블럼은 256×256 WebP로 고정했습니다. 히어로의\n왼쪽은 제목용 음영, 중앙·오른쪽은 캐릭터와 랜드마크를 배치해 데스크톱과 모바일이 서로 다른\n영역을 잘라도 핵심 정보가 남습니다. 구체적인 크롭과 재생성 기준은 테마 README에 기록해\n후속 이미지가 현재 레이아웃을 우연히 깨뜨리지 않게 했습니다.\n\n## 최종 결과\n\n![PackBound 위키 데스크톱 최종 화면](./media/development-wiki/v007/wiki-themed-desktop-result.png \"1440×900에서 브랜드 엠블럼, 전체 트리 히어로와 스코티시 폴드 사이드바 비네트가 적용된 최종 화면\")\n\n데스크톱에서는 272px 사이드바와 넓은 히어로가 동시에 보이고, 제목은 왼쪽 음영 영역에서\n한 덩어리로 읽힙니다. 캐릭터와 필드 랜드마크는 오른쪽에 남아 문서 구조와 경쟁하지 않습니다.\n\n![PackBound 위키 모바일 최종 화면](./media/development-wiki/v007/wiki-themed-mobile-result.png \"390×844에서 캐릭터 중심으로 크롭되고 제목·요약이 하단 그라데이션 위에 재배치된 아트 바이블 화면\")\n\n모바일 세로에서는 히어로 높이를 확보하고 이미지 초점을 캐릭터 쪽으로 옮겼습니다. 제목,\n요약과 버전 정보는 하단에 쌓이며 가로 넘침 없이 본문으로 이어집니다. 844×390 가로 화면도\n별도로 확인해 짧은 높이에서 상단, 사이드바와 히어로가 잘리지 않고 스크롤로 접근 가능하게\n유지했습니다.\n\n## 구현과 운영 참고\n\n`index.html`은 CSS 도형 대신 실제 브랜드 엠블럼을 사용하고 사이드바 상태 영역에 장식\n이미지를 추가합니다. `app.js`는 전체 트리와 모든 문서의 헤더를 공통 히어로 컴포지션으로\n렌더링합니다. `app.css`는 데스크톱 2열 문서, 중간 폭 1열 메타 정보, 모바일 하단 텍스트\n오버레이를 각각 정의하며 소스 경로와 표의 넘침을 제한합니다.\n\n테마 이미지는 장식이므로 빈 대체 텍스트를 사용합니다. 페이지 내용의 콘셉트 원화는 기존처럼\n의미 있는 캡션과 함께 위키 미디어 파이프라인을 거칩니다. 따라서 시각 장식과 개발 증거의\n접근성·버전 책임이 섞이지 않습니다.\n\n## 검증과 후속 작업\n\n정적 빌드와 미디어 동기화 검사, 위키 단위 테스트, 로컬 접근 제어 테스트와 공개 배포 사전\n검사를 실행했습니다. 실제 브라우저에서는 데스크톱 1440×900, 모바일 세로 390×844,\n모바일 가로 844×390을 확인했으며 가로 넘침과 콘솔 오류가 없었습니다.\n\n후속 테마 변경은 세 슬롯의 크롭 계약을 먼저 유지해야 합니다. 필드나 플레이어의 기준 디자인이\n바뀌면 아트 바이블에 새 버전을 추가한 뒤 테마 원본을 갱신하고, 같은 세 화면 크기에서 다시\n검증합니다.\n",
+      "source_path": "wiki/content/pages/development-wiki/v008.md",
+      "body": "# 개발 위키와 변경 이력 시스템\n\n## 운영 목표와 독자 경험\n\n공개 위키의 발행 완료는 파일을 공개 저장소에 복사했다는 뜻이 아니라, 독자가 여는 주소에서\n그 파일을 실제로 읽을 수 있다는 뜻이어야 합니다. 이번 장애에서는 원본 위키와 공개 미러가\n모두 최신이었지만 GitHub Pages 배포가 완료되지 않아 독자는 이전 화면을 계속 보았습니다.\n그럼에도 기존 도구가 푸시 직후 성공을 반환해 문제를 캐시 지연으로 오인하게 만들었습니다.\n\n운영 목표를 “미러 동기화”에서 “검증 가능한 공개”로 다시 정의했습니다. 앞으로 발행 명령은\n최신 버전이 실제 공개 URL에 나타날 때까지 끝나지 않으며, 중간 단계가 실패하면 성공 문구를\n출력하지 않습니다. 독자는 별도 새로고침 요령이나 캐시 대기 추측 없이 하나의 공식 주소에서\n최신 문서와 PackBound 테마를 보게 됩니다.\n\n## 장애 원인과 판단\n\n장애 당시 원본 커밋 `b887da5d89d0`과 공개 미러 커밋 `ed94371d611a`에는 7개 문서, 22개\n리비전과 새 테마 자산이 정상 반영돼 있었습니다. 그러나 Pages 실행의 빌드와 상태 보고 작업만\n성공했고, 배포 작업은 `deployment_queued`에서 10분 동안 전진하지 못한 뒤 타임아웃으로\n취소됐습니다. Pages 상태도 `errored`였으므로 CDN 캐시가 늦게 갱신된 상황이 아니었습니다.\n\n직접 원인은 GitHub Pages 배포 큐의 실패였고, 프로젝트 측 재발 원인은 그 실패를 감지하지\n않는 완료 조건이었습니다. 기존 발행기는 공개 저장소의 `git push`가 성공하면 즉시 “Published”를\n출력했습니다. 저장소, Actions, Pages와 실제 URL이라는 네 상태가 서로 다를 수 있는데 첫 번째\n경계까지만 확인한 것이 문제였습니다.\n\n## 발행 신뢰성 원칙과 결정\n\n### 공개 리비전 계약\n\n공개 미러 루트에 `deployment.json`을 생성하고 원본 ProjectBackpack 커밋 SHA를\n`source_revision`으로 기록합니다. 정확한 작업 시각이나 비공개 저장소 내용은 넣지 않아 기존\n공개 정보 최소화 원칙을 유지합니다. 캐시 무효화 쿼리와 `no-cache` 요청을 함께 사용하므로\n발행기는 오래된 응답을 최신 결과로 오인하지 않습니다.\n\n### 단계별 실패 폐쇄\n\n발행 흐름은 다음 순서를 모두 통과해야 합니다.\n\n1. 원본 위키 빌드와 공개용 시간 정보 제거 규칙을 검사합니다.\n2. 공개 미러를 갱신하고 그 미러의 정확한 커밋 SHA를 확정합니다.\n3. 같은 공개 SHA로 생성된 `pages build and deployment` 실행을 찾습니다.\n4. 워크플로가 `success`로 끝날 때까지 제한 시간 안에서 기다립니다.\n5. 실패하면 내용은 유지한 새 공개 커밋으로 배포 버전을 바꿔 한 번 재시도합니다.\n6. 공개 URL의 `deployment.json`이 원본 SHA와 정확히 일치하는지 확인합니다.\n\n어느 단계든 실패하거나 제한 시간을 넘으면 예외로 종료합니다. 따라서 “푸시는 됐지만 사이트는\n옛 버전”인 상태를 발행 성공으로 보고할 수 없습니다.\n\n### Pages 전용 재시도\n\nGitHub가 자동 생성하는 Pages 워크플로는 공개 커밋 SHA를 배포 버전으로 사용합니다. 실패한\nSHA를 일반 Actions 재실행이나 Pages 빌드 API로 반복 요청하면 새 실행이 생겨도 같은 배포\n버전이 취소될 수 있음을 복구 과정에서 확인했습니다. 따라서 재시도는 공개 콘텐츠를 바꾸지\n않는 빈 커밋을 만들고, 그 새 SHA로 생성된 실행만 추적합니다. 정상 발행 이력은 결정적인\n콘텐츠 커밋으로 유지하면서 장애 복구 때만 새 배포 버전을 부여합니다.\n\n## 구현과 운영 기준\n\n발행 설정은 Pages 실행 15분 대기, 5초 폴링, 실패 시 1회 재요청, 공개 URL 반영 5분 대기를\n명시합니다. 이 값들은 GitHub의 10분 배포 타임아웃보다 길어 플랫폼이 최종 실패 상태를 기록할\n시간을 주면서도 무한 대기를 막습니다. 동일 내용이라 새 미러 커밋이 생기지 않는 경우에도 기존\n공개 SHA의 배포 상태와 실제 리비전을 다시 검사합니다.\n\n단위 테스트는 GitHub 저장소 주소 해석, 공개 리비전 표식 생성, Pages 성공 필수 조건, 실패\n폐쇄, 새 공개 SHA 기반 자동 재시도, 최신·오래된 공개 리비전 판별을 다룹니다. 기존 공개 시간\n정보 제거 테스트도 함께 유지해 신뢰성 개선이 개인정보 노출 방지 규칙을 우회하지 않게 했습니다.\n\n## 검증과 후속 운영\n\n정적 검사에서는 공개 트리와 설정이 유효하고 7개 문서, 23개 리비전이 빌드되는지 확인했습니다.\n종단간 발행에서는 공개 미러 커밋, 해당 SHA의 Pages 실행 성공, 공개 `deployment.json`의 원본\nSHA 일치를 순서대로 확인합니다. 마지막으로 실제 공개 브라우저에서 PackBound 히어로와\n스코티시 폴드 비네트, 전체 문서 트리와 콘솔 상태를 점검합니다.\n\n후속 발행에서도 성공 로그만 보지 않고 반환 코드가 성공인지 확인해야 합니다. 실패 메시지에는\n워크플로 실행 ID, 결론과 URL 또는 마지막으로 관측한 공개 리비전이 포함되므로, 캐시 추측 대신\n미러·Actions·Pages·실제 응답 중 어느 경계가 멈췄는지 바로 조사할 수 있습니다.\n",
       "revisions": [
+        {
+          "id": "development-wiki",
+          "title": "개발 위키와 변경 이력 시스템",
+          "summary": "공개 미러 푸시와 실제 GitHub Pages 노출을 분리해 검증하고, 실패 자동 재시도와 원본 리비전 대조를 거쳐야 발행 성공으로 판정하도록 강화했습니다.",
+          "status": "active",
+          "category": "tooling",
+          "tags": [
+            "documentation",
+            "wiki",
+            "publishing",
+            "reliability",
+            "github-pages"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-07",
+          "authors": [
+            "Codex"
+          ],
+          "version": 8,
+          "change_type": "updated",
+          "change_summary": "공개 저장소 동기화만으로 발행 완료를 선언하던 구조를 폐기하고, Pages 실행 성공과 실제 공개 URL의 원본 리비전 일치까지 확인하는 실패 폐쇄형 발행 게이트를 추가했습니다.",
+          "supersedes": "development-wiki@v007",
+          "sources": [
+            "tools/publish_public_wiki.py",
+            "wiki/public-publishing.json",
+            "tests/test_publish_public_wiki.py"
+          ],
+          "related": [
+            "project-overview"
+          ],
+          "validation": [
+            "python3 -m unittest tests.test_publish_public_wiki",
+            "python3 tools/publish_public_wiki.py --check",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests.test_publish_public_wiki tests.test_wiki",
+            "node tests/markdown-media.spec.js",
+            "node --test tests/local-access.spec.js",
+            "GitHub API: github-pages 환경 재생성 후 main 브랜치 정책 확인",
+            "git diff --check"
+          ],
+          "body": "# 개발 위키와 변경 이력 시스템\n\n## 운영 목표와 독자 경험\n\n공개 위키의 발행 완료는 파일을 공개 저장소에 복사했다는 뜻이 아니라, 독자가 여는 주소에서\n그 파일을 실제로 읽을 수 있다는 뜻이어야 합니다. 이번 장애에서는 원본 위키와 공개 미러가\n모두 최신이었지만 GitHub Pages 배포가 완료되지 않아 독자는 이전 화면을 계속 보았습니다.\n그럼에도 기존 도구가 푸시 직후 성공을 반환해 문제를 캐시 지연으로 오인하게 만들었습니다.\n\n운영 목표를 “미러 동기화”에서 “검증 가능한 공개”로 다시 정의했습니다. 앞으로 발행 명령은\n최신 버전이 실제 공개 URL에 나타날 때까지 끝나지 않으며, 중간 단계가 실패하면 성공 문구를\n출력하지 않습니다. 독자는 별도 새로고침 요령이나 캐시 대기 추측 없이 하나의 공식 주소에서\n최신 문서와 PackBound 테마를 보게 됩니다.\n\n## 장애 원인과 판단\n\n장애 당시 원본 커밋 `b887da5d89d0`과 공개 미러 커밋 `ed94371d611a`에는 7개 문서, 22개\n리비전과 새 테마 자산이 정상 반영돼 있었습니다. 그러나 Pages 실행의 빌드와 상태 보고 작업만\n성공했고, 배포 작업은 `deployment_queued`에서 10분 동안 전진하지 못한 뒤 타임아웃으로\n취소됐습니다. Pages 상태도 `errored`였으므로 CDN 캐시가 늦게 갱신된 상황이 아니었습니다.\n\n직접 원인은 GitHub Pages 배포 큐의 실패였고, 프로젝트 측 재발 원인은 그 실패를 감지하지\n않는 완료 조건이었습니다. 기존 발행기는 공개 저장소의 `git push`가 성공하면 즉시 “Published”를\n출력했습니다. 저장소, Actions, Pages와 실제 URL이라는 네 상태가 서로 다를 수 있는데 첫 번째\n경계까지만 확인한 것이 문제였습니다.\n\n## 발행 신뢰성 원칙과 결정\n\n### 공개 리비전 계약\n\n공개 미러 루트에 `deployment.json`을 생성하고 원본 ProjectBackpack 커밋 SHA를\n`source_revision`으로 기록합니다. 정확한 작업 시각이나 비공개 저장소 내용은 넣지 않아 기존\n공개 정보 최소화 원칙을 유지합니다. 캐시 무효화 쿼리와 `no-cache` 요청을 함께 사용하므로\n발행기는 오래된 응답을 최신 결과로 오인하지 않습니다.\n\n### 단계별 실패 폐쇄\n\n발행 흐름은 다음 순서를 모두 통과해야 합니다.\n\n1. 원본 위키 빌드와 공개용 시간 정보 제거 규칙을 검사합니다.\n2. 공개 미러를 갱신하고 그 미러의 정확한 커밋 SHA를 확정합니다.\n3. 같은 공개 SHA로 생성된 `pages build and deployment` 실행을 찾습니다.\n4. 워크플로가 `success`로 끝날 때까지 제한 시간 안에서 기다립니다.\n5. 실패하면 내용은 유지한 새 공개 커밋으로 배포 버전을 바꿔 한 번 재시도합니다.\n6. 공개 URL의 `deployment.json`이 원본 SHA와 정확히 일치하는지 확인합니다.\n\n어느 단계든 실패하거나 제한 시간을 넘으면 예외로 종료합니다. 따라서 “푸시는 됐지만 사이트는\n옛 버전”인 상태를 발행 성공으로 보고할 수 없습니다.\n\n### Pages 전용 재시도\n\nGitHub가 자동 생성하는 Pages 워크플로는 공개 커밋 SHA를 배포 버전으로 사용합니다. 실패한\nSHA를 일반 Actions 재실행이나 Pages 빌드 API로 반복 요청하면 새 실행이 생겨도 같은 배포\n버전이 취소될 수 있음을 복구 과정에서 확인했습니다. 따라서 재시도는 공개 콘텐츠를 바꾸지\n않는 빈 커밋을 만들고, 그 새 SHA로 생성된 실행만 추적합니다. 정상 발행 이력은 결정적인\n콘텐츠 커밋으로 유지하면서 장애 복구 때만 새 배포 버전을 부여합니다.\n\n## 구현과 운영 기준\n\n발행 설정은 Pages 실행 15분 대기, 5초 폴링, 실패 시 1회 재요청, 공개 URL 반영 5분 대기를\n명시합니다. 이 값들은 GitHub의 10분 배포 타임아웃보다 길어 플랫폼이 최종 실패 상태를 기록할\n시간을 주면서도 무한 대기를 막습니다. 동일 내용이라 새 미러 커밋이 생기지 않는 경우에도 기존\n공개 SHA의 배포 상태와 실제 리비전을 다시 검사합니다.\n\n단위 테스트는 GitHub 저장소 주소 해석, 공개 리비전 표식 생성, Pages 성공 필수 조건, 실패\n폐쇄, 새 공개 SHA 기반 자동 재시도, 최신·오래된 공개 리비전 판별을 다룹니다. 기존 공개 시간\n정보 제거 테스트도 함께 유지해 신뢰성 개선이 개인정보 노출 방지 규칙을 우회하지 않게 했습니다.\n\n## 검증과 후속 운영\n\n정적 검사에서는 공개 트리와 설정이 유효하고 7개 문서, 23개 리비전이 빌드되는지 확인했습니다.\n종단간 발행에서는 공개 미러 커밋, 해당 SHA의 Pages 실행 성공, 공개 `deployment.json`의 원본\nSHA 일치를 순서대로 확인합니다. 마지막으로 실제 공개 브라우저에서 PackBound 히어로와\n스코티시 폴드 비네트, 전체 문서 트리와 콘솔 상태를 점검합니다.\n\n후속 발행에서도 성공 로그만 보지 않고 반환 코드가 성공인지 확인해야 합니다. 실패 메시지에는\n워크플로 실행 ID, 결론과 URL 또는 마지막으로 관측한 공개 리비전이 포함되므로, 캐시 추측 대신\n미러·Actions·Pages·실제 응답 중 어느 경계가 멈췄는지 바로 조사할 수 있습니다.\n",
+          "source_path": "wiki/content/pages/development-wiki/v008.md"
+        },
         {
           "id": "development-wiki",
           "title": "개발 위키와 변경 이력 시스템",
