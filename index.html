@@ -46,10 +46,14 @@
         </div>
       </header>
 
-      <aside class="sidebar" id="sidebar" aria-label="위키 문서">
+      <aside class="sidebar" id="sidebar" aria-label="위키 및 데이터베이스 탐색">
         <div class="sidebar-scroll">
+          <div class="sidebar-tabs" id="sidebar-tabs" role="tablist" aria-label="탐색 데이터 종류">
+            <a id="sidebar-tab-wiki" href="#/tree" role="tab" aria-controls="page-navigation" aria-selected="true">위키 <span></span></a>
+            <a id="sidebar-tab-db" href="#/db/item-db" role="tab" aria-controls="page-navigation" aria-selected="false" tabindex="-1">DB <span></span></a>
+          </div>
           <div class="sidebar-heading">
-            <span>문서 탐색</span>
+            <span id="sidebar-heading-label">문서 탐색</span>
             <span id="page-count"></span>
           </div>
           <nav id="page-navigation"></nav>
@@ -57,7 +61,7 @@
         <div class="sidebar-footer">
           <span class="status-dot"></span>
           <div>
-            <strong>불변 이력 저장</strong>
+            <strong id="sidebar-footer-title">불변 이력 저장</strong>
             <small id="revision-count"></small>
           </div>
         </div>
@@ -67,6 +71,15 @@
         <div class="loading">위키 데이터를 불러오는 중…</div>
       </main>
     </div>
+
+    <a
+      class="public-wiki-link"
+      id="public-wiki-link"
+      href="https://dakrdong.github.io/ProjectBackpack-Wiki/"
+      target="_blank"
+      rel="noopener"
+      hidden
+    >공개 페이지 바로가기 <span aria-hidden="true">↗</span></a>
 
     <div class="sidebar-scrim" id="sidebar-scrim"></div>
     <div class="search-dialog" id="search-dialog" aria-hidden="true">
@@ -117,8 +130,13 @@
     </div>
 
     <script src="data.js"></script>
+    <script src="item-db-data.js"></script>
+    <script src="item-db.js"></script>
+    <script src="combat-db-data.js"></script>
+    <script src="combat-db.js"></script>
     <script src="tag-explorer.js"></script>
     <script src="local-access.js"></script>
+    <script src="markdown-media.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

@@ -2,10 +2,19 @@
   "use strict";
 
   const wiki = window.PACKBOUND_WIKI;
+  const itemDb = window.PACKBOUND_ITEM_DB;
+  const itemDbTools = window.PACKBOUND_ITEM_DB_TOOLS;
+  const combatDb = window.PACKBOUND_COMBAT_DB;
+  const combatDbTools = window.PACKBOUND_COMBAT_DB_TOOLS;
   const tagExplorer = window.PACKBOUND_TAG_EXPLORER;
   const localAccess = window.PACKBOUND_LOCAL_ACCESS;
+  const markdownMedia = window.PACKBOUND_MARKDOWN_MEDIA;
   const main = document.getElementById("main-content");
   const navigation = document.getElementById("page-navigation");
+  const sidebarTabWiki = document.getElementById("sidebar-tab-wiki");
+  const sidebarTabDb = document.getElementById("sidebar-tab-db");
+  const sidebarHeadingLabel = document.getElementById("sidebar-heading-label");
+  const sidebarFooterTitle = document.getElementById("sidebar-footer-title");
   const searchDialog = document.getElementById("search-dialog");
   const searchInput = document.getElementById("search-input");
   const searchResults = document.getElementById("search-results");
@@ -23,13 +32,21 @@
   const rojoPlaceSelect = document.getElementById("rojo-place-select");
   const rojoToggle = document.getElementById("rojo-toggle");
   const rojoStatusText = document.getElementById("rojo-status-text");
+  const publicWikiLink = document.getElementById("public-wiki-link");
   const canControlRojo = Boolean(localAccess?.canUseRojoControl(window.location.hostname));
+  const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
+  const canEditItemDb = canControlRojo;
   let rojoSnapshot = null;
   let rojoSelectedId = null;
   let rojoBusy = false;
   let searchMode = "pages";
   let tagSort = "recent";
   let selectedTag = null;
+  let itemDbQuery = "";
+  let itemDbFamily = "all";
+  let itemDbEditorState = null;
+  let itemDbNotice = "";
+  let structuredDbState = { databaseId: null, query: "", filters: {} };
   let dateRange = { from: "", to: "" };
   let filteredPages = wiki?.pages || [];
   let tagIndex = [];
@@ -62,6 +79,14 @@
   }
   if (!tagExplorer) {
     main.innerHTML = '<div class="empty-state">태그 탐색 모듈을 불러오지 못했습니다.</div>';
+    return;
+  }
+  if (!markdownMedia) {
+    main.innerHTML = '<div class="empty-state">위키 이미지 모듈을 불러오지 못했습니다.</div>';
+    return;
+  }
+  if (!combatDb || !combatDbTools) {
+    main.innerHTML = '<div class="empty-state">전투 DB 모듈을 불러오지 못했습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
     return;
   }
 
@@ -145,6 +170,7 @@
   function isBlockStart(lines, index) {
     const line = lines[index] || "";
     if (!line.trim()) return true;
+    if (markdownMedia.isImageLine(line)) return true;
     if (/^```/.test(line) || /^#{1,6}\s/.test(line) || /^>\s?/.test(line)) return true;
     if (/^\s*([-*+] |\d+\. )/.test(line) || /^\s*(-{3,}|\*{3,})\s*$/.test(line)) return true;
     return line.includes("|") && isTableDivider(lines[index + 1] || "");
@@ -158,6 +184,13 @@
     while (index < lines.length) {
       const line = lines[index];
       if (!line.trim()) {
+        index += 1;
+        continue;
+      }
+
+      const image = markdownMedia.renderImageLine(line);
+      if (image !== null) {
+        output.push(image);
         index += 1;
         continue;
       }
@@ -255,11 +288,12 @@
   function formatDate(value, withTime = false) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return escapeHtml(value);
+    const showTime = withTime && canShowExactTimestamps;
     return new Intl.DateTimeFormat("ko-KR", {
       year: "numeric",
       month: "short",
       day: "numeric",
-      ...(withTime ? { hour: "2-digit", minute: "2-digit" } : {}),
+      ...(showTime ? { hour: "2-digit", minute: "2-digit" } : {}),
     }).format(date);
   }
 
@@ -359,9 +393,11 @@
     const [path, query = ""] = raw.split("?");
     const segments = path.split("/").filter(Boolean);
     const params = new URLSearchParams(query);
+    const legacyItemDb = segments[0] === "item-db";
+    const kind = segments[0] === "tree" ? "tree" : segments[0] === "db" || legacyItemDb ? "database" : "page";
     return {
-      kind: segments[0] === "tree" ? "tree" : "page",
-      slug: decodeURIComponent(segments[1] || defaultPage || ""),
+      kind,
+      slug: decodeURIComponent(kind === "database" ? (legacyItemDb ? "item-db" : segments[1] || "item-db") : segments[1] || defaultPage || ""),
       view: params.get("view") === "history" ? "history" : "article",
       version: Number.parseInt(params.get("version") || "", 10) || null,
     };
@@ -379,16 +415,79 @@
     return "#/tree";
   }
 
+  function databaseHref(databaseId) {
+    return `#/db/${encodeURIComponent(databaseId)}`;
+  }
+
+  function itemDbHref() {
+    return databaseHref("item-db");
+  }
+
+  function databaseEntries() {
+    return [
+      {
+        id: "item-db",
+        title: "아이템 데이터베이스",
+        description: "이미지 · 제원 · 점유 칸",
+        count: itemDb?.count || 0,
+        unit: "ITEMS",
+        href: itemDbHref(),
+      },
+      ...(combatDb.databases || []).map((database) => ({
+        id: database.id,
+        title: database.title,
+        description: database.description,
+        count: database.count,
+        unit: database.unit,
+        href: databaseHref(database.id),
+      })),
+    ];
+  }
+
   function selectedRevision(page, version) {
     return page.revisions.find((revision) => revision.version === version) || page.revisions[0];
   }
 
   function renderNavigation(activeSlug, activeKind = "page") {
+    const databases = databaseEntries();
+    const isDatabaseMode = activeKind === "database";
     const groups = new Map();
     wiki.pages.forEach((page) => {
       if (!groups.has(page.category)) groups.set(page.category, []);
       groups.get(page.category).push(page);
     });
+    sidebarTabWiki.classList.toggle("active", !isDatabaseMode);
+    sidebarTabWiki.setAttribute("aria-selected", String(!isDatabaseMode));
+    sidebarTabWiki.tabIndex = isDatabaseMode ? -1 : 0;
+    sidebarTabWiki.querySelector("span").textContent = wiki.page_count;
+    sidebarTabDb.classList.toggle("active", isDatabaseMode);
+    sidebarTabDb.setAttribute("aria-selected", String(isDatabaseMode));
+    sidebarTabDb.tabIndex = isDatabaseMode ? 0 : -1;
+    sidebarTabDb.querySelector("span").textContent = databases.length;
+
+    if (isDatabaseMode) {
+      sidebarHeadingLabel.textContent = "DB 탐색";
+      document.getElementById("page-count").textContent = `${databases.length} DATABASE${databases.length === 1 ? "" : "S"}`;
+      sidebarFooterTitle.textContent = "생성 데이터 동기화";
+      document.getElementById("revision-count").textContent = `총 ${databases.reduce((total, database) => total + database.count, 0)}개 레코드`;
+      navigation.innerHTML = `
+        <section class="nav-database-list" aria-label="데이터베이스 목록">
+          ${databases.map((database) => `
+            <a class="nav-database-card ${activeSlug === database.id ? "active" : ""}" href="${database.href}" data-database-id="${escapeHtml(database.id)}">
+              <span class="nav-database-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span><strong>${escapeHtml(database.title)}</strong><small>${escapeHtml(database.description)}</small></span>
+              <em><strong>${database.count}</strong><small>${escapeHtml(database.unit)}</small></em>
+            </a>
+          `).join("")}
+        </section>
+      `;
+      return;
+    }
+
+    sidebarHeadingLabel.textContent = "문서 탐색";
+    document.getElementById("page-count").textContent = `${wiki.page_count} PAGES`;
+    sidebarFooterTitle.textContent = "불변 이력 저장";
+    document.getElementById("revision-count").textContent = `총 ${wiki.revision_count}개 버전 보존 중`;
     navigation.innerHTML = `
       <section class="nav-overview">
         <a class="nav-tree-link ${activeKind === "tree" ? "active" : ""}" href="${treeHref()}">
@@ -406,8 +505,6 @@
         `).join("")}
       </section>
     `).join("");
-    document.getElementById("page-count").textContent = `${wiki.page_count} PAGES`;
-    document.getElementById("revision-count").textContent = `총 ${wiki.revision_count}개 버전 보존 중`;
   }
 
   function renderMeta(page, revision) {
@@ -615,14 +712,461 @@
     `;
   }
 
+  function renderFootprint(item) {
+    const occupied = new Set(item.coordinates.map(([x, y]) => `${x},${y}`));
+    const cells = [];
+    for (let y = 0; y < item.bounds.height; y += 1) {
+      for (let x = 0; x < item.bounds.width; x += 1) {
+        cells.push(`<i class="${occupied.has(`${x},${y}`) ? "occupied" : "empty"}"></i>`);
+      }
+    }
+    return `
+      <div class="itemdb-footprint">
+        <span class="itemdb-footprint-grid" style="grid-template-columns:repeat(${item.bounds.width}, 12px)">${cells.join("")}</span>
+        <span><strong>${item.bounds.width}×${item.bounds.height} · ${item.occupied_cells}칸</strong><code>${escapeHtml(item.pattern)}</code></span>
+      </div>
+    `;
+  }
+
+  function renderItemRows(items) {
+    return items.map((item) => `
+      <tr>
+        <td class="itemdb-image-cell">
+          <a href="${escapeHtml(item.image)}" target="_blank" rel="noopener" aria-label="${escapeHtml(item.name)} 원본 이미지 열기">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)} 아이템 이미지" loading="lazy" decoding="async">
+          </a>
+        </td>
+        <td class="itemdb-identity"><strong>${escapeHtml(item.name)}</strong><code>${escapeHtml(item.id)}</code></td>
+        <td><span class="itemdb-family-badge" data-family="${escapeHtml(item.family)}">${escapeHtml(item.family_label)}</span><small>${escapeHtml(item.type_size)}</small></td>
+        <td>${renderFootprint(item)}</td>
+        <td><div class="itemdb-stats">${item.stats.map((stat) => `<span>${escapeHtml(stat)}</span>`).join("")}</div></td>
+        <td class="itemdb-concept">${escapeHtml(item.concept)}</td>
+        ${canEditItemDb ? `<td class="itemdb-action-cell"><button type="button" data-itemdb-edit="${escapeHtml(item.id)}">Edit</button></td>` : ""}
+      </tr>
+    `).join("");
+  }
+
+  function closeItemDbEditor() {
+    document.getElementById("itemdb-editor-backdrop")?.remove();
+    document.body.classList.remove("itemdb-editor-open");
+    itemDbEditorState = null;
+  }
+
+  function editorCellKey(x, y) {
+    return `${x},${y}`;
+  }
+
+  function clampEditorImage(state) {
+    const width = state.canvasWidth * state.scale;
+    const height = state.canvasHeight * state.scale;
+    state.imageX = Math.min(4.5, Math.max(0.5 - width, state.imageX));
+    state.imageY = Math.min(4.5, Math.max(0.5 - height, state.imageY));
+  }
+
+  function updateItemDbEditor() {
+    const state = itemDbEditorState;
+    const dialog = document.getElementById("itemdb-editor-dialog");
+    if (!state || !dialog) return;
+    const image = dialog.querySelector(".itemdb-editor-image");
+    const stage = dialog.querySelector(".itemdb-editor-stage");
+    const modeButton = dialog.querySelector("[data-itemdb-editor-mode]");
+    const modeText = dialog.querySelector("[data-itemdb-editor-mode-text]");
+    const count = dialog.querySelector("[data-itemdb-editor-count]");
+    const position = dialog.querySelector("[data-itemdb-editor-position]");
+    const validation = itemDbTools.validateLayout(
+      [...state.selected].map((key) => key.split(",").map(Number)),
+      state.scale,
+    );
+
+    stage.dataset.mode = state.mode;
+    image.style.left = `${state.imageX * 20}%`;
+    image.style.top = `${state.imageY * 20}%`;
+    image.style.width = `${state.canvasWidth * state.scale * 20}%`;
+    image.style.height = `${state.canvasHeight * state.scale * 20}%`;
+    modeButton.textContent = state.mode === "cells" ? "이미지 이동하기" : "칸 설정하기";
+    modeText.textContent = state.mode === "cells"
+      ? "이미지는 잠겼습니다. 바닥 칸을 눌러 점유 영역을 선택하세요."
+      : "이미지를 드래그해 위치를 정한 뒤 칸 설정하기를 누르세요.";
+    count.textContent = `${state.selected.size}칸 선택`;
+    position.textContent = `이미지 위치 X ${state.imageX.toFixed(2)} · Y ${state.imageY.toFixed(2)}`;
+    dialog.querySelectorAll("[data-itemdb-editor-cell]").forEach((cell) => {
+      cell.classList.toggle("selected", state.selected.has(cell.dataset.itemdbEditorCell));
+    });
+    dialog.querySelector("[data-itemdb-editor-save]").disabled = state.saving;
+    const error = dialog.querySelector("[data-itemdb-editor-error]");
+    if (!state.showErrors && !state.serverError) {
+      error.hidden = true;
+      return;
+    }
+    error.textContent = state.serverError || validation.errors.join(" ");
+    error.hidden = !state.serverError && validation.valid;
+  }
+
+  async function saveItemDbEditor() {
+    const state = itemDbEditorState;
+    const dialog = document.getElementById("itemdb-editor-dialog");
+    if (!state || !dialog || state.saving) return;
+    const coordinates = [...state.selected].map((key) => key.split(",").map(Number));
+    const validation = itemDbTools.validateLayout(coordinates, state.scale);
+    state.showErrors = true;
+    if (!validation.valid) {
+      updateItemDbEditor();
+      return;
+    }
+
+    state.saving = true;
+    state.serverError = "";
+    dialog.querySelector("[data-itemdb-editor-error]").hidden = true;
+    dialog.querySelector("[data-itemdb-editor-save]").textContent = "저장 중…";
+    updateItemDbEditor();
+    try {
+      const response = await fetch("/api/item-db/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          item_id: state.item.id,
+          coordinates: validation.cells,
+          scale: validation.scale,
+          image_x: state.imageX,
+          image_y: state.imageY,
+        }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `저장에 실패했습니다. (${response.status})`);
+      const index = itemDb.items.findIndex((item) => item.id === state.item.id);
+      if (index >= 0) itemDb.items[index] = payload.item;
+      itemDbNotice = `${payload.item.name}의 이미지 위치와 ${payload.item.occupied_cells}칸 점유 형태를 게임 데이터에 저장했습니다.`;
+      closeItemDbEditor();
+      renderItemDb();
+    } catch (error) {
+      state.saving = false;
+      state.serverError = String(error.message || error);
+      dialog.querySelector("[data-itemdb-editor-save]").textContent = "저장";
+      updateItemDbEditor();
+    }
+  }
+
+  function openItemDbEditor(itemId) {
+    const item = itemDb.items.find((candidate) => candidate.id === itemId);
+    if (!item || !canEditItemDb) return;
+    closeItemDbEditor();
+    const originX = Math.floor((5 - item.bounds.width) / 2);
+    const originY = Math.floor((5 - item.bounds.height) / 2);
+    const layout = item.image_layout || {
+      scale: 1,
+      offset_x: 0,
+      offset_y: 0,
+      canvas_width: item.bounds.width,
+      canvas_height: item.bounds.height,
+    };
+    itemDbEditorState = {
+      item,
+      scale: Number(layout.scale),
+      canvasWidth: Number(layout.canvas_width),
+      canvasHeight: Number(layout.canvas_height),
+      imageX: originX + Number(layout.offset_x),
+      imageY: originY + Number(layout.offset_y),
+      selected: new Set(item.coordinates.map(([x, y]) => editorCellKey(x + originX, y + originY))),
+      mode: "move",
+      saving: false,
+      showErrors: false,
+      serverError: "",
+      drag: null,
+    };
+    clampEditorImage(itemDbEditorState);
+
+    const gridCells = [];
+    for (let y = 0; y < 5; y += 1) {
+      for (let x = 0; x < 5; x += 1) {
+        const key = editorCellKey(x, y);
+        gridCells.push(`<button type="button" data-itemdb-editor-cell="${key}" aria-label="${x + 1}열 ${y + 1}행"></button>`);
+      }
+    }
+    document.body.insertAdjacentHTML("beforeend", `
+      <div id="itemdb-editor-backdrop" class="itemdb-editor-backdrop">
+        <section id="itemdb-editor-dialog" class="itemdb-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="itemdb-editor-title">
+          <header>
+            <div><span>ITEM LAYOUT EDITOR</span><h2 id="itemdb-editor-title">${escapeHtml(item.name)}</h2><code>${escapeHtml(item.id)}</code><em class="itemdb-editor-apply-state">${layout.applied_to_game ? "게임 적용됨" : "저장 시 게임 적용"}</em></div>
+            <button type="button" class="itemdb-editor-close" data-itemdb-editor-close aria-label="편집기 닫기">×</button>
+          </header>
+          <div class="itemdb-editor-body">
+            <div class="itemdb-editor-workbench">
+              <div class="itemdb-editor-stage" data-mode="move">
+                <div class="itemdb-editor-grid">${gridCells.join("")}</div>
+                <img class="itemdb-editor-image" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)} 배치 이미지" draggable="false">
+              </div>
+              <div class="itemdb-editor-stage-meta"><strong data-itemdb-editor-count></strong><span data-itemdb-editor-position></span></div>
+            </div>
+            <aside class="itemdb-editor-controls">
+              <label for="itemdb-editor-scale"><span>Image Scale</span><small>0.1–4.0 배율</small></label>
+              <input id="itemdb-editor-scale" type="number" min="0.1" max="4" step="0.05" value="${escapeHtml(layout.scale)}">
+              <p data-itemdb-editor-mode-text></p>
+              <button type="button" class="itemdb-editor-mode" data-itemdb-editor-mode>칸 설정하기</button>
+              <div class="itemdb-editor-rules">
+                <strong>저장 규칙</strong>
+                <span>1칸 이상 선택</span><span>가로·세로 최대 5칸</span><span>상하좌우로 연결</span>
+              </div>
+              <p class="itemdb-editor-error" data-itemdb-editor-error role="alert" hidden></p>
+            </aside>
+          </div>
+          <footer><button type="button" data-itemdb-editor-close>취소</button><button type="button" class="primary" data-itemdb-editor-save>저장</button></footer>
+        </section>
+      </div>
+    `);
+    document.body.classList.add("itemdb-editor-open");
+
+    const dialog = document.getElementById("itemdb-editor-dialog");
+    const stage = dialog.querySelector(".itemdb-editor-stage");
+    const image = dialog.querySelector(".itemdb-editor-image");
+    const scaleInput = dialog.querySelector("#itemdb-editor-scale");
+    dialog.querySelectorAll("[data-itemdb-editor-close]").forEach((button) => button.addEventListener("click", closeItemDbEditor));
+    document.getElementById("itemdb-editor-backdrop").addEventListener("click", (event) => {
+      if (event.target.id === "itemdb-editor-backdrop") closeItemDbEditor();
+    });
+    dialog.querySelector("[data-itemdb-editor-mode]").addEventListener("click", () => {
+      itemDbEditorState.mode = itemDbEditorState.mode === "cells" ? "move" : "cells";
+      itemDbEditorState.showErrors = false;
+      itemDbEditorState.serverError = "";
+      updateItemDbEditor();
+    });
+    dialog.querySelectorAll("[data-itemdb-editor-cell]").forEach((cell) => cell.addEventListener("click", () => {
+      if (itemDbEditorState.mode !== "cells") return;
+      const key = cell.dataset.itemdbEditorCell;
+      if (itemDbEditorState.selected.has(key)) itemDbEditorState.selected.delete(key);
+      else itemDbEditorState.selected.add(key);
+      itemDbEditorState.showErrors = false;
+      itemDbEditorState.serverError = "";
+      updateItemDbEditor();
+    }));
+    scaleInput.addEventListener("input", () => {
+      const nextScale = Number(scaleInput.value);
+      if (!Number.isFinite(nextScale) || nextScale <= 0) return;
+      const centerX = itemDbEditorState.imageX + itemDbEditorState.canvasWidth * itemDbEditorState.scale / 2;
+      const centerY = itemDbEditorState.imageY + itemDbEditorState.canvasHeight * itemDbEditorState.scale / 2;
+      itemDbEditorState.scale = nextScale;
+      itemDbEditorState.imageX = centerX - itemDbEditorState.canvasWidth * nextScale / 2;
+      itemDbEditorState.imageY = centerY - itemDbEditorState.canvasHeight * nextScale / 2;
+      clampEditorImage(itemDbEditorState);
+      itemDbEditorState.showErrors = false;
+      itemDbEditorState.serverError = "";
+      updateItemDbEditor();
+    });
+    image.addEventListener("pointerdown", (event) => {
+      if (itemDbEditorState.mode !== "move") return;
+      event.preventDefault();
+      image.setPointerCapture(event.pointerId);
+      itemDbEditorState.drag = {
+        pointerId: event.pointerId,
+        clientX: event.clientX,
+        clientY: event.clientY,
+        imageX: itemDbEditorState.imageX,
+        imageY: itemDbEditorState.imageY,
+      };
+    });
+    image.addEventListener("pointermove", (event) => {
+      const drag = itemDbEditorState?.drag;
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      const bounds = stage.getBoundingClientRect();
+      itemDbEditorState.imageX = drag.imageX + (event.clientX - drag.clientX) / bounds.width * 5;
+      itemDbEditorState.imageY = drag.imageY + (event.clientY - drag.clientY) / bounds.height * 5;
+      clampEditorImage(itemDbEditorState);
+      updateItemDbEditor();
+    });
+    const finishDrag = (event) => {
+      if (itemDbEditorState?.drag?.pointerId === event.pointerId) itemDbEditorState.drag = null;
+    };
+    image.addEventListener("pointerup", finishDrag);
+    image.addEventListener("pointercancel", finishDrag);
+    dialog.querySelector("[data-itemdb-editor-save]").addEventListener("click", saveItemDbEditor);
+    updateItemDbEditor();
+    scaleInput.focus();
+  }
+
+  function renderItemDbResults() {
+    const results = document.getElementById("itemdb-results");
+    const resultCount = document.getElementById("itemdb-result-count");
+    if (!results || !resultCount || !itemDb || !itemDbTools) return;
+    const filtered = itemDbTools.filterItems(itemDb.items, itemDbQuery, itemDbFamily);
+    resultCount.textContent = `${filtered.length}개 표시`;
+    document.querySelectorAll("[data-itemdb-family]").forEach((button) => {
+      button.classList.toggle("active", button.dataset.itemdbFamily === itemDbFamily);
+    });
+    if (!filtered.length) {
+      results.innerHTML = '<div class="empty-state">조건에 맞는 아이템이 없습니다.</div>';
+      return;
+    }
+    results.innerHTML = itemDbTools.groupByFamily(filtered, itemDb.families).map((family) => `
+      <section class="itemdb-family-section">
+        <header><h2>${escapeHtml(family.label)}</h2><span>${family.items.length}개</span></header>
+        <div class="itemdb-table-wrap">
+          <table class="itemdb-table">
+            <thead><tr><th>이미지</th><th>아이템</th><th>분류·크기</th><th>점유 형태</th><th>능력치 초안</th><th>콘셉트</th>${canEditItemDb ? "<th>편집</th>" : ""}</tr></thead>
+            <tbody>${renderItemRows(family.items)}</tbody>
+          </table>
+        </div>
+      </section>
+    `).join("");
+    if (canEditItemDb) {
+      results.querySelectorAll("[data-itemdb-edit]").forEach((button) => {
+        button.addEventListener("click", () => openItemDbEditor(button.dataset.itemdbEdit));
+      });
+    }
+  }
+
+  function renderItemDb() {
+    document.title = "ItemDB · PackBound Wiki";
+    renderNavigation("item-db", "database");
+    if (!itemDb || !itemDbTools) {
+      main.innerHTML = '<div class="empty-state">ItemDB 생성 데이터가 없습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
+      return;
+    }
+    main.innerHTML = `
+      <div class="itemdb-layout">
+        <header class="itemdb-hero">
+          <div class="page-eyebrow">Generated catalog</div>
+          <div class="itemdb-hero-row">
+            <div><h1>ItemDB</h1><p>게임 아이템의 이미지, 점유 형태와 능력치 초안을 한 곳에서 비교합니다. 원본 카탈로그가 바뀌면 위키 빌드에서 자동 갱신됩니다.</p></div>
+            <span class="itemdb-total"><strong>${itemDb.count}</strong><small>ITEMS</small></span>
+          </div>
+          <div class="itemdb-contract">
+            <div><span>기준 방향</span><strong>${escapeHtml(itemDb.common.native_facing)}</strong></div>
+            <div><span>허용 회전</span><strong>${itemDb.common.rotations.map((value) => `${value}°`).join(" · ")}</strong></div>
+            <div><span>최대 스택</span><strong>${itemDb.common.maximum_stack}</strong></div>
+            <div><span>단일 원본</span><code>${escapeHtml(itemDb.source)}</code></div>
+          </div>
+        </header>
+        <section class="itemdb-toolbar" aria-label="ItemDB 검색과 분류">
+          <label><span class="visually-hidden">아이템 검색</span><input id="itemdb-search" type="search" value="${escapeHtml(itemDbQuery)}" placeholder="이름, ID, 능력치, 콘셉트 검색…"></label>
+          <div class="itemdb-family-filter" role="group" aria-label="아이템 대분류">
+            <button type="button" data-itemdb-family="all">전체 <span>${itemDb.count}</span></button>
+            ${itemDb.families.map((family) => `<button type="button" data-itemdb-family="${escapeHtml(family.id)}">${escapeHtml(family.label)} <span>${family.count}</span></button>`).join("")}
+          </div>
+          <strong id="itemdb-result-count"></strong>
+        </section>
+        ${itemDbNotice ? `<div class="itemdb-save-notice" role="status">${escapeHtml(itemDbNotice)}</div>` : ""}
+        <div id="itemdb-results"></div>
+      </div>
+    `;
+    document.getElementById("itemdb-search").addEventListener("input", (event) => {
+      itemDbQuery = event.target.value;
+      renderItemDbResults();
+    });
+    document.querySelectorAll("[data-itemdb-family]").forEach((button) => {
+      button.addEventListener("click", () => {
+        itemDbFamily = button.dataset.itemdbFamily;
+        renderItemDbResults();
+      });
+    });
+    renderItemDbResults();
+    document.body.classList.remove("menu-open");
+    window.scrollTo(0, 0);
+  }
+
+  function renderStructuredDbCell(row, column) {
+    const value = row[column.key] || "—";
+    if (column.kind === "code") return `<code>${escapeHtml(value)}</code>`;
+    if (column.kind === "strong") return `<strong>${escapeHtml(value)}</strong>`;
+    if (column.kind === "priority") return `<span class="structured-db-priority" data-priority="${escapeHtml(value)}">${escapeHtml(value)}</span>`;
+    if (column.kind === "status") return `<span class="structured-db-status" data-value="${escapeHtml(value)}">${escapeHtml(value)}</span>`;
+    return `<span>${escapeHtml(value)}</span>`;
+  }
+
+  function renderStructuredDbResults(database) {
+    const resultRoot = document.getElementById("structured-db-results");
+    const resultCount = document.getElementById("structured-db-result-count");
+    if (!resultRoot || !resultCount) return;
+    const rows = combatDbTools.filterRows(database, structuredDbState.query, structuredDbState.filters);
+    resultCount.textContent = `${rows.length} / ${database.count}개 표시`;
+    if (!rows.length) {
+      resultRoot.innerHTML = '<div class="empty-state">조건에 맞는 데이터가 없습니다.</div>';
+      return;
+    }
+    resultRoot.innerHTML = `
+      <div class="structured-db-table-wrap">
+        <table class="structured-db-table" style="--database-column-count:${database.columns.length}">
+          <thead><tr>${database.columns.map((column) => `<th>${escapeHtml(column.label)}</th>`).join("")}</tr></thead>
+          <tbody>${rows.map((row) => `
+            <tr>${database.columns.map((column) => `<td data-kind="${escapeHtml(column.kind)}">${renderStructuredDbCell(row, column)}</td>`).join("")}</tr>
+          `).join("")}</tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  function renderStructuredDatabase(databaseId) {
+    const database = combatDbTools.findDatabase(combatDb, databaseId);
+    if (!database) {
+      renderNavigation(databaseId, "database");
+      main.innerHTML = '<div class="empty-state">요청한 데이터베이스가 없습니다.</div>';
+      return;
+    }
+    if (structuredDbState.databaseId !== databaseId) {
+      structuredDbState = { databaseId, query: "", filters: {} };
+    }
+    document.title = `${database.title} · PackBound Wiki`;
+    renderNavigation(databaseId, "database");
+    main.innerHTML = `
+      <div class="structured-db-layout">
+        <header class="structured-db-hero">
+          <div class="page-eyebrow">Planning data registry</div>
+          <div class="structured-db-hero-row">
+            <div>
+              <h1>${escapeHtml(database.title)}</h1>
+              <p>${escapeHtml(database.description)}</p>
+            </div>
+            <span class="structured-db-total"><strong>${database.count}</strong><small>${escapeHtml(database.unit)}</small></span>
+          </div>
+          <div class="structured-db-source">
+            <div><span>기획 원본</span><strong>${escapeHtml(combatDb.source_title)}</strong></div>
+            <div><span>원본 버전</span><strong>v${String(combatDb.source_version).padStart(3, "0")}</strong></div>
+            <div><span>원본 변경</span><strong>${escapeHtml(formatDate(combatDb.source_updated_at, true))}</strong></div>
+            <a href="${pageHref(combatDb.source_page_id)}">기획 문서 읽기 <span aria-hidden="true">→</span></a>
+          </div>
+        </header>
+        <section class="structured-db-toolbar" aria-label="${escapeHtml(database.title)} 검색과 필터">
+          <label class="structured-db-search"><span class="visually-hidden">데이터 검색</span><input id="structured-db-search" type="search" value="${escapeHtml(structuredDbState.query)}" placeholder="ID, 이름, 의미, 기획 결정 검색…"></label>
+          <div class="structured-db-filters">
+            ${database.filters.map((filter) => `
+              <label><span>${escapeHtml(filter.label)}</span><select data-structured-db-filter="${escapeHtml(filter.key)}">
+                <option value="all">전체</option>
+                ${combatDbTools.filterOptions(database, filter.key).map((value) => `<option value="${escapeHtml(value)}" ${structuredDbState.filters[filter.key] === value ? "selected" : ""}>${escapeHtml(value)}</option>`).join("")}
+              </select></label>
+            `).join("")}
+          </div>
+          <strong id="structured-db-result-count"></strong>
+        </section>
+        <div id="structured-db-results"></div>
+      </div>
+    `;
+    document.getElementById("structured-db-search").addEventListener("input", (event) => {
+      structuredDbState.query = event.target.value;
+      renderStructuredDbResults(database);
+    });
+    document.querySelectorAll("[data-structured-db-filter]").forEach((select) => {
+      select.addEventListener("change", () => {
+        structuredDbState.filters[select.dataset.structuredDbFilter] = select.value;
+        renderStructuredDbResults(database);
+      });
+    });
+    renderStructuredDbResults(database);
+    document.body.classList.remove("menu-open");
+    window.scrollTo(0, 0);
+  }
+
   function renderPage() {
     const route = readRoute();
+    if (!(route.kind === "database" && route.slug === "item-db") && itemDbEditorState) closeItemDbEditor();
     if (route.kind === "tree") {
       document.title = "전체 위키 트리 · PackBound Wiki";
       renderNavigation("", "tree");
       main.innerHTML = renderTree();
       document.body.classList.remove("menu-open");
       window.scrollTo(0, 0);
+      return;
+    }
+    if (route.kind === "database") {
+      if (route.slug === "item-db") renderItemDb();
+      else renderStructuredDatabase(route.slug);
       return;
     }
     const page = pageById.get(route.slug) || pageById.get(defaultPage);
@@ -866,7 +1410,23 @@
   });
   document.getElementById("menu-button").addEventListener("click", () => document.body.classList.toggle("menu-open"));
   document.getElementById("sidebar-scrim").addEventListener("click", () => document.body.classList.remove("menu-open"));
+  const sidebarTabs = [sidebarTabWiki, sidebarTabDb];
+  sidebarTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => document.body.classList.remove("menu-open"));
+    tab.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      const nextIndex = event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? sidebarTabs.length - 1
+          : (index + (event.key === "ArrowRight" ? 1 : -1) + sidebarTabs.length) % sidebarTabs.length;
+      sidebarTabs[nextIndex].click();
+      sidebarTabs[nextIndex].focus();
+    });
+  });
   if (canControlRojo) {
+    publicWikiLink.hidden = false;
     rojoControl.hidden = false;
     rojoPlaceSelect.addEventListener("change", () => {
       rojoSelectedId = rojoPlaceSelect.value;

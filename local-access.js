@@ -14,7 +14,11 @@
     return normalized === "localhost" || normalized === "127.0.0.1" || normalized === "::1";
   }
 
-  const api = { canUseRojoControl };
+  function shouldShowExactTimestamps(hostname) {
+    return canUseRojoControl(hostname);
+  }
+
+  const api = { canUseRojoControl, shouldShowExactTimestamps };
   root.PACKBOUND_LOCAL_ACCESS = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

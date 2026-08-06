@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-06T08:21:23+00:00",
+  "generated_at": "2026-08-06",
   "page_count": 6,
-  "revision_count": 16,
+  "revision_count": 19,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -15,8 +15,8 @@ window.PACKBOUND_WIKI = {
         "automation",
         "validation"
       ],
-      "created_at": "2026-08-06T10:36:02+09:00",
-      "updated_at": "2026-08-06T10:36:02+09:00",
+      "created_at": "2026-08-06",
+      "updated_at": "2026-08-06",
       "authors": [
         "Codex"
       ],
@@ -50,8 +50,8 @@ window.PACKBOUND_WIKI = {
             "automation",
             "validation"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T10:36:02+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -92,8 +92,8 @@ window.PACKBOUND_WIKI = {
         "research",
         "roadmap"
       ],
-      "created_at": "2026-08-06T17:17:02+09:00",
-      "updated_at": "2026-08-06T17:17:02+09:00",
+      "created_at": "2026-08-06",
+      "updated_at": "2026-08-06",
       "authors": [
         "Codex"
       ],
@@ -139,8 +139,8 @@ window.PACKBOUND_WIKI = {
             "research",
             "roadmap"
           ],
-          "created_at": "2026-08-06T17:17:02+09:00",
-          "updated_at": "2026-08-06T17:17:02+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -174,7 +174,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "inventory-item-concept",
       "title": "인벤토리와 아이템 개념",
-      "summary": "아이템 외형만 보고도 점유 공간을 예측할 수 있도록 32종의 최종 아이콘과 연결형 칸 배열을 하나의 아트·배치 계약으로 확정했습니다.",
+      "summary": "아이템의 점유 칸과 이미지 배치를 로컬 ItemDB에서 직접 조정하고, 검증된 저장 결과가 동일한 원본을 통해 게임 인벤토리에 적용되도록 연결했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
@@ -183,36 +183,114 @@ window.PACKBOUND_WIKI = {
         "backpack",
         "grid",
         "footprint",
-        "icon",
-        "art-direction"
+        "itemdb",
+        "editor",
+        "runtime"
       ],
-      "created_at": "2026-08-06T16:17:30+09:00",
-      "updated_at": "2026-08-06T16:35:25+09:00",
+      "created_at": "2026-08-06",
+      "updated_at": "2026-08-06",
       "authors": [
         "Codex"
       ],
-      "version": 2,
+      "version": 3,
       "change_type": "updated",
-      "change_summary": "아이콘의 실제 실루엣과 점유 칸이 자연스럽게 대응하도록 32종 카탈로그를 완성하고, 배열 조정으로 해결되지 않는 4종만 다시 구성했습니다.",
-      "supersedes": "inventory-item-concept@v001",
+      "change_summary": "아이콘과 점유 형태를 눈으로 맞추는 로컬 편집 흐름을 만들고, 저장된 연결형 칸·배율·위치를 게임 UI가 사용하는 생성 데이터로 이어 붙였습니다.",
+      "supersedes": "inventory-item-concept@v002",
       "sources": [
-        "docs/gameplay/inventory-item-concept.md",
         "docs/gameplay/inventory-item-art-catalog.md",
-        "Assets/Items/InventoryIcons"
+        "docs/gameplay/inventory-item-layouts.json",
+        "tools/item_db.py",
+        "wiki/site/item-db.js",
+        "wiki/site/item-db-data.js",
+        "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
+        "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
+        "src/ReplicatedStorage/BackpackUI/GridModel.luau",
+        "src/ReplicatedStorage/BackpackUI/Screen.luau",
+        "tests/test_item_db.py",
+        "tests/item-db.spec.js",
+        "wiki/content/media/inventory-item-concept/v003/inventory-concept.png",
+        "wiki/content/media/inventory-item-concept/v003/itemdb-layout-editor-result.jpg",
+        "wiki/content/media/inventory-item-concept/v003/studio-backpack-runtime-result.jpg"
       ],
       "related": [
+        "development-wiki",
+        "backpack-combat-stat-database",
         "project-overview"
       ],
       "validation": [
-        "32종 카탈로그·점유 좌표·PNG 크기·연결성·투명 배경 전수 검증",
-        "요약표와 상세표의 32종 이름·칸 배열 교차 검증",
-        "python3 tools/wiki.py build",
-        "python3 tools/wiki.py check",
-        "python3 -m unittest tests/test_wiki.py"
+        "python3 tools/item_db.py build",
+        "python3 tools/item_db.py check",
+        "python3 -m unittest tests.test_item_db",
+        "node --test tests/item-db.spec.js",
+        "luau-compile --null로 BackpackUI ModuleScript와 bootstrap 문법 검증",
+        "rojo build default.project.json --output /tmp/packbound-itemdb-default.rbxlx",
+        "rojo build packbound.project.json --output /tmp/packbound-itemdb-packbound.rbxlx",
+        "Roblox Studio MCP 플레이에서 PackBoundBackpackGui 로드와 다칸 아이템 배치 확인",
+        "브라우저에서 로컬 Edit 32개, 5x5 편집기와 선택 칸 표시 확인"
       ],
-      "source_path": "wiki/content/pages/inventory-item-concept/v002.md",
-      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템은 그림과 별개인 사각 카드가 아니라, 외형에 따라 여러 격자 칸을\n점유하는 공간 퍼즐 요소입니다. 플레이어가 아이콘을 보는 순간 어느 정도의 공간을\n차지할지 직관적으로 예상할 수 있어야 배치와 회전이 계산 문제가 아니라 손맛 있는\n정리 경험으로 이어집니다.\n\n이번 기준은 첫 아이템 묶음의 실제 아이콘과 점유 배열을 함께 확정해, 아트와 데이터가\n서로 다른 형태를 설명하는 문제를 막는 데 목적이 있습니다. 시대 배경의 일관성보다\n폐품을 장난감처럼 조합한 밝고 과장된 아트 언어와 한눈에 읽히는 실루엣을 우선합니다.\n\n## 사용자 경험\n\n- 아이템 이미지만 보고도 길쭉함, 넓음, 중심 돌출부와 빈 공간을 대략 예측할 수 있습니다.\n- 신발 한 세트는 좌우 신발이 겹쳐진 하나의 묶음으로 보이며 하나의 아이템으로 취급됩니다.\n- 아이콘 자체에는 인벤토리 칸, 프레임이나 문자를 넣지 않습니다. 칸 표시는 배치 UI가\n  담당하므로 월드 드롭, 상점과 상세 화면에서도 같은 원본 이미지를 재사용할 수 있습니다.\n- 작은 아이템과 큰 아이템의 차이는 단순 확대가 아니라 실제 점유 칸 수와 실루엣 밀도로\n  드러납니다.\n\n## 핵심 원칙과 설계 철학\n\n### 외형이 점유 형태를 설명한다\n\n점유 배열은 아이콘의 알파 실루엣을 기준으로 정합니다. 기존 이미지에 맞는 연결형 배열이\n크기 등급 안에서 가능하면 데이터를 조정하고, 허용 칸 수로 실루엣을 설명할 수 없을 때만\n해당 이미지를 다시 구성합니다. 이미지와 배열을 무조건 동시에 바꾸지 않아 최종 아트의\n정체성을 보존하면서 공간 규칙의 신뢰도를 높입니다.\n\n### 하나의 아이템은 하나의 연결된 덩어리다\n\n`■` 점유 칸은 상하좌우로 연결되어야 합니다. `□`는 실제로 다른 아이템이 사용할 수 있는\n빈 칸이며 장식용 표기가 아닙니다. 배열은 좌상단 `(0, 0)`에 정규화하고 이미지 캔버스는\n칸당 256픽셀 비율을 사용합니다. 초기 콘텐츠의 경계 상자는 최대 4x4를 유지합니다.\n\n### 아트와 UI의 책임을 분리한다\n\n아이콘은 투명 배경의 완전한 아이템만 담습니다. 인벤토리 칸, 선택 상태, 희귀도 프레임,\n텍스트와 배치 가능 여부는 UI 계층이 그립니다. 이 분리로 동일한 PNG를 인벤토리, 보관함,\n상점과 월드 드롭에 재사용할 수 있습니다.\n\n## 결정 사항과 범위\n\n첫 카탈로그는 무기 12종, 장비 12종, 액세서리·특수 아이템 8종으로 총 32종입니다.\n무기와 장비는 작은 2~4칸, 조금 큰 5~6칸, 큰 7~8칸을 사용합니다. 액세서리와 특수\n아이템은 아주 작은 1~2칸, 작은 3~4칸, 조금 큰 5~8칸 중 아이콘의 형태에 맞는 크기를\n개별 지정합니다.\n\n능력 수치는 현재 `ItemStats` 계약을 사용한 밸런스 초안입니다. 이번 범위는 아이콘,\n이름, 콘셉트, 능력 초안과 점유 형태를 확정하는 데 한정하며 런타임 카탈로그 등록이나\n밸런스 확정은 포함하지 않습니다.\n\n## 현재 결과\n\n32종 모두 투명 배경 PNG와 연결형 점유 배열을 가집니다. 이미지 실루엣을 유지하면서\n배열만 조정한 항목은 신호등 식칼, 포켓 네일건, 캔따개 기관단총, 세탁기 드럼포,\n위성접시 장궁, 점프잭 해머, 썬더 앰프 기타와 저주받은 블록 인형입니다.\n\n허용 칸 수 안에서 기존 실루엣을 설명하기 어려웠던 옷걸이 딱궁, 안테나 리커브 보우,\n냉장고 문 판초와 버스정류장 방패는 각각 2x2, 2x3, 4x2와 2x3의 연결된 직사각형\n점유 형태에 맞춰 다시 구성했습니다. 재제작 전 이미지는 정식 파일 경로에 교체되어\n최종 자산 폴더에는 현재 사용하는 32개 PNG만 남습니다.\n\n## 구현 참고\n\n| 산출물 | 역할 |\n| --- | --- |\n| `docs/gameplay/inventory-item-art-catalog.md` | 32종의 ID, 이름, 콘셉트, 능력 초안, 칸 수·배열, 좌표와 이미지 경로 |\n| `Assets/Items/InventoryIcons/` | 무기, 장비, 액세서리와 특수 아이템의 최종 투명 PNG 32개 |\n| `wiki/content/pages/inventory-item-concept/v002.md` | 아이콘과 점유 형태를 함께 저작하는 최종 제품 원칙과 범위 |\n| `wiki/site/data.js` | 위키 소스에서 생성한 읽기 전용 사이트 데이터 |\n\n카탈로그의 `■`은 점유 칸, `□`은 실제 빈 칸이며 `/`는 다음 행을 뜻합니다. 상세표의\n점유 좌표는 배열과 동일한 좌상단 원점을 사용합니다. 모든 아이콘은 `NativeFacing = Up`,\n허용 회전 `[0, 90, 180, 270]`, 기본 최대 스택 1을 공통값으로 사용합니다.\n\n## 검증\n\n카탈로그 32행과 실제 PNG 32개가 일치하는지 확인했습니다. 각 항목의 선언 칸 수,\n`■` 개수, 점유 좌표, 연결성, 크기 등급, 256픽셀 단위 캔버스 크기, RGBA 형식과 투명\n모서리를 전수 검사했습니다. 요약표와 상세표의 이름·배열도 교차 검증했으며 불투명한\n초록 크로마 잔여 픽셀이 없음을 확인했습니다.\n\n## 후속 기획\n\n- 카탈로그 표를 런타임 `ItemDefinition`으로 옮길 때 동일한 점유 좌표 validator를\n  자동화합니다.\n- 인벤토리 UI에서 원본 아이콘 위에 회전된 점유 미리보기를 별도 계층으로 표시합니다.\n- 실제 플레이테스트에서는 칸 수 대비 성능과 획득 빈도를 조정하되 아이콘과 점유 형태의\n  대응 원칙은 유지합니다.\n",
+      "source_path": "wiki/content/pages/inventory-item-concept/v003.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템은 그림과 점유 칸이 따로 노는 데이터가 아니라, 외형 자체가 공간\n퍼즐의 규칙을 설명해야 합니다. 32종 아이콘과 칸 배열을 표로 확정한 뒤에는 실제 UI에서\n이미지가 칸 중심과 미세하게 어긋나거나 실루엣에 맞는 점유 형태를 다시 조정해야 하는\n운영 단계가 남습니다. 이 조정을 코드 좌표로만 반복하면 기획자가 결과를 즉시 확인하기\n어렵고 이미지와 게임 데이터가 다시 갈라질 위험이 있습니다.\n\n이번 목표는 아이템을 눈으로 보면서 배율, 위치와 점유 칸을 한 화면에서 맞추고, 저장한\n최종 결과만 게임에 적용하는 것입니다. 편집 도구는 로컬 개발 환경에 두고 공개 위키는\n카탈로그를 읽는 용도로 제한합니다.\n\n## 사용자 경험\n\n- ItemDB의 각 아이템에서 `Edit`을 누르면 선택한 아이콘과 5x5 칸 편집기가 열립니다.\n- 이미지 배율 숫자를 바꾸면 즉시 크기가 변하고, 이미지를 드래그해 칸 기준 위치를\n  조정할 수 있습니다.\n- `칸 설정하기`를 누르면 이미지는 반투명·비선택 상태가 되고 바닥 칸만 선택됩니다.\n- 저장 전에 점유 칸 없음, 5칸 범위 초과, 대각선으로만 분리된 영역을 명확한 오류로\n  막습니다.\n- 저장된 배율·위치·점유 형태는 다음 위키 빌드와 게임 인벤토리에서 같은 결과로\n  재현됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 시각 조정과 규칙 검증을 한 흐름으로 묶는다\n\n아이콘 배치는 눈으로 조정하지만 점유 형태는 게임 규칙을 따라야 합니다. 선택 칸은 한\n칸 이상이어야 하며 가로·세로 각각 5칸을 넘을 수 없고 모든 칸이 상하좌우로 연결되어야\n합니다. 대각선 접촉만으로는 하나의 아이템으로 인정하지 않습니다.\n\n### 저장 전에는 게임을 바꾸지 않는다\n\n편집기를 열거나 값을 시험하는 동안에는 기존 게임 배치가 유지됩니다. `저장`이 성공한\n아이템만 명시적인 override가 되어 런타임 기본값 위에 적용됩니다. 중간 조정이 게임에\n새어 들어가지 않아 시각 실험과 제품 상태를 분리합니다.\n\n### 원본은 하나이고 출력은 용도별로 생성한다\n\n점유 칸은 아이템 아트 카탈로그, 배율·상대 위치는 작은 layout 문서가 소유합니다.\n생성기는 두 원본을 결합해 위키용 ItemDB와 게임용 Luau 데이터를 만듭니다. 브라우저와\n게임이 서로 다른 수기 값을 갖지 않으므로 한 번 저장한 최종 배치를 같은 방식으로\n검증할 수 있습니다.\n\n## 결정 사항과 범위\n\n편집 권한은 `localhost`, `127.0.0.1`, 로컬 IPv6 주소에서만 허용합니다. 공개 위키에는\n아이템 이미지, 제원과 점유 형태는 보이지만 `Edit` 열, 편집 팝업과 저장 API는 없습니다.\n저장 API도 로컬 Host·Origin과 JSON 요청을 확인합니다.\n\n편집 캔버스는 현재 게임의 최대 아이템 범위에 맞춰 5x5로 고정했습니다. 임의 회전,\n아이템 능력치 편집과 신규 아이템 생성은 이번 범위에 포함하지 않습니다. 이 기능은\n이미 존재하는 아이템의 이미지 배치와 점유 형태를 안전하게 조정하는 도구입니다.\n\n## 시안과 현재 결과\n\n![모바일 백팩 인벤토리 시안](./media/inventory-item-concept/v003/inventory-concept.png \"상단 자원, 중앙 다칸 격자, 하단 아이템 목록으로 구성한 승인 시안\")\n\n시안의 핵심은 아이템 실루엣과 점유 칸을 중앙 격자에서 동시에 읽는 구조입니다. 로컬\n편집기는 같은 원칙을 운영 도구로 옮겨 이미지와 칸을 한 화면에서 직접 맞춥니다.\n\n![로컬 ItemDB 칸 편집기](./media/inventory-item-concept/v003/itemdb-layout-editor-result.jpg \"안테나 리커브 보우의 배율, 이미지 위치와 여섯 연결 칸을 함께 조정하는 로컬 전용 편집 화면\")\n\n![Roblox Studio 인벤토리 적용 결과](./media/inventory-item-concept/v003/studio-backpack-runtime-result.jpg \"Studio 플레이에서 아이템 이미지와 다칸 점유 형태가 동일한 배치 계약으로 표시된 최종 결과\")\n\n현재 게임 인벤토리는 승인 시안의 정보 계층을 유지하면서 6x6 보드, 열린 칸, 아이템\n점유 형태, 선택 아이템 정보와 하단 목록을 표시합니다. ItemDB에서 저장된 아이템은\n생성된 layout을 사용하고 아직 저장하지 않은 아이템은 검증된 기존 런타임 기본값을\n사용합니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 32종 카탈로그의 ID, 이미지, 256픽셀 칸 단위, 좌표 연결성과 크기\n계약을 검증합니다. 로컬 저장 요청은 선택 좌표를 좌상단 원점으로 정규화하고 카탈로그의\n상세·요약 배열과 layout 문서를 함께 갱신한 뒤 위키 데이터와\n`GeneratedItemLayouts.luau`를 다시 생성합니다. 실패하면 원본을 복구해 반쪽 저장을\n남기지 않습니다.\n\n게임에서는 `ItemCatalog`가 저장된 생성 layout을 우선 사용하고 기존 형태를 fallback으로\n유지합니다. `Screen`은 배율, 상대 위치, 이미지 캔버스 크기와 점유 좌표를 함께 사용해\n보드와 하단 아이템 카드에 동일한 실루엣을 배치합니다.\n\n## 검증\n\nPython과 JavaScript 테스트로 빈 선택, 대각선 분리, 5x5 범위 밖 좌표, 중복 좌표와 잘못된\n배율을 거부하는지 확인했습니다. 카탈로그 32행, 실제 PNG, 점유 패턴과 좌표, 생성된\n게임 layout이 서로 일치하는지도 검사했습니다.\n\n브라우저에서 로컬 ItemDB의 32개 `Edit` 버튼, 5x5 편집기, 선택 아이템 이미지, 배율 입력,\n여섯 선택 칸과 저장 규칙을 확인했습니다. Roblox Studio MCP 플레이에서는\n`PackBoundBackpackGui`가 로드되고 여러 형태의 아이템이 연결된 다칸 영역에 표시되는 것을\n확인했습니다.\n\n## 후속 기획\n\n- 실제 밸런스 조정에서 아이템 크기가 바뀔 때 능력치·희귀도와 점유 비용을 함께 검토합니다.\n- 회전별 별도 이미지가 필요해질 때 현재 단일 방향 계약을 확장하되 동일한 연결성 검증을\n  유지합니다.\n- 신규 아이템 생성은 이미지 제작, ID·태그·능력치 승인과 점유 편집을 하나의 별도 등록\n  흐름으로 설계합니다.\n",
       "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "아이템의 점유 칸과 이미지 배치를 로컬 ItemDB에서 직접 조정하고, 검증된 저장 결과가 동일한 원본을 통해 게임 인벤토리에 적용되도록 연결했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "grid",
+            "footprint",
+            "itemdb",
+            "editor",
+            "runtime"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
+          "authors": [
+            "Codex"
+          ],
+          "version": 3,
+          "change_type": "updated",
+          "change_summary": "아이콘과 점유 형태를 눈으로 맞추는 로컬 편집 흐름을 만들고, 저장된 연결형 칸·배율·위치를 게임 UI가 사용하는 생성 데이터로 이어 붙였습니다.",
+          "supersedes": "inventory-item-concept@v002",
+          "sources": [
+            "docs/gameplay/inventory-item-art-catalog.md",
+            "docs/gameplay/inventory-item-layouts.json",
+            "tools/item_db.py",
+            "wiki/site/item-db.js",
+            "wiki/site/item-db-data.js",
+            "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
+            "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
+            "src/ReplicatedStorage/BackpackUI/GridModel.luau",
+            "src/ReplicatedStorage/BackpackUI/Screen.luau",
+            "tests/test_item_db.py",
+            "tests/item-db.spec.js",
+            "wiki/content/media/inventory-item-concept/v003/inventory-concept.png",
+            "wiki/content/media/inventory-item-concept/v003/itemdb-layout-editor-result.jpg",
+            "wiki/content/media/inventory-item-concept/v003/studio-backpack-runtime-result.jpg"
+          ],
+          "related": [
+            "development-wiki",
+            "backpack-combat-stat-database",
+            "project-overview"
+          ],
+          "validation": [
+            "python3 tools/item_db.py build",
+            "python3 tools/item_db.py check",
+            "python3 -m unittest tests.test_item_db",
+            "node --test tests/item-db.spec.js",
+            "luau-compile --null로 BackpackUI ModuleScript와 bootstrap 문법 검증",
+            "rojo build default.project.json --output /tmp/packbound-itemdb-default.rbxlx",
+            "rojo build packbound.project.json --output /tmp/packbound-itemdb-packbound.rbxlx",
+            "Roblox Studio MCP 플레이에서 PackBoundBackpackGui 로드와 다칸 아이템 배치 확인",
+            "브라우저에서 로컬 Edit 32개, 5x5 편집기와 선택 칸 표시 확인"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템은 그림과 점유 칸이 따로 노는 데이터가 아니라, 외형 자체가 공간\n퍼즐의 규칙을 설명해야 합니다. 32종 아이콘과 칸 배열을 표로 확정한 뒤에는 실제 UI에서\n이미지가 칸 중심과 미세하게 어긋나거나 실루엣에 맞는 점유 형태를 다시 조정해야 하는\n운영 단계가 남습니다. 이 조정을 코드 좌표로만 반복하면 기획자가 결과를 즉시 확인하기\n어렵고 이미지와 게임 데이터가 다시 갈라질 위험이 있습니다.\n\n이번 목표는 아이템을 눈으로 보면서 배율, 위치와 점유 칸을 한 화면에서 맞추고, 저장한\n최종 결과만 게임에 적용하는 것입니다. 편집 도구는 로컬 개발 환경에 두고 공개 위키는\n카탈로그를 읽는 용도로 제한합니다.\n\n## 사용자 경험\n\n- ItemDB의 각 아이템에서 `Edit`을 누르면 선택한 아이콘과 5x5 칸 편집기가 열립니다.\n- 이미지 배율 숫자를 바꾸면 즉시 크기가 변하고, 이미지를 드래그해 칸 기준 위치를\n  조정할 수 있습니다.\n- `칸 설정하기`를 누르면 이미지는 반투명·비선택 상태가 되고 바닥 칸만 선택됩니다.\n- 저장 전에 점유 칸 없음, 5칸 범위 초과, 대각선으로만 분리된 영역을 명확한 오류로\n  막습니다.\n- 저장된 배율·위치·점유 형태는 다음 위키 빌드와 게임 인벤토리에서 같은 결과로\n  재현됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 시각 조정과 규칙 검증을 한 흐름으로 묶는다\n\n아이콘 배치는 눈으로 조정하지만 점유 형태는 게임 규칙을 따라야 합니다. 선택 칸은 한\n칸 이상이어야 하며 가로·세로 각각 5칸을 넘을 수 없고 모든 칸이 상하좌우로 연결되어야\n합니다. 대각선 접촉만으로는 하나의 아이템으로 인정하지 않습니다.\n\n### 저장 전에는 게임을 바꾸지 않는다\n\n편집기를 열거나 값을 시험하는 동안에는 기존 게임 배치가 유지됩니다. `저장`이 성공한\n아이템만 명시적인 override가 되어 런타임 기본값 위에 적용됩니다. 중간 조정이 게임에\n새어 들어가지 않아 시각 실험과 제품 상태를 분리합니다.\n\n### 원본은 하나이고 출력은 용도별로 생성한다\n\n점유 칸은 아이템 아트 카탈로그, 배율·상대 위치는 작은 layout 문서가 소유합니다.\n생성기는 두 원본을 결합해 위키용 ItemDB와 게임용 Luau 데이터를 만듭니다. 브라우저와\n게임이 서로 다른 수기 값을 갖지 않으므로 한 번 저장한 최종 배치를 같은 방식으로\n검증할 수 있습니다.\n\n## 결정 사항과 범위\n\n편집 권한은 `localhost`, `127.0.0.1`, 로컬 IPv6 주소에서만 허용합니다. 공개 위키에는\n아이템 이미지, 제원과 점유 형태는 보이지만 `Edit` 열, 편집 팝업과 저장 API는 없습니다.\n저장 API도 로컬 Host·Origin과 JSON 요청을 확인합니다.\n\n편집 캔버스는 현재 게임의 최대 아이템 범위에 맞춰 5x5로 고정했습니다. 임의 회전,\n아이템 능력치 편집과 신규 아이템 생성은 이번 범위에 포함하지 않습니다. 이 기능은\n이미 존재하는 아이템의 이미지 배치와 점유 형태를 안전하게 조정하는 도구입니다.\n\n## 시안과 현재 결과\n\n![모바일 백팩 인벤토리 시안](./media/inventory-item-concept/v003/inventory-concept.png \"상단 자원, 중앙 다칸 격자, 하단 아이템 목록으로 구성한 승인 시안\")\n\n시안의 핵심은 아이템 실루엣과 점유 칸을 중앙 격자에서 동시에 읽는 구조입니다. 로컬\n편집기는 같은 원칙을 운영 도구로 옮겨 이미지와 칸을 한 화면에서 직접 맞춥니다.\n\n![로컬 ItemDB 칸 편집기](./media/inventory-item-concept/v003/itemdb-layout-editor-result.jpg \"안테나 리커브 보우의 배율, 이미지 위치와 여섯 연결 칸을 함께 조정하는 로컬 전용 편집 화면\")\n\n![Roblox Studio 인벤토리 적용 결과](./media/inventory-item-concept/v003/studio-backpack-runtime-result.jpg \"Studio 플레이에서 아이템 이미지와 다칸 점유 형태가 동일한 배치 계약으로 표시된 최종 결과\")\n\n현재 게임 인벤토리는 승인 시안의 정보 계층을 유지하면서 6x6 보드, 열린 칸, 아이템\n점유 형태, 선택 아이템 정보와 하단 목록을 표시합니다. ItemDB에서 저장된 아이템은\n생성된 layout을 사용하고 아직 저장하지 않은 아이템은 검증된 기존 런타임 기본값을\n사용합니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 32종 카탈로그의 ID, 이미지, 256픽셀 칸 단위, 좌표 연결성과 크기\n계약을 검증합니다. 로컬 저장 요청은 선택 좌표를 좌상단 원점으로 정규화하고 카탈로그의\n상세·요약 배열과 layout 문서를 함께 갱신한 뒤 위키 데이터와\n`GeneratedItemLayouts.luau`를 다시 생성합니다. 실패하면 원본을 복구해 반쪽 저장을\n남기지 않습니다.\n\n게임에서는 `ItemCatalog`가 저장된 생성 layout을 우선 사용하고 기존 형태를 fallback으로\n유지합니다. `Screen`은 배율, 상대 위치, 이미지 캔버스 크기와 점유 좌표를 함께 사용해\n보드와 하단 아이템 카드에 동일한 실루엣을 배치합니다.\n\n## 검증\n\nPython과 JavaScript 테스트로 빈 선택, 대각선 분리, 5x5 범위 밖 좌표, 중복 좌표와 잘못된\n배율을 거부하는지 확인했습니다. 카탈로그 32행, 실제 PNG, 점유 패턴과 좌표, 생성된\n게임 layout이 서로 일치하는지도 검사했습니다.\n\n브라우저에서 로컬 ItemDB의 32개 `Edit` 버튼, 5x5 편집기, 선택 아이템 이미지, 배율 입력,\n여섯 선택 칸과 저장 규칙을 확인했습니다. Roblox Studio MCP 플레이에서는\n`PackBoundBackpackGui`가 로드되고 여러 형태의 아이템이 연결된 다칸 영역에 표시되는 것을\n확인했습니다.\n\n## 후속 기획\n\n- 실제 밸런스 조정에서 아이템 크기가 바뀔 때 능력치·희귀도와 점유 비용을 함께 검토합니다.\n- 회전별 별도 이미지가 필요해질 때 현재 단일 방향 계약을 확장하되 동일한 연결성 검증을\n  유지합니다.\n- 신규 아이템 생성은 이미지 제작, ID·태그·능력치 승인과 점유 편집을 하나의 별도 등록\n  흐름으로 설계합니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v003.md"
+        },
         {
           "id": "inventory-item-concept",
           "title": "인벤토리와 아이템 개념",
@@ -228,8 +306,8 @@ window.PACKBOUND_WIKI = {
             "icon",
             "art-direction"
           ],
-          "created_at": "2026-08-06T16:17:30+09:00",
-          "updated_at": "2026-08-06T16:35:25+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -272,8 +350,8 @@ window.PACKBOUND_WIKI = {
             "shop",
             "architecture"
           ],
-          "created_at": "2026-08-06T16:17:30+09:00",
-          "updated_at": "2026-08-06T16:17:30+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -319,8 +397,8 @@ window.PACKBOUND_WIKI = {
         "roblox",
         "mobile"
       ],
-      "created_at": "2026-08-06T10:36:02+09:00",
-      "updated_at": "2026-08-06T14:33:35+09:00",
+      "created_at": "2026-08-06",
+      "updated_at": "2026-08-06",
       "authors": [
         "Codex"
       ],
@@ -375,8 +453,8 @@ window.PACKBOUND_WIKI = {
             "roblox",
             "mobile"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T14:33:35+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -431,8 +509,8 @@ window.PACKBOUND_WIKI = {
             "camera",
             "ux"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T14:03:03+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -492,8 +570,8 @@ window.PACKBOUND_WIKI = {
             "animation",
             "assets"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T12:44:33+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -565,8 +643,8 @@ window.PACKBOUND_WIKI = {
             "rendering",
             "roblox"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T10:36:02+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -618,8 +696,8 @@ window.PACKBOUND_WIKI = {
         "cleanup",
         "wiki"
       ],
-      "created_at": "2026-08-06T10:36:02+09:00",
-      "updated_at": "2026-08-06T15:57:17+09:00",
+      "created_at": "2026-08-06",
+      "updated_at": "2026-08-06",
       "authors": [
         "Codex"
       ],
@@ -675,8 +753,8 @@ window.PACKBOUND_WIKI = {
             "cleanup",
             "wiki"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T15:57:17+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -731,8 +809,8 @@ window.PACKBOUND_WIKI = {
             "input",
             "wiki"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T14:44:55+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -781,8 +859,8 @@ window.PACKBOUND_WIKI = {
             "controls",
             "wiki"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T12:44:33+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -832,8 +910,8 @@ window.PACKBOUND_WIKI = {
             "gameplay",
             "architecture"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T10:36:02+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -868,63 +946,156 @@ window.PACKBOUND_WIKI = {
     {
       "id": "development-wiki",
       "title": "개발 위키와 변경 이력 시스템",
-      "summary": "별도 공개 저장소에 읽기 전용 위키만 배포하고 Rojo 제어는 로컬 주소에서만 활성화합니다.",
+      "summary": "공개 위키는 화면뿐 아니라 배포 데이터에서도 작업 시각을 제거하고 날짜만 전달하며, 로컬 원본은 정확한 이력을 유지합니다.",
       "status": "active",
       "category": "tooling",
       "tags": [
         "documentation",
         "wiki",
-        "history",
-        "tooling",
-        "navigation",
-        "rojo",
-        "search",
-        "tags",
-        "date-filter",
+        "privacy",
         "public-hosting",
         "security"
       ],
-      "created_at": "2026-08-06T10:36:02+09:00",
-      "updated_at": "2026-08-06T14:17:11+09:00",
+      "created_at": "2026-08-06",
+      "updated_at": "2026-08-06",
       "authors": [
         "Codex"
       ],
-      "version": 4,
-      "change_type": "updated",
-      "change_summary": "정적 위키 전용 공개 미러 게시 흐름과 localhost 전용 Rojo UI·상태 조회 경계를 추가함",
-      "supersedes": "development-wiki@v003",
+      "version": 6,
+      "change_type": "corrected",
+      "change_summary": "공개 화면에서만 시각을 숨기던 정책을 보강해 공개 정적 파일의 ISO 타임스탬프도 날짜로 축약하고, 정확한 시각이 남으면 배포를 중단하도록 했습니다.",
+      "supersedes": "development-wiki@v005",
       "sources": [
-        ".agents/skills/update-project-wiki/SKILL.md",
-        "wiki/public-publishing.json",
         "tools/publish_public_wiki.py",
-        "wiki/site/index.html",
-        "wiki/site/app.js",
-        "wiki/site/app.css",
         "wiki/site/local-access.js",
-        "tests/local-access.spec.js"
+        "wiki/site/app.js",
+        "tests/test_publish_public_wiki.py",
+        "tests/local-access.spec.js",
+        "wiki/content/media/development-wiki/v006/public-date-only-result.jpg"
       ],
       "related": [
-        "project-overview",
-        "studio-automation-routing"
+        "inventory-item-concept",
+        "project-overview"
       ],
       "validation": [
-        "node --check wiki/site/app.js",
-        "node --check wiki/site/local-access.js",
-        "node --check wiki/site/tag-explorer.js",
-        "node tests/local-access.spec.js",
-        "node tests/tag-explorer.spec.js",
-        "PYTHONPYCACHEPREFIX=/tmp/packbound-public-wiki-pycache python3 -m py_compile tools/publish_public_wiki.py",
-        "python3 tools/publish_public_wiki.py --check",
+        "python3 -m unittest tests.test_publish_public_wiki tests.test_wiki",
+        "node --test tests/local-access.spec.js",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
-        "python3 -m unittest tests/test_wiki.py",
-        "Python HTMLParser로 wiki/site/index.html 파싱",
-        "공개 아티팩트의 개인 경로·토큰·비밀 키 패턴 검사",
+        "python3 tools/publish_public_wiki.py --check",
+        "공개 배포본의 data.js와 combat-db-data.js에 시·분·초·시간대가 남지 않는지 검사",
+        "공개 호스트 미리보기에서 생성·변경 정보가 날짜로만 표시되고 Rojo 제어와 ItemDB Edit가 숨겨지는지 브라우저 확인",
         "git diff --check"
       ],
-      "source_path": "wiki/content/pages/development-wiki/v004.md",
-      "body": "# 개발 위키와 변경 이력 시스템\n\n## 결과\n\nPackBound 개발 위키는 Git 커밋에 보존된 Markdown과 생성된 정적 데이터를\n사용합니다. 문서, 전체 트리, 변경 이력, 검색, 태그 탐색과 날짜 필터는 별도의\n공개 저장소에 읽기 전용 정적 사이트로 게시할 수 있습니다. 원본 ProjectBackpack\n저장소와 Roblox 소스는 비공개 상태를 유지합니다.\n\n로컬 개발 주소와 공개 주소의 권한은 분리합니다. Rojo 플레이스 선택, 상태 조회,\n시작과 종료 UI는 `localhost`, `127.0.0.1` 또는 로컬 IPv6 주소에서만 표시하고\n실행합니다. 공개 주소에는 Rojo 영역이 나타나지 않으며 로컬 제어 API 요청도\n보내지 않습니다.\n\n## 구현 내용\n\n### 커밋 단위의 불변 문서 이력\n\n개발 문서는 논리 페이지별 `vNNN.md` 파일로 보존됩니다. 새 커밋은 이전 버전을\n덮어쓰지 않고 다음 버전을 추가하며, `supersedes` 메타데이터로 직전 버전을\n연결합니다. 생성 시각, 수정 시각, 작성자, 변경 유형, 근거 파일과 실제 검증을\n각 버전에 함께 기록합니다.\n\n`tools/wiki.py build`는 Markdown 문서를 브라우저가 읽는 `wiki/site/data.js`로\n생성합니다. 본문과 모든 revision이 Git 커밋에 포함되므로 과거 상태를 열거나\n버전 간 차이를 확인할 수 있습니다.\n\n### 문서 탐색\n\n위키는 다음 읽기 기능을 로컬과 공개 사이트에 동일하게 제공합니다.\n\n- 카테고리별 사이드바와 전체 위키 트리\n- 최신 문서와 모든 과거 버전 열람\n- 선택 버전과 직전 버전의 변경점 비교\n- 제목, 요약, 카테고리, 태그와 본문 검색\n- 전체 revision 기반 태그 탐색과 최신·최다·테마 정렬\n- 생성일 또는 수정 이력을 기준으로 하는 독립 날짜 범위 필터\n\n날짜 범위는 문서 검색, 태그 수와 목록, 태그별 문서 결과에 공통 적용됩니다.\n범위 안에 생성되었거나 revision 수정일이 하나라도 있는 페이지가 대상이므로,\n이후에 다시 수정된 문서도 과거 작업 기간에서 찾을 수 있습니다.\n\n### 공개 읽기 전용 미러\n\n`wiki/public-publishing.json`은 정적 위키 전용 공개 저장소, 배포 브랜치와 공개\n주소를 선언합니다. `tools/publish_public_wiki.py`는 현재 생성 데이터가 Markdown\n원본과 일치하는지 먼저 검사한 뒤 임시 디렉터리에 공개 저장소를 복제합니다.\n\n게시 시 공개 저장소의 작업 트리는 `wiki/site` 내용으로 완전히 교체합니다.\nJekyll 변환을 비활성화하는 `.nojekyll`을 추가하고 원본 커밋 SHA를 공개 미러\n커밋 메시지에 남긴 뒤 배포 브랜치로 푸시합니다. 공개 저장소에는 다음 여섯 개의\n정적 파일과 `.nojekyll`만 포함됩니다.\n\n- `index.html`\n- `app.css`\n- `app.js`\n- `data.js`\n- `tag-explorer.js`\n- `local-access.js`\n\nRoblox 소스, 제작 에셋, 로컬 도구, 원본 Markdown 저장소와 Rojo 제어 서버는\n공개 미러에 복사하지 않습니다. 공개 게시 흐름은 위키 커밋과 원본 푸시가 성공한\n후 실행하므로 공개 페이지가 확정된 Git 상태를 가리킵니다.\n\n`update-project-wiki` 스킬은 공개 미러 설정이 존재할 때 원본 커밋과 푸시 후\n게시 스크립트를 실행하도록 규정합니다. 공개 미러의 파생 커밋은 새로운 위키\nrevision을 만들지 않습니다.\n\n### 로컬 전용 Rojo 제어\n\nRojo 영역은 HTML에서 기본적으로 `hidden` 상태입니다. `local-access.js`가 현재\n브라우저 주소를 검사해 다음 호스트에서만 로컬 제어를 허용합니다.\n\n- `localhost`\n- `127.0.0.1`\n- `::1`\n\n허용된 로컬 주소에서는 UI를 표시한 뒤 상태 조회를 시작하고, 플레이스 선택과\n시작·종료 이벤트를 연결합니다. 다른 모든 호스트에서는 UI를 계속 숨긴 채로\n두며 `/api/rojo/status` 폴링도 시작하지 않습니다. JavaScript가 로드되지 않거나\n오류가 발생해도 HTML과 CSS의 기본 숨김 상태가 유지되어 공개 화면에 제어 영역이\n잠깐 노출되지 않습니다.\n\n서버 측 보호도 그대로 유지합니다. `tools/wiki.py serve`와 Rojo 프로세스는\n`127.0.0.1`에만 바인딩되고, 제어 요청은 로컬 Host와 Origin을 검사합니다.\n공개 배포에는 Python 제어 서버가 포함되지 않으므로 공개 방문자는 사용자의\nMac에서 실행 중인 Rojo 프로세스에 접근할 수 없습니다.\n\n## 변경 파일\n\n- `.agents/skills/update-project-wiki/SKILL.md`: 원본 커밋과 푸시 이후 공개 미러를\n  갱신하는 게시 단계를 추가합니다.\n- `wiki/public-publishing.json`: 공개 저장소, 브랜치와 Pages 주소를 선언합니다.\n- `tools/publish_public_wiki.py`: 검증된 정적 위키만 임시 체크아웃을 통해 공개\n  저장소에 동기화합니다.\n- `wiki/site/index.html`: Rojo 컨트롤을 기본 숨김으로 전환하고 로컬 접근 판정\n  모듈을 로드합니다.\n- `wiki/site/local-access.js`: 로컬 호스트만 Rojo 제어를 허용하는 독립 판정\n  함수를 제공합니다.\n- `wiki/site/app.js`: 로컬 접근이 허용된 경우에만 Rojo UI, 이벤트와 상태 폴링을\n  활성화합니다.\n- `wiki/site/app.css`: `hidden`인 Rojo 컨트롤이 다른 표시 규칙보다 우선해\n  보이지 않도록 합니다.\n- `tests/local-access.spec.js`: 허용된 loopback 주소와 거부되는 공개 호스트를\n  검증합니다.\n\n## 검증\n\n- 위키 빌드와 생성 데이터 무결성 검사를 통과했습니다.\n- Python 위키 테스트와 기존 태그 탐색 테스트를 통과했습니다.\n- `app.js`, `local-access.js`, `tag-explorer.js`의 JavaScript 문법 검사를\n  통과했습니다.\n- Node 테스트로 localhost, IPv4·IPv6 loopback만 허용하고 공개 도메인을\n  거부하는 것을 확인했습니다.\n- 공개 게시 스크립트의 Python 문법과 설정·원본 검사를 확인했습니다.\n- `index.html`을 Python HTML 파서로 읽어 구조 오류가 없음을 확인했습니다.\n- 공개 파일에서 개인 절대 경로, 토큰과 비밀 키 패턴이 없음을 확인했습니다.\n- 커밋 대상의 공백 오류를 검사했습니다.\n\n## 결정 사항\n\n- 공개 사이트는 문서 읽기 기능만 제공하고 로컬 프로세스 제어 기능은 제공하지\n  않습니다.\n- Rojo UI는 공개 호스트를 나열하는 방식이 아니라 승인된 loopback 주소만\n  허용하는 allowlist 방식으로 판정합니다.\n- 원본 저장소 공개 여부와 위키 공개 여부를 분리하기 위해 정적 파일 전용 공개\n  저장소를 사용합니다.\n- 공개 미러는 `wiki/site`만 포함하고 원본 저장소의 다른 파일을 복제하지 않습니다.\n- 로컬 `python3 tools/wiki.py serve` 흐름은 공개 배포와 분리해 기존 개발 기능을\n  그대로 유지합니다.\n\n## 후속 작업\n\n- 공개 주소의 사용자 지정 도메인이 필요해지면 공개 저장소의 Pages 설정에\n  도메인과 DNS 검증을 추가할 수 있습니다.\n- 문서 일부를 비공개로 분리해야 할 경우 공개 빌드용 메타데이터를 도입해 페이지\n  단위 공개 범위를 명시해야 합니다.\n",
+      "source_path": "wiki/content/pages/development-wiki/v006.md",
+      "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\n공개 위키의 목적은 팀이 개발 결과와 기획 흐름을 함께 이해하도록 돕는 것입니다. 작업이\n추가되거나 바뀐 날짜는 문서 탐색에 필요하지만, 개인이 어느 시각에 작업했는지는 이 목적에\n필요하지 않습니다. 따라서 공개 범위는 날짜로 제한하고 정확한 시각은 로컬 개발 이력에만\n남기는 것이 원칙입니다.\n\n이전 버전은 브라우저 화면에서 시·분을 숨겼지만 공개 정적 파일에는 원본 ISO 타임스탬프가\n포함되어 있었습니다. 일반 독자에게 보이지 않더라도 파일을 직접 열면 확인할 수 있으므로\n프라이버시 경계가 충분하지 않았습니다. 이번 수정은 화면 표현이 아니라 공개 배포물 자체를\n날짜 단위 데이터로 만드는 데 목적이 있습니다.\n\n## 사용자 경험\n\n- 공개 페이지의 최초 생성, 마지막 변경, 버전 이력과 DB 원본 변경 정보는 날짜까지만 봅니다.\n- 공개 저장소의 생성 데이터 파일을 직접 확인해도 시·분·초와 시간대를 알 수 없습니다.\n- 로컬 위키에서는 기존처럼 정확한 시간을 확인해 개발 이력을 세밀하게 추적할 수 있습니다.\n- Rojo 서버 제어와 ItemDB 편집은 계속 로컬에서만 제공됩니다.\n\n![공개 위키의 날짜 단위 변경 정보](./media/development-wiki/v006/public-date-only-result.jpg \"공개 호스트 조건에서 시각 없이 날짜만 표시되고 로컬 제어가 숨겨진 최종 화면\")\n\n## 핵심 원칙과 설계 철학\n\n### 공개 데이터는 화면보다 먼저 안전해야 한다\n\nCSS나 날짜 포맷터는 표시만 바꿀 뿐 전송된 값을 지우지 않습니다. 공개 배포 단계에서\n모든 텍스트 자산의 ISO 타임스탬프를 `YYYY-MM-DD`로 축약해 브라우저가 처음부터 정확한\n시각을 받지 않도록 합니다. 화면의 로컬·공개 표시 분기는 이 데이터 경계를 보조하는\n두 번째 방어선입니다.\n\n### 로컬 원본과 공개 사본의 책임을 나눈다\n\n불변 Markdown 원본과 로컬 `wiki/site` 생성물은 커밋 시각과 버전 계보를 정확히 보존합니다.\n공개 저장소는 이 원본의 읽기 전용 사본이지만, 공유 목적에 필요하지 않은 시간 정밀도는\n제거합니다. 따라서 이력 추적 능력과 외부 공개 프라이버시를 동시에 유지합니다.\n\n### 실수하면 공개하지 않는다\n\n배포 준비가 끝난 뒤 공개 텍스트 자산 전체를 다시 검사합니다. 정확한 ISO 타임스탬프가\n하나라도 남아 있으면 파일명과 함께 실패하고 커밋·푸시를 시작하지 않습니다. 새 데이터\n모듈이 추가되어도 별도 목록 등록 없이 같은 검사를 받습니다.\n\n## 결정 사항과 범위\n\n배포 도구가 복사하는 HTML, CSS, JavaScript, JSON, source map, Markdown, text와 XML을\n검사 대상으로 삼았습니다. 이미지 같은 바이너리는 텍스트로 해석하거나 다시 쓰지 않습니다.\n타임스탬프는 날짜 부분만 보존하므로 최신순 정렬과 날짜 필터는 계속 동작합니다.\n\n공개 Git 이력의 재작성은 범위에 포함하지 않습니다. 최신 공개 배포본에서 정확한 시각을\n제거하고, 앞으로의 모든 배포가 같은 비노출 검사를 통과하도록 하는 데 집중합니다.\n\n## 현재 결과\n\n`tools/publish_public_wiki.py`는 공개 저장소에 파일을 올리기 전에 별도 임시 트리를 만들고\n정확한 타임스탬프를 날짜로 축약합니다. 이어서 잔여 타임스탬프 검사를 통과해야만 공개\n커밋과 푸시를 수행합니다. `--check`도 실제 공개 트리 준비 과정을 실행하므로 배포 전에\n동일한 프라이버시 조건을 확인할 수 있습니다.\n\n로컬 사이트의 `data.js`와 `combat-db-data.js`는 정확한 시간을 유지합니다. 공개 사본에서는\n같은 필드가 `2026-08-06`처럼 날짜만 가지며 화면도 날짜까지만 렌더링합니다.\n\n## 구현 참고\n\n정규식은 초와 소수 초가 있거나 없는 ISO 시각, `Z` 또는 숫자 시간대를 모두 인식합니다.\n치환과 검증을 독립된 함수로 나눠 단위 테스트가 실제 배포 없이 정상 축약, 바이너리 보존과\n잔여 시각 차단을 각각 확인합니다.\n\n## 검증\n\n단위 테스트에서 서로 다른 ISO 형식을 같은 날짜로 축약하고, 이미지 파일은 변경하지 않으며,\n잔여 시각이 있는 JavaScript 파일은 공개 검증을 실패시키는지 확인했습니다. 공개 호스트\n미리보기에서는 생성·변경 정보가 날짜만 표시되고 Rojo 영역과 ItemDB 편집 버튼이 보이지\n않는지 확인했습니다.\n\n## 후속 기획\n\n- 공개해야 할 메타데이터 종류가 늘어나면 허용 필드 중심의 공개 스키마를 검토합니다.\n- 공개 저장소의 과거 커밋까지 제거해야 하는 상황이 생기면 별도의 이력 재작성 작업으로\n  범위와 영향도를 먼저 검토합니다.\n",
       "revisions": [
+        {
+          "id": "development-wiki",
+          "title": "개발 위키와 변경 이력 시스템",
+          "summary": "공개 위키는 화면뿐 아니라 배포 데이터에서도 작업 시각을 제거하고 날짜만 전달하며, 로컬 원본은 정확한 이력을 유지합니다.",
+          "status": "active",
+          "category": "tooling",
+          "tags": [
+            "documentation",
+            "wiki",
+            "privacy",
+            "public-hosting",
+            "security"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
+          "authors": [
+            "Codex"
+          ],
+          "version": 6,
+          "change_type": "corrected",
+          "change_summary": "공개 화면에서만 시각을 숨기던 정책을 보강해 공개 정적 파일의 ISO 타임스탬프도 날짜로 축약하고, 정확한 시각이 남으면 배포를 중단하도록 했습니다.",
+          "supersedes": "development-wiki@v005",
+          "sources": [
+            "tools/publish_public_wiki.py",
+            "wiki/site/local-access.js",
+            "wiki/site/app.js",
+            "tests/test_publish_public_wiki.py",
+            "tests/local-access.spec.js",
+            "wiki/content/media/development-wiki/v006/public-date-only-result.jpg"
+          ],
+          "related": [
+            "inventory-item-concept",
+            "project-overview"
+          ],
+          "validation": [
+            "python3 -m unittest tests.test_publish_public_wiki tests.test_wiki",
+            "node --test tests/local-access.spec.js",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 tools/publish_public_wiki.py --check",
+            "공개 배포본의 data.js와 combat-db-data.js에 시·분·초·시간대가 남지 않는지 검사",
+            "공개 호스트 미리보기에서 생성·변경 정보가 날짜로만 표시되고 Rojo 제어와 ItemDB Edit가 숨겨지는지 브라우저 확인",
+            "git diff --check"
+          ],
+          "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\n공개 위키의 목적은 팀이 개발 결과와 기획 흐름을 함께 이해하도록 돕는 것입니다. 작업이\n추가되거나 바뀐 날짜는 문서 탐색에 필요하지만, 개인이 어느 시각에 작업했는지는 이 목적에\n필요하지 않습니다. 따라서 공개 범위는 날짜로 제한하고 정확한 시각은 로컬 개발 이력에만\n남기는 것이 원칙입니다.\n\n이전 버전은 브라우저 화면에서 시·분을 숨겼지만 공개 정적 파일에는 원본 ISO 타임스탬프가\n포함되어 있었습니다. 일반 독자에게 보이지 않더라도 파일을 직접 열면 확인할 수 있으므로\n프라이버시 경계가 충분하지 않았습니다. 이번 수정은 화면 표현이 아니라 공개 배포물 자체를\n날짜 단위 데이터로 만드는 데 목적이 있습니다.\n\n## 사용자 경험\n\n- 공개 페이지의 최초 생성, 마지막 변경, 버전 이력과 DB 원본 변경 정보는 날짜까지만 봅니다.\n- 공개 저장소의 생성 데이터 파일을 직접 확인해도 시·분·초와 시간대를 알 수 없습니다.\n- 로컬 위키에서는 기존처럼 정확한 시간을 확인해 개발 이력을 세밀하게 추적할 수 있습니다.\n- Rojo 서버 제어와 ItemDB 편집은 계속 로컬에서만 제공됩니다.\n\n![공개 위키의 날짜 단위 변경 정보](./media/development-wiki/v006/public-date-only-result.jpg \"공개 호스트 조건에서 시각 없이 날짜만 표시되고 로컬 제어가 숨겨진 최종 화면\")\n\n## 핵심 원칙과 설계 철학\n\n### 공개 데이터는 화면보다 먼저 안전해야 한다\n\nCSS나 날짜 포맷터는 표시만 바꿀 뿐 전송된 값을 지우지 않습니다. 공개 배포 단계에서\n모든 텍스트 자산의 ISO 타임스탬프를 `YYYY-MM-DD`로 축약해 브라우저가 처음부터 정확한\n시각을 받지 않도록 합니다. 화면의 로컬·공개 표시 분기는 이 데이터 경계를 보조하는\n두 번째 방어선입니다.\n\n### 로컬 원본과 공개 사본의 책임을 나눈다\n\n불변 Markdown 원본과 로컬 `wiki/site` 생성물은 커밋 시각과 버전 계보를 정확히 보존합니다.\n공개 저장소는 이 원본의 읽기 전용 사본이지만, 공유 목적에 필요하지 않은 시간 정밀도는\n제거합니다. 따라서 이력 추적 능력과 외부 공개 프라이버시를 동시에 유지합니다.\n\n### 실수하면 공개하지 않는다\n\n배포 준비가 끝난 뒤 공개 텍스트 자산 전체를 다시 검사합니다. 정확한 ISO 타임스탬프가\n하나라도 남아 있으면 파일명과 함께 실패하고 커밋·푸시를 시작하지 않습니다. 새 데이터\n모듈이 추가되어도 별도 목록 등록 없이 같은 검사를 받습니다.\n\n## 결정 사항과 범위\n\n배포 도구가 복사하는 HTML, CSS, JavaScript, JSON, source map, Markdown, text와 XML을\n검사 대상으로 삼았습니다. 이미지 같은 바이너리는 텍스트로 해석하거나 다시 쓰지 않습니다.\n타임스탬프는 날짜 부분만 보존하므로 최신순 정렬과 날짜 필터는 계속 동작합니다.\n\n공개 Git 이력의 재작성은 범위에 포함하지 않습니다. 최신 공개 배포본에서 정확한 시각을\n제거하고, 앞으로의 모든 배포가 같은 비노출 검사를 통과하도록 하는 데 집중합니다.\n\n## 현재 결과\n\n`tools/publish_public_wiki.py`는 공개 저장소에 파일을 올리기 전에 별도 임시 트리를 만들고\n정확한 타임스탬프를 날짜로 축약합니다. 이어서 잔여 타임스탬프 검사를 통과해야만 공개\n커밋과 푸시를 수행합니다. `--check`도 실제 공개 트리 준비 과정을 실행하므로 배포 전에\n동일한 프라이버시 조건을 확인할 수 있습니다.\n\n로컬 사이트의 `data.js`와 `combat-db-data.js`는 정확한 시간을 유지합니다. 공개 사본에서는\n같은 필드가 `2026-08-06`처럼 날짜만 가지며 화면도 날짜까지만 렌더링합니다.\n\n## 구현 참고\n\n정규식은 초와 소수 초가 있거나 없는 ISO 시각, `Z` 또는 숫자 시간대를 모두 인식합니다.\n치환과 검증을 독립된 함수로 나눠 단위 테스트가 실제 배포 없이 정상 축약, 바이너리 보존과\n잔여 시각 차단을 각각 확인합니다.\n\n## 검증\n\n단위 테스트에서 서로 다른 ISO 형식을 같은 날짜로 축약하고, 이미지 파일은 변경하지 않으며,\n잔여 시각이 있는 JavaScript 파일은 공개 검증을 실패시키는지 확인했습니다. 공개 호스트\n미리보기에서는 생성·변경 정보가 날짜만 표시되고 Rojo 영역과 ItemDB 편집 버튼이 보이지\n않는지 확인했습니다.\n\n## 후속 기획\n\n- 공개해야 할 메타데이터 종류가 늘어나면 허용 필드 중심의 공개 스키마를 검토합니다.\n- 공개 저장소의 과거 커밋까지 제거해야 하는 상황이 생기면 별도의 이력 재작성 작업으로\n  범위와 영향도를 먼저 검토합니다.\n",
+          "source_path": "wiki/content/pages/development-wiki/v006.md"
+        },
+        {
+          "id": "development-wiki",
+          "title": "개발 위키와 변경 이력 시스템",
+          "summary": "기획 문서와 구조화 데이터를 위키·DB 탭으로 분리하고, 공개 페이지에는 작업 날짜만 남겨 읽기 편의와 개발자 프라이버시를 함께 지킵니다.",
+          "status": "active",
+          "category": "tooling",
+          "tags": [
+            "documentation",
+            "wiki",
+            "database",
+            "navigation",
+            "combat-data",
+            "itemdb",
+            "privacy",
+            "public-hosting"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
+          "authors": [
+            "Codex"
+          ],
+          "version": 5,
+          "change_type": "updated",
+          "change_summary": "기획의 맥락은 위키에 보존하고 반복 비교할 목록은 DB 탭의 일곱 데이터베이스로 분리했으며, 공개 화면의 작업 시각은 날짜 단위로 제한했습니다.",
+          "supersedes": "development-wiki@v004",
+          "sources": [
+            "AGENTS.md",
+            ".agents/skills/update-project-wiki/SKILL.md",
+            "wiki/content/pages/backpack-combat-stat-database/v001.md",
+            "tools/wiki.py",
+            "tools/combat_db.py",
+            "wiki/site/index.html",
+            "wiki/site/app.js",
+            "wiki/site/app.css",
+            "wiki/site/combat-db.js",
+            "wiki/site/local-access.js",
+            "tests/test_combat_db.py",
+            "tests/combat-db.spec.js",
+            "tests/local-access.spec.js",
+            "wiki/content/media/development-wiki/v005/combat-database-tabs-result.jpg"
+          ],
+          "related": [
+            "backpack-combat-stat-database",
+            "inventory-item-concept",
+            "project-overview"
+          ],
+          "validation": [
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests.test_combat_db tests.test_item_db tests.test_wiki",
+            "node --check wiki/site/app.js",
+            "node --test tests/combat-db.spec.js tests/item-db.spec.js tests/local-access.spec.js tests/markdown-media.spec.js tests/tag-explorer.spec.js",
+            "브라우저에서 DB 탭 7개와 전투 DB 6개의 178개 레코드, 검색·우선순위 필터와 콘솔 오류 0건 확인",
+            "공개 호스트에서 정확한 작업 시각을 숨기는 local-access 정책 단위 테스트",
+            "git diff --check"
+          ],
+          "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\nPackBound 위키에는 두 종류의 지식이 함께 쌓입니다. 첫째는 왜 기능을 만들었고 어떤\n경험을 지향하는지를 설명하는 기획 문서이며, 둘째는 능력치·상태 효과·아이템처럼 행\n단위로 검색하고 비교해야 하는 운영 데이터입니다. 두 종류를 같은 문서 목록에 계속\n섞으면 DB가 늘어날수록 기획의 흐름을 읽기 어려워지고 원하는 수치를 찾는 시간도\n길어집니다.\n\n이번 구조의 목표는 기획의 철학과 결정은 위키에 보존하고, 반복적으로 갱신되는 목록은\n별도 DB 탐색면에서 빠르게 비교하도록 역할을 분리하는 것입니다. 동시에 공개 위키는\n팀과 공유할 수 있는 결과 기록으로 유지하되 개인의 구체적인 작업 시각까지 노출하지\n않도록 공개 범위를 조정합니다.\n\n## 사용자 경험\n\n- 좌측의 `위키`와 `DB` 탭을 전환해 서술형 문서와 구조화 목록을 즉시 구분합니다.\n- DB 탭에서는 데이터베이스 수, 각 DB의 레코드 수와 전체 레코드 수를 한눈에 봅니다.\n- 전투 능력치 원문을 읽지 않아도 능력치, 자원, 상태 효과, 공간 조건, 발동 조건과\n  태그를 각각 검색하고 상태·우선순위로 거를 수 있습니다.\n- 각 전투 DB에서 원본 기획 문서로 돌아갈 수 있어 숫자만 보고 설계 의도를 잃지 않습니다.\n- 로컬 위키는 정확한 생성·변경 시간을 보여 개발 이력을 추적하고, 공개 위키는 날짜만\n  보여 공유에 필요한 정보만 제공합니다.\n\n![위키와 DB가 분리된 전투 능력치 화면](./media/development-wiki/v005/combat-database-tabs-result.jpg \"DB 탭에서 일곱 데이터베이스와 전투 능력치 레코드를 동시에 탐색하는 최종 로컬 화면\")\n\n## 핵심 원칙과 설계 철학\n\n### 기획 원문이 의미의 기준이다\n\nDB 화면은 기획 문서를 대체하지 않습니다. `백팩 전투 능력치 데이터베이스` 최신 버전의\n표를 빌드 시 읽어 구조화할 뿐이며, 설명 문장, 레퍼런스 조사, 로드맵과 트레이드오프는\n원문에 남깁니다. 데이터 행은 항상 원본 문서와 버전을 표시하고 원문 링크를 제공합니다.\n\n### 행으로 관리할 가치가 있는 목록만 분리한다\n\n문서 안의 모든 표를 DB로 만들지 않습니다. 반복 검색·비교와 상태 갱신의 가치가 있는\n여섯 목록만 추렸습니다. 원칙 설명용 표와 완료 현황 요약은 문맥 의존성이 크므로 위키에\n남깁니다.\n\n### 공개 범위는 필요한 정보의 최소치다\n\n공개 독자는 개발이 어느 날짜에 추가·수정됐는지는 볼 수 있지만 시·분은 볼 수 없습니다.\n로컬 loopback 주소만 정확한 시간을 표시합니다. 이 경계는 Rojo 제어와 ItemDB 편집 권한에\n사용하는 동일한 로컬 allowlist를 따르므로 새 공개 도메인을 추가해도 실수로 시간이\n노출되지 않습니다.\n\n## 결정 사항과 범위\n\nDB 탭에는 ItemDB와 다음 전투 데이터베이스 여섯 개를 등록했습니다.\n\n| DB | 레코드 | 역할 |\n| --- | ---: | --- |\n| 아이템 데이터베이스 | 32 | 이미지, 제원, 점유 형태와 로컬 배치 편집 |\n| 전투 능력치 | 55 | 현재 계약과 후속 능력치 제안 비교 |\n| 전투 자원 | 7 | 전투 중 소비·회복되는 현재값 규칙 |\n| 상태 효과 | 19 | 강화·약화 효과의 역할과 개발 상태 |\n| 백팩 공간 조건 | 25 | 구현된 배치 관계와 후속 공간 퍼즐 후보 |\n| 발동 조건 | 20 | 전투 사건과 효과 실행 시점 |\n| 아이템 태그 | 52 | 현재 분류 태그와 후속 제안 |\n\n전투 DB는 현재 읽기 전용입니다. ItemDB의 편집 기능만 로컬에서 제공하며 공개 페이지는\n모든 DB를 열람만 할 수 있습니다. 전투 기획 원문의 내용은 이번 작업에서 바꾸지 않고,\n이미 합의된 표를 탐색 가능한 형태로 재구성하는 데 범위를 한정했습니다.\n\n## 현재 결과\n\n위키 탭에는 기존 카테고리와 문서 트리만, DB 탭에는 일곱 DB 카드만 표시됩니다. 현재\n경로에 맞춰 탭과 DB 카드가 자동 선택되고 키보드 좌우 키로도 탭을 전환할 수 있습니다.\n새 DB는 탐색 레지스트리에 항목을 추가하면 같은 카드 구조로 확장됩니다.\n\n전투 DB 생성기는 최신 기획 버전에서 178개 행을 읽어 공통 브라우저 데이터로 만듭니다.\n각 DB는 전체 텍스트 검색과 자신에게 맞는 분류, 우선순위, 개발 상태 필터를 제공합니다.\n원문 표가 다음 위키 버전에서 갱신되면 별도 수기 복사 없이 위키 빌드에서 DB도 함께\n재생성됩니다.\n\n공개 페이지에서는 본문 메타데이터, 문서 헤더, 변경 이력, 전체 트리, 태그 결과와 DB\n원본 변경 정보가 모두 날짜까지만 표시됩니다. 로컬 주소에서는 같은 위치에 시·분까지\n표시되어 정밀한 개발 이력을 유지합니다.\n\n## 구현 참고\n\n`tools/combat_db.py`는 최신 전투 능력치 위키 버전의 Markdown 표를 검증하고 여섯 DB의\n공통 열·필터 계약으로 변환합니다. `tools/wiki.py build`와 `check`가 ItemDB, CombatDB와\n일반 위키 데이터를 한 번에 생성·검사하므로 일부 DB만 오래된 상태로 남을 수 없습니다.\n\n브라우저는 `#/db/<database-id>` 경로를 사용합니다. `combat-db.js`는 검색, 필터 옵션과\nDB 조회를 담당하고 `app.js`는 공통 표·상태 배지와 탐색 카드를 그립니다. 정확한 시각\n표시는 `local-access.js`가 loopback 호스트인지 판정한 뒤 공통 날짜 포맷터에 적용합니다.\n\n## 검증\n\nPython 테스트에서 필요한 여섯 섹션만 추출되는지, 현재·제안 능력치가 같은 스키마로\n합쳐지는지, 강화·약화 그룹과 현재·제안 태그가 보존되는지, 각 DB의 레코드 ID가\n중복되지 않는지 확인했습니다. JavaScript 테스트에서는 한글·영문 검색, 복합 필터,\n필터 옵션과 DB 조회를 확인했습니다.\n\n브라우저에서 일곱 DB 카드와 합계 210개 레코드가 표시되고, 전투 DB 여섯 페이지의\n행 수가 생성 데이터와 일치하는지 확인했습니다. `ArmorPenetration` 검색은 한 행만,\nP0 필터는 아홉 행만 표시했습니다. 가로 페이지 오버플로와 콘솔 오류는 없었습니다.\n\n## 후속 기획\n\n- 전투 데이터가 실제 런타임에 연결될 때 각 DB 행에 데이터 계약과 런타임 완료 상태를\n  같은 커밋에서 갱신합니다.\n- DB가 많아지면 카드 즐겨찾기와 DB 간 통합 검색을 검토하되 위키와 DB의 역할 구분은\n  유지합니다.\n- 편집이 필요한 전투 DB가 생기면 공개 읽기 전용 원칙을 유지하고 로컬 저장 API를\n  데이터 종류별로 별도 설계합니다.\n",
+          "source_path": "wiki/content/pages/development-wiki/v005.md"
+        },
         {
           "id": "development-wiki",
           "title": "개발 위키와 변경 이력 시스템",
@@ -944,8 +1115,8 @@ window.PACKBOUND_WIKI = {
             "public-hosting",
             "security"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T14:17:11+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -1002,8 +1173,8 @@ window.PACKBOUND_WIKI = {
             "tags",
             "date-filter"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T13:57:17+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -1050,8 +1221,8 @@ window.PACKBOUND_WIKI = {
             "search",
             "tags"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T12:44:33+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
@@ -1096,8 +1267,8 @@ window.PACKBOUND_WIKI = {
             "navigation",
             "rojo"
           ],
-          "created_at": "2026-08-06T10:36:02+09:00",
-          "updated_at": "2026-08-06T10:36:02+09:00",
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-06",
           "authors": [
             "Codex"
           ],
