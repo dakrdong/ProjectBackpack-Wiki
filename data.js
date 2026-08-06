@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-06T05:35:07+00:00",
-  "page_count": 4,
-  "revision_count": 11,
+  "generated_at": "2026-08-06T07:18:48+00:00",
+  "page_count": 5,
+  "revision_count": 14,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -72,6 +72,98 @@ window.PACKBOUND_WIKI = {
           ],
           "body": "# Roblox Studio MCP 우선 조작 규칙\n\n## 결과\n\nRoblox Studio의 라이브 상태를 읽거나 바꾸는 모든 작업은 구성된\n`Roblox_Studio` MCP를 첫 번째이자 권위 있는 조작 경로로 사용합니다.\nComputer Use는 편의상 선택할 수 있는 대체 경로가 아니며, 필요한 기능이\nMCP에 없거나 실제 MCP 호출이 구체적으로 실패한 경우에만 사용합니다.\n\n## 적용 범위\n\n다음 작업은 모두 Studio MCP를 먼저 사용합니다.\n\n- 실행 중인 Studio 탐색과 대상 플레이스 선택\n- DataModel, 인스턴스, 속성 및 스크립트 검사와 변경\n- Luau 실행, 플레이 시작·정지, 콘솔 확인\n- 스크린 캡처와 런타임 시각 검증\n- 에셋 삽입 및 이미지 업로드\n\nRojo와 저장소 도구는 소스 작성, 빌드, 정적 검증에 계속 사용합니다. 하지만\n이 결과만으로 라이브 Studio 상태가 적용되었다고 주장하지 않습니다. 라이브\n상태에 관한 완료 판정에는 가능한 경우 Studio MCP 증거가 필요합니다.\n\n## Computer Use 예외\n\nComputer Use로 넘어가기 전에 MCP에서 필요한 기능을 찾고 실제 호출을\n시도합니다. 기능 부재 또는 구체적인 실패가 확인되면 사용자에게 그 이유를\n먼저 알리고, 지원되지 않는 UI 단계에만 Computer Use를 사용합니다. 그 단계가\n끝나면 검사와 검증은 다시 Studio MCP로 돌아갑니다.\n\n현재 Codex 작업에 MCP 서버 설정은 있으나 Studio 도구가 노출되지 않은 경우,\nStudio 자동화는 일시적으로 차단된 것으로 처리합니다. 이 상태에서 Computer\nUse, AppleScript, 키보드 합성, 셸 명령 또는 파일 편집으로 라이브 Studio\n조작을 몰래 대체하지 않습니다.\n\n## 구현 내용\n\n저장소 루트 `AGENTS.md`에 이 규칙을 필수 라우팅 정책으로 추가했습니다.\n향후 작업자는 Studio 기능별 선호도가 아니라 동일한 강제 순서를 따릅니다.\n\n```text\nStudio MCP 기능 확인 및 호출\n  ├─ 성공 → MCP로 작업·검증 완료\n  ├─ 기능 없음 → 이유 공유 → 해당 UI 단계만 Computer Use → MCP 복귀\n  └─ 구체적 실패 → 오류 공유 → 해당 UI 단계만 Computer Use → MCP 복귀\n```\n\n## 변경 파일\n\n- `AGENTS.md`: MCP 우선 조작, 예외 조건, 사용자 고지, 라이브 검증 근거를\n  강제하는 저장소 규칙을 추가했습니다.\n- `wiki/content/pages/studio-automation-routing/v001.md`: 규칙과 적용 범위를\n  불변 문서로 기록합니다.\n\n## 검증\n\n- `Roblox_Studio` MCP 서버가 로컬 Codex 설정에 구성되어 있음을 확인했습니다.\n- StudioMCP 실행 파일이 존재하고 실행 가능한 상태임을 확인했습니다.\n- 현재 작업의 도구 표면에는 Studio MCP의 개별 조작 도구가 노출되지 않아,\n  규칙대로 Computer Use로 우회하지 않았습니다.\n\n## 결정 사항\n\n- 라이브 Studio 상태의 권위 있는 증거는 Studio MCP 호출 결과로 삼습니다.\n- Computer Use는 MCP의 영구 대체재가 아니라 확인된 공백을 메우는 좁은\n  예외입니다.\n- 도구 노출 문제는 자동 우회의 근거가 아니라 작업 일시 차단 사유입니다.\n\n## 후속 작업\n\n- Studio MCP 도구가 다시 노출되면 캐릭터 이미지 업로드와 라이브 플레이\n  검증을 MCP로 이어서 수행합니다.\n",
           "source_path": "wiki/content/pages/studio-automation-routing/v001.md"
+        }
+      ]
+    },
+    {
+      "id": "inventory-item-concept",
+      "title": "인벤토리와 아이템 개념",
+      "summary": "모든 인벤토리 아이템의 다중 칸 점유 형태와 회전, 소유 인스턴스, 배치, 보관, 상점 경계를 후속 병렬 제작의 공통 계약으로 정의했습니다.",
+      "status": "active",
+      "category": "gameplay",
+      "tags": [
+        "inventory",
+        "item",
+        "backpack",
+        "grid",
+        "placement",
+        "rotation",
+        "storage",
+        "shop",
+        "architecture"
+      ],
+      "created_at": "2026-08-06T16:17:30+09:00",
+      "updated_at": "2026-08-06T16:17:30+09:00",
+      "authors": [
+        "Codex"
+      ],
+      "version": 1,
+      "change_type": "created",
+      "change_summary": "2024년 인벤토리·상점 기획 화면과 현재 ItemStats 공간 규칙을 통합해 다중 칸 아이템의 데이터·배치·보관·거래 기준을 새로 확정함",
+      "supersedes": null,
+      "sources": [
+        "docs/gameplay/inventory-item-concept.md",
+        "docs/gameplay/item-stats.md",
+        "src/ReplicatedStorage/ItemStats/Types.luau",
+        "src/ReplicatedStorage/ItemStats/ItemTags.luau",
+        "src/ReplicatedStorage/ItemStats/BackpackRuleEvaluator.luau"
+      ],
+      "related": [
+        "project-overview"
+      ],
+      "validation": [
+        "Markdown 후행 공백 및 코드 펜스 균형 검사",
+        "python3 tools/wiki.py build",
+        "python3 tools/wiki.py check",
+        "python3 -m unittest tests/test_wiki.py"
+      ],
+      "source_path": "wiki/content/pages/inventory-item-concept/v001.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 결과\n\nPackBound의 인벤토리 아이템은 단일 카드 슬롯이 아니라 외형을 반영한 하나 이상의\n격자 칸을 점유합니다. 검처럼 긴 형태, 갑옷 같은 사각 형태, L자나 T자 형태를 같은\n좌표 계약으로 표현하며 0·90·180·270도 회전으로 배치 선택을 만듭니다.\n\n이 기준은 아이템 목록, 이미지, 데이터, 격자 로직, UI, 보관함과 상점을 여러 작업이\n병렬로 제작할 때 사용하는 공통 계약입니다. 아직 런타임 인벤토리 구현을 완료했다는\n뜻은 아니며, 후속 구현이 지켜야 하는 소유권과 데이터 경계를 먼저 고정합니다.\n\n## 구현 내용\n\n### 아이템 데이터 경계\n\n- `ItemDefinition`은 이름, 태그, 외형, 점유 형태, 회전, 스탯, 공간 규칙과 기준\n  가격을 소유하는 읽기 전용 카탈로그 원형입니다.\n- `ItemInstance`는 플레이어가 실제로 소유한 고유 아이템 또는 스택입니다.\n- `ItemPlacement`는 인스턴스의 Basic Inventory 원점과 회전값만 저장하고 실제\n  점유·효과 칸을 정의에서 파생합니다.\n- `ShopOffer`는 구매 전 상품 제안이며 결제 성공 전에는 아이템 인스턴스나 전투\n  효과로 취급하지 않습니다.\n\n골드, 다이아와 현금 잔액은 지갑 재화이므로 격자 칸을 사용하지 않습니다. 반면\n플레이어가 줍고 옮길 수 있는 장비, 탄약, 소모품, 재료와 보물은 모두 최소 한 칸의\n점유 형태를 가져야 합니다.\n\n### 점유 형태와 회전\n\n- 점유 형태는 좌상단 `(0, 0)`으로 정규화한 중복 없는 정수 좌표 집합입니다.\n- 점유 칸은 상하좌우로 연결된 하나의 덩어리여야 하며 내부 빈 칸은 다른 아이템이\n  사용할 수 있습니다.\n- 회전은 양의 Y가 아래로 증가하는 현재 격자 좌표계에서 시계 방향으로 변환한 뒤\n  다시 좌상단에 정규화합니다.\n- `FootprintCells`, 공간 규칙용 `EffectCells`와 아이콘은 같은 방향으로 회전합니다.\n- 첫 콘텐츠 제작 배치는 초기 4x4 열린 영역에 단독 배치할 수 있도록 경계 상자\n  최대 4x4를 사용합니다. 런타임은 설정된 인벤토리 안의 임의 연결 형태를 처리해야\n  합니다.\n\n기존 평가기의 `ActiveCells`는 열린 인벤토리 칸과 이름이 충돌하므로 저작 문서에서는\n`EffectCells`라고 부릅니다. 배치 계층이 회전·변환한 뒤 현재\n`BackpackRuleEvaluator` 입력의 `ActiveCells`로 전달합니다.\n\n### Basic Inventory와 보관함\n\n- 신규 플레이어는 기본 4x4 열린 영역에서 시작합니다.\n- 아이템의 모든 점유 칸이 열린 영역 안에 있고 다른 아이템과 겹치지 않아야 배치를\n  확정합니다.\n- Basic Inventory에 유효하게 배치된 아이템만 스탯과 공간 시너지를 제공합니다.\n- 장비 보관함은 공간 형태와 무관한 목록형 저장소이며 한 인스턴스 또는 호환 스택이\n  한 보관 슬롯을 사용합니다.\n- 드래그 중, 구매 미확정, 보관함과 초과분 대기열의 아이템은 전투 효과를 내지\n  않습니다.\n\n기존 기획의 보관함 초과 아이템 자동 소멸은 영구 구매 아이템 손실 위험 때문에\n채택하지 않습니다. 병합·빈 슬롯·직접 배치로 해결하지 못한 아이템은\n`PendingOverflow`에 보존하고 다음 로비에서 정리하도록 합니다.\n\n### UI와 거래 경계\n\n배치 UI는 최소 3x3 미리보기를 제공하고 큰 아이템은 형태에 맞게 확장합니다. 열린\n빈 칸, 잠긴 칸, 유효·무효 배치와 효과 칸은 색뿐 아니라 윤곽·패턴·아이콘으로도\n구분합니다. 상점 상품은 직접 드래그하지 않고 구매 버튼으로만 획득 절차를\n시작합니다.\n\n구매는 상품·가격·잔액 검증, 보관 또는 유효 배치, 재화 차감과 인스턴스 생성을\n원자적으로 처리합니다. 판매는 보관함 아이템을 대상으로 하며 기본 판매율은 기준\n구매가의 50%입니다. 상점 레벨, 등장 확률과 새로고침 비용은 아이템 정의가 아니라\n상점 설정이 소유합니다. 현금 상품 Market은 프로토타입 범위에서 제외합니다.\n\n## 변경 파일\n\n| 파일 | 최종 책임 |\n| --- | --- |\n| `docs/gameplay/inventory-item-concept.md` | 기획 근거, 용어, 데이터 계약, 점유·회전, 배치, 보관·거래, 이미지 제작과 병렬 작업 기준 |\n| `wiki/content/pages/inventory-item-concept/v001.md` | 이번 커밋에서 확정한 인벤토리·아이템 기준의 최초 위키 기록 |\n| `wiki/site/data.js` | 위키 소스에서 생성한 읽기 전용 사이트 데이터 |\n\n## 검증\n\n개념 문서의 Markdown 코드 펜스가 짝을 이루고 후행 공백이 없으며, 참조하는\n`item-stats.md`가 존재하는지 확인합니다. 위키 빌드와 전체 위키 구조 검사, 위키\n단위 테스트를 실행해 새 페이지의 메타데이터, 버전, 소스 경로와 생성 데이터를\n검증합니다.\n\n## 결정 사항\n\n- 아이템 외형과 점유 형태를 분리하지 않으며 비직사각형 형태를 정식 콘텐츠로\n  지원합니다.\n- 카탈로그 원형, 소유 인스턴스, 배치와 상점 상품을 서로 다른 데이터로 관리합니다.\n- 배치 저장에는 원점과 회전을 두고 실제 점유 좌표는 파생해 중복 상태를 만들지\n  않습니다.\n- 열린 인벤토리 칸은 `UnlockedCells`, 공간 효과 칸은 `EffectCells`로 구분합니다.\n- 아이템이 소유된 사실과 전투 효과가 활성화된 상태를 분리합니다.\n- 구매 또는 보상 아이템을 보관 공간 부족만으로 자동 삭제하지 않습니다.\n- 기존 `ItemStats`의 태그, 스탯과 공간 관계를 단일 전투 규칙 계약으로 재사용합니다.\n\n## 후속 작업\n\n- 카탈로그 타입과 정의 validator를 구현합니다.\n- 연결 형태 정규화, 네 방향 회전, 충돌과 열린 칸 판정을 단위 테스트와 함께\n  구현합니다.\n- 세로형 전체 화면에서 선택, 드래그, 회전과 보관함 이동을 제공하는 인벤토리 UI를\n  제작합니다.\n- 첫 아이템 묶음은 문서의 제출 양식에 따라 ID, 태그, 형태, 스탯, 경제 값과 이미지\n  경로를 함께 제출합니다.\n- 전체 격자 크기, 확장 순서·비용, 희귀도와 상점 확률, 스택 분할 UI는 별도 설정\n  작업에서 확정합니다.\n",
+      "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "모든 인벤토리 아이템의 다중 칸 점유 형태와 회전, 소유 인스턴스, 배치, 보관, 상점 경계를 후속 병렬 제작의 공통 계약으로 정의했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "grid",
+            "placement",
+            "rotation",
+            "storage",
+            "shop",
+            "architecture"
+          ],
+          "created_at": "2026-08-06T16:17:30+09:00",
+          "updated_at": "2026-08-06T16:17:30+09:00",
+          "authors": [
+            "Codex"
+          ],
+          "version": 1,
+          "change_type": "created",
+          "change_summary": "2024년 인벤토리·상점 기획 화면과 현재 ItemStats 공간 규칙을 통합해 다중 칸 아이템의 데이터·배치·보관·거래 기준을 새로 확정함",
+          "supersedes": null,
+          "sources": [
+            "docs/gameplay/inventory-item-concept.md",
+            "docs/gameplay/item-stats.md",
+            "src/ReplicatedStorage/ItemStats/Types.luau",
+            "src/ReplicatedStorage/ItemStats/ItemTags.luau",
+            "src/ReplicatedStorage/ItemStats/BackpackRuleEvaluator.luau"
+          ],
+          "related": [
+            "project-overview"
+          ],
+          "validation": [
+            "Markdown 후행 공백 및 코드 펜스 균형 검사",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 결과\n\nPackBound의 인벤토리 아이템은 단일 카드 슬롯이 아니라 외형을 반영한 하나 이상의\n격자 칸을 점유합니다. 검처럼 긴 형태, 갑옷 같은 사각 형태, L자나 T자 형태를 같은\n좌표 계약으로 표현하며 0·90·180·270도 회전으로 배치 선택을 만듭니다.\n\n이 기준은 아이템 목록, 이미지, 데이터, 격자 로직, UI, 보관함과 상점을 여러 작업이\n병렬로 제작할 때 사용하는 공통 계약입니다. 아직 런타임 인벤토리 구현을 완료했다는\n뜻은 아니며, 후속 구현이 지켜야 하는 소유권과 데이터 경계를 먼저 고정합니다.\n\n## 구현 내용\n\n### 아이템 데이터 경계\n\n- `ItemDefinition`은 이름, 태그, 외형, 점유 형태, 회전, 스탯, 공간 규칙과 기준\n  가격을 소유하는 읽기 전용 카탈로그 원형입니다.\n- `ItemInstance`는 플레이어가 실제로 소유한 고유 아이템 또는 스택입니다.\n- `ItemPlacement`는 인스턴스의 Basic Inventory 원점과 회전값만 저장하고 실제\n  점유·효과 칸을 정의에서 파생합니다.\n- `ShopOffer`는 구매 전 상품 제안이며 결제 성공 전에는 아이템 인스턴스나 전투\n  효과로 취급하지 않습니다.\n\n골드, 다이아와 현금 잔액은 지갑 재화이므로 격자 칸을 사용하지 않습니다. 반면\n플레이어가 줍고 옮길 수 있는 장비, 탄약, 소모품, 재료와 보물은 모두 최소 한 칸의\n점유 형태를 가져야 합니다.\n\n### 점유 형태와 회전\n\n- 점유 형태는 좌상단 `(0, 0)`으로 정규화한 중복 없는 정수 좌표 집합입니다.\n- 점유 칸은 상하좌우로 연결된 하나의 덩어리여야 하며 내부 빈 칸은 다른 아이템이\n  사용할 수 있습니다.\n- 회전은 양의 Y가 아래로 증가하는 현재 격자 좌표계에서 시계 방향으로 변환한 뒤\n  다시 좌상단에 정규화합니다.\n- `FootprintCells`, 공간 규칙용 `EffectCells`와 아이콘은 같은 방향으로 회전합니다.\n- 첫 콘텐츠 제작 배치는 초기 4x4 열린 영역에 단독 배치할 수 있도록 경계 상자\n  최대 4x4를 사용합니다. 런타임은 설정된 인벤토리 안의 임의 연결 형태를 처리해야\n  합니다.\n\n기존 평가기의 `ActiveCells`는 열린 인벤토리 칸과 이름이 충돌하므로 저작 문서에서는\n`EffectCells`라고 부릅니다. 배치 계층이 회전·변환한 뒤 현재\n`BackpackRuleEvaluator` 입력의 `ActiveCells`로 전달합니다.\n\n### Basic Inventory와 보관함\n\n- 신규 플레이어는 기본 4x4 열린 영역에서 시작합니다.\n- 아이템의 모든 점유 칸이 열린 영역 안에 있고 다른 아이템과 겹치지 않아야 배치를\n  확정합니다.\n- Basic Inventory에 유효하게 배치된 아이템만 스탯과 공간 시너지를 제공합니다.\n- 장비 보관함은 공간 형태와 무관한 목록형 저장소이며 한 인스턴스 또는 호환 스택이\n  한 보관 슬롯을 사용합니다.\n- 드래그 중, 구매 미확정, 보관함과 초과분 대기열의 아이템은 전투 효과를 내지\n  않습니다.\n\n기존 기획의 보관함 초과 아이템 자동 소멸은 영구 구매 아이템 손실 위험 때문에\n채택하지 않습니다. 병합·빈 슬롯·직접 배치로 해결하지 못한 아이템은\n`PendingOverflow`에 보존하고 다음 로비에서 정리하도록 합니다.\n\n### UI와 거래 경계\n\n배치 UI는 최소 3x3 미리보기를 제공하고 큰 아이템은 형태에 맞게 확장합니다. 열린\n빈 칸, 잠긴 칸, 유효·무효 배치와 효과 칸은 색뿐 아니라 윤곽·패턴·아이콘으로도\n구분합니다. 상점 상품은 직접 드래그하지 않고 구매 버튼으로만 획득 절차를\n시작합니다.\n\n구매는 상품·가격·잔액 검증, 보관 또는 유효 배치, 재화 차감과 인스턴스 생성을\n원자적으로 처리합니다. 판매는 보관함 아이템을 대상으로 하며 기본 판매율은 기준\n구매가의 50%입니다. 상점 레벨, 등장 확률과 새로고침 비용은 아이템 정의가 아니라\n상점 설정이 소유합니다. 현금 상품 Market은 프로토타입 범위에서 제외합니다.\n\n## 변경 파일\n\n| 파일 | 최종 책임 |\n| --- | --- |\n| `docs/gameplay/inventory-item-concept.md` | 기획 근거, 용어, 데이터 계약, 점유·회전, 배치, 보관·거래, 이미지 제작과 병렬 작업 기준 |\n| `wiki/content/pages/inventory-item-concept/v001.md` | 이번 커밋에서 확정한 인벤토리·아이템 기준의 최초 위키 기록 |\n| `wiki/site/data.js` | 위키 소스에서 생성한 읽기 전용 사이트 데이터 |\n\n## 검증\n\n개념 문서의 Markdown 코드 펜스가 짝을 이루고 후행 공백이 없으며, 참조하는\n`item-stats.md`가 존재하는지 확인합니다. 위키 빌드와 전체 위키 구조 검사, 위키\n단위 테스트를 실행해 새 페이지의 메타데이터, 버전, 소스 경로와 생성 데이터를\n검증합니다.\n\n## 결정 사항\n\n- 아이템 외형과 점유 형태를 분리하지 않으며 비직사각형 형태를 정식 콘텐츠로\n  지원합니다.\n- 카탈로그 원형, 소유 인스턴스, 배치와 상점 상품을 서로 다른 데이터로 관리합니다.\n- 배치 저장에는 원점과 회전을 두고 실제 점유 좌표는 파생해 중복 상태를 만들지\n  않습니다.\n- 열린 인벤토리 칸은 `UnlockedCells`, 공간 효과 칸은 `EffectCells`로 구분합니다.\n- 아이템이 소유된 사실과 전투 효과가 활성화된 상태를 분리합니다.\n- 구매 또는 보상 아이템을 보관 공간 부족만으로 자동 삭제하지 않습니다.\n- 기존 `ItemStats`의 태그, 스탯과 공간 관계를 단일 전투 규칙 계약으로 재사용합니다.\n\n## 후속 작업\n\n- 카탈로그 타입과 정의 validator를 구현합니다.\n- 연결 형태 정규화, 네 방향 회전, 충돌과 열린 칸 판정을 단위 테스트와 함께\n  구현합니다.\n- 세로형 전체 화면에서 선택, 드래그, 회전과 보관함 이동을 제공하는 인벤토리 UI를\n  제작합니다.\n- 첫 아이템 묶음은 문서의 제출 양식에 따라 ID, 태그, 형태, 스탯, 경제 값과 이미지\n  경로를 함께 제출합니다.\n- 전체 격자 크기, 확장 순서·비용, 희귀도와 상점 확률, 스택 분할 UI는 별도 설정\n  작업에서 확정합니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v001.md"
         }
       ]
     },
@@ -377,7 +469,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "project-overview",
       "title": "PackBound 프로젝트 개요",
-      "summary": "8방향 프레임 캐릭터, 세로형 통합 입력, 서버 패리 경계, 아이템 규칙과 태그 기반 개발 위키를 갖춘 현재 프로젝트 구조입니다.",
+      "summary": "PackBound의 플레이 액션을 대시와 쳐내기로 한정하고, 지원하지 않는 구르기 계약을 입력·상태·렌더링·문서에서 완전히 제거한 현재 구조입니다.",
       "status": "active",
       "category": "project",
       "tags": [
@@ -385,28 +477,31 @@ window.PACKBOUND_WIKI = {
         "gameplay",
         "architecture",
         "mobile",
+        "pc",
         "controls",
+        "input",
+        "cleanup",
         "wiki"
       ],
       "created_at": "2026-08-06T10:36:02+09:00",
-      "updated_at": "2026-08-06T12:44:33+09:00",
+      "updated_at": "2026-08-06T15:57:17+09:00",
       "authors": [
         "Codex"
       ],
-      "version": 2,
-      "change_type": "updated",
-      "change_summary": "기본 프레임 렌더러, 모바일 액션과 서버 패리 경계 및 태그 탐색 위키를 현재 프로젝트 개요에 반영함",
-      "supersedes": "project-overview@v001",
+      "version": 4,
+      "change_type": "corrected",
+      "change_summary": "프로젝트에 존재하지 않는 구르기를 PC·게임패드·터치 입력, 액션 상태, 무적 속성, 포즈·이펙트와 문서에서 제거하고 대시·쳐내기만 공식 플레이 액션으로 확정함",
+      "supersedes": "project-overview@v003",
       "sources": [
         "README.md",
         "docs/gameplay/character-actions.md",
-        "docs/gameplay/item-stats.md",
-        "default.project.json",
-        "packbound.project.json",
-        "src/ReplicatedStorage/Character2D",
-        "src/ReplicatedStorage/ItemStats",
-        "src/ServerScriptService/ParryService.server.luau",
-        "wiki/site/tag-explorer.js"
+        "src/ReplicatedStorage/Character2D/AnimationLibrary.luau",
+        "src/ReplicatedStorage/Character2D/CharacterController.luau",
+        "src/ReplicatedStorage/Character2D/Config.luau",
+        "src/ReplicatedStorage/Character2D/CutoutRig.luau",
+        "src/ReplicatedStorage/Character2D/FrameSpriteRig.luau",
+        "src/ReplicatedStorage/Character2D/PlayerActionController.luau",
+        "tests/AnimationLibrary.spec.luau"
       ],
       "related": [
         "character-2d-rendering",
@@ -414,20 +509,129 @@ window.PACKBOUND_WIKI = {
         "studio-automation-routing"
       ],
       "validation": [
-        "rojo build packbound.project.json --output /tmp/PackBound-character-mobile-validation.rbxlx",
-        "rojo build default.project.json --output /tmp/ProjectBackpack-default-validation.rbxlx",
-        "/opt/homebrew/bin/luau-compile --null src/**/*.luau",
-        "luau tests/DirectionResolver.spec.luau",
+        "rojo build packbound.project.json --output /tmp/PackBound-no-roll.rbxlx",
+        "luau-compile src/ReplicatedStorage/Character2D/Config.luau src/ReplicatedStorage/Character2D/PlayerActionController.luau src/ReplicatedStorage/Character2D/AnimationLibrary.luau src/ReplicatedStorage/Character2D/CharacterController.luau src/ReplicatedStorage/Character2D/FrameSpriteRig.luau src/ReplicatedStorage/Character2D/CutoutRig.luau",
         "luau tests/AnimationLibrary.spec.luau",
+        "luau tests/DirectionResolver.spec.luau",
         "luau tests/MobileJoystickGate.spec.luau",
         "luau tests/MobileJoystickGesture.spec.luau",
-        "./tools/test_character_assets.sh",
-        "./tools/test_item_stats.sh",
-        "node tests/tag-explorer.spec.js"
+        "luau tests/MobileJoystickMovement.spec.luau",
+        "구르기 계약 정적 검색: 활성 소스·문서·테스트에서 Roll, PackBoundRoll, 구르기 참조 0건",
+        "Studio MCP PC 플레이테스트: PackBoundRoll 미등록, Q 입력 후 액션 시리얼 0 유지",
+        "Studio MCP 회귀 테스트: Shift 대시와 Space 쳐내기 액션 시리얼 증가, Space 점프 차단 확인"
       ],
-      "source_path": "wiki/content/pages/project-overview/v002.md",
-      "body": "# PackBound 프로젝트 개요\n\n## 결과\n\nPackBound는 2D 캐릭터 표현과 Roblox의 3D 이동·물리를 결합한 세로형 2.5D\n아케이드 RPG 프로토타입입니다. 보이는 캐릭터는 몸통과 머리를 분리한 8방향\n프레임 아틀라스로 렌더링하고, 숨겨진 Roblox 캐릭터는 이동, 충돌과 네트워크\n기준을 유지합니다.\n\n게임플레이 기반에는 통합 모바일 조이스틱, Dash·Roll·Parry 액션, 서버 소유\n패리 창, 쿼터뷰 카메라와 백팩 공간 규칙이 포함됩니다. 개발 위키는 Git 커밋\n시점의 최종 구조를 불변 Markdown으로 기록하고 문서 트리, 이력, 태그와 로컬\nRojo 상태를 한 화면에서 탐색합니다.\n\n## 현재 개발 영역\n\n### 캐릭터 렌더링\n\n- 기본 `FrameSpriteV2`는 별도 몸통과 머리 아틀라스를 합성합니다.\n- 8방향 Move, Dash, Hit와 동·서 Death, Clear 프레임을 지원합니다.\n- 머리와 몸통 스타일은 캐릭터 속성으로 독립 교체할 수 있습니다.\n- 체력 감소와 사망은 Hit·Death 프레임 상태로 연결됩니다.\n- 이전 `FullBodyPrototype`과 장비용 `LayeredEquipment` 경로도 호환 모드로\n  유지합니다.\n\n### 카메라, 입력과 액션\n\n- 고정 쿼터뷰 카메라가 로컬 캐릭터를 부드럽게 추적합니다.\n- 세로형 터치 화면의 단일 조이스틱은 이동, 중앙 탭 패리와 바깥쪽 대시를\n  처리합니다.\n- 키보드와 게임패드의 Roll·Parry 입력은 기존 바인딩을 유지합니다.\n- 클라이언트는 즉시 애니메이션과 효과를 표시하고 서버는 패리 요청의 생존 상태,\n  쿨다운과 유효 창을 관리합니다.\n- 실제 피해 취소·반사와 Roll 무적 권한은 이후 서버 전투 해결기로 이동해야 합니다.\n\n### 아이템과 백팩 규칙\n\n- 공용 스탯 정의와 계산기가 공격, 방어, 체력, 투사체와 유틸리티 보정을\n  일관된 ID로 처리합니다.\n- 백팩 규칙 평가기는 인접, 대각선, 같은 행·열, 방향과 액티브 셀 조건을\n  아이템 좌표로 평가합니다.\n- 화상·빙결 같은 이벤트 효과는 스칼라 스탯과 분리하며 향후 효과 카탈로그가\n  담당합니다.\n\n### 개발 위키\n\n- 각 명시적 Git 커밋에서 관련 논리 페이지의 최종본만 새 불변 버전으로 만듭니다.\n- 전체 트리, 전문 검색, 버전 비교와 관련 문서 연결을 제공합니다.\n- 과거 버전을 포함한 모든 태그를 최신순, 최다순과 개발·기획·규칙·아트 테마로\n  탐색할 수 있습니다.\n- 태그를 선택하면 관련 문서의 생성·변경 시각, 요약과 본문 일부를 표시합니다.\n- 상단에서 등록된 플레이스의 로컬 Rojo 서버 상태를 확인하고 안전하게 시작하거나\n  중지할 수 있습니다.\n\n## 주요 경계\n\n| 영역 | 위치 | 책임 |\n| --- | --- | --- |\n| 캐릭터 시스템 | `src/ReplicatedStorage/Character2D` | 프레임 외형, 방향, 카메라, 입력과 클라이언트 액션 |\n| 서버 액션 | `src/ServerScriptService` | 패리 요청 검증과 서버 유효 창 |\n| 아이템 스탯 | `src/ReplicatedStorage/ItemStats` | 스탯 계산과 백팩 공간 규칙 |\n| 클라이언트 시작점 | `src/StarterPlayer/StarterPlayerScripts` | 렌더러, 카메라와 조작 부트스트랩 |\n| 개발 위키 | `wiki`, `tools/wiki.py` | 커밋 문서, 탐색 UI와 로컬 Rojo 제어 |\n\n## 로컬 실행과 검증\n\nRojo 서버는 다음 명령으로 시작합니다.\n\n```sh\n./tools/serve_packbound.sh\n```\n\n핵심 정적 검증은 두 Rojo 빌드, 전체 Luau 컴파일, 캐릭터·모바일·아이템 테스트,\n에셋 생성과 위키 검사로 구성됩니다. 라이브 Studio 상태는 Studio MCP가 노출된\n작업에서만 확인합니다.\n\n## 결정 사항\n\n- `FrameSpriteV2`를 현재 기본 시각 모드로 사용합니다.\n- 모바일 핵심 액션은 세로 화면의 한 조이스틱에 통합합니다.\n- 패리의 즉시 시각 반응과 서버 판정 권한을 분리합니다.\n- 전용 Rojo 프로젝트는 필요한 서비스와 속성을 동기화하지만 플레이스\n  `Workspace`는 소유하지 않습니다.\n- 위키는 개발 턴이 아니라 Git 커밋을 게시 경계로 사용합니다.\n\n## 후속 작업\n\n- Studio MCP로 프레임 합성, 모바일 안전 영역, 대시 방향과 서버 패리 만료를\n  라이브 검증해야 합니다.\n- 서버 전투 해결기에 패리와 Roll 판정을 연결해야 합니다.\n- 추가 머리·몸통과 장비 외형을 현재 슬롯 계약으로 확장해야 합니다.\n- 프레임 에셋 빌더의 Python 의존성을 재현 가능한 환경에 고정해야 합니다.\n",
+      "source_path": "wiki/content/pages/project-overview/v004.md",
+      "body": "# PackBound 프로젝트 개요\n\n## 결과\n\nPackBound는 2D 캐릭터 표현과 Roblox의 3D 이동·물리를 결합한 세로형 2.5D\n아케이드 RPG 프로토타입입니다. 보이는 캐릭터는 몸통과 머리를 분리한 8방향\n프레임 아틀라스로 렌더링하고, 숨겨진 Roblox 캐릭터는 이동, 충돌과 네트워크\n기준을 유지합니다.\n\n현재 플레이 액션은 `Dash`와 `Parry` 두 가지입니다. PC에서는 좌·우 `Shift`로\n대시하고 `Space`로 쳐내며, 모바일에서는 하나의 조이스틱이 이동, 중앙 짧은 탭\n쳐내기와 외부 링 대시를 처리합니다. 구르기는 게임 기획에 없는 기능이므로 입력,\n런타임 상태, 렌더링과 문서 어디에서도 지원하지 않습니다.\n\n## 구현 내용\n\n### 입력과 액션\n\n- `PlayerActionController`는 대시와 쳐내기만 바인딩하고 실행합니다.\n- PC의 `LeftShift`와 `RightShift`는 대시, `Space`는 쳐내기입니다.\n- `Space`는 프로젝트 입력 우선순위에서 소비해 Roblox 기본 점프가 함께 발생하지\n  않습니다.\n- 게임패드 `ButtonX`는 쳐내기를 유지합니다. `ButtonA`에는 별도 액션을\n  배정하지 않았습니다.\n- 모바일 중앙 짧은 탭과 외부 링 드래그는 같은 `TryParry`, `TryDash` 경로를\n  사용합니다.\n\n### 구르기 계약 제거\n\n- `Q`, `ButtonA`와 자동 생성 터치 `ROLL` 버튼 바인딩을 삭제했습니다.\n- 구르기 속도·지속시간·쿨다운 설정과 `PackBoundRollInvulnerable` 속성을\n  삭제했습니다.\n- `TryRoll`, 지연 무적 창 스케줄러와 구르기 전용 액션 상태를 삭제했습니다.\n- 절차형 구르기 포즈와 이펙트, 프레임 스프라이트의 구르기→대시 대체 렌더링을\n  삭제했습니다.\n- 액션 문서와 애니메이션 테스트는 대시·쳐내기 계약만 설명하고 검증합니다.\n\n### 현재 렌더링과 모바일 계약\n\n- 기본 `FrameSpriteV2`는 별도 몸통과 머리 아틀라스를 합성합니다.\n- 8방향 Move, Dash, Hit와 동·서 Death, Clear 프레임을 지원합니다.\n- 모바일 이동은 중앙 데드존 밖에서 고정 속도이며, 대시는 조이스틱 본체와\n  물리적으로 떨어진 외부 링을 넘어야 발동합니다.\n- 쳐내기는 0.3초 서버 유효 창을 사용하며 현재 클라이언트에 반투명 보호 효과를\n  즉시 표시합니다.\n\n## 변경 파일\n\n| 파일 | 최종 책임 |\n| --- | --- |\n| `Config.luau` | 대시·쳐내기 설정과 서버 패리 속성만 유지 |\n| `PlayerActionController.luau` | PC·게임패드 입력, 대시 추진과 쳐내기 요청 |\n| `CharacterController.luau` | 구르기를 제외한 시각 액션 상태 재생 |\n| `AnimationLibrary.luau` | Dash·Parry 절차형 포즈 |\n| `FrameSpriteRig.luau` | 실제 프레임 상태를 다른 액션으로 위장하지 않고 렌더링 |\n| `CutoutRig.luau` | Dash·Parry 액션 이펙트 |\n| `README.md`, `character-actions.md` | 공식 플랫폼별 입력과 런타임 계약 |\n| `AnimationLibrary.spec.luau` | 현재 지원하는 액션 포즈 회귀 테스트 |\n\n## 검증\n\nRojo 플레이스 빌드와 변경된 여섯 Luau 모듈 컴파일이 성공했습니다. 절차형\n애니메이션, 8방향 해석, 모바일 대시 게이트, 탭·드래그 판정과 디지털 이동\n테스트도 모두 통과했습니다. 활성 소스·문서·테스트에서는 구르기 이름, 바인딩과\n무적 속성 참조가 더 이상 발견되지 않았습니다.\n\nStudio 플레이 테스트에서는 `PackBoundRoll` 액션과 구르기 속성이 등록되지\n않았고 `Q`를 눌러도 액션 시리얼이 0에 머물렀습니다. 이어서 `Shift`는 `Dash`,\n`Space`는 `Parry`를 발생시켰으며 쳐내기 후에도 휴머노이드는 점프하지 않았습니다.\n\n## 결정 사항\n\n- 구현된 프로토타입이라는 이유만으로 기획에 없는 액션을 호환 기능으로 유지하지\n  않습니다.\n- 공식 액션 목록, 입력, 설정, 시각 상태와 테스트는 같은 계약을 가져야 합니다.\n- 사용하지 않는 무적 속성과 서버 확장 의무를 남기지 않아 후속 전투 해결기가\n  존재하지 않는 구르기 판정을 구현해야 한다는 오해를 방지합니다.\n- 구르기 입력만 끄는 대신 관련 코드와 시각 처리를 함께 제거해 죽은 분기와 모바일\n  UI 노출 가능성을 없앱니다.\n- 현재 PC 계약은 `Shift = Dash`, `Space = Parry`이며 모바일은 통합 조이스틱을\n  유지합니다.\n\n## 후속 작업\n\n- 대시에 긴 재사용 대기시간을 도입할 때 PC와 모바일이 같은 사용 가능 상태와\n  피드백을 공유해야 합니다.\n- 실제 피해 해결기에 0.3초 쳐내기 창의 피해 취소와 공격자 반사를 연결해야 합니다.\n- 게임패드 대시 키와 전체 액션 재바인딩 정책은 게임패드 UX 작업에서 확정합니다.\n",
       "revisions": [
+        {
+          "id": "project-overview",
+          "title": "PackBound 프로젝트 개요",
+          "summary": "PackBound의 플레이 액션을 대시와 쳐내기로 한정하고, 지원하지 않는 구르기 계약을 입력·상태·렌더링·문서에서 완전히 제거한 현재 구조입니다.",
+          "status": "active",
+          "category": "project",
+          "tags": [
+            "roblox",
+            "gameplay",
+            "architecture",
+            "mobile",
+            "pc",
+            "controls",
+            "input",
+            "cleanup",
+            "wiki"
+          ],
+          "created_at": "2026-08-06T10:36:02+09:00",
+          "updated_at": "2026-08-06T15:57:17+09:00",
+          "authors": [
+            "Codex"
+          ],
+          "version": 4,
+          "change_type": "corrected",
+          "change_summary": "프로젝트에 존재하지 않는 구르기를 PC·게임패드·터치 입력, 액션 상태, 무적 속성, 포즈·이펙트와 문서에서 제거하고 대시·쳐내기만 공식 플레이 액션으로 확정함",
+          "supersedes": "project-overview@v003",
+          "sources": [
+            "README.md",
+            "docs/gameplay/character-actions.md",
+            "src/ReplicatedStorage/Character2D/AnimationLibrary.luau",
+            "src/ReplicatedStorage/Character2D/CharacterController.luau",
+            "src/ReplicatedStorage/Character2D/Config.luau",
+            "src/ReplicatedStorage/Character2D/CutoutRig.luau",
+            "src/ReplicatedStorage/Character2D/FrameSpriteRig.luau",
+            "src/ReplicatedStorage/Character2D/PlayerActionController.luau",
+            "tests/AnimationLibrary.spec.luau"
+          ],
+          "related": [
+            "character-2d-rendering",
+            "development-wiki",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "rojo build packbound.project.json --output /tmp/PackBound-no-roll.rbxlx",
+            "luau-compile src/ReplicatedStorage/Character2D/Config.luau src/ReplicatedStorage/Character2D/PlayerActionController.luau src/ReplicatedStorage/Character2D/AnimationLibrary.luau src/ReplicatedStorage/Character2D/CharacterController.luau src/ReplicatedStorage/Character2D/FrameSpriteRig.luau src/ReplicatedStorage/Character2D/CutoutRig.luau",
+            "luau tests/AnimationLibrary.spec.luau",
+            "luau tests/DirectionResolver.spec.luau",
+            "luau tests/MobileJoystickGate.spec.luau",
+            "luau tests/MobileJoystickGesture.spec.luau",
+            "luau tests/MobileJoystickMovement.spec.luau",
+            "구르기 계약 정적 검색: 활성 소스·문서·테스트에서 Roll, PackBoundRoll, 구르기 참조 0건",
+            "Studio MCP PC 플레이테스트: PackBoundRoll 미등록, Q 입력 후 액션 시리얼 0 유지",
+            "Studio MCP 회귀 테스트: Shift 대시와 Space 쳐내기 액션 시리얼 증가, Space 점프 차단 확인"
+          ],
+          "body": "# PackBound 프로젝트 개요\n\n## 결과\n\nPackBound는 2D 캐릭터 표현과 Roblox의 3D 이동·물리를 결합한 세로형 2.5D\n아케이드 RPG 프로토타입입니다. 보이는 캐릭터는 몸통과 머리를 분리한 8방향\n프레임 아틀라스로 렌더링하고, 숨겨진 Roblox 캐릭터는 이동, 충돌과 네트워크\n기준을 유지합니다.\n\n현재 플레이 액션은 `Dash`와 `Parry` 두 가지입니다. PC에서는 좌·우 `Shift`로\n대시하고 `Space`로 쳐내며, 모바일에서는 하나의 조이스틱이 이동, 중앙 짧은 탭\n쳐내기와 외부 링 대시를 처리합니다. 구르기는 게임 기획에 없는 기능이므로 입력,\n런타임 상태, 렌더링과 문서 어디에서도 지원하지 않습니다.\n\n## 구현 내용\n\n### 입력과 액션\n\n- `PlayerActionController`는 대시와 쳐내기만 바인딩하고 실행합니다.\n- PC의 `LeftShift`와 `RightShift`는 대시, `Space`는 쳐내기입니다.\n- `Space`는 프로젝트 입력 우선순위에서 소비해 Roblox 기본 점프가 함께 발생하지\n  않습니다.\n- 게임패드 `ButtonX`는 쳐내기를 유지합니다. `ButtonA`에는 별도 액션을\n  배정하지 않았습니다.\n- 모바일 중앙 짧은 탭과 외부 링 드래그는 같은 `TryParry`, `TryDash` 경로를\n  사용합니다.\n\n### 구르기 계약 제거\n\n- `Q`, `ButtonA`와 자동 생성 터치 `ROLL` 버튼 바인딩을 삭제했습니다.\n- 구르기 속도·지속시간·쿨다운 설정과 `PackBoundRollInvulnerable` 속성을\n  삭제했습니다.\n- `TryRoll`, 지연 무적 창 스케줄러와 구르기 전용 액션 상태를 삭제했습니다.\n- 절차형 구르기 포즈와 이펙트, 프레임 스프라이트의 구르기→대시 대체 렌더링을\n  삭제했습니다.\n- 액션 문서와 애니메이션 테스트는 대시·쳐내기 계약만 설명하고 검증합니다.\n\n### 현재 렌더링과 모바일 계약\n\n- 기본 `FrameSpriteV2`는 별도 몸통과 머리 아틀라스를 합성합니다.\n- 8방향 Move, Dash, Hit와 동·서 Death, Clear 프레임을 지원합니다.\n- 모바일 이동은 중앙 데드존 밖에서 고정 속도이며, 대시는 조이스틱 본체와\n  물리적으로 떨어진 외부 링을 넘어야 발동합니다.\n- 쳐내기는 0.3초 서버 유효 창을 사용하며 현재 클라이언트에 반투명 보호 효과를\n  즉시 표시합니다.\n\n## 변경 파일\n\n| 파일 | 최종 책임 |\n| --- | --- |\n| `Config.luau` | 대시·쳐내기 설정과 서버 패리 속성만 유지 |\n| `PlayerActionController.luau` | PC·게임패드 입력, 대시 추진과 쳐내기 요청 |\n| `CharacterController.luau` | 구르기를 제외한 시각 액션 상태 재생 |\n| `AnimationLibrary.luau` | Dash·Parry 절차형 포즈 |\n| `FrameSpriteRig.luau` | 실제 프레임 상태를 다른 액션으로 위장하지 않고 렌더링 |\n| `CutoutRig.luau` | Dash·Parry 액션 이펙트 |\n| `README.md`, `character-actions.md` | 공식 플랫폼별 입력과 런타임 계약 |\n| `AnimationLibrary.spec.luau` | 현재 지원하는 액션 포즈 회귀 테스트 |\n\n## 검증\n\nRojo 플레이스 빌드와 변경된 여섯 Luau 모듈 컴파일이 성공했습니다. 절차형\n애니메이션, 8방향 해석, 모바일 대시 게이트, 탭·드래그 판정과 디지털 이동\n테스트도 모두 통과했습니다. 활성 소스·문서·테스트에서는 구르기 이름, 바인딩과\n무적 속성 참조가 더 이상 발견되지 않았습니다.\n\nStudio 플레이 테스트에서는 `PackBoundRoll` 액션과 구르기 속성이 등록되지\n않았고 `Q`를 눌러도 액션 시리얼이 0에 머물렀습니다. 이어서 `Shift`는 `Dash`,\n`Space`는 `Parry`를 발생시켰으며 쳐내기 후에도 휴머노이드는 점프하지 않았습니다.\n\n## 결정 사항\n\n- 구현된 프로토타입이라는 이유만으로 기획에 없는 액션을 호환 기능으로 유지하지\n  않습니다.\n- 공식 액션 목록, 입력, 설정, 시각 상태와 테스트는 같은 계약을 가져야 합니다.\n- 사용하지 않는 무적 속성과 서버 확장 의무를 남기지 않아 후속 전투 해결기가\n  존재하지 않는 구르기 판정을 구현해야 한다는 오해를 방지합니다.\n- 구르기 입력만 끄는 대신 관련 코드와 시각 처리를 함께 제거해 죽은 분기와 모바일\n  UI 노출 가능성을 없앱니다.\n- 현재 PC 계약은 `Shift = Dash`, `Space = Parry`이며 모바일은 통합 조이스틱을\n  유지합니다.\n\n## 후속 작업\n\n- 대시에 긴 재사용 대기시간을 도입할 때 PC와 모바일이 같은 사용 가능 상태와\n  피드백을 공유해야 합니다.\n- 실제 피해 해결기에 0.3초 쳐내기 창의 피해 취소와 공격자 반사를 연결해야 합니다.\n- 게임패드 대시 키와 전체 액션 재바인딩 정책은 게임패드 UX 작업에서 확정합니다.\n",
+          "source_path": "wiki/content/pages/project-overview/v004.md"
+        },
+        {
+          "id": "project-overview",
+          "title": "PackBound 프로젝트 개요",
+          "summary": "8방향 프레임 캐릭터, 모바일 통합 조이스틱, PC 전용 액션 키와 서버 패리 경계를 갖춘 세로형 2.5D 아케이드 RPG의 현재 구조입니다.",
+          "status": "active",
+          "category": "project",
+          "tags": [
+            "roblox",
+            "gameplay",
+            "architecture",
+            "mobile",
+            "pc",
+            "controls",
+            "input",
+            "wiki"
+          ],
+          "created_at": "2026-08-06T10:36:02+09:00",
+          "updated_at": "2026-08-06T14:44:55+09:00",
+          "authors": [
+            "Codex"
+          ],
+          "version": 3,
+          "change_type": "updated",
+          "change_summary": "PC 대시를 좌·우 Shift에 새로 연결하고 쳐내기를 E에서 Space로 옮겼으며, Space의 기본 점프가 함께 실행되지 않도록 고우선순위 액션 입력 계약을 확정함",
+          "supersedes": "project-overview@v002",
+          "sources": [
+            "docs/gameplay/character-actions.md",
+            "src/ReplicatedStorage/Character2D/Config.luau",
+            "src/ReplicatedStorage/Character2D/PlayerActionController.luau",
+            "src/ReplicatedStorage/Character2D/MobileJoystickController.luau",
+            "src/StarterPlayer/StarterPlayerScripts/PlayerActionBootstrap.client.luau",
+            "src/ServerScriptService/ParryService.server.luau",
+            "packbound.project.json"
+          ],
+          "related": [
+            "character-2d-rendering",
+            "development-wiki",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "rojo build packbound.project.json --output /tmp/PackBound-pc-controls.rbxlx",
+            "luau-compile src/ReplicatedStorage/Character2D/Config.luau src/ReplicatedStorage/Character2D/PlayerActionController.luau",
+            "luau tests/DirectionResolver.spec.luau",
+            "luau tests/MobileJoystickGate.spec.luau",
+            "luau tests/MobileJoystickGesture.spec.luau",
+            "luau tests/MobileJoystickMovement.spec.luau",
+            "Studio MCP PC 플레이테스트: LeftShift/RightShift 대시 바인딩, Space 패리 바인딩, Dash·Parry 액션 시리얼 증가 확인",
+            "Studio MCP Space 입력 점프 회귀 테스트: Humanoid Running, Jump=false, 수직 속도 약 0 확인"
+          ],
+          "body": "# PackBound 프로젝트 개요\n\n## 결과\n\nPackBound는 2D 캐릭터 표현과 Roblox의 3D 이동·물리를 결합한 세로형 2.5D\n아케이드 RPG 프로토타입입니다. 보이는 캐릭터는 몸통과 머리를 분리한 8방향\n프레임 아틀라스로 렌더링하고, 숨겨진 Roblox 캐릭터는 이동, 충돌과 네트워크\n기준을 유지합니다.\n\n게임플레이 기반에는 이동·대시·쳐내기를 합친 모바일 조이스틱, PC 전용 액션 키,\nRoll, 서버 소유 패리 창, 쿼터뷰 카메라와 백팩 공간 규칙이 포함됩니다. 개발\n위키는 Git 커밋 시점의 최종 구조와 그 결정 이유를 불변 Markdown으로 기록합니다.\n\n## 현재 개발 영역\n\n### 캐릭터 렌더링과 제작\n\n- 기본 `FrameSpriteV2`는 별도 몸통과 머리 아틀라스를 합성합니다.\n- 8방향 Move, Dash, Hit와 동·서 Death, Clear 프레임을 지원합니다.\n- 머리와 몸통 스타일은 캐릭터 속성으로 독립 교체할 수 있습니다.\n- 체력 감소와 사망은 Hit·Death 프레임 상태로 연결됩니다.\n- 최종 스프라이트는 방향·프레임별 원본, 루트·접지·목 앵커와 승인 상태를\n  검증한 뒤에만 라이브 아틀라스 후보로 승격합니다.\n\n### 카메라, 입력과 액션\n\n- 고정 쿼터뷰 카메라가 로컬 캐릭터를 부드럽게 추적합니다.\n- 세로형 터치 화면의 단일 조이스틱은 고정 속도 이동, 중앙 짧은 탭 쳐내기와\n  조이스틱 밖 외부 링 대시를 처리합니다.\n- PC에서는 좌·우 `Shift`가 대시, `Space`가 쳐내기, `Q`가 구르기입니다.\n- 게임패드는 기존 `ButtonA` 구르기와 `ButtonX` 쳐내기 계약을 유지합니다.\n- 클라이언트는 액션 입력에 즉시 애니메이션과 효과를 표시하고, 서버는 패리 요청의\n  생존 상태, 쿨다운과 0.3초 유효 창을 관리합니다.\n- 실제 피해 취소·반사와 Roll 무적 권한은 이후 서버 전투 해결기로 이동해야 합니다.\n\n### 아이템과 백팩 규칙\n\n- 공용 스탯 정의와 계산기가 공격, 방어, 체력, 투사체와 유틸리티 보정을\n  일관된 ID로 처리합니다.\n- 백팩 규칙 평가기는 인접, 대각선, 같은 행·열, 방향과 액티브 셀 조건을\n  아이템 좌표로 평가합니다.\n- 화상·빙결 같은 이벤트 효과는 스칼라 스탯과 분리하며 향후 효과 카탈로그가\n  담당합니다.\n\n### 개발 위키\n\n- 명시적 Git 커밋에서 관련 논리 페이지의 최종본만 새 불변 버전으로 만듭니다.\n- 구현 결과뿐 아니라 사용자가 해결하려던 문제와 선택의 철학을 함께 보존합니다.\n- 전체 트리, 전문 검색, 버전 비교, 관련 문서 연결과 태그 탐색을 제공합니다.\n- 등록된 플레이스의 로컬 Rojo 서버 상태를 위키 상단에서 확인할 수 있습니다.\n\n## PC 입력 계약\n\n`Shift`는 일반적인 PC 게임에서 순간 이동과 질주를 기대하는 키이므로 대시에\n배정했습니다. 왼손 이동 중 어느 키보드 배열에서도 접근하기 쉽도록\n`LeftShift`와 `RightShift`를 모두 받습니다. 키보드 대시는 현재 이동 방향을\n우선하고, 정지 중이면 캐릭터가 바라보는 방향으로 실행됩니다.\n\n`Space`는 짧은 반응 시간이 중요한 쳐내기에 배정했습니다. 넓고 빠르게 누를 수\n있어 긴급 방어 입력에 적합하지만 Roblox의 기본 점프와 충돌할 수 있으므로,\n`ContextActionService`의 프로젝트 입력 우선순위에서 해당 입력을 `Sink` 처리합니다.\n따라서 한 번의 `Space` 입력이 쳐내기와 점프를 동시에 만들지 않습니다.\n\n모바일 제스처는 이번 PC 키 변경과 분리했습니다. 터치에서는 중앙의 짧은 탭이\n계속 쳐내기를 담당하고, 확실하게 외부 대시 링까지 넘어간 드래그만 대시로\n인정합니다. 플랫폼마다 입력 형태는 다르지만 액션 컨트롤러의 `TryDash`와\n`TryParry`를 공유하므로 쿨다운, 효과와 서버 요청 경계는 동일합니다.\n\n## 주요 경계\n\n| 영역 | 위치 | 책임 |\n| --- | --- | --- |\n| 캐릭터 시스템 | `src/ReplicatedStorage/Character2D` | 프레임 외형, 방향, 카메라, 입력과 클라이언트 액션 |\n| 서버 액션 | `src/ServerScriptService` | 패리 요청 검증과 서버 유효 창 |\n| 아이템 스탯 | `src/ReplicatedStorage/ItemStats` | 스탯 계산과 백팩 공간 규칙 |\n| 클라이언트 시작점 | `src/StarterPlayer/StarterPlayerScripts` | 렌더러, 카메라와 조작 부트스트랩 |\n| 개발 위키 | `wiki`, `tools/wiki.py` | 커밋 문서, 탐색 UI와 로컬 Rojo 제어 |\n\n## 결정 사항\n\n- `FrameSpriteV2`를 현재 기본 시각 모드로 사용합니다.\n- 모바일 핵심 액션은 세로 화면의 한 조이스틱에 통합합니다.\n- PC는 `Shift = Dash`, `Space = Parry`, `Q = Roll`로 역할을 분리합니다.\n- `Space` 쳐내기 바인딩은 기본 점프보다 높은 우선순위에서 입력을 소비합니다.\n- 모바일과 PC가 같은 액션 컨트롤러를 사용하고 플랫폼 입력만 다르게 연결합니다.\n- 패리의 즉시 시각 반응과 서버 판정 권한을 분리합니다.\n- 위키는 개발 턴이 아니라 Git 커밋을 게시 경계로 사용합니다.\n\n## 후속 작업\n\n- 긴 재사용 대기시간을 도입할 때 PC와 모바일 대시 모두 같은 사용 가능 상태와\n  피드백을 공유해야 합니다.\n- 실제 피해 취소·반사와 Roll 무적 판정을 서버 전투 해결기에 연결해야 합니다.\n- 게임패드 대시 키와 전체 액션 재바인딩 정책은 게임패드 UX 작업에서 확정합니다.\n- 전체 승인된 프레임 에셋만 현재 런타임 슬롯 계약으로 확장해야 합니다.\n",
+          "source_path": "wiki/content/pages/project-overview/v003.md"
+        },
         {
           "id": "project-overview",
           "title": "PackBound 프로젝트 개요",
