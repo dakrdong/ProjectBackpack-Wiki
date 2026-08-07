@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
   "generated_at": "2026-08-07",
   "page_count": 7,
-  "revision_count": 24,
+  "revision_count": 25,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -274,36 +274,47 @@ window.PACKBOUND_WIKI = {
     {
       "id": "inventory-item-concept",
       "title": "인벤토리와 아이템 개념",
-      "summary": "백팩 UI의 실제 소비 에셋과 생성 원본을 일치시키고, 이후 모든 UI 변경을 PC와 모바일에서 함께 완성하도록 검증 기준을 고정했습니다.",
+      "summary": "아이템의 크기와 실루엣을 격자 플레이에 맞게 다시 정리하고, ItemDB를 게임·위키 이미지의 단일 최신 원본으로 고정했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
         "inventory",
         "item",
         "backpack",
+        "item-db",
         "ui",
         "asset-lifecycle",
-        "responsive",
-        "pc",
-        "mobile"
+        "responsive"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-06",
+      "updated_at": "2026-08-07",
       "authors": [
         "Codex"
       ],
-      "version": 4,
+      "version": 5,
       "change_type": "updated",
-      "change_summary": "사용되지 않는 백팩 UI 에셋을 생성기·매니페스트·런타임 등록부에서 함께 제거하고 PC·모바일 동시 검증을 UI 완료 조건으로 명문화했습니다.",
-      "supersedes": "inventory-item-concept@v003",
+      "change_summary": "과도하거나 의미가 불명확한 아이템 둘을 폐기하고, 포켓 네일건과 배달부 반망토 재킷을 작은 격자 형태로 재설계해 게임과 위키가 같은 최신 데이터를 사용하도록 연결했습니다.",
+      "supersedes": "inventory-item-concept@v004",
       "sources": [
         "AGENTS.md",
-        "Assets/UI/Backpack/asset_cleanup_audit.md",
-        "Assets/UI/Backpack/asset_manifest.json",
+        "README.md",
+        "Assets/Items/InventoryIcons/Equipment/Outfits/armor_courier_cape_jacket.png",
+        "Assets/Items/InventoryIcons/Weapons/Guns/weapon_pocket_nailgun.png",
         "Assets/UI/Backpack/uploaded_asset_ids.json",
-        "tools/generate_backpack_ui_assets.py",
+        "docs/gameplay/inventory-item-art-catalog.md",
+        "docs/gameplay/inventory-item-layouts.json",
         "src/ReplicatedStorage/BackpackUI/Assets.luau",
-        "src/ReplicatedStorage/BackpackUI/Screen.luau"
+        "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
+        "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
+        "src/ReplicatedStorage/BackpackUI/Screen.luau",
+        "tests/test_item_db.py",
+        "tools/item_db.py",
+        "wiki/site/app.js",
+        "wiki/site/item-db-data.js",
+        "wiki/content/media/inventory-item-concept/v005/pocket-nailgun-concept.png",
+        "wiki/content/media/inventory-item-concept/v005/courier-cape-jacket-concept.png",
+        "wiki/content/media/inventory-item-concept/v005/itemdb-redraw-result.jpg",
+        "wiki/content/media/inventory-item-concept/v005/studio-item-redraw-result.png"
       ],
       "related": [
         "development-wiki",
@@ -311,17 +322,81 @@ window.PACKBOUND_WIKI = {
         "project-overview"
       ],
       "validation": [
-        "python3 tools/generate_backpack_ui_assets.py",
-        "luau-compile로 BackpackUI ModuleScript 문법 검증",
-        "rojo build default.project.json --output /tmp/packbound-cleanup-default.rbxlx",
-        "rojo build packbound.project.json --output /tmp/packbound-cleanup-packbound.rbxlx",
-        "Roblox Studio MCP PC Average Laptop 1366x765 플레이 검증",
-        "Roblox Studio MCP Samsung Galaxy S25 Ultra 세로 1079x1878 플레이 검증",
-        "Roblox Creator Dashboard에서 Image 에셋의 보관 기능 미제공 확인"
+        "python3 tools/item_db.py build",
+        "python3 tools/item_db.py check",
+        "python3 -m unittest tests.test_item_db",
+        "node tests/item-db.spec.js",
+        "rojo build packbound.project.json --output /tmp/PackBound-item-redraw-final.rbxlx",
+        "로컬 위키 ItemDB에서 해시가 포함된 최신 이미지 URL과 폐기 아이템 제외 확인",
+        "Roblox Studio MCP HD 1080 PC 플레이에서 새 아이템 이미지와 배치 확인",
+        "Roblox Studio MCP iPhone 17 Pro 및 Galaxy A06 세로 플레이에서 터치 경로와 안전 영역 확인"
       ],
-      "source_path": "wiki/content/pages/inventory-item-concept/v004.md",
-      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 백팩은 장식 이미지가 많은 화면이지만, 실제 플레이 경험은 격자와 아이템을\n즉시 읽고 PC와 모바일 어디서든 같은 행동을 수행하는 데 달려 있습니다. 사용하지 않는\n이미지가 생성기와 Roblox 등록부에 계속 남으면 어떤 에셋이 제품 계약인지 판단하기\n어려워지고, 다음 수정에서 과거 이미지를 다시 연결하거나 불필요한 업로드를 반복할 수\n있습니다.\n\n이번 목표는 화면을 바꾸는 것이 아니라 현재 백팩 UI가 사용하는 에셋만 명확한 제품\n원본으로 남기는 것입니다. 동시에 앞으로의 UI 작업은 데스크톱과 모바일을 별도\n완성 대상으로 보고 두 환경을 모두 검증해야 종료할 수 있도록 프로젝트 규칙을\n강화했습니다.\n\n## 사용자 경험\n\n- 플레이어가 보는 백팩의 외형, 아이템 배치, 선택 상태와 조작 흐름은 그대로 유지됩니다.\n- PC에서는 넓은 16:9 화면 안에 읽기 좋은 데스크톱 배율로 중앙 배치됩니다.\n- 모바일에서는 세로 화면과 안전 영역에 맞춰 백팩이 크게 표시되고 상단 정보와 닫기\n  버튼이 Roblox Core UI에 가려지지 않습니다.\n- 제거된 에셋 때문에 빈 이미지, 잘못된 버튼 상태나 로딩 경고가 나타나지 않습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 제품에서 쓰는 에셋만 런타임 계약으로 유지한다\n\n로컬 PNG만 지우거나 코드의 ID만 지우는 반쪽 정리는 허용하지 않습니다. 에셋을 제거할\n때는 생성기, 생성 매니페스트, Roblox ID 등록부와 Luau 런타임 선언을 한 단위로\n갱신합니다. 이후 생성기를 다시 실행해도 삭제된 파일이 되살아나지 않아야 합니다.\n\n### 계획된 상태와 편집 원본은 미사용 에셋과 구분한다\n\n현재 화면에서 직접 쓰지 않는다고 모두 삭제하지 않습니다. 잠긴 칸과 경고 상태에\n필요한 `lock`, `warning` 아이콘은 기획된 기능 자산으로 유지했습니다. 두 대형 프레임의\n크로마 이미지는 Roblox 런타임 에셋이 아니라 최종 프레임을 다시 만들기 위한 편집\n원본이므로 로컬에 남깁니다.\n\n### PC와 모바일은 하나의 캔버스 배율이 아니라 두 개의 완성 조건이다\n\nPC는 넓은 화면, 마우스와 키보드, 높은 정보 밀도를 기준으로 창 크기와 배율을\n결정합니다. 모바일은 현재 뷰포트, 세로 비율, 안전 영역과 터치 크기를 기준으로\n동적으로 구성합니다. 한 환경에서만 맞는 UI는 완료로 판단하지 않으며, Roblox Studio\nMCP의 대표 PC와 최신 세로 휴대폰 플레이 검증을 필수 관문으로 둡니다.\n\n## 결정 사항과 범위\n\n실제 소비가 없던 둥근 주황 버튼의 기본·눌림 이미지와 좌상단 뒤로가기 아이콘을\n제거했습니다. 이 세 파일은 생성기, `asset_manifest.json`,\n`uploaded_asset_ids.json`, `Assets.luau`에서도 함께 분리했습니다. 생성 결과는 버튼\n스킨 20개, 아이콘 19개, 타일 5개이며 이 가운데 런타임 소비 에셋은 44개입니다.\n\n현재 미사용이지만 기획에 필요한 아이콘 2개와 프레임 편집 원본 2개는 유지했습니다.\n이 구분과 Roblox ID 목록은 `asset_cleanup_audit.md`에 기록해 다음 정리에서 같은 조사를\n반복하지 않도록 했습니다.\n\n## Roblox 클라우드 에셋 정책\n\n프로젝트에서 분리된 Roblox Image ID는 모두 저장소와 현재 Studio DataModel에서 참조가\n없습니다. 그러나 소유 계정의 Creator Dashboard에서 이 시스템 생성 Image 카드에\n제공되는 작업은 에셋 상세 열기와 ID 복사뿐이며 Archive가 없습니다. Open Cloud의\n보관 API도 API 키 또는 OAuth 2.0 인증이 필요하지만 이 프로젝트에는 해당 인증이\n구성되어 있지 않습니다.\n\n따라서 로컬과 런타임 연결은 제거했지만 Roblox 클라우드의 25개 고아 Image는 보관하지\n못했습니다. 이 상태를 삭제 성공으로 가장하지 않고 감사 문서에 ID와 제한을 남겼습니다.\n추후 Roblox가 Image 보관 UI를 제공하거나 소유자가 전용 Open Cloud 인증 정책을\n승인하면 별도 정리 작업으로 처리합니다.\n\n## 검증\n\n에셋 생성기를 다시 실행해 삭제한 세 PNG가 재생성되지 않는 것을 확인했습니다. Backpack\nUI Luau 모듈은 컴파일됐고 기본·PackBound Rojo 프로젝트가 모두 빌드됐습니다.\n\nRoblox Studio MCP 플레이에서 일반 노트북 프리셋의 1366x765 뷰포트와 Samsung Galaxy\nS25 Ultra 세로 모드의 1079x1878 뷰포트를 각각 확인했습니다. 두 환경 모두 백팩 프레임,\n탭, 격자 타일, 상태 버튼과 아이콘이 빠짐없이 표시됐습니다. 모바일에서는 상단 정보와\n닫기 버튼이 안전한 중앙·우측 영역에 유지됐습니다. 출력창에는 Backpack UI 에셋 오류가\n없었고, 별도 개발 플러그인인 `WeaponAnimationTester`의 기존 모듈 경고만 남았습니다.\n\n## 후속 기획\n\n- 잠긴 칸 확장과 부족 재화 경고를 구현할 때 유지한 `lock`, `warning` 에셋을 우선\n  사용하고 실제 소비 여부를 다시 매니페스트에 반영합니다.\n- 새 버튼이나 아이콘은 기본·눌림 상태, 투명 배경, 재사용 가능한 조각과 런타임 텍스트\n  분리 원칙을 유지합니다.\n- UI 완료 보고에는 검증한 PC 뷰포트와 모바일 기기·방향, 입력 경로와 출력창 결과를\n  항상 남깁니다.\n",
+      "source_path": "wiki/content/pages/inventory-item-concept/v005.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템 이미지는 예쁜 개별 일러스트이면서 동시에 제한된 백팩 공간을\n판단하게 만드는 게임 정보입니다. 실루엣이 무엇인지 읽히지 않거나 아이템의 역할에 비해\n지나치게 많은 칸을 차지하면, 플레이어는 수납 결정을 재미있는 선택이 아니라 불합리한\n제약으로 받아들이게 됩니다.\n\n이번 목표는 아이템의 설정과 격자 점유 형태, 실제 게임 이미지가 한 의미를 전달하게\n맞추는 것입니다. 품질 기준에 맞지 않는 아이템은 단순히 숨겨 둔 채 남기지 않고 현재\n목록에서 폐기하며, 유지할 아이템은 작은 크기에서도 정체성과 방향이 즉시 읽히도록\n다시 설계했습니다. 또한 이후 아이템 변경이 게임에는 적용됐지만 위키에는 과거 이미지로\n남는 일을 막기 위해 ItemDB를 두 표면의 공통 최신 원본으로 정했습니다.\n\n## 사용자 경험\n\n- 포켓 네일건은 총구와 손잡이가 분명한 `ㄱ`자 3칸 아이템으로 보입니다.\n- 배달부 반망토 재킷은 망토 끝 때문에 불필요하게 넓어지지 않는 2×2, 4칸 방어구로\n  보입니다.\n- 점프잭 해머와 세탁기 드럼포는 아이템 목록, ItemDB와 게임 카탈로그에서 보이지\n  않습니다.\n- 기획자가 ItemDB에서 바꾼 점유 칸과 이미지 조정값은 생성된 게임 레이아웃에 반영되고,\n  위키는 브라우저 캐시와 관계없이 최신 이미지 판본을 표시합니다.\n- PC와 세로형 모바일 모두에서 새 실루엣, 선택 칸과 주요 조작을 같은 의미로 읽을 수\n  있습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 격자 크기는 아이템의 재미와 의미에 비례한다\n\n큰 아이템은 강한 선택 압력을 만들기 때문에 크기 자체가 밸런스 값입니다. 따라서 단순히\n그림이 큰 것을 이유로 많은 칸을 부여하지 않습니다. 포켓 네일건은 휴대 공구라는 이름과\n역할에 맞춰 3칸으로, 반망토 재킷은 몸에 착용하는 외투의 덩어리를 유지하면서도 4칸으로\n제한했습니다.\n\n### 약한 콘셉트는 호환성 명목으로 제품 목록에 남기지 않는다\n\n8칸이 과도한 점프잭 해머와 이미지 의미가 불명확한 세탁기 드럼포는 현재 아이템\n계약에서 제거했습니다. 소스 이미지, 위키 미디어와 데이터 항목을 함께 정리해 오래된\n리소스가 다시 노출될 여지를 줄였습니다.\n\n### ItemDB가 편집 원본이고 게임과 위키는 그 결과물이다\n\n아이템 아트 카탈로그와 레이아웃 데이터가 활성 아이템, 점유 칸, 이미지 배율과 위치를\n소유합니다. 생성 과정은 이 데이터를 Roblox용 `GeneratedItemLayouts`와 위키용\n`item-db-data.js`로 동시에 변환합니다. 이미지 URL에는 파일 내용 해시를 붙여 같은\n파일명으로 그림을 교체해도 브라우저가 이전 판본을 재사용하지 않게 했습니다.\n\n### 아이템 변경의 완료 조건에는 데이터 최신화가 포함된다\n\n앞으로 아이템을 추가·수정·폐기할 때 ItemDB 생성과 검사, 게임 레이아웃 생성물, 위키\n미디어가 함께 최신인지 확인해야 합니다. 이 규칙은 작업자 기억에만 의존하지 않도록\n저장소 작업 지침과 README에 명시했습니다.\n\n## 결정 사항과 범위\n\n`weapon.jumpjack_hammer`와 `weapon.washer_drum_cannon`은 활성 카탈로그 및 레이아웃\n데이터에서 제거하고 기존 PNG도 삭제했습니다. `weapon.pocket_nailgun`은 오른쪽 아래로\n손잡이가 이어지는 `■■/□■` 점유 형태로 바꿨고 새 Roblox Image ID\n`rbxassetid://72363117083279`를 연결했습니다. `armor.courier_cape_jacket`은 2×2 점유\n형태와 새 이미지로 교체하고 `rbxassetid://87146137876065`를 연결했습니다.\n\nRoblox 클라우드에 남은 이전 포켓 네일건 이미지는 프로젝트의 등록부와 런타임 참조에서\n제거했습니다. Creator Dashboard가 해당 Image에 보관 기능을 제공하지 않으므로 클라우드\n원본 자체를 삭제했다고 간주하지 않으며, 제품에서는 참조하지 않는 상태로 관리합니다.\n\n## 시안과 현재 결과\n\n![포켓 네일건 재설계 시안](./media/inventory-item-concept/v005/pocket-nailgun-concept.png \"작은 크기에서도 총구와 손잡이 방향이 읽히는 포켓 네일건\")\n\n포켓 네일건은 가로 본체와 아래 손잡이를 강조해 `ㄱ`자 3칸 점유 형태가 그림과\n일치하도록 만들었습니다.\n\n![배달부 반망토 재킷 재설계 시안](./media/inventory-item-concept/v005/courier-cape-jacket-concept.png \"망토의 특징은 남기고 2×2 안에 정리한 배달부 반망토 재킷\")\n\n반망토의 비대칭 인상은 유지하되 돌출된 천이 칸 수를 늘리지 않도록 외투 전체를 2×2\n실루엣 안에 정리했습니다.\n\n![ItemDB 최신 이미지와 3칸 배치](./media/inventory-item-concept/v005/itemdb-redraw-result.jpg \"내용 해시가 적용된 최신 포켓 네일건과 ㄱ자 3칸 선택 상태\")\n\n위키 ItemDB는 새 포켓 네일건 이미지, 3칸 점유와 현재 게임 적용 상태를 함께 보여 줍니다.\n폐기한 두 아이템은 검색과 목록에서 제외됩니다.\n\n![Roblox Studio 새 아이템 적용 결과](./media/inventory-item-concept/v005/studio-item-redraw-result.png \"Studio 플레이 화면에 적용된 2×2 재킷과 ㄱ자 포켓 네일건\")\n\n게임의 기본 백팩에도 새 반망토 재킷과 포켓 네일건을 배치해 데이터 연결과 실제 렌더링을\n동시에 확인했습니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 활성 카탈로그와 레이아웃을 검증한 뒤 게임용 Luau, 위키 데이터와\n미디어를 한 번에 생성합니다. 위키 데이터는 표시용 `image_url`과 동기화 검사용\n`media_path`를 분리해 해시 쿼리가 파일 경로 비교를 방해하지 않게 했습니다.\n\n게임에서는 `Assets.luau`가 새 Roblox Image ID를 소유하고, `ItemCatalog.luau`가 아이템\n정의와 능력치를, `GeneratedItemLayouts.luau`가 ItemDB에서 생성한 점유 형태와 이미지\n조정값을 사용합니다. 기본 데모 배치도 재킷과 네일건을 포함해 연결 실패가 즉시 보이게\n구성했습니다.\n\n## 검증\n\nItemDB 생성·검사와 Python·Node 회귀 테스트를 통과했고, PackBound Rojo 프로젝트를\n빌드했습니다. 로컬 위키에서 포켓 네일건과 반망토 재킷의 URL에 파일 내용 해시가 붙고,\n새로 고친 뒤에도 최신 이미지가 표시되며 폐기 아이템이 검색되지 않는 것을 확인했습니다.\n\nRoblox Studio MCP 플레이에서는 HD 1080 PC 뷰포트에서 두 아이템의 새 이미지와 점유\n형태를 확인했습니다. iPhone 17 Pro 세로 401×776과 Galaxy A06 세로 359×718에서도\n상단 안전 영역, 텍스트, 선택 상태와 터치 동등 조작 경로에 겹침이나 잘림이 없었습니다.\n출력창에는 아이템·백팩 UI 오류가 없었고, 별도 개발 플러그인인\n`WeaponAnimationTester`의 기존 모듈 경고만 남았습니다.\n\n## 후속 기획\n\n- 아이템 설정 변경은 카탈로그와 레이아웃을 먼저 수정하고 ItemDB 생성·검사를 완료한\n  뒤 게임과 위키 결과를 승인합니다.\n- 큰 점유 형태를 부여할 때는 그림 크기가 아니라 플레이 선택에 주는 압력과 아이템의\n  역할을 함께 근거로 남깁니다.\n- Roblox 이미지를 같은 이름으로 교체할 때도 새 ID와 내용 해시가 모두 갱신됐는지\n  확인합니다.\n",
       "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "아이템의 크기와 실루엣을 격자 플레이에 맞게 다시 정리하고, ItemDB를 게임·위키 이미지의 단일 최신 원본으로 고정했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "item-db",
+            "ui",
+            "asset-lifecycle",
+            "responsive"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-07",
+          "authors": [
+            "Codex"
+          ],
+          "version": 5,
+          "change_type": "updated",
+          "change_summary": "과도하거나 의미가 불명확한 아이템 둘을 폐기하고, 포켓 네일건과 배달부 반망토 재킷을 작은 격자 형태로 재설계해 게임과 위키가 같은 최신 데이터를 사용하도록 연결했습니다.",
+          "supersedes": "inventory-item-concept@v004",
+          "sources": [
+            "AGENTS.md",
+            "README.md",
+            "Assets/Items/InventoryIcons/Equipment/Outfits/armor_courier_cape_jacket.png",
+            "Assets/Items/InventoryIcons/Weapons/Guns/weapon_pocket_nailgun.png",
+            "Assets/UI/Backpack/uploaded_asset_ids.json",
+            "docs/gameplay/inventory-item-art-catalog.md",
+            "docs/gameplay/inventory-item-layouts.json",
+            "src/ReplicatedStorage/BackpackUI/Assets.luau",
+            "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
+            "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
+            "src/ReplicatedStorage/BackpackUI/Screen.luau",
+            "tests/test_item_db.py",
+            "tools/item_db.py",
+            "wiki/site/app.js",
+            "wiki/site/item-db-data.js",
+            "wiki/content/media/inventory-item-concept/v005/pocket-nailgun-concept.png",
+            "wiki/content/media/inventory-item-concept/v005/courier-cape-jacket-concept.png",
+            "wiki/content/media/inventory-item-concept/v005/itemdb-redraw-result.jpg",
+            "wiki/content/media/inventory-item-concept/v005/studio-item-redraw-result.png"
+          ],
+          "related": [
+            "development-wiki",
+            "backpack-combat-stat-database",
+            "project-overview"
+          ],
+          "validation": [
+            "python3 tools/item_db.py build",
+            "python3 tools/item_db.py check",
+            "python3 -m unittest tests.test_item_db",
+            "node tests/item-db.spec.js",
+            "rojo build packbound.project.json --output /tmp/PackBound-item-redraw-final.rbxlx",
+            "로컬 위키 ItemDB에서 해시가 포함된 최신 이미지 URL과 폐기 아이템 제외 확인",
+            "Roblox Studio MCP HD 1080 PC 플레이에서 새 아이템 이미지와 배치 확인",
+            "Roblox Studio MCP iPhone 17 Pro 및 Galaxy A06 세로 플레이에서 터치 경로와 안전 영역 확인"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템 이미지는 예쁜 개별 일러스트이면서 동시에 제한된 백팩 공간을\n판단하게 만드는 게임 정보입니다. 실루엣이 무엇인지 읽히지 않거나 아이템의 역할에 비해\n지나치게 많은 칸을 차지하면, 플레이어는 수납 결정을 재미있는 선택이 아니라 불합리한\n제약으로 받아들이게 됩니다.\n\n이번 목표는 아이템의 설정과 격자 점유 형태, 실제 게임 이미지가 한 의미를 전달하게\n맞추는 것입니다. 품질 기준에 맞지 않는 아이템은 단순히 숨겨 둔 채 남기지 않고 현재\n목록에서 폐기하며, 유지할 아이템은 작은 크기에서도 정체성과 방향이 즉시 읽히도록\n다시 설계했습니다. 또한 이후 아이템 변경이 게임에는 적용됐지만 위키에는 과거 이미지로\n남는 일을 막기 위해 ItemDB를 두 표면의 공통 최신 원본으로 정했습니다.\n\n## 사용자 경험\n\n- 포켓 네일건은 총구와 손잡이가 분명한 `ㄱ`자 3칸 아이템으로 보입니다.\n- 배달부 반망토 재킷은 망토 끝 때문에 불필요하게 넓어지지 않는 2×2, 4칸 방어구로\n  보입니다.\n- 점프잭 해머와 세탁기 드럼포는 아이템 목록, ItemDB와 게임 카탈로그에서 보이지\n  않습니다.\n- 기획자가 ItemDB에서 바꾼 점유 칸과 이미지 조정값은 생성된 게임 레이아웃에 반영되고,\n  위키는 브라우저 캐시와 관계없이 최신 이미지 판본을 표시합니다.\n- PC와 세로형 모바일 모두에서 새 실루엣, 선택 칸과 주요 조작을 같은 의미로 읽을 수\n  있습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 격자 크기는 아이템의 재미와 의미에 비례한다\n\n큰 아이템은 강한 선택 압력을 만들기 때문에 크기 자체가 밸런스 값입니다. 따라서 단순히\n그림이 큰 것을 이유로 많은 칸을 부여하지 않습니다. 포켓 네일건은 휴대 공구라는 이름과\n역할에 맞춰 3칸으로, 반망토 재킷은 몸에 착용하는 외투의 덩어리를 유지하면서도 4칸으로\n제한했습니다.\n\n### 약한 콘셉트는 호환성 명목으로 제품 목록에 남기지 않는다\n\n8칸이 과도한 점프잭 해머와 이미지 의미가 불명확한 세탁기 드럼포는 현재 아이템\n계약에서 제거했습니다. 소스 이미지, 위키 미디어와 데이터 항목을 함께 정리해 오래된\n리소스가 다시 노출될 여지를 줄였습니다.\n\n### ItemDB가 편집 원본이고 게임과 위키는 그 결과물이다\n\n아이템 아트 카탈로그와 레이아웃 데이터가 활성 아이템, 점유 칸, 이미지 배율과 위치를\n소유합니다. 생성 과정은 이 데이터를 Roblox용 `GeneratedItemLayouts`와 위키용\n`item-db-data.js`로 동시에 변환합니다. 이미지 URL에는 파일 내용 해시를 붙여 같은\n파일명으로 그림을 교체해도 브라우저가 이전 판본을 재사용하지 않게 했습니다.\n\n### 아이템 변경의 완료 조건에는 데이터 최신화가 포함된다\n\n앞으로 아이템을 추가·수정·폐기할 때 ItemDB 생성과 검사, 게임 레이아웃 생성물, 위키\n미디어가 함께 최신인지 확인해야 합니다. 이 규칙은 작업자 기억에만 의존하지 않도록\n저장소 작업 지침과 README에 명시했습니다.\n\n## 결정 사항과 범위\n\n`weapon.jumpjack_hammer`와 `weapon.washer_drum_cannon`은 활성 카탈로그 및 레이아웃\n데이터에서 제거하고 기존 PNG도 삭제했습니다. `weapon.pocket_nailgun`은 오른쪽 아래로\n손잡이가 이어지는 `■■/□■` 점유 형태로 바꿨고 새 Roblox Image ID\n`rbxassetid://72363117083279`를 연결했습니다. `armor.courier_cape_jacket`은 2×2 점유\n형태와 새 이미지로 교체하고 `rbxassetid://87146137876065`를 연결했습니다.\n\nRoblox 클라우드에 남은 이전 포켓 네일건 이미지는 프로젝트의 등록부와 런타임 참조에서\n제거했습니다. Creator Dashboard가 해당 Image에 보관 기능을 제공하지 않으므로 클라우드\n원본 자체를 삭제했다고 간주하지 않으며, 제품에서는 참조하지 않는 상태로 관리합니다.\n\n## 시안과 현재 결과\n\n![포켓 네일건 재설계 시안](./media/inventory-item-concept/v005/pocket-nailgun-concept.png \"작은 크기에서도 총구와 손잡이 방향이 읽히는 포켓 네일건\")\n\n포켓 네일건은 가로 본체와 아래 손잡이를 강조해 `ㄱ`자 3칸 점유 형태가 그림과\n일치하도록 만들었습니다.\n\n![배달부 반망토 재킷 재설계 시안](./media/inventory-item-concept/v005/courier-cape-jacket-concept.png \"망토의 특징은 남기고 2×2 안에 정리한 배달부 반망토 재킷\")\n\n반망토의 비대칭 인상은 유지하되 돌출된 천이 칸 수를 늘리지 않도록 외투 전체를 2×2\n실루엣 안에 정리했습니다.\n\n![ItemDB 최신 이미지와 3칸 배치](./media/inventory-item-concept/v005/itemdb-redraw-result.jpg \"내용 해시가 적용된 최신 포켓 네일건과 ㄱ자 3칸 선택 상태\")\n\n위키 ItemDB는 새 포켓 네일건 이미지, 3칸 점유와 현재 게임 적용 상태를 함께 보여 줍니다.\n폐기한 두 아이템은 검색과 목록에서 제외됩니다.\n\n![Roblox Studio 새 아이템 적용 결과](./media/inventory-item-concept/v005/studio-item-redraw-result.png \"Studio 플레이 화면에 적용된 2×2 재킷과 ㄱ자 포켓 네일건\")\n\n게임의 기본 백팩에도 새 반망토 재킷과 포켓 네일건을 배치해 데이터 연결과 실제 렌더링을\n동시에 확인했습니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 활성 카탈로그와 레이아웃을 검증한 뒤 게임용 Luau, 위키 데이터와\n미디어를 한 번에 생성합니다. 위키 데이터는 표시용 `image_url`과 동기화 검사용\n`media_path`를 분리해 해시 쿼리가 파일 경로 비교를 방해하지 않게 했습니다.\n\n게임에서는 `Assets.luau`가 새 Roblox Image ID를 소유하고, `ItemCatalog.luau`가 아이템\n정의와 능력치를, `GeneratedItemLayouts.luau`가 ItemDB에서 생성한 점유 형태와 이미지\n조정값을 사용합니다. 기본 데모 배치도 재킷과 네일건을 포함해 연결 실패가 즉시 보이게\n구성했습니다.\n\n## 검증\n\nItemDB 생성·검사와 Python·Node 회귀 테스트를 통과했고, PackBound Rojo 프로젝트를\n빌드했습니다. 로컬 위키에서 포켓 네일건과 반망토 재킷의 URL에 파일 내용 해시가 붙고,\n새로 고친 뒤에도 최신 이미지가 표시되며 폐기 아이템이 검색되지 않는 것을 확인했습니다.\n\nRoblox Studio MCP 플레이에서는 HD 1080 PC 뷰포트에서 두 아이템의 새 이미지와 점유\n형태를 확인했습니다. iPhone 17 Pro 세로 401×776과 Galaxy A06 세로 359×718에서도\n상단 안전 영역, 텍스트, 선택 상태와 터치 동등 조작 경로에 겹침이나 잘림이 없었습니다.\n출력창에는 아이템·백팩 UI 오류가 없었고, 별도 개발 플러그인인\n`WeaponAnimationTester`의 기존 모듈 경고만 남았습니다.\n\n## 후속 기획\n\n- 아이템 설정 변경은 카탈로그와 레이아웃을 먼저 수정하고 ItemDB 생성·검사를 완료한\n  뒤 게임과 위키 결과를 승인합니다.\n- 큰 점유 형태를 부여할 때는 그림 크기가 아니라 플레이 선택에 주는 압력과 아이템의\n  역할을 함께 근거로 남깁니다.\n- Roblox 이미지를 같은 이름으로 교체할 때도 새 ID와 내용 해시가 모두 갱신됐는지\n  확인합니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v005.md"
+        },
         {
           "id": "inventory-item-concept",
           "title": "인벤토리와 아이템 개념",

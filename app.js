@@ -741,8 +741,8 @@
     return items.map((item) => `
       <tr>
         <td class="itemdb-image-cell">
-          <a href="${escapeHtml(item.image)}" target="_blank" rel="noopener" aria-label="${escapeHtml(item.name)} 원본 이미지 열기">
-            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)} 아이템 이미지" loading="lazy" decoding="async">
+          <a href="${escapeHtml(item.image_url || item.image)}" target="_blank" rel="noopener" aria-label="${escapeHtml(item.name)} 원본 이미지 열기">
+            <img src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 아이템 이미지" loading="lazy" decoding="async">
           </a>
         </td>
         <td class="itemdb-identity"><strong>${escapeHtml(item.name)}</strong><code>${escapeHtml(item.id)}</code></td>
@@ -902,7 +902,7 @@
             <div class="itemdb-editor-workbench">
               <div class="itemdb-editor-stage" data-mode="move">
                 <div class="itemdb-editor-grid">${gridCells.join("")}</div>
-                <img class="itemdb-editor-image" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)} 배치 이미지" draggable="false">
+                <img class="itemdb-editor-image" src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 배치 이미지" draggable="false">
               </div>
               <div class="itemdb-editor-stage-meta"><strong data-itemdb-editor-count></strong><span data-itemdb-editor-position></span></div>
             </div>

@@ -1,6 +1,6 @@
 window.PACKBOUND_ITEM_DB = {
   "source": "docs/gameplay/inventory-item-art-catalog.md",
-  "count": 32,
+  "count": 30,
   "common": {
     "native_facing": "NativeFacing = Up",
     "rotations": [
@@ -15,7 +15,7 @@ window.PACKBOUND_ITEM_DB = {
     {
       "id": "weapon",
       "label": "무기",
-      "count": 12
+      "count": 10
     },
     {
       "id": "equipment",
@@ -87,7 +87,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 3,
         "applied_to_game": false
       },
-      "image": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png",
+      "media_path": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png",
+      "image": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png?v=7b54a419c314cbcf",
+      "image_url": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png?v=7b54a419c314cbcf",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Bows/weapon_antenna_recurve_bow.png"
     },
     {
@@ -139,7 +141,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 3,
         "applied_to_game": false
       },
-      "image": "./item-media/Weapons/Guns/weapon_can_opener_smg.png",
+      "media_path": "./item-media/Weapons/Guns/weapon_can_opener_smg.png",
+      "image": "./item-media/Weapons/Guns/weapon_can_opener_smg.png?v=49c9388410e19811",
+      "image_url": "./item-media/Weapons/Guns/weapon_can_opener_smg.png?v=49c9388410e19811",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Guns/weapon_can_opener_smg.png"
     },
     {
@@ -147,7 +151,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "카트 체인 대검",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "검·큰 8칸",
+      "type_size": "검·큰 6칸",
       "concept": "쇼핑카트 프레임, 체인 톱니, 배터리를 십자형으로 묶은 거대검",
       "stats": [
         "AttackPower 42",
@@ -159,23 +163,15 @@ window.PACKBOUND_ITEM_DB = {
         "width": 3,
         "height": 4
       },
-      "pattern": "□■□/■■■/■■■/□■□",
-      "occupied_cells": 8,
+      "pattern": "□■□/□■□/■■■/□■□",
+      "occupied_cells": 6,
       "coordinates": [
         [
           1,
           0
         ],
         [
-          0,
-          1
-        ],
-        [
           1,
-          1
-        ],
-        [
-          2,
           1
         ],
         [
@@ -196,14 +192,16 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.8,
+        "offset_x": 0.2715,
+        "offset_y": 0.5731,
         "canvas_width": 3,
         "canvas_height": 4,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png",
+      "media_path": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png",
+      "image": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png?v=b8f982d1bae56630",
+      "image_url": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png?v=b8f982d1bae56630",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Swords/weapon_cart_chain_greatsword.png"
     },
     {
@@ -211,7 +209,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "소화기 철퇴",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "둔기·조금 큰 6칸",
+      "type_size": "둔기·조금 큰 3칸",
       "concept": "소화기 통과 밸브를 타격부로 만든 묵직한 철퇴",
       "stats": [
         "AttackPower 27",
@@ -220,46 +218,36 @@ window.PACKBOUND_ITEM_DB = {
         "KnockbackPower 7"
       ],
       "bounds": {
-        "width": 3,
+        "width": 1,
         "height": 3
       },
-      "pattern": "■■□/■■■/□■□",
-      "occupied_cells": 6,
+      "pattern": "■/■/■",
+      "occupied_cells": 3,
       "coordinates": [
         [
           0,
           0
         ],
         [
-          1,
-          0
-        ],
-        [
           0,
           1
         ],
         [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          1,
+          0,
           2
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.8,
+        "offset_x": -0.6866,
+        "offset_y": 0.2668,
         "canvas_width": 3,
         "canvas_height": 3,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Weapons/Blunt/weapon_extinguisher_mace.png",
+      "media_path": "./item-media/Weapons/Blunt/weapon_extinguisher_mace.png",
+      "image": "./item-media/Weapons/Blunt/weapon_extinguisher_mace.png?v=2d60b20857c6757f",
+      "image_url": "./item-media/Weapons/Blunt/weapon_extinguisher_mace.png?v=2d60b20857c6757f",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Blunt/weapon_extinguisher_mace.png"
     },
     {
@@ -307,80 +295,18 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 2,
         "applied_to_game": false
       },
-      "image": "./item-media/Weapons/Bows/weapon_hanger_snap_bow.png",
+      "media_path": "./item-media/Weapons/Bows/weapon_hanger_snap_bow.png",
+      "image": "./item-media/Weapons/Bows/weapon_hanger_snap_bow.png?v=7ba0700d8e285de3",
+      "image_url": "./item-media/Weapons/Bows/weapon_hanger_snap_bow.png?v=7ba0700d8e285de3",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Bows/weapon_hanger_snap_bow.png"
-    },
-    {
-      "id": "weapon.jumpjack_hammer",
-      "name": "점프잭 해머",
-      "family": "weapon",
-      "family_label": "무기",
-      "type_size": "둔기·큰 8칸",
-      "concept": "세 갈래 해머 헤드와 잭해머 모터를 합친 공사장 괴작",
-      "stats": [
-        "AttackPower 45",
-        "AttackCooldown 1.70",
-        "AttackRange 7",
-        "KnockbackPower 12"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 4
-      },
-      "pattern": "■■■/■■■/□■□/□■□",
-      "occupied_cells": 8,
-      "coordinates": [
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          1,
-          3
-        ]
-      ],
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 4,
-        "applied_to_game": false
-      },
-      "image": "./item-media/Weapons/Blunt/weapon_jumpjack_hammer.png",
-      "source_image": "Assets/Items/InventoryIcons/Weapons/Blunt/weapon_jumpjack_hammer.png"
     },
     {
       "id": "weapon.pocket_nailgun",
       "name": "포켓 네일건",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "총·작은 4칸",
-      "concept": "공구 몸체와 테이프 손잡이를 줄인 주머니형 네일건",
+      "type_size": "총·작은 3칸",
+      "concept": "짧은 공구 몸체와 오른쪽 테이프 손잡이를 ㄱ자로 묶은 주머니형 네일건",
       "stats": [
         "AttackPower 9",
         "AttackCooldown 0.55",
@@ -391,8 +317,8 @@ window.PACKBOUND_ITEM_DB = {
         "width": 2,
         "height": 2
       },
-      "pattern": "■■/■■",
-      "occupied_cells": 4,
+      "pattern": "■■/□■",
+      "occupied_cells": 3,
       "coordinates": [
         [
           0,
@@ -401,10 +327,6 @@ window.PACKBOUND_ITEM_DB = {
         [
           1,
           0
-        ],
-        [
-          0,
-          1
         ],
         [
           1,
@@ -417,9 +339,11 @@ window.PACKBOUND_ITEM_DB = {
         "offset_y": 0.0,
         "canvas_width": 2,
         "canvas_height": 2,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Weapons/Guns/weapon_pocket_nailgun.png",
+      "media_path": "./item-media/Weapons/Guns/weapon_pocket_nailgun.png",
+      "image": "./item-media/Weapons/Guns/weapon_pocket_nailgun.png?v=c607aae2b9d9e593",
+      "image_url": "./item-media/Weapons/Guns/weapon_pocket_nailgun.png?v=c607aae2b9d9e593",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Guns/weapon_pocket_nailgun.png"
     },
     {
@@ -427,7 +351,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "위성접시 장궁",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "활·큰 8칸",
+      "type_size": "활·큰 6칸",
       "concept": "TV 안테나 팔과 위성접시 팁을 길게 휜 대형 장궁",
       "stats": [
         "AttackPower 32",
@@ -436,11 +360,11 @@ window.PACKBOUND_ITEM_DB = {
         "ProjectilePierceCount 2"
       ],
       "bounds": {
-        "width": 3,
+        "width": 2,
         "height": 4
       },
-      "pattern": "■■□/□■■/□■■/■■□",
-      "occupied_cells": 8,
+      "pattern": "■■/□■/□■/■■",
+      "occupied_cells": 6,
       "coordinates": [
         [
           0,
@@ -455,15 +379,7 @@ window.PACKBOUND_ITEM_DB = {
           1
         ],
         [
-          2,
-          1
-        ],
-        [
           1,
-          2
-        ],
-        [
-          2,
           2
         ],
         [
@@ -477,13 +393,15 @@ window.PACKBOUND_ITEM_DB = {
       ],
       "image_layout": {
         "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "offset_x": -0.2197,
+        "offset_y": -0.0287,
         "canvas_width": 3,
         "canvas_height": 4,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Weapons/Bows/weapon_satellite_dish_longbow.png",
+      "media_path": "./item-media/Weapons/Bows/weapon_satellite_dish_longbow.png",
+      "image": "./item-media/Weapons/Bows/weapon_satellite_dish_longbow.png?v=be8f22eda1742b27",
+      "image_url": "./item-media/Weapons/Bows/weapon_satellite_dish_longbow.png?v=be8f22eda1742b27",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Bows/weapon_satellite_dish_longbow.png"
     },
     {
@@ -526,7 +444,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 3,
         "applied_to_game": false
       },
-      "image": "./item-media/Weapons/Swords/weapon_tape_iron_sword.png",
+      "media_path": "./item-media/Weapons/Swords/weapon_tape_iron_sword.png",
+      "image": "./item-media/Weapons/Swords/weapon_tape_iron_sword.png?v=922e2000973cd866",
+      "image_url": "./item-media/Weapons/Swords/weapon_tape_iron_sword.png?v=922e2000973cd866",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Swords/weapon_tape_iron_sword.png"
     },
     {
@@ -564,13 +484,15 @@ window.PACKBOUND_ITEM_DB = {
       ],
       "image_layout": {
         "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "offset_x": 0.0982,
+        "offset_y": -0.0142,
         "canvas_width": 2,
         "canvas_height": 2,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Weapons/Blunt/weapon_tin_can_mallet.png",
+      "media_path": "./item-media/Weapons/Blunt/weapon_tin_can_mallet.png",
+      "image": "./item-media/Weapons/Blunt/weapon_tin_can_mallet.png?v=e975de64c4f73f58",
+      "image_url": "./item-media/Weapons/Blunt/weapon_tin_can_mallet.png?v=e975de64c4f73f58",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Blunt/weapon_tin_can_mallet.png"
     },
     {
@@ -578,7 +500,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "신호등 식칼",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "검·조금 큰 6칸",
+      "type_size": "검·조금 큰 4칸",
       "concept": "깨진 주황 신호등 렌즈와 갈고리 가드를 단 비대칭 대검",
       "stats": [
         "AttackPower 24",
@@ -587,11 +509,11 @@ window.PACKBOUND_ITEM_DB = {
         "KnockbackPower 4"
       ],
       "bounds": {
-        "width": 2,
+        "width": 1,
         "height": 4
       },
-      "pattern": "■□/■■/■■/□■",
-      "occupied_cells": 6,
+      "pattern": "■/■/■/■",
+      "occupied_cells": 4,
       "coordinates": [
         [
           0,
@@ -602,93 +524,26 @@ window.PACKBOUND_ITEM_DB = {
           1
         ],
         [
-          1,
-          1
-        ],
-        [
           0,
           2
         ],
         [
-          1,
-          2
-        ],
-        [
-          1,
+          0,
           3
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.85,
+        "offset_x": -0.3321,
+        "offset_y": 0.3246,
         "canvas_width": 2,
         "canvas_height": 4,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Weapons/Swords/weapon_traffic_light_cleaver.png",
+      "media_path": "./item-media/Weapons/Swords/weapon_traffic_light_cleaver.png",
+      "image": "./item-media/Weapons/Swords/weapon_traffic_light_cleaver.png?v=e612ad9a0821dfee",
+      "image_url": "./item-media/Weapons/Swords/weapon_traffic_light_cleaver.png?v=e612ad9a0821dfee",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Swords/weapon_traffic_light_cleaver.png"
-    },
-    {
-      "id": "weapon.washer_drum_cannon",
-      "name": "세탁기 드럼포",
-      "family": "weapon",
-      "family_label": "무기",
-      "type_size": "총·큰 7칸",
-      "concept": "세탁기 드럼, 카트 바퀴, 보라 배터리를 묶은 넓은 중화기",
-      "stats": [
-        "AttackPower 52",
-        "AttackCooldown 2.20",
-        "AttackRange 25",
-        "ProjectileSizeIncrease 0.35",
-        "KnockbackPower 10"
-      ],
-      "bounds": {
-        "width": 4,
-        "height": 3
-      },
-      "pattern": "□■□□/□■■□/■■■■",
-      "occupied_cells": 7,
-      "coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          2,
-          2
-        ],
-        [
-          3,
-          2
-        ]
-      ],
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "canvas_width": 4,
-        "canvas_height": 3,
-        "applied_to_game": false
-      },
-      "image": "./item-media/Weapons/Guns/weapon_washer_drum_cannon.png",
-      "source_image": "Assets/Items/InventoryIcons/Weapons/Guns/weapon_washer_drum_cannon.png"
     },
     {
       "id": "armor.bus_stop_shield",
@@ -741,7 +596,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 3,
         "applied_to_game": false
       },
-      "image": "./item-media/Equipment/Shields/armor_bus_stop_shield.png",
+      "media_path": "./item-media/Equipment/Shields/armor_bus_stop_shield.png",
+      "image": "./item-media/Equipment/Shields/armor_bus_stop_shield.png?v=9345bc64d15f6ec4",
+      "image_url": "./item-media/Equipment/Shields/armor_bus_stop_shield.png?v=9345bc64d15f6ec4",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Shields/armor_bus_stop_shield.png"
     },
     {
@@ -749,18 +606,18 @@ window.PACKBOUND_ITEM_DB = {
       "name": "배달부 반망토 재킷",
       "family": "equipment",
       "family_label": "장비",
-      "type_size": "의상·조금 큰 6칸",
-      "concept": "한쪽만 짧은 망토와 소포 버클이 달린 세로형 민소매 재킷",
+      "type_size": "의상·조금 큰 4칸",
+      "concept": "망토 끝을 허리선 안에 접어 넣고 소포 버클을 단 짧은 민소매 재킷",
       "stats": [
         "Defense 7",
         "MoveSpeedIncrease 0.05"
       ],
       "bounds": {
         "width": 2,
-        "height": 3
+        "height": 2
       },
-      "pattern": "■■/■■/■■",
-      "occupied_cells": 6,
+      "pattern": "■■/■■",
+      "occupied_cells": 4,
       "coordinates": [
         [
           0,
@@ -777,14 +634,6 @@ window.PACKBOUND_ITEM_DB = {
         [
           1,
           1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
         ]
       ],
       "image_layout": {
@@ -792,10 +641,12 @@ window.PACKBOUND_ITEM_DB = {
         "offset_x": 0.0,
         "offset_y": 0.0,
         "canvas_width": 2,
-        "canvas_height": 3,
-        "applied_to_game": false
+        "canvas_height": 2,
+        "applied_to_game": true
       },
-      "image": "./item-media/Equipment/Outfits/armor_courier_cape_jacket.png",
+      "media_path": "./item-media/Equipment/Outfits/armor_courier_cape_jacket.png",
+      "image": "./item-media/Equipment/Outfits/armor_courier_cape_jacket.png?v=87eab0a3090886cb",
+      "image_url": "./item-media/Equipment/Outfits/armor_courier_cape_jacket.png?v=87eab0a3090886cb",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Outfits/armor_courier_cape_jacket.png"
     },
     {
@@ -840,7 +691,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 2,
         "applied_to_game": false
       },
-      "image": "./item-media/Equipment/Shields/armor_dish_lid_shield.png",
+      "media_path": "./item-media/Equipment/Shields/armor_dish_lid_shield.png",
+      "image": "./item-media/Equipment/Shields/armor_dish_lid_shield.png?v=a94900e75731ee51",
+      "image_url": "./item-media/Equipment/Shields/armor_dish_lid_shield.png?v=a94900e75731ee51",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Shields/armor_dish_lid_shield.png"
     },
     {
@@ -848,7 +701,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "냉장고 문 판초",
       "family": "equipment",
       "family_label": "장비",
-      "type_size": "의상·큰 8칸",
+      "type_size": "의상·큰 6칸",
       "concept": "냉장고 문 두 짝을 어깨에 단 넓은 방한 판초",
       "stats": [
         "Defense 13",
@@ -856,11 +709,11 @@ window.PACKBOUND_ITEM_DB = {
         "DefenseIncrease 0.05"
       ],
       "bounds": {
-        "width": 4,
+        "width": 3,
         "height": 2
       },
-      "pattern": "■■■■/■■■■",
-      "occupied_cells": 8,
+      "pattern": "■■■/■■■",
+      "occupied_cells": 6,
       "coordinates": [
         [
           0,
@@ -875,10 +728,6 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          3,
-          0
-        ],
-        [
           0,
           1
         ],
@@ -889,21 +738,19 @@ window.PACKBOUND_ITEM_DB = {
         [
           2,
           1
-        ],
-        [
-          3,
-          1
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.8,
+        "offset_x": -0.1085,
+        "offset_y": 0.2091,
         "canvas_width": 4,
         "canvas_height": 2,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Equipment/Outfits/armor_fridge_door_poncho.png",
+      "media_path": "./item-media/Equipment/Outfits/armor_fridge_door_poncho.png",
+      "image": "./item-media/Equipment/Outfits/armor_fridge_door_poncho.png?v=7fbe1280a0c55ddf",
+      "image_url": "./item-media/Equipment/Outfits/armor_fridge_door_poncho.png?v=7fbe1280a0c55ddf",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Outfits/armor_fridge_door_poncho.png"
     },
     {
@@ -949,7 +796,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 2,
         "applied_to_game": false
       },
-      "image": "./item-media/Equipment/Helmets/armor_halfpot_helmet.png",
+      "media_path": "./item-media/Equipment/Helmets/armor_halfpot_helmet.png",
+      "image": "./item-media/Equipment/Helmets/armor_halfpot_helmet.png?v=c72ca50df9c042f8",
+      "image_url": "./item-media/Equipment/Helmets/armor_halfpot_helmet.png?v=c72ca50df9c042f8",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Helmets/armor_halfpot_helmet.png"
     },
     {
@@ -957,7 +806,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "충격패드 하이탑",
       "family": "equipment",
       "family_label": "장비",
-      "type_size": "신발·조금 큰 6칸",
+      "type_size": "신발·조금 큰 4칸",
       "concept": "발목 패드 하이탑 두 짝을 앞뒤로 겹쳐 배치한 단일 아이템 묶음",
       "stats": [
         "MoveSpeedIncrease 0.07",
@@ -965,11 +814,11 @@ window.PACKBOUND_ITEM_DB = {
         "Defense 2"
       ],
       "bounds": {
-        "width": 3,
+        "width": 2,
         "height": 2
       },
-      "pattern": "■■■/■■■",
-      "occupied_cells": 6,
+      "pattern": "■■/■■",
+      "occupied_cells": 4,
       "coordinates": [
         [
           0,
@@ -980,31 +829,25 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          2,
-          0
-        ],
-        [
           0,
           1
         ],
         [
           1,
           1
-        ],
-        [
-          2,
-          1
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.85,
+        "offset_x": -0.2198,
+        "offset_y": 0.1728,
         "canvas_width": 3,
         "canvas_height": 2,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Equipment/Shoes/armor_impact_hightops.png",
+      "media_path": "./item-media/Equipment/Shoes/armor_impact_hightops.png",
+      "image": "./item-media/Equipment/Shoes/armor_impact_hightops.png?v=e4846a2d1f351934",
+      "image_url": "./item-media/Equipment/Shoes/armor_impact_hightops.png?v=e4846a2d1f351934",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Shoes/armor_impact_hightops.png"
     },
     {
@@ -1042,7 +885,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1,
         "applied_to_game": false
       },
-      "image": "./item-media/Equipment/Shoes/armor_mismatch_sneakers.png",
+      "media_path": "./item-media/Equipment/Shoes/armor_mismatch_sneakers.png",
+      "image": "./item-media/Equipment/Shoes/armor_mismatch_sneakers.png?v=0aa710e622a80516",
+      "image_url": "./item-media/Equipment/Shoes/armor_mismatch_sneakers.png?v=0aa710e622a80516",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Shoes/armor_mismatch_sneakers.png"
     },
     {
@@ -1088,7 +933,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 2,
         "applied_to_game": false
       },
-      "image": "./item-media/Equipment/Outfits/armor_plastic_bag_vest.png",
+      "media_path": "./item-media/Equipment/Outfits/armor_plastic_bag_vest.png",
+      "image": "./item-media/Equipment/Outfits/armor_plastic_bag_vest.png?v=c424e27bb45257eb",
+      "image_url": "./item-media/Equipment/Outfits/armor_plastic_bag_vest.png?v=c424e27bb45257eb",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Outfits/armor_plastic_bag_vest.png"
     },
     {
@@ -1096,18 +943,18 @@ window.PACKBOUND_ITEM_DB = {
       "name": "폭동 냄비 투구",
       "family": "equipment",
       "family_label": "장비",
-      "type_size": "헬멧·큰 8칸",
+      "type_size": "헬멧·큰 4칸",
       "concept": "솥뚜껑, 경광등, 두꺼운 양옆 볼가리개를 붙인 중장 투구",
       "stats": [
         "Defense 14",
         "MaxHealth 25"
       ],
       "bounds": {
-        "width": 3,
-        "height": 3
+        "width": 2,
+        "height": 2
       },
-      "pattern": "■■■/■■■/■□■",
-      "occupied_cells": 8,
+      "pattern": "■■/■■",
+      "occupied_cells": 4,
       "coordinates": [
         [
           0,
@@ -1118,39 +965,25 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          2,
-          0
-        ],
-        [
           0,
           1
         ],
         [
           1,
           1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          2,
-          2
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.65,
+        "offset_x": 0.0316,
+        "offset_y": 0.0421,
         "canvas_width": 3,
         "canvas_height": 3,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Equipment/Helmets/armor_riot_kettle_helmet.png",
+      "media_path": "./item-media/Equipment/Helmets/armor_riot_kettle_helmet.png",
+      "image": "./item-media/Equipment/Helmets/armor_riot_kettle_helmet.png?v=f19135066d58d73f",
+      "image_url": "./item-media/Equipment/Helmets/armor_riot_kettle_helmet.png?v=f19135066d58d73f",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Helmets/armor_riot_kettle_helmet.png"
     },
     {
@@ -1158,7 +991,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "폭풍대비 중장 부츠",
       "family": "equipment",
       "family_label": "장비",
-      "type_size": "신발·큰 8칸",
+      "type_size": "신발·큰 6칸",
       "concept": "정강이 장갑 부츠 두 짝을 좌우 앞뒤로 겹쳐 만든 묵직한 단일 아이템 실루엣",
       "stats": [
         "MoveSpeedIncrease 0.06",
@@ -1166,11 +999,11 @@ window.PACKBOUND_ITEM_DB = {
         "Defense 8"
       ],
       "bounds": {
-        "width": 4,
+        "width": 3,
         "height": 2
       },
-      "pattern": "■■■■/■■■■",
-      "occupied_cells": 8,
+      "pattern": "■■■/■■■",
+      "occupied_cells": 6,
       "coordinates": [
         [
           0,
@@ -1185,10 +1018,6 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          3,
-          0
-        ],
-        [
           0,
           1
         ],
@@ -1199,21 +1028,19 @@ window.PACKBOUND_ITEM_DB = {
         [
           2,
           1
-        ],
-        [
-          3,
-          1
         ]
       ],
       "image_layout": {
         "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "offset_x": -0.4188,
+        "offset_y": -0.0174,
         "canvas_width": 4,
         "canvas_height": 2,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Equipment/Shoes/armor_stormproof_boots.png",
+      "media_path": "./item-media/Equipment/Shoes/armor_stormproof_boots.png",
+      "image": "./item-media/Equipment/Shoes/armor_stormproof_boots.png?v=4695704f58aa189f",
+      "image_url": "./item-media/Equipment/Shoes/armor_stormproof_boots.png?v=4695704f58aa189f",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Shoes/armor_stormproof_boots.png"
     },
     {
@@ -1268,7 +1095,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 2,
         "applied_to_game": false
       },
-      "image": "./item-media/Equipment/Helmets/armor_vending_visor_helmet.png",
+      "media_path": "./item-media/Equipment/Helmets/armor_vending_visor_helmet.png",
+      "image": "./item-media/Equipment/Helmets/armor_vending_visor_helmet.png?v=f396566334cd8a71",
+      "image_url": "./item-media/Equipment/Helmets/armor_vending_visor_helmet.png?v=f396566334cd8a71",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Helmets/armor_vending_visor_helmet.png"
     },
     {
@@ -1276,7 +1105,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "세탁기 도어 타워실드",
       "family": "equipment",
       "family_label": "장비",
-      "type_size": "방패·큰 8칸",
+      "type_size": "방패·큰 6칸",
       "concept": "세탁기 원형 문과 아이보리 장갑판을 세로로 늘인 대형 방패",
       "stats": [
         "Defense 18",
@@ -1284,11 +1113,11 @@ window.PACKBOUND_ITEM_DB = {
         "DefenseIncrease 0.08"
       ],
       "bounds": {
-        "width": 3,
-        "height": 4
+        "width": 2,
+        "height": 3
       },
-      "pattern": "■■■/■■■/□■□/□■□",
-      "occupied_cells": 8,
+      "pattern": "■■/■■/■■",
+      "occupied_cells": 6,
       "coordinates": [
         [
           0,
@@ -1299,10 +1128,6 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          2,
-          0
-        ],
-        [
           0,
           1
         ],
@@ -1311,27 +1136,25 @@ window.PACKBOUND_ITEM_DB = {
           1
         ],
         [
-          2,
-          1
-        ],
-        [
-          1,
+          0,
           2
         ],
         [
           1,
-          3
+          2
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.75,
+        "offset_x": -0.1409,
+        "offset_y": 0.0125,
         "canvas_width": 3,
         "canvas_height": 4,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Equipment/Shields/armor_washer_door_tower_shield.png",
+      "media_path": "./item-media/Equipment/Shields/armor_washer_door_tower_shield.png",
+      "image": "./item-media/Equipment/Shields/armor_washer_door_tower_shield.png?v=a25f5a5e5f35a6d0",
+      "image_url": "./item-media/Equipment/Shields/armor_washer_door_tower_shield.png?v=a25f5a5e5f35a6d0",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Shields/armor_washer_door_tower_shield.png"
     },
     {
@@ -1364,7 +1187,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1,
         "applied_to_game": false
       },
-      "image": "./item-media/Accessories/accessory_bolt_ring.png",
+      "media_path": "./item-media/Accessories/accessory_bolt_ring.png",
+      "image": "./item-media/Accessories/accessory_bolt_ring.png?v=18187127b0e66382",
+      "image_url": "./item-media/Accessories/accessory_bolt_ring.png?v=18187127b0e66382",
       "source_image": "Assets/Items/InventoryIcons/Accessories/accessory_bolt_ring.png"
     },
     {
@@ -1401,7 +1226,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 2,
         "applied_to_game": false
       },
-      "image": "./item-media/Accessories/accessory_duck_whistle_necklace.png",
+      "media_path": "./item-media/Accessories/accessory_duck_whistle_necklace.png",
+      "image": "./item-media/Accessories/accessory_duck_whistle_necklace.png?v=828f2fba358b9e24",
+      "image_url": "./item-media/Accessories/accessory_duck_whistle_necklace.png?v=828f2fba358b9e24",
       "source_image": "Assets/Items/InventoryIcons/Accessories/accessory_duck_whistle_necklace.png"
     },
     {
@@ -1447,7 +1274,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1,
         "applied_to_game": false
       },
-      "image": "./item-media/Accessories/accessory_powerstrip_belt.png",
+      "media_path": "./item-media/Accessories/accessory_powerstrip_belt.png",
+      "image": "./item-media/Accessories/accessory_powerstrip_belt.png?v=5d4abd801beb01f4",
+      "image_url": "./item-media/Accessories/accessory_powerstrip_belt.png?v=5d4abd801beb01f4",
       "source_image": "Assets/Items/InventoryIcons/Accessories/accessory_powerstrip_belt.png"
     },
     {
@@ -1455,45 +1284,39 @@ window.PACKBOUND_ITEM_DB = {
       "name": "콘헤드 토템",
       "family": "special",
       "family_label": "특수",
-      "type_size": "토템·작은 4칸",
+      "type_size": "토템·작은 2칸",
       "concept": "X 눈의 나무 얼굴, 교통 콘 모자, 세 갈래 금속 받침을 가진 토템",
       "stats": [
         "DefenseIncrease 0.08",
         "MaxHealthIncrease 0.08"
       ],
       "bounds": {
-        "width": 3,
+        "width": 1,
         "height": 2
       },
-      "pattern": "□■□/■■■",
-      "occupied_cells": 4,
+      "pattern": "■/■",
+      "occupied_cells": 2,
       "coordinates": [
         [
-          1,
+          0,
           0
         ],
         [
           0,
           1
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.8,
+        "offset_x": -0.7,
+        "offset_y": 0.2,
         "canvas_width": 3,
         "canvas_height": 2,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Special/special_conehead_totem.png",
+      "media_path": "./item-media/Special/special_conehead_totem.png",
+      "image": "./item-media/Special/special_conehead_totem.png?v=d35d8192d5306e9a",
+      "image_url": "./item-media/Special/special_conehead_totem.png?v=d35d8192d5306e9a",
       "source_image": "Assets/Items/InventoryIcons/Special/special_conehead_totem.png"
     },
     {
@@ -1501,7 +1324,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "저주받은 블록 인형",
       "family": "special",
       "family_label": "특수",
-      "type_size": "저주 인형·조금 큰 7칸",
+      "type_size": "저주 인형·조금 큰 5칸",
       "concept": "원통 머리와 직육면체 팔다리를 꿰맨 완전 오리지널 블록형 장난감 인형",
       "stats": [
         "CriticalDamageMultiplier 0.25",
@@ -1511,8 +1334,8 @@ window.PACKBOUND_ITEM_DB = {
         "width": 3,
         "height": 3
       },
-      "pattern": "□■□/■■■/■■■",
-      "occupied_cells": 7,
+      "pattern": "□■□/■■■/□■□",
+      "occupied_cells": 5,
       "coordinates": [
         [
           1,
@@ -1531,27 +1354,21 @@ window.PACKBOUND_ITEM_DB = {
           1
         ],
         [
-          0,
-          2
-        ],
-        [
           1,
-          2
-        ],
-        [
-          2,
           2
         ]
       ],
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.75,
+        "offset_x": 0.398,
+        "offset_y": 0.4498,
         "canvas_width": 3,
         "canvas_height": 3,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Special/special_cursed_block_doll.png",
+      "media_path": "./item-media/Special/special_cursed_block_doll.png",
+      "image": "./item-media/Special/special_cursed_block_doll.png?v=f58df122bbbd3795",
+      "image_url": "./item-media/Special/special_cursed_block_doll.png?v=f58df122bbbd3795",
       "source_image": "Assets/Items/InventoryIcons/Special/special_cursed_block_doll.png"
     },
     {
@@ -1585,7 +1402,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1,
         "applied_to_game": false
       },
-      "image": "./item-media/Special/special_emergency_rubber_duck.png",
+      "media_path": "./item-media/Special/special_emergency_rubber_duck.png",
+      "image": "./item-media/Special/special_emergency_rubber_duck.png?v=76c8d38d289b6ea6",
+      "image_url": "./item-media/Special/special_emergency_rubber_duck.png?v=76c8d38d289b6ea6",
       "source_image": "Assets/Items/InventoryIcons/Special/special_emergency_rubber_duck.png"
     },
     {
@@ -1623,7 +1442,9 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 2,
         "applied_to_game": false
       },
-      "image": "./item-media/Special/special_lucky_duck_card.png",
+      "media_path": "./item-media/Special/special_lucky_duck_card.png",
+      "image": "./item-media/Special/special_lucky_duck_card.png?v=697ed4d3d31a7cd9",
+      "image_url": "./item-media/Special/special_lucky_duck_card.png?v=697ed4d3d31a7cd9",
       "source_image": "Assets/Items/InventoryIcons/Special/special_lucky_duck_card.png"
     },
     {
@@ -1638,15 +1459,23 @@ window.PACKBOUND_ITEM_DB = {
         "CooldownReduction 0.06"
       ],
       "bounds": {
-        "width": 3,
+        "width": 2,
         "height": 4
       },
-      "pattern": "□■□/□■□/■■■/■■■",
+      "pattern": "■■/■■/■■/■■",
       "occupied_cells": 8,
       "coordinates": [
         [
+          0,
+          0
+        ],
+        [
           1,
           0
+        ],
+        [
+          0,
+          1
         ],
         [
           1,
@@ -1661,31 +1490,25 @@ window.PACKBOUND_ITEM_DB = {
           2
         ],
         [
-          2,
-          2
-        ],
-        [
           0,
           3
         ],
         [
           1,
           3
-        ],
-        [
-          2,
-          3
         ]
       ],
       "image_layout": {
         "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "offset_x": -0.461,
+        "offset_y": -0.0167,
         "canvas_width": 3,
         "canvas_height": 4,
-        "applied_to_game": false
+        "applied_to_game": true
       },
-      "image": "./item-media/Special/special_thunder_amp_guitar.png",
+      "media_path": "./item-media/Special/special_thunder_amp_guitar.png",
+      "image": "./item-media/Special/special_thunder_amp_guitar.png?v=1da783713166e8db",
+      "image_url": "./item-media/Special/special_thunder_amp_guitar.png?v=1da783713166e8db",
       "source_image": "Assets/Items/InventoryIcons/Special/special_thunder_amp_guitar.png"
     }
   ]
