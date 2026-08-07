@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-06",
+  "generated_at": "2026-08-07",
   "page_count": 7,
-  "revision_count": 23,
+  "revision_count": 24,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -525,7 +525,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "character-2d-rendering",
       "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
-      "summary": "모바일용 프레임 캐릭터의 런타임 계약과 승인된 아트 방향을 잇는 1파일 1프레임 제작·검증 파이프라인을 구축했습니다.",
+      "summary": "겉보기 교대와 파일 규격을 보행 승인으로 오인한 기록을 철회하고, 실제 관절 궤적과 사용자 승인이 없으면 제작을 확장하거나 런타임에 승격할 수 없는 준비 체계로 교정했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
@@ -536,48 +536,106 @@ window.PACKBOUND_WIKI = {
         "art",
         "pipeline",
         "validation",
-        "roblox",
-        "mobile"
+        "locomotion",
+        "quality-gate",
+        "roblox"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-06",
+      "updated_at": "2026-08-07",
       "authors": [
         "Codex"
       ],
-      "version": 4,
-      "change_type": "updated",
-      "change_summary": "승인된 캐릭터·월드 아트 방향을 고정하고, 8방향 8프레임 보행을 포함한 개별 원화·앵커·QA·패킹 계약을 자동 검증하도록 구성했으며 South 보행만 첫 승인 게이트를 통과시킴",
-      "supersedes": "character-2d-rendering@v003",
+      "version": 5,
+      "change_type": "corrected",
+      "change_summary": "South 보행의 기존 승인 판정을 회수하고, 프레임 해시에 결합된 관절 좌표·통과 포즈·반대 팔 스윙·후보별 사용자 승인을 다음 제작의 선행 조건으로 고정함",
+      "supersedes": "character-2d-rendering@v004",
       "sources": [
-        "Assets/Characters/Player/README.md",
-        "Assets/Characters/Player/SpriteProduction/README.md",
-        "Assets/Characters/Player/SpriteProduction/production_manifest.json",
+        ".agents/skills/create-2d-sprite-animation/SKILL.md",
+        ".agents/skills/create-2d-sprite-animation/references/anatomical-motion-gates.md",
+        ".agents/skills/create-2d-sprite-animation/references/locomotion-landmark-schema.md",
+        ".agents/skills/create-2d-sprite-animation/references/projectbackpack-run-restart.md",
+        ".agents/skills/create-2d-sprite-animation/references/prompt-recipes.md",
+        ".agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py",
+        ".agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_milestone.py",
         "Assets/Characters/Player/SpriteProduction/Metadata/frame_metadata.json",
-        "Assets/Characters/Player/SpriteProduction/SourceGenerated/South/generation_record.md",
-        "docs/art/character-world-art-direction.md",
         "docs/art/sprite-animation-production.md",
-        "tools/sprite_animation_pipeline.py",
-        "tools/normalize_sprite_master.py",
-        "tools/normalize_head_master.py",
-        "tools/remove_connected_chroma.py",
-        "tools/update_sprite_metadata.py",
-        "tools/test_character_assets.sh",
-        "tests/test_sprite_animation_pipeline.py"
+        "wiki/content/pages/character-2d-rendering/v004.md"
       ],
       "related": [
         "project-overview",
         "studio-automation-routing"
       ],
       "validation": [
-        "python3 -m unittest tests/test_sprite_animation_pipeline.py",
-        "python3 tools/sprite_animation_pipeline.py validate --allow-missing",
-        "./tools/test_character_assets.sh",
-        "PYTHONPYCACHEPREFIX=/tmp/projectbackpack-pycache python3 -m py_compile tools/sprite_animation_pipeline.py tools/normalize_head_master.py tools/normalize_sprite_master.py tools/remove_connected_chroma.py tools/update_sprite_metadata.py",
+        "python3 -B .agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py --self-test",
+        "python3 -B .agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_milestone.py --self-test",
+        "실제 South 8PNG로 hash-bound manifest 초기화 후 미기입 landmark·depth·ProjectBackpack marker profile 검증 실행: expected exit 2, 184 errors",
+        "python3 -B /Users/t8g-2410-pn-005/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/create-2d-sprite-animation",
+        "python3 -m py_compile .agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py",
+        "python3 tools/wiki.py build",
+        "python3 tools/wiki.py check",
+        "python3 -m unittest tests/test_wiki.py",
         "git diff --check"
       ],
-      "source_path": "wiki/content/pages/character-2d-rendering/v004.md",
-      "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 결과\n\nPackBound의 플레이어는 `BillboardGui` 기반 프레임 스프라이트로 표시되며 머리와\n몸을 독립적으로 교체할 수 있습니다. 기존 라이브 프레임 시트는 현재 게임을\n표시하는 프로토타입으로 유지하되, 후속 최종 원화는 한 파일에 한 방향·한 프레임만\n담는 별도 제작 파이프라인을 통과해야 합니다.\n\n승인된 2등신 캐릭터, 전기 보라색 가방, 높은 쿼터탑 카메라 가독성과 장난감 같은\n폐품 세계의 아트 방향을 문서로 고정했습니다. 제작 매니페스트는 몸 192프레임과\n머리 10포즈의 파일 경로, 방향, 프레임 수, 재생 속도와 품질 게이트를 정의합니다.\n2026-08-06 현재 South 걷기 8프레임과 South 중립 머리만 승인됐으며, 나머지\n193개 원화는 제작 전 상태입니다. 따라서 이번 변경은 라이브 아틀라스를 교체하지\n않습니다.\n\n## 런타임과 아트 계약\n\n런타임 외형은 `Head`와 `Body` 두 슬롯으로 나뉩니다. 머리는 머리카락, 얼굴,\n머리 장식과 표정을 소유하고, 몸은 목 아래 의상, 팔다리, 신발, 가방과 가방 장식을\n소유합니다. 모든 제작물은 다음 공통 규격을 따릅니다.\n\n- 원본: 투명 배경 256×256 RGBA PNG\n- 런타임 셀: 128×128 RGBA PNG\n- 몸 루트: 마스터 좌표 `(128, 224)`\n- 안전 여백: 네 변에서 최소 16px\n- 방향: South부터 시계 방향으로 정의한 8방향\n- 머리 합성: 프레임별 사람이 승인한 목 앵커 사용\n\n바운딩박스 중심은 가방과 큰 신발 때문에 방향과 포즈마다 달라지므로 자동 정렬\n기준으로 사용하지 않습니다. 고정 루트, 실제 접지 발과 목 앵커를 기준으로 몸과\n머리를 합성합니다.\n\n## 애니메이션 제작 계약\n\n걷기는 `left_contact`, `left_down`, `left_passing`, `left_up`,\n`right_contact`, `right_down`, `right_passing`, `right_up`의 8단계로 구성하고\n8fps로 재생합니다. 두 반주기는 서로 다른 발이 앞서야 하며 마지막 프레임에서 첫\n프레임으로 연결될 때도 루트와 목이 튀지 않아야 합니다.\n\n전체 몸 모션 계약은 다음과 같습니다.\n\n- Idle: 8방향 × 4프레임, 6fps\n- Walk: 8방향 × 8프레임, 8fps\n- Dash: 8방향 × 6프레임, 15fps\n- Hit: 8방향 × 4프레임, 12fps\n- Death: West 8프레임 제작 후 East 전체 합성 반전, 12fps\n- Clear: South 8프레임, 12fps\n\n머리는 8방향 중립 포즈와 East·West 피격 포즈를 개별 파일로 관리합니다. 공격은\n자동 공격 시스템의 책임이므로 플레이어 스프라이트 모션 계약에 포함하지 않습니다.\n\n## 제작 도구와 검증\n\n`sprite_animation_pipeline.py`는 제작 폴더 생성, 메타데이터 병합, 원화 검증,\n컨택트시트·방향별 스트립·GIF 생성과 최종 패킹을 담당합니다. 검증기는 이미지\n크기와 RGBA 모드뿐 아니라 다음 항목도 검사합니다.\n\n- 파일 경로, 방향 순서, 프레임 수와 보행 위상 순서\n- 안전 여백 침범과 잘못 남은 연결 조각\n- 접지 발, 루트와 목 앵커의 유효성\n- 양발 교대, 루프 연결과 발 미끄러짐\n- 고정 상체 폭, 전체 실루엣 폭과 높이 드리프트\n- 프레임·방향 승인 상태와 South 보행 승인 게이트\n- 중복 프레임과 머리·몸 합성 연속성\n\n균일 크기 보정은 목과 발 사이 길이만 보고 전체 이미지를 늘리지 않습니다. 상체\n폭을 유지한 채 하체를 접지선에 맞추는 조정 도구를 제공해 포즈마다 가방과 어깨가\n커졌다 작아지는 현상을 줄입니다. 별도 크로마 제거 도구는 이미지 테두리에 연결된\n배경색만 제거해 캐릭터 내부의 같은 계열 색상을 보존합니다.\n\n`validate --allow-missing`은 사전 제작 단계에서 존재하는 파일을 엄격히 검사하면서\n아직 만들지 않은 파일만 경고로 허용합니다. `pack`은 전체 64개 걷기 프레임과\n8개 중립 머리가 모두 준비되고 승인되기 전에는 실패합니다. 성공하더라도 결과는\n`Build`에만 생성하며 현재 라이브 아틀라스를 자동 덮어쓰지 않습니다.\n\n## 현재 승인 상태\n\nSouth 걷기 8프레임과 South 중립 머리는 정규화, 개별 메타데이터 입력과 QA\n스트립·GIF 검수를 거쳤고 `southWalkGateApproved=true`로 기록됐습니다. 이\nSouth 전용 QA 자료는 제작 승인 증거이며 게임에서 사용하는 라이브 아틀라스가\n아닙니다.\n\n현재 검사에서는 준비된 모든 파일과 계약이 통과했고, 아직 제작하지 않은 193개\n원화만 사전 제작 경고로 보고됐습니다. 다음 제작 우선순위는 East와 North 걷기이며,\n두 방향을 승인한 뒤 대각선과 반대 방향으로 확장합니다. Walk 전체 승인 전에는\nIdle, Dash, Hit, Death와 Clear 제작 및 런타임 승격을 진행하지 않습니다.\n\n## 모바일 렌더링과 조작의 기존 결정\n\n캐릭터는 화면상 고정 픽셀 크기를 사용하고 쿼터뷰 카메라 거리와 캐릭터 화면\n스케일을 독립적으로 제어합니다. 현재 카메라 거리는 128, FOV는 38, 캐릭터 화면\n스케일은 0.1875입니다.\n\n모바일 이동은 중앙 데드존 밖에서 고정 속도로 동작하고, 대시는 조이스틱 바깥의\n별도 링을 통과할 때만 발동합니다. 중앙의 짧은 탭은 패리로 처리합니다. 이 입력과\n카메라 계약은 이번 아트 제작 파이프라인 변경으로 수정하지 않았습니다.\n\n## 결정 사항\n\n- 승인된 캐릭터와 세계 아트 방향을 후속 제작의 기준으로 유지합니다.\n- 기존 다중 포즈 생성 시트는 디자인 참고용으로만 사용하고 최종 모션 원본으로\n  보정하거나 트레이싱하지 않습니다.\n- 최종 애니메이션은 한 파일에 한 프레임을 제작하고 명시적 루트·접지·목 앵커로\n  정렬합니다.\n- 매니페스트와 프레임 메타데이터를 방향, 프레임 수, 경로와 승인 상태의 단일\n  기준으로 사용합니다.\n- 부분 완성 결과는 QA에만 사용하며 전체 계약을 통과하기 전 라이브 아틀라스를\n  교체하지 않습니다.\n- 이미지 생성 모델은 캐릭터 디자인과 단일 키포즈 참고에 사용하되 프레임 연속성과\n  좌우 발 일관성은 제작·검증 단계에서 별도로 보장합니다.\n\n## 후속 작업\n\n- East와 North 걷기 8프레임을 같은 승인 절차로 제작합니다.\n- 대각선과 반대 방향에서 헤드밴드, 짝짝이 양말, 가방과 오리 장식의 소유 방향을\n  수동 검수합니다.\n- 8방향 Walk가 모두 승인된 뒤 Idle, Dash, Hit, Death와 Clear를 제작합니다.\n- 전체 strict validation과 게임 내 방향·합성 테스트를 통과한 결과만 라이브\n  런타임 후보로 승격합니다.\n",
+      "source_path": "wiki/content/pages/character-2d-rendering/v005.md",
+      "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 기획 배경과 목표\n\n플레이어가 달릴 때 가장 먼저 읽혀야 하는 것은 신발 색이 아니라 체중과 팔다리의\n이동입니다. 서로 다른 발이 접지하고, 스윙 다리가 골반 아래를 지나 반대쪽 리치로\n이어지며, 반대쪽 팔이 함께 교대해야 한 걸음으로 인식됩니다. 이 기본 동작이\n불명확한 상태에서 캐릭터 디테일, 8방향 확장, 패킹과 Studio 적용을 진행하면\n완성 파일 수만 늘고 플레이 경험은 개선되지 않습니다.\n\n`character-2d-rendering@v004`는 South Walk 8프레임이 양발 교대와 반대 팔 스윙,\n루프 연속성 승인을 통과했다고 기록했습니다. 이후 검토에서 그 판정은 이미지에\n결합된 관절 궤적 없이 색상 마커, 파일 규격, 앵커와 서술형 QA에 의존했음이\n확인됐습니다. 따라서 이번 버전은 기존 South 보행의 모션·팔다리 교대·루프\n승인을 철회합니다. 방향, 캔버스, 루트, 목 앵커처럼 별도로 확인된 기술 정보와\nSouth 중립 머리 승인은 유지합니다.\n\n이번 변경의 목표는 새 스프라이트를 만드는 것이 아닙니다. 다음 제작 호출에서\n잘못된 기본 보행을 64프레임으로 확장하기 전에 차단하고, 최소 비용의 모션 증거와\n사용자 확인을 통과한 뒤에만 상세 원화로 진입할 수 있는 준비 상태를 만드는\n것입니다.\n\n## 사용자 경험\n\n다음 제작에서는 사용자가 완성된 8방향 시트를 뒤늦게 평가하지 않습니다. 먼저\nSouth와 East의 단순한 8프레임 모션 증거를 정확히 8fps로 확인합니다. South는\n정면 깊이와 가림 순서를, East는 다리가 골반 아래에서 실제로 교차·통과하는지를\n가장 분명하게 보여줍니다.\n\n사용자는 다음 세 가지를 함께 보고 승인합니다.\n\n- 실제 후보 프레임의 정확한 8fps 재생 결과\n- 물리적 좌우 관절을 표시한 궤적 오버레이\n- 0·4번 접지뿐 아니라 `1→2→3`, `5→6→7` 통과 구간의 확대 증거\n\n이 두 방향이 승인되기 전에는 다른 방향, 상세 렌더, 시트 패킹과 Studio 적용을\n진행하지 않습니다. 사용자에게는 빠른 실패와 작은 수정 단위를 제공하고, 프로젝트는\n잘못된 모션을 기반으로 한 대량 재작업을 피합니다.\n\n## 실패 원인\n\n이번 실패는 이미지 생성 모델 한 가지의 문제가 아니라 승인 체계의 실패였습니다.\n\n1. 접지 프레임 0·4와 색상 마커의 위치 차이를 실제 보행 교대로 간주했습니다.\n   그러나 2·6번은 두 발이 골반 아래로 모이는 통과 포즈를 증명하지 못했고, 넓은\n   보폭 사이에서 발 소유권이 순간적으로 바뀌어도 검출되지 않았습니다.\n2. 무릎·발목·발끝과 어깨·팔꿈치·손목을 물리적 좌우 기준으로 추적하지 않았습니다.\n   같은 손이 계속 앞에 있거나 reach→contact→compression 사이에 전방 손이\n   뒤집혀도 서술형 메타데이터가 `passed`이면 통과할 수 있었습니다.\n3. 기존 자동 검사는 RGBA, 크기, 여백, 해시 중복과 일부 색상 중심점 이동을 잘\n   검사했지만, 그것을 해부학적 모션 검증으로 확대 해석했습니다.\n4. 제작자가 작성한 검수 문장을 독립적인 관측 결과처럼 사용했습니다. 실제 이미지와\n   검수 문장이 충돌해도 패킹 도구가 이를 재계산하지 않았습니다.\n5. 정확한 후보에 대한 사용자 시각 승인이 없는 상태에서도 패킹·업로드·런타임\n   승격을 진행할 수 있었습니다.\n6. South와 East 기본 모션을 먼저 증명하지 않고 8방향 상세 프레임으로 확장해\n   실패 비용과 토큰 사용량을 키웠습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 기술 유효성, 해부학 유효성, 사용자 승인을 분리\n\nPNG 규격 통과는 파일이 사용 가능하다는 뜻일 뿐 자연스럽게 움직인다는 뜻이\n아닙니다. 관절 궤적 검증은 모션이 계약과 일치한다는 뜻이며, 사용자 승인은 실제\n게임 아트로 채택한다는 별도 결정입니다. 세 상태는 서로 자동 승격되지 않습니다.\n\n### 통과 프레임을 핵심 키로 취급\n\n0·4번 접지는 보폭의 양 끝만 보여줍니다. 자연스러운 교대는 `1→2→3`과\n`5→6→7`에서 발 간격이 닫히고 두 발목이 골반 아래로 모였다가 반대 물리 다리가\n앞으로 열리는 과정으로 증명합니다. 팔도 2·6번에서 중립을 통과하고 0·4번에서\n서로 다른 물리 팔이 전방을 담당해야 합니다.\n\n### 이미지와 관측·승인을 해시로 결합\n\n관절 좌표는 각 PNG의 SHA-256과 결합합니다. 프레임, 좌표, 깊이, 방향축 또는\n임계값이 바뀌면 입력 번들 해시가 바뀌고 이전 검수와 사용자 승인은 즉시 무효가\n됩니다. 색상 마커는 관절의 대체물이 아니라 올바른 관절에 붙어 있는지 확인하는\n독립 센서로만 사용합니다.\n\n### 작은 승인 단위와 실패 시 중단\n\n상세 원화 전에 South·East 모션 블로킹만 승인합니다. 한 차례의 목표 수정에도\n포즈 제어가 구조를 따르지 않으면 같은 프롬프트를 반복하지 않고 명시적\npose/edge/depth 제어나 수동 모션 블로킹으로 경로를 바꿉니다. 통과 게이트가\n실패하면 파생 방향을 모두 보류하고 품질 기준을 낮추지 않습니다.\n\n## 결정 사항과 범위\n\n- South Walk 8프레임의 `motionApproved`, `limbOppositionVerified`,\n  `loopVerified`를 모두 철회하고 `southWalkGateApproved=false`로 되돌립니다.\n- 실패한 South Run 후보의 상위 승인도 `southRunGateApproved=false`로 명시하고,\n  이후 방향과 패킹의 근거로 사용할 수 없게 합니다.\n- 기존 루트, 발 접지점, 목 앵커, 방향 확인과 South 중립 머리 정보는 유지합니다.\n- 프레임 해시에 연결된 neck·pelvis·hip·knee·ankle·toe 및\n  shoulder·elbow·wrist 좌표를 보행 승인 필수 입력으로 지정합니다.\n- 검증기는 접지 리드, 골반 아래 통과, 반대 팔 스윙, 지지발 미끄러짐, 관절 점프와\n  비대칭 색상 마커의 물리 관절 소유권을 별도로 검사합니다.\n- ProjectBackpack 마커 프로필은 청록 왼발목, 빨강 오른발목, 오른쪽 소매 패치를\n  각각 고정된 물리 관절에 결합하고 세 마커 모두 8프레임 전체를 검사합니다.\n- South·East 두 방향의 관절 검증과 외부 사용자 승인을 다시 실행하는 마일스톤\n  보고서가 `expansionAllowed=true`일 때만 다음 한 방향의 상세 렌더를 허용합니다.\n  이 보고서는 패킹과 런타임 승격을 허용하지 않습니다.\n- 사용자 승인 파일은 검증 보고서의 입력 번들 해시를 참조해야 하며, 새 픽셀이나\n  좌표가 생기면 재승인이 필요합니다.\n- Walk 전용 도구를 Run 패킹 증거로 사용하지 않습니다. 요청한 클립을 명시적으로\n  지원하고 새 관절·승인 게이트를 강제하기 전에는 패킹이 차단됩니다.\n- 이번 커밋에는 새 캐릭터 프레임, 실패한 생성 결과, 런타임 시트, Roblox 에셋 ID,\n  Studio 변경을 포함하지 않습니다.\n\n## 다음 제작 착수 순서\n\n1. 현재 후보와 파생 방향을 승인 소스가 아닌 실패 증거로 격리합니다.\n2. Run의 8개 위상, 카메라 방향축, 좌우 비대칭 소유권과 임계값을 확정합니다.\n3. South와 East의 모션 전용 접지 0·4, 통과 2·6, 리치 3·7, 압축 1·5 순서로\n   제작합니다.\n4. 정확한 이미지 해시가 들어간 landmark manifest를 초기화하고 관절과 깊이\n   레인을 기록합니다.\n5. 파일 QA, 관절 궤적 보고서, 오버레이와 정확한 8fps 미리보기를 함께 검수합니다.\n6. 사용자가 동일 입력 번들을 승인한 뒤 South 상세 프레임 하나의 방향만\n   제작하기 전에 South·East 합산 마일스톤 게이트를 통과합니다.\n7. East, 나머지 cardinal, diagonal 순으로 한 방향씩 같은 게이트를 반복합니다.\n8. 8방향 전체의 사용자 승인이 끝난 뒤에만 Run 패킹과 별도 런타임 승격 승인을\n   요청합니다.\n\n## 구현 참고\n\n`validate_locomotion_landmarks.py`는 정확히 8개 PNG에서 SHA-256이 포함된 manifest\n초안을 만들고, 관측 좌표를 채운 뒤 torso 길이로 정규화한 다리·팔 lead를\n계산합니다. 접지 프레임은 서로 반대 부호의 충분한 lead를 가져야 하고, 2·6번은\n접지 보폭 대비 작은 lead로 골반 아래를 통과해야 합니다. `0→4`와 `4→0`의 lead는\n프레임 순서대로 진행해야 하며, 팔 lead는 접지·리치에서 다리와 반대 신체 쪽이\n앞서도록 검증합니다.\n\n도구는 사람이 쓴 `passed` 값을 입력으로 받지 않습니다. JSON 보고서와 좌우 관절\n오버레이를 직접 생성하며, 비대칭 마커가 요구된 캐릭터는 연결 성분이 올바른\n관절에 더 가깝다는 조건도 통과해야 합니다. 패킹 전 `--require-user-approval`은\n별도 승인 파일의 사용자 역할과 입력 번들 해시를 확인합니다.\n\n`validate_locomotion_milestone.py`는 South와 East의 manifest·외부 승인 파일을\n입력으로 받아 방향별 검증을 다시 실행합니다. 둘 중 하나가 없거나 오래됐거나\n실패하면 확장을 차단하며, 통과하더라도 `packingAllowed`와 `promotionAllowed`는\n항상 false로 유지합니다.\n\n## 현재 결과\n\n현재 생산 승인된 플레이어 locomotion 방향은 없습니다. 기존 South 보행 승인은\n철회됐고, 실패한 Run 결과도 승인·패킹·런타임 소스로 간주하지 않습니다. 대신\n다음 호출에서 새 아트를 만들기 전에 실행할 단계, 관측 스키마, 실패 중단 기준,\n후보별 사용자 승인 경계와 자체 회귀 검사가 준비됐습니다.\n\n## 검증\n\n- 정상적인 교차·반대 팔 fixture가 통과하는지 확인했습니다.\n- 통과 프레임이 넓은 보폭을 유지하는 fixture, 같은 손이 전방에 남는 fixture,\n  좌우 발목 색상만 바꾸거나 같은 마커를 복제한 fixture가 실패하는지 확인했습니다.\n- 접지→압축에서 전방 팔이 바뀌는 fixture와 앞/뒤 깊이가 중간 레인 없이 즉시\n  뒤집히는 fixture가 실패하는지 확인했습니다.\n- 마커 한 종류만 제출하거나 `requiredFrames=[]`로 검사를 비운 fixture가\n  ProjectBackpack 마커 프로필과 합산 확장 게이트를 통과하지 못하는지 확인했습니다.\n- 지지발 미끄러짐, 외부 사용자 승인 누락과 승인 후 입력 변경이 모두 실패하는지\n  확인했습니다.\n- South 또는 East 입력·승인이 하나라도 빠지거나 오래되면 합산 마일스톤이\n  방향 확장을 허용하지 않는지 확인했습니다.\n- landmark가 비어 있는 실제 8프레임 폴더에서 manifest를 초기화한 뒤 검증기가\n  fail-closed하는지 확인했습니다.\n- 스킬 구조, Python 문법, 위키 빌드·무결성과 버전 계약을 검사했습니다.\n\n## 후속 기획\n\n- 다음 제작 호출은 South·East 모션 블로킹과 사용자 승인까지만 첫 마일스톤으로\n  잡습니다.\n- 실제 관절 입력 편의를 위해 필요하면 클릭 기반 landmark 작성 UI를 추가하되,\n  좌표와 승인 해시 계약은 바꾸지 않습니다.\n- Run 전용 preview·pack이 관절 보고서와 사용자 승인 파일을 필수로 소비하도록\n  프로젝트 파이프라인을 확장한 뒤에만 런타임 후보 승격을 재개합니다.\n",
       "revisions": [
+        {
+          "id": "character-2d-rendering",
+          "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
+          "summary": "겉보기 교대와 파일 규격을 보행 승인으로 오인한 기록을 철회하고, 실제 관절 궤적과 사용자 승인이 없으면 제작을 확장하거나 런타임에 승격할 수 없는 준비 체계로 교정했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "character",
+            "sprite",
+            "rendering",
+            "animation",
+            "art",
+            "pipeline",
+            "validation",
+            "locomotion",
+            "quality-gate",
+            "roblox"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-07",
+          "authors": [
+            "Codex"
+          ],
+          "version": 5,
+          "change_type": "corrected",
+          "change_summary": "South 보행의 기존 승인 판정을 회수하고, 프레임 해시에 결합된 관절 좌표·통과 포즈·반대 팔 스윙·후보별 사용자 승인을 다음 제작의 선행 조건으로 고정함",
+          "supersedes": "character-2d-rendering@v004",
+          "sources": [
+            ".agents/skills/create-2d-sprite-animation/SKILL.md",
+            ".agents/skills/create-2d-sprite-animation/references/anatomical-motion-gates.md",
+            ".agents/skills/create-2d-sprite-animation/references/locomotion-landmark-schema.md",
+            ".agents/skills/create-2d-sprite-animation/references/projectbackpack-run-restart.md",
+            ".agents/skills/create-2d-sprite-animation/references/prompt-recipes.md",
+            ".agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py",
+            ".agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_milestone.py",
+            "Assets/Characters/Player/SpriteProduction/Metadata/frame_metadata.json",
+            "docs/art/sprite-animation-production.md",
+            "wiki/content/pages/character-2d-rendering/v004.md"
+          ],
+          "related": [
+            "project-overview",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "python3 -B .agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py --self-test",
+            "python3 -B .agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_milestone.py --self-test",
+            "실제 South 8PNG로 hash-bound manifest 초기화 후 미기입 landmark·depth·ProjectBackpack marker profile 검증 실행: expected exit 2, 184 errors",
+            "python3 -B /Users/t8g-2410-pn-005/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/create-2d-sprite-animation",
+            "python3 -m py_compile .agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "git diff --check"
+          ],
+          "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 기획 배경과 목표\n\n플레이어가 달릴 때 가장 먼저 읽혀야 하는 것은 신발 색이 아니라 체중과 팔다리의\n이동입니다. 서로 다른 발이 접지하고, 스윙 다리가 골반 아래를 지나 반대쪽 리치로\n이어지며, 반대쪽 팔이 함께 교대해야 한 걸음으로 인식됩니다. 이 기본 동작이\n불명확한 상태에서 캐릭터 디테일, 8방향 확장, 패킹과 Studio 적용을 진행하면\n완성 파일 수만 늘고 플레이 경험은 개선되지 않습니다.\n\n`character-2d-rendering@v004`는 South Walk 8프레임이 양발 교대와 반대 팔 스윙,\n루프 연속성 승인을 통과했다고 기록했습니다. 이후 검토에서 그 판정은 이미지에\n결합된 관절 궤적 없이 색상 마커, 파일 규격, 앵커와 서술형 QA에 의존했음이\n확인됐습니다. 따라서 이번 버전은 기존 South 보행의 모션·팔다리 교대·루프\n승인을 철회합니다. 방향, 캔버스, 루트, 목 앵커처럼 별도로 확인된 기술 정보와\nSouth 중립 머리 승인은 유지합니다.\n\n이번 변경의 목표는 새 스프라이트를 만드는 것이 아닙니다. 다음 제작 호출에서\n잘못된 기본 보행을 64프레임으로 확장하기 전에 차단하고, 최소 비용의 모션 증거와\n사용자 확인을 통과한 뒤에만 상세 원화로 진입할 수 있는 준비 상태를 만드는\n것입니다.\n\n## 사용자 경험\n\n다음 제작에서는 사용자가 완성된 8방향 시트를 뒤늦게 평가하지 않습니다. 먼저\nSouth와 East의 단순한 8프레임 모션 증거를 정확히 8fps로 확인합니다. South는\n정면 깊이와 가림 순서를, East는 다리가 골반 아래에서 실제로 교차·통과하는지를\n가장 분명하게 보여줍니다.\n\n사용자는 다음 세 가지를 함께 보고 승인합니다.\n\n- 실제 후보 프레임의 정확한 8fps 재생 결과\n- 물리적 좌우 관절을 표시한 궤적 오버레이\n- 0·4번 접지뿐 아니라 `1→2→3`, `5→6→7` 통과 구간의 확대 증거\n\n이 두 방향이 승인되기 전에는 다른 방향, 상세 렌더, 시트 패킹과 Studio 적용을\n진행하지 않습니다. 사용자에게는 빠른 실패와 작은 수정 단위를 제공하고, 프로젝트는\n잘못된 모션을 기반으로 한 대량 재작업을 피합니다.\n\n## 실패 원인\n\n이번 실패는 이미지 생성 모델 한 가지의 문제가 아니라 승인 체계의 실패였습니다.\n\n1. 접지 프레임 0·4와 색상 마커의 위치 차이를 실제 보행 교대로 간주했습니다.\n   그러나 2·6번은 두 발이 골반 아래로 모이는 통과 포즈를 증명하지 못했고, 넓은\n   보폭 사이에서 발 소유권이 순간적으로 바뀌어도 검출되지 않았습니다.\n2. 무릎·발목·발끝과 어깨·팔꿈치·손목을 물리적 좌우 기준으로 추적하지 않았습니다.\n   같은 손이 계속 앞에 있거나 reach→contact→compression 사이에 전방 손이\n   뒤집혀도 서술형 메타데이터가 `passed`이면 통과할 수 있었습니다.\n3. 기존 자동 검사는 RGBA, 크기, 여백, 해시 중복과 일부 색상 중심점 이동을 잘\n   검사했지만, 그것을 해부학적 모션 검증으로 확대 해석했습니다.\n4. 제작자가 작성한 검수 문장을 독립적인 관측 결과처럼 사용했습니다. 실제 이미지와\n   검수 문장이 충돌해도 패킹 도구가 이를 재계산하지 않았습니다.\n5. 정확한 후보에 대한 사용자 시각 승인이 없는 상태에서도 패킹·업로드·런타임\n   승격을 진행할 수 있었습니다.\n6. South와 East 기본 모션을 먼저 증명하지 않고 8방향 상세 프레임으로 확장해\n   실패 비용과 토큰 사용량을 키웠습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 기술 유효성, 해부학 유효성, 사용자 승인을 분리\n\nPNG 규격 통과는 파일이 사용 가능하다는 뜻일 뿐 자연스럽게 움직인다는 뜻이\n아닙니다. 관절 궤적 검증은 모션이 계약과 일치한다는 뜻이며, 사용자 승인은 실제\n게임 아트로 채택한다는 별도 결정입니다. 세 상태는 서로 자동 승격되지 않습니다.\n\n### 통과 프레임을 핵심 키로 취급\n\n0·4번 접지는 보폭의 양 끝만 보여줍니다. 자연스러운 교대는 `1→2→3`과\n`5→6→7`에서 발 간격이 닫히고 두 발목이 골반 아래로 모였다가 반대 물리 다리가\n앞으로 열리는 과정으로 증명합니다. 팔도 2·6번에서 중립을 통과하고 0·4번에서\n서로 다른 물리 팔이 전방을 담당해야 합니다.\n\n### 이미지와 관측·승인을 해시로 결합\n\n관절 좌표는 각 PNG의 SHA-256과 결합합니다. 프레임, 좌표, 깊이, 방향축 또는\n임계값이 바뀌면 입력 번들 해시가 바뀌고 이전 검수와 사용자 승인은 즉시 무효가\n됩니다. 색상 마커는 관절의 대체물이 아니라 올바른 관절에 붙어 있는지 확인하는\n독립 센서로만 사용합니다.\n\n### 작은 승인 단위와 실패 시 중단\n\n상세 원화 전에 South·East 모션 블로킹만 승인합니다. 한 차례의 목표 수정에도\n포즈 제어가 구조를 따르지 않으면 같은 프롬프트를 반복하지 않고 명시적\npose/edge/depth 제어나 수동 모션 블로킹으로 경로를 바꿉니다. 통과 게이트가\n실패하면 파생 방향을 모두 보류하고 품질 기준을 낮추지 않습니다.\n\n## 결정 사항과 범위\n\n- South Walk 8프레임의 `motionApproved`, `limbOppositionVerified`,\n  `loopVerified`를 모두 철회하고 `southWalkGateApproved=false`로 되돌립니다.\n- 실패한 South Run 후보의 상위 승인도 `southRunGateApproved=false`로 명시하고,\n  이후 방향과 패킹의 근거로 사용할 수 없게 합니다.\n- 기존 루트, 발 접지점, 목 앵커, 방향 확인과 South 중립 머리 정보는 유지합니다.\n- 프레임 해시에 연결된 neck·pelvis·hip·knee·ankle·toe 및\n  shoulder·elbow·wrist 좌표를 보행 승인 필수 입력으로 지정합니다.\n- 검증기는 접지 리드, 골반 아래 통과, 반대 팔 스윙, 지지발 미끄러짐, 관절 점프와\n  비대칭 색상 마커의 물리 관절 소유권을 별도로 검사합니다.\n- ProjectBackpack 마커 프로필은 청록 왼발목, 빨강 오른발목, 오른쪽 소매 패치를\n  각각 고정된 물리 관절에 결합하고 세 마커 모두 8프레임 전체를 검사합니다.\n- South·East 두 방향의 관절 검증과 외부 사용자 승인을 다시 실행하는 마일스톤\n  보고서가 `expansionAllowed=true`일 때만 다음 한 방향의 상세 렌더를 허용합니다.\n  이 보고서는 패킹과 런타임 승격을 허용하지 않습니다.\n- 사용자 승인 파일은 검증 보고서의 입력 번들 해시를 참조해야 하며, 새 픽셀이나\n  좌표가 생기면 재승인이 필요합니다.\n- Walk 전용 도구를 Run 패킹 증거로 사용하지 않습니다. 요청한 클립을 명시적으로\n  지원하고 새 관절·승인 게이트를 강제하기 전에는 패킹이 차단됩니다.\n- 이번 커밋에는 새 캐릭터 프레임, 실패한 생성 결과, 런타임 시트, Roblox 에셋 ID,\n  Studio 변경을 포함하지 않습니다.\n\n## 다음 제작 착수 순서\n\n1. 현재 후보와 파생 방향을 승인 소스가 아닌 실패 증거로 격리합니다.\n2. Run의 8개 위상, 카메라 방향축, 좌우 비대칭 소유권과 임계값을 확정합니다.\n3. South와 East의 모션 전용 접지 0·4, 통과 2·6, 리치 3·7, 압축 1·5 순서로\n   제작합니다.\n4. 정확한 이미지 해시가 들어간 landmark manifest를 초기화하고 관절과 깊이\n   레인을 기록합니다.\n5. 파일 QA, 관절 궤적 보고서, 오버레이와 정확한 8fps 미리보기를 함께 검수합니다.\n6. 사용자가 동일 입력 번들을 승인한 뒤 South 상세 프레임 하나의 방향만\n   제작하기 전에 South·East 합산 마일스톤 게이트를 통과합니다.\n7. East, 나머지 cardinal, diagonal 순으로 한 방향씩 같은 게이트를 반복합니다.\n8. 8방향 전체의 사용자 승인이 끝난 뒤에만 Run 패킹과 별도 런타임 승격 승인을\n   요청합니다.\n\n## 구현 참고\n\n`validate_locomotion_landmarks.py`는 정확히 8개 PNG에서 SHA-256이 포함된 manifest\n초안을 만들고, 관측 좌표를 채운 뒤 torso 길이로 정규화한 다리·팔 lead를\n계산합니다. 접지 프레임은 서로 반대 부호의 충분한 lead를 가져야 하고, 2·6번은\n접지 보폭 대비 작은 lead로 골반 아래를 통과해야 합니다. `0→4`와 `4→0`의 lead는\n프레임 순서대로 진행해야 하며, 팔 lead는 접지·리치에서 다리와 반대 신체 쪽이\n앞서도록 검증합니다.\n\n도구는 사람이 쓴 `passed` 값을 입력으로 받지 않습니다. JSON 보고서와 좌우 관절\n오버레이를 직접 생성하며, 비대칭 마커가 요구된 캐릭터는 연결 성분이 올바른\n관절에 더 가깝다는 조건도 통과해야 합니다. 패킹 전 `--require-user-approval`은\n별도 승인 파일의 사용자 역할과 입력 번들 해시를 확인합니다.\n\n`validate_locomotion_milestone.py`는 South와 East의 manifest·외부 승인 파일을\n입력으로 받아 방향별 검증을 다시 실행합니다. 둘 중 하나가 없거나 오래됐거나\n실패하면 확장을 차단하며, 통과하더라도 `packingAllowed`와 `promotionAllowed`는\n항상 false로 유지합니다.\n\n## 현재 결과\n\n현재 생산 승인된 플레이어 locomotion 방향은 없습니다. 기존 South 보행 승인은\n철회됐고, 실패한 Run 결과도 승인·패킹·런타임 소스로 간주하지 않습니다. 대신\n다음 호출에서 새 아트를 만들기 전에 실행할 단계, 관측 스키마, 실패 중단 기준,\n후보별 사용자 승인 경계와 자체 회귀 검사가 준비됐습니다.\n\n## 검증\n\n- 정상적인 교차·반대 팔 fixture가 통과하는지 확인했습니다.\n- 통과 프레임이 넓은 보폭을 유지하는 fixture, 같은 손이 전방에 남는 fixture,\n  좌우 발목 색상만 바꾸거나 같은 마커를 복제한 fixture가 실패하는지 확인했습니다.\n- 접지→압축에서 전방 팔이 바뀌는 fixture와 앞/뒤 깊이가 중간 레인 없이 즉시\n  뒤집히는 fixture가 실패하는지 확인했습니다.\n- 마커 한 종류만 제출하거나 `requiredFrames=[]`로 검사를 비운 fixture가\n  ProjectBackpack 마커 프로필과 합산 확장 게이트를 통과하지 못하는지 확인했습니다.\n- 지지발 미끄러짐, 외부 사용자 승인 누락과 승인 후 입력 변경이 모두 실패하는지\n  확인했습니다.\n- South 또는 East 입력·승인이 하나라도 빠지거나 오래되면 합산 마일스톤이\n  방향 확장을 허용하지 않는지 확인했습니다.\n- landmark가 비어 있는 실제 8프레임 폴더에서 manifest를 초기화한 뒤 검증기가\n  fail-closed하는지 확인했습니다.\n- 스킬 구조, Python 문법, 위키 빌드·무결성과 버전 계약을 검사했습니다.\n\n## 후속 기획\n\n- 다음 제작 호출은 South·East 모션 블로킹과 사용자 승인까지만 첫 마일스톤으로\n  잡습니다.\n- 실제 관절 입력 편의를 위해 필요하면 클릭 기반 landmark 작성 UI를 추가하되,\n  좌표와 승인 해시 계약은 바꾸지 않습니다.\n- Run 전용 preview·pack이 관절 보고서와 사용자 승인 파일을 필수로 소비하도록\n  프로젝트 파이프라인을 확장한 뒤에만 런타임 후보 승격을 재개합니다.\n",
+          "source_path": "wiki/content/pages/character-2d-rendering/v005.md"
+        },
         {
           "id": "character-2d-rendering",
           "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
