@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
   "generated_at": "2026-08-10",
   "page_count": 7,
-  "revision_count": 27,
+  "revision_count": 28,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -671,7 +671,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "character-2d-rendering",
       "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
-      "summary": "검증 비용을 통제하면서도 플레이 감각을 확인할 수 있도록, 사용자 승인 우측 달리기를 기준으로 남성 캐릭터 Run을 좌우 2방향·8fps 생산 POC로 게임에 적용했습니다.",
+      "summary": "승인된 Pixel Engine 달리기 동작은 그대로 유지하면서 투명 외곽의 밝은 프린지를 제거해, 어두운 게임 배경에서도 캐릭터 실루엣이 깨끗하게 보이는 런타임 에셋으로 교체했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
@@ -687,32 +687,28 @@ window.PACKBOUND_WIKI = {
         "pixel-engine"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-09",
+      "updated_at": "2026-08-10",
       "authors": [
         "Codex"
       ],
-      "version": 6,
-      "change_type": "updated",
-      "change_summary": "8방향 전체 제작 전에 게임성부터 확인하도록 범위를 줄이고, Pixel Engine에서 사용자가 승인한 East Run 8프레임을 로컬 후처리해 East/West 2행 런타임 아틀라스로 적용함",
-      "supersedes": "character-2d-rendering@v005",
+      "version": 7,
+      "change_type": "corrected",
+      "change_summary": "검은 배경에서 보이던 회색·흰색 외곽 도트를 생성형 재드로잉 없이 제거하고, 같은 8프레임 포즈를 1024px 보존 마스터와 새 Roblox 런타임 에셋으로 다시 배포함",
+      "supersedes": "character-2d-rendering@v006",
       "sources": [
-        "wiki/content/pages/character-2d-rendering/v005.md",
-        ".agents/skills/projectbackpack-run-keyframes/SKILL.md",
-        "wiki/content/media/character-2d-rendering/v006/approved-male-character-concept.png",
-        "wiki/content/media/character-2d-rendering/v006/two-direction-run-contact-sheet.png",
-        "wiki/content/media/character-2d-rendering/v006/east-run-8fps-preview.gif",
-        "wiki/content/media/character-2d-rendering/v006/studio-two-direction-run-result.jpg",
+        "wiki/content/pages/character-2d-rendering/v006.md",
+        "wiki/content/media/character-2d-rendering/v007/edge-fringe-before-after.png",
+        "wiki/content/media/character-2d-rendering/v007/edge-clean-east-run-8fps.gif",
+        "wiki/content/media/character-2d-rendering/v007/edge-clean-two-direction-contact-sheet.png",
+        "wiki/content/media/character-2d-rendering/v007/studio-edge-clean-live-result.jpg",
         "Assets/Characters/Player/SpriteProduction/production_manifest.json",
         "Assets/Characters/Player/SpriteProduction/Build/Run2D/RookieMale_Run_EastWest_Metadata.json",
         "Assets/Characters/Player/SpriteProduction/Build/Run2D/QA/report.json",
         "Assets/Characters/Player/SpriteProduction/Build/Run2D/uploaded_asset_ids.json",
-        "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/user-approval.json",
+        "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/Refinement/edge-decontamination-v1/QA/report.json",
+        "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/Refinement/edge-decontamination-v1/user-approval.json",
         "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/promotion-approval.json",
         "src/ReplicatedStorage/Character2D/AssetRegistry.luau",
-        "src/ReplicatedStorage/Character2D/CharacterController.luau",
-        "src/ReplicatedStorage/Character2D/Config.luau",
-        "src/ReplicatedStorage/Character2D/FrameSpriteRig.luau",
-        "src/ReplicatedStorage/Character2D/ProductionRunData.luau",
         "tests/test_two_direction_run_build.py"
       ],
       "related": [
@@ -720,23 +716,84 @@ window.PACKBOUND_WIKI = {
         "studio-automation-routing"
       ],
       "validation": [
-        "East/West master·runtime sequence QA 4종: 0 errors, 0 warnings",
-        "East/West APNG 각각 8프레임 × 125ms = 1000ms 무한 루프 확인",
+        "East/West 1024px·256px·128px 시퀀스 QA 6종: 0 errors, 0 warnings",
+        "기존 대비 alpha>=128 실루엣 IoU 최소 0.999806",
+        "배경색 유사 외곽 픽셀 8프레임 합계: 483에서 9로 감소",
+        "East/West APNG 각각 8프레임 × 125ms = 1000ms 무한 루프",
         "python3 -m unittest tests.test_two_direction_run_build",
         "bash tools/test_character_assets.sh",
-        "luau-compile ProductionRunData.luau, FrameSpriteRig.luau, AssetRegistry.luau, CharacterController.luau, Config.luau",
-        "Roblox Studio MCP upload_image: rbxassetid://83248035359166",
-        "Roblox Studio MCP Play/Client: East Y=0, West Y=128, X=0..896/128px 간격, Run 머리 레이어 숨김, North 입력에서 마지막 수평 방향 유지",
-        "Roblox Studio MCP Play 콘솔: 오류 출력 없음",
-        "Studio MCP screen_capture 두 차례 timeout 후 AGENTS.md 허용 범위에 따라 동일 MCP Play 검증 장면을 Computer Use 읽기 전용 캡처로 보존",
-        "python3 tools/wiki.py build",
-        "python3 tools/wiki.py check",
-        "python3 -m unittest tests/test_wiki.py",
-        "git diff --check"
+        "luau-compile src/ReplicatedStorage/Character2D/AssetRegistry.luau",
+        "Roblox Studio MCP upload_image: rbxassetid://91295241781335",
+        "Roblox Studio MCP Play/Client: 업로드 에셋 16/16 로드, East Y=0, West Y=128, X=0..896",
+        "Roblox Studio MCP Play 콘솔: 게임 오류 출력 없음",
+        "Roblox Studio 삼성 갤럭시 A06 800×360 모바일 프리셋 검은 배경 시각 검사"
       ],
-      "source_path": "wiki/content/pages/character-2d-rendering/v006.md",
-      "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 기획 배경과 목표\n\n이번 단계의 목표는 8방향 전체를 빠르게 채우는 것이 아니라, 실제 게임에서 달리기가\n충분히 매력적인지 가장 작은 비용으로 증명하는 것입니다. 이전 제작은 한 번에 많은\n방향과 프레임을 다루면서 정체성·동작·검증 비용이 함께 커졌습니다. 사용자는 우측\n달리기 한 방향을 먼저 확인하는 경로로 범위를 줄였고, Pixel Engine에서 나온 정확한\n8프레임 결과를 게임 적용 대상으로 직접 승인했습니다.\n\n따라서 현재 생산 POC는 남성 캐릭터 Run 하나와 East/West 두 방향만 책임집니다.\n우측 결과를 실제 플레이에서 확인할 수 있게 만드는 것이 우선이며, 여성 캐릭터와\nIdle·Dash·Death, 전용 West 원화, 8방향 확장은 이 결과의 플레이 감각이 확인된 뒤\n같은 절차로 진행합니다.\n\n![승인된 남성 캐릭터 콘셉트](./media/character-2d-rendering/v006/approved-male-character-concept.png \"보라색 머리와 배낭, 라임 재킷, 청록·빨강 발목 비대칭, 오리 참을 정체성 기준으로 사용\")\n\n## 사용자 경험\n\n플레이어가 달리기 속도에 도달하면 전신이 한 덩어리로 움직이는 8프레임 달리기가\n초당 8프레임으로 재생됩니다. 화면 오른쪽 계열 입력은 승인된 East 행을, 화면 왼쪽\n계열 입력은 West 행을 사용합니다. 위·아래로 이동할 때는 캐릭터가 갑자기 정면이나\n후면으로 돌지 않고 마지막 좌우 바라보기를 유지합니다.\n\nIdle과 Walk, Dash·Hit·Death·Clear는 이번 변경 범위가 아니므로 기존 호환 아틀라스를\n계속 사용합니다. 이 분리는 달리기 개선이 서 있거나 걷는 상태를 잘못된 달리기\n자세로 덮지 않게 합니다.\n\n![좌우 2방향 달리기 프레임](./media/character-2d-rendering/v006/two-direction-run-contact-sheet.png \"위 행은 승인된 East 원본, 아래 행은 임시 West 미러이며 모든 셀에 같은 공유 카메라 변환을 적용\")\n\n![우측 달리기 8fps 미리보기](./media/character-2d-rendering/v006/east-run-8fps-preview.gif \"8프레임이 1초에 한 번 순환하는 사용자 승인 달리기\")\n\n## 핵심 원칙과 설계 철학\n\n### 한 방향을 먼저 게임에서 증명\n\n이번 POC는 방향 수보다 한 방향의 실제 품질과 적용 가능성을 우선합니다. 승인된\nEast 한 행을 권위 원본으로 두고 게임의 프레임 선택, 타이밍, 알파, 스케일과 에셋\n로딩을 먼저 닫았습니다. 이 결과가 충분할 때만 새 캐릭터와 새 클립으로 확장합니다.\n\n### 모델이 만든 동작과 결정론적 후처리를 분리\n\n포즈와 프레임 순서는 Pixel Engine 결과를 그대로 유지했습니다. 배경 제거에는\n추가 크레딧을 쓰지 않고 로컬 U2Net을 사용했으며, 가장 큰 연결 알파 성분만 보존하고\n완전 투명 픽셀의 RGB를 0으로 정리했습니다. 모든 프레임에는 하나의 공통 축소율과\n오프셋만 적용해 프레임마다 몸 크기가 펌핑되는 문제를 피했습니다.\n\n### 승인과 파생 결과를 해시로 고정\n\n사용자가 승인한 제공자 원본 SHA-256은\n`6aab03d4593562e60f974d092f54c02a5d6dbba400f10c6ef8b157e84d3ed749`,\n최종 1024×256 런타임 아틀라스 SHA-256은\n`91558828e88f2e8903f7ec7c98a4ab5dc216c1ef048b0d3491b8e2b41cfc82b2`입니다.\n승인 기록은 두 해시와 Roblox 에셋 ID를 함께 가리키므로 다른 픽셀로 교체되면 같은\n승인을 재사용할 수 없습니다.\n\n### 미러는 명시적인 임시 타협\n\nWest는 East의 수평 미러입니다. 이 방식은 적은 제작비로 좌우 조작 감각을 확인하는\n데 유용하지만, 청록·빨강 발목과 소매 패치 같은 물리적 좌우 소유권도 화면상 함께\n뒤집습니다. 따라서 현재 West는 2방향 POC용으로만 승인되며, 비대칭의 물리적 의미가\n출시 품질 요구가 되는 시점에는 전용 West 원화로 교체합니다.\n\n## 결정 사항과 범위\n\n- 생산 Run 계약은 `East`, `West` 두 행과 각 8열입니다.\n- East는 Pixel Engine Frame Engine 1.1 제공자 원본, West는 결정론적 수평 미러입니다.\n- 마스터 셀은 256×256, 런타임 셀은 128×128, 런타임 아틀라스는 1024×256 RGBA입니다.\n- Run은 8fps, 프레임당 125ms, 총 1초 무한 루프입니다.\n- Roblox 업로드 에셋은 `rbxassetid://83248035359166`입니다.\n- East·NorthEast·SouthEast는 East 행, West·NorthWest·SouthWest는 West 행을 선택합니다.\n- North와 South 입력은 마지막 수평 바라보기를 유지합니다.\n- Run만 전신 베이크 아틀라스를 사용하고, 나머지 상태는 기존 머리/몸 호환 경로를 유지합니다.\n- 여성 캐릭터와 Idle·Dash·Death 제작, 전용 West, 8방향 복귀는 이번 커밋에 포함하지 않습니다.\n\n## 현재 결과\n\nStudio Play의 모바일 테스트 화면에서 업로드된 아틀라스 16셀을 실제\n`ImageRectOffset` 계약으로 순회했습니다. East는 0행, West는 1행을 사용하며 두 행의\n프레임 순서와 캐릭터 정체성이 유지됩니다.\n\n![Studio 좌우 달리기 적용 결과](./media/character-2d-rendering/v006/studio-two-direction-run-result.jpg \"Roblox Studio Play에서 업로드 에셋의 East/West 16셀을 실제 런타임 오프셋으로 표시한 결과\")\n\n## 구현 참고\n\n`ProductionRunData.luau`가 128px 셀, 8프레임, 8fps와 East 0행·West 1행을 단일\n런타임 계약으로 제공합니다. `FrameSpriteRig`은 8방향 이동 입력을 두 수평 렌더\n방향으로 축약하고 North/South에서 마지막 수평 방향을 보존합니다. Run일 때만\n전신 아틀라스를 사용하고 머리 레이어를 숨겨 중복 얼굴을 막습니다.\n\n`CharacterController`와 `Config`는 프레임 스프라이트 이동 상태의 위상을\n`8 frames / 8 fps`로 계산합니다. 캐릭터 속도가 달라져도 승인된 프레임 순서와\n초당 8프레임 계약은 유지됩니다.\n\n`AssetRegistry`는 업로드 ID와 저장소의 1024×256 런타임 파일을 함께 등록합니다.\n후보 폴더에는 제공자 원본, 로컬 배경 제거 결과, 공유 변환 마스터·런타임 프레임,\n기술 QA, 사용자 승인과 승격 승인 해시가 남습니다.\n\n## 검증\n\n- East/West의 256px 마스터와 128px 런타임 네 시퀀스에서 RGBA, 안전 여백,\n  투명 모서리, 중복, 분리 성분과 크기·중심 드리프트를 검사해 오류와 경고가 모두\n  0건임을 확인했습니다.\n- APNG 두 방향 모두 8프레임, 각 125ms, 총 1000ms 무한 루프임을 읽어 확인했습니다.\n- 빌드 단위 테스트 6개와 캐릭터 에셋 셸 검사를 통과했습니다.\n- 변경된 Luau 모듈 다섯 개를 `luau-compile`로 컴파일했습니다.\n- Studio MCP로 업로드, 모듈 계약 확인, Play 시작·정지, Client 프레임 순회와 콘솔을\n  검증했습니다. East Y=0, West Y=128, X는 0부터 896까지 128px 간격이었고 콘솔\n  오류 출력은 없었습니다.\n- Studio MCP 화면 캡처가 Edit와 Play에서 두 차례 응답 제한을 넘겨, 동일한 MCP\n  Play 검증 장면의 최종 이미지만 허용된 Computer Use 읽기 전용 캡처로 보존했습니다.\n\n## 후속 기획\n\n- 실제 플레이 체감에서 속도·화면 크기·그림자 위치를 확인한 뒤 필요하면 런타임 표시\n  스케일만 조정하고 승인 프레임의 포즈는 유지합니다.\n- 다음 스프라이트 제작은 동일한 캐릭터의 전용 West 또는 여성 East Run 중 플레이\n  우선순위가 높은 하나만 선택해 다시 작은 승인 단위로 진행합니다.\n- 전용 West가 승인되면 미러 행을 교체하고 청록·빨강 발목과 소매 패치의 물리적\n  좌우 소유권을 해시 결합 검증에 복구합니다.\n- 2방향 POC가 게임 방향성에 충분하다고 확인되기 전에는 8방향 대량 제작으로 돌아가지 않습니다.\n",
+      "source_path": "wiki/content/pages/character-2d-rendering/v007.md",
+      "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 기획 배경과 목표\n\n달리기 동작 자체는 Pixel Engine 결과로 충분한 품질을 얻었지만, 초기 로컬 배경 제거본은\n검은 화면에서 캐릭터 외곽에 회색 또는 흰색 도트가 드러났습니다. 이 문제는 포즈나 원화\n품질이 아니라 원래 회색 배경의 RGB가 반투명 가장자리 픽셀에 남은 알파 프린지였습니다.\n\n이번 교체의 목표는 승인된 8프레임 동작과 캐릭터 디자인을 다시 해석하지 않고, 어두운\n게임 배경에서도 실루엣이 깨끗하게 읽히도록 투명 외곽만 교정하는 것입니다. 생성형\n재드로잉은 얼굴·팔·신발·장비와 프레임 타이밍을 바꿀 수 있으므로 사용하지 않았습니다.\n\n## 사용자 경험\n\n플레이어가 달릴 때 머리카락, 배낭, 팔, 신발 가장자리 주변에 밝은 점선이 따라붙지\n않습니다. 캐릭터의 크기, 포즈, 속도와 1초짜리 8프레임 루프는 이전 승인본과 동일하게\n느껴지며, 차이는 배경과 맞닿는 외곽이 자연스럽게 정리됐다는 점입니다.\n\n![외곽 프린지 제거 전후](./media/character-2d-rendering/v007/edge-fringe-before-after.png \"위 행은 회색 배경 RGB가 남은 기존 컷아웃, 아래 행은 검은 배경에서 외곽 오염을 제거한 최종 프레임\")\n\n![외곽 교정 후 우측 달리기](./media/character-2d-rendering/v007/edge-clean-east-run-8fps.gif \"승인된 Pixel Engine 포즈와 8fps 타이밍을 그대로 유지한 최종 East Run\")\n\n## 핵심 원칙과 설계 철학\n\n### 동작 문제와 합성 문제를 분리\n\n좋은 동작을 다시 생성하면 해결된 모션까지 위험해집니다. 이번 문제는 합성 경계에만\n있었으므로 Pixel Engine이 만든 포즈와 불투명 내부를 보존하고, 반투명 가장자리의 회색\n배경 성분만 주변의 실제 캐릭터 색으로 복원했습니다.\n\n### 고해상도 보존과 런타임 출력을 분리\n\n원본 640px 셀에서 정리한 결과를 공통 변환으로 1024×1024 보존 마스터에 올리고,\npremultiplied-alpha 방식으로 256px 검수본과 128px Roblox 런타임본을 만들었습니다.\n프레임별 크기 맞춤이나 생성형 확대는 사용하지 않아 몸 크기가 펌핑되거나 포즈가\n변형되지 않습니다.\n\n### 승인된 픽셀만 승격\n\n검은 배경 전후 비교, 정리 보고서와 최종 런타임 PNG 해시를 새 사용자 승인에 묶었습니다.\n최종 1024×256 런타임 아틀라스 SHA-256은\n`eb499e4a3edaac7221476abe4823018665f7fde9068f9ef32119f6bbe5013b63`이며,\n새 Roblox 이미지 ID는 `rbxassetid://91295241781335`입니다.\n\n## 결정 사항과 범위\n\n- Pixel Engine Frame Engine 1.1의 East 8프레임 포즈와 순서를 그대로 유지합니다.\n- East/West 두 행, 8열, 8fps와 125ms 프레임 타이밍은 변경하지 않습니다.\n- 외곽 교정은 회색 배경 디컨탐네이션, premultiplied-alpha 리샘플링, alpha 4 이하\n  링잉 제거와 권위 연결 실루엣 보존으로 제한합니다.\n- 1024px 셀은 보존 마스터이며 Roblox는 128px 셀의 1024×256 아틀라스를 사용합니다.\n- West는 계속 East의 임시 수평 미러이므로 청록·빨강 신발과 소매 패치의 물리적 좌우가\n  화면상 뒤집히는 v006의 한계는 남아 있습니다.\n- 여성 캐릭터, 전용 West와 다른 애니메이션 클립은 이번 교정 범위가 아닙니다.\n\n![교정된 좌우 2방향 프레임](./media/character-2d-rendering/v007/edge-clean-two-direction-contact-sheet.png \"위 행 East와 아래 행 임시 West 모두 같은 외곽 교정과 공통 카메라 변환을 사용\")\n\n## 현재 결과\n\nRoblox Studio Play에서 새 업로드 에셋의 East/West 16셀을 검은 배경 위에 실제\n`ImageRectOffset`으로 표시했습니다. 16개 이미지가 모두 로드됐고, 작은 모바일 표시에서도\n외곽을 따라가던 밝은 도트가 다시 나타나지 않았습니다.\n\n![Studio 최종 외곽 검사](./media/character-2d-rendering/v007/studio-edge-clean-live-result.jpg \"삼성 갤럭시 A06 모바일 프리셋에서 새 Roblox 에셋의 East/West 16셀을 검은 배경으로 검사한 결과\")\n\n## 구현 참고\n\n`AssetRegistry`의 Run 에셋만 새 ID로 교체했으며 방향 해석과 애니메이션 상태 코드는\n바꾸지 않았습니다. 생산 메타데이터는 원본 Pixel Engine SHA, 외곽 교정 보고서,\n1024/256/128px 산출물, 사용자 승인과 업로드 ID를 함께 보존합니다.\n\n## 검증\n\n- East/West 각각 1024px 보존 마스터, 256px 검수본, 128px 런타임본의 RGBA, 안전\n  여백, 분리 조각, 중복과 크기·중심 드리프트 검사에서 오류와 경고가 모두 0건입니다.\n- 기존 프레임과 새 프레임의 `alpha >= 128` 실루엣 IoU는 최소 0.999806입니다.\n- 배경색과 유사한 외곽 픽셀은 8프레임 합계 483개에서 9개로 감소했습니다.\n- East/West APNG는 각각 8프레임, 프레임당 125ms, 총 1000ms 무한 루프입니다.\n- 빌드 단위 테스트 6개, 캐릭터 에셋 검사와 변경된 Registry Luau 컴파일을 통과했습니다.\n- Studio MCP에서 업로드와 새 ID를 확인하고 Play/Client에서 16/16 이미지 로드,\n  East 행 Y=0, West 행 Y=128, X=0부터 896까지의 셀 순회를 확인했습니다.\n- Studio 게임 콘솔에는 오류 출력이 없었습니다.\n\n## 후속 기획\n\n- 실제 필드의 여러 어두운 지형과 밝은 지형에서 캐릭터 표시 크기를 계속 관찰하되,\n  포즈를 바꾸지 않고 표시 스케일만 별도 조정합니다.\n- 전용 West를 만들 때는 이번 외곽 교정 방식을 그대로 적용하면서 신발과 소매 패치의\n  물리적 좌우 소유권을 복구합니다.\n- 이후 클립도 생성 품질과 투명 합성 품질을 분리해 승인하고, 검은 배경 외곽 검사를\n  공통 승격 게이트로 유지합니다.\n",
       "revisions": [
+        {
+          "id": "character-2d-rendering",
+          "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
+          "summary": "승인된 Pixel Engine 달리기 동작은 그대로 유지하면서 투명 외곽의 밝은 프린지를 제거해, 어두운 게임 배경에서도 캐릭터 실루엣이 깨끗하게 보이는 런타임 에셋으로 교체했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "character",
+            "sprite",
+            "rendering",
+            "animation",
+            "art",
+            "pipeline",
+            "validation",
+            "locomotion",
+            "roblox",
+            "pixel-engine"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-10",
+          "authors": [
+            "Codex"
+          ],
+          "version": 7,
+          "change_type": "corrected",
+          "change_summary": "검은 배경에서 보이던 회색·흰색 외곽 도트를 생성형 재드로잉 없이 제거하고, 같은 8프레임 포즈를 1024px 보존 마스터와 새 Roblox 런타임 에셋으로 다시 배포함",
+          "supersedes": "character-2d-rendering@v006",
+          "sources": [
+            "wiki/content/pages/character-2d-rendering/v006.md",
+            "wiki/content/media/character-2d-rendering/v007/edge-fringe-before-after.png",
+            "wiki/content/media/character-2d-rendering/v007/edge-clean-east-run-8fps.gif",
+            "wiki/content/media/character-2d-rendering/v007/edge-clean-two-direction-contact-sheet.png",
+            "wiki/content/media/character-2d-rendering/v007/studio-edge-clean-live-result.jpg",
+            "Assets/Characters/Player/SpriteProduction/production_manifest.json",
+            "Assets/Characters/Player/SpriteProduction/Build/Run2D/RookieMale_Run_EastWest_Metadata.json",
+            "Assets/Characters/Player/SpriteProduction/Build/Run2D/QA/report.json",
+            "Assets/Characters/Player/SpriteProduction/Build/Run2D/uploaded_asset_ids.json",
+            "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/Refinement/edge-decontamination-v1/QA/report.json",
+            "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/Refinement/edge-decontamination-v1/user-approval.json",
+            "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/promotion-approval.json",
+            "src/ReplicatedStorage/Character2D/AssetRegistry.luau",
+            "tests/test_two_direction_run_build.py"
+          ],
+          "related": [
+            "project-overview",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "East/West 1024px·256px·128px 시퀀스 QA 6종: 0 errors, 0 warnings",
+            "기존 대비 alpha>=128 실루엣 IoU 최소 0.999806",
+            "배경색 유사 외곽 픽셀 8프레임 합계: 483에서 9로 감소",
+            "East/West APNG 각각 8프레임 × 125ms = 1000ms 무한 루프",
+            "python3 -m unittest tests.test_two_direction_run_build",
+            "bash tools/test_character_assets.sh",
+            "luau-compile src/ReplicatedStorage/Character2D/AssetRegistry.luau",
+            "Roblox Studio MCP upload_image: rbxassetid://91295241781335",
+            "Roblox Studio MCP Play/Client: 업로드 에셋 16/16 로드, East Y=0, West Y=128, X=0..896",
+            "Roblox Studio MCP Play 콘솔: 게임 오류 출력 없음",
+            "Roblox Studio 삼성 갤럭시 A06 800×360 모바일 프리셋 검은 배경 시각 검사"
+          ],
+          "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 기획 배경과 목표\n\n달리기 동작 자체는 Pixel Engine 결과로 충분한 품질을 얻었지만, 초기 로컬 배경 제거본은\n검은 화면에서 캐릭터 외곽에 회색 또는 흰색 도트가 드러났습니다. 이 문제는 포즈나 원화\n품질이 아니라 원래 회색 배경의 RGB가 반투명 가장자리 픽셀에 남은 알파 프린지였습니다.\n\n이번 교체의 목표는 승인된 8프레임 동작과 캐릭터 디자인을 다시 해석하지 않고, 어두운\n게임 배경에서도 실루엣이 깨끗하게 읽히도록 투명 외곽만 교정하는 것입니다. 생성형\n재드로잉은 얼굴·팔·신발·장비와 프레임 타이밍을 바꿀 수 있으므로 사용하지 않았습니다.\n\n## 사용자 경험\n\n플레이어가 달릴 때 머리카락, 배낭, 팔, 신발 가장자리 주변에 밝은 점선이 따라붙지\n않습니다. 캐릭터의 크기, 포즈, 속도와 1초짜리 8프레임 루프는 이전 승인본과 동일하게\n느껴지며, 차이는 배경과 맞닿는 외곽이 자연스럽게 정리됐다는 점입니다.\n\n![외곽 프린지 제거 전후](./media/character-2d-rendering/v007/edge-fringe-before-after.png \"위 행은 회색 배경 RGB가 남은 기존 컷아웃, 아래 행은 검은 배경에서 외곽 오염을 제거한 최종 프레임\")\n\n![외곽 교정 후 우측 달리기](./media/character-2d-rendering/v007/edge-clean-east-run-8fps.gif \"승인된 Pixel Engine 포즈와 8fps 타이밍을 그대로 유지한 최종 East Run\")\n\n## 핵심 원칙과 설계 철학\n\n### 동작 문제와 합성 문제를 분리\n\n좋은 동작을 다시 생성하면 해결된 모션까지 위험해집니다. 이번 문제는 합성 경계에만\n있었으므로 Pixel Engine이 만든 포즈와 불투명 내부를 보존하고, 반투명 가장자리의 회색\n배경 성분만 주변의 실제 캐릭터 색으로 복원했습니다.\n\n### 고해상도 보존과 런타임 출력을 분리\n\n원본 640px 셀에서 정리한 결과를 공통 변환으로 1024×1024 보존 마스터에 올리고,\npremultiplied-alpha 방식으로 256px 검수본과 128px Roblox 런타임본을 만들었습니다.\n프레임별 크기 맞춤이나 생성형 확대는 사용하지 않아 몸 크기가 펌핑되거나 포즈가\n변형되지 않습니다.\n\n### 승인된 픽셀만 승격\n\n검은 배경 전후 비교, 정리 보고서와 최종 런타임 PNG 해시를 새 사용자 승인에 묶었습니다.\n최종 1024×256 런타임 아틀라스 SHA-256은\n`eb499e4a3edaac7221476abe4823018665f7fde9068f9ef32119f6bbe5013b63`이며,\n새 Roblox 이미지 ID는 `rbxassetid://91295241781335`입니다.\n\n## 결정 사항과 범위\n\n- Pixel Engine Frame Engine 1.1의 East 8프레임 포즈와 순서를 그대로 유지합니다.\n- East/West 두 행, 8열, 8fps와 125ms 프레임 타이밍은 변경하지 않습니다.\n- 외곽 교정은 회색 배경 디컨탐네이션, premultiplied-alpha 리샘플링, alpha 4 이하\n  링잉 제거와 권위 연결 실루엣 보존으로 제한합니다.\n- 1024px 셀은 보존 마스터이며 Roblox는 128px 셀의 1024×256 아틀라스를 사용합니다.\n- West는 계속 East의 임시 수평 미러이므로 청록·빨강 신발과 소매 패치의 물리적 좌우가\n  화면상 뒤집히는 v006의 한계는 남아 있습니다.\n- 여성 캐릭터, 전용 West와 다른 애니메이션 클립은 이번 교정 범위가 아닙니다.\n\n![교정된 좌우 2방향 프레임](./media/character-2d-rendering/v007/edge-clean-two-direction-contact-sheet.png \"위 행 East와 아래 행 임시 West 모두 같은 외곽 교정과 공통 카메라 변환을 사용\")\n\n## 현재 결과\n\nRoblox Studio Play에서 새 업로드 에셋의 East/West 16셀을 검은 배경 위에 실제\n`ImageRectOffset`으로 표시했습니다. 16개 이미지가 모두 로드됐고, 작은 모바일 표시에서도\n외곽을 따라가던 밝은 도트가 다시 나타나지 않았습니다.\n\n![Studio 최종 외곽 검사](./media/character-2d-rendering/v007/studio-edge-clean-live-result.jpg \"삼성 갤럭시 A06 모바일 프리셋에서 새 Roblox 에셋의 East/West 16셀을 검은 배경으로 검사한 결과\")\n\n## 구현 참고\n\n`AssetRegistry`의 Run 에셋만 새 ID로 교체했으며 방향 해석과 애니메이션 상태 코드는\n바꾸지 않았습니다. 생산 메타데이터는 원본 Pixel Engine SHA, 외곽 교정 보고서,\n1024/256/128px 산출물, 사용자 승인과 업로드 ID를 함께 보존합니다.\n\n## 검증\n\n- East/West 각각 1024px 보존 마스터, 256px 검수본, 128px 런타임본의 RGBA, 안전\n  여백, 분리 조각, 중복과 크기·중심 드리프트 검사에서 오류와 경고가 모두 0건입니다.\n- 기존 프레임과 새 프레임의 `alpha >= 128` 실루엣 IoU는 최소 0.999806입니다.\n- 배경색과 유사한 외곽 픽셀은 8프레임 합계 483개에서 9개로 감소했습니다.\n- East/West APNG는 각각 8프레임, 프레임당 125ms, 총 1000ms 무한 루프입니다.\n- 빌드 단위 테스트 6개, 캐릭터 에셋 검사와 변경된 Registry Luau 컴파일을 통과했습니다.\n- Studio MCP에서 업로드와 새 ID를 확인하고 Play/Client에서 16/16 이미지 로드,\n  East 행 Y=0, West 행 Y=128, X=0부터 896까지의 셀 순회를 확인했습니다.\n- Studio 게임 콘솔에는 오류 출력이 없었습니다.\n\n## 후속 기획\n\n- 실제 필드의 여러 어두운 지형과 밝은 지형에서 캐릭터 표시 크기를 계속 관찰하되,\n  포즈를 바꾸지 않고 표시 스케일만 별도 조정합니다.\n- 전용 West를 만들 때는 이번 외곽 교정 방식을 그대로 적용하면서 신발과 소매 패치의\n  물리적 좌우 소유권을 복구합니다.\n- 이후 클립도 생성 품질과 투명 합성 품질을 분리해 승인하고, 검은 배경 외곽 검사를\n  공통 승격 게이트로 유지합니다.\n",
+          "source_path": "wiki/content/pages/character-2d-rendering/v007.md"
+        },
         {
           "id": "character-2d-rendering",
           "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
