@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-09",
+  "generated_at": "2026-08-10",
   "page_count": 7,
-  "revision_count": 26,
+  "revision_count": 27,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -78,52 +78,123 @@ window.PACKBOUND_WIKI = {
     {
       "id": "world-art-bible",
       "title": "PackBound 캐릭터·월드 아트 바이블",
-      "summary": "여성형 루키와 심술궂지만 귀여운 스코티시 폴드 뚱냥이 참, 고물바람 초원, 역할이 읽히는 지형·지물 및 6종 몬스터를 하나의 제작 기준으로 정리했습니다.",
+      "summary": "고물바람 초원의 승인 시안을 세로 모바일 플레이에 맞는 2.5D 패널 필드로 구현하고, 중앙 고정된 확대 캐릭터와 유기적인 길·절벽 경계·원경이 하나의 화면 깊이로 읽히도록 확정했습니다.",
       "status": "active",
       "category": "art",
       "tags": [
         "art",
-        "concept",
-        "character",
         "environment",
-        "monster",
         "field",
-        "visual-language",
+        "2.5d",
+        "camera",
         "mobile",
-        "roblox"
+        "roblox",
+        "visual-language"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-06",
+      "updated_at": "2026-08-10",
       "authors": [
         "Codex"
       ],
-      "version": 1,
-      "change_type": "created",
-      "change_summary": "남성형 중심 아트 방향을 여성형 플레이어, 스코티시 폴드 뚱냥이 참, 첫 필드, 환경 키트와 역할별 몬스터 로스터까지 확장함",
-      "supersedes": null,
+      "version": 2,
+      "change_type": "updated",
+      "change_summary": "넓은 키아트의 랜드마크·색·동선 원칙을 세로 모바일 화면에 맞게 재구성하고, 모든 고정 기물을 2D 패널로 유지하면서 바닥 접지·맵 경계·배경·카메라·캐릭터 화면 크기를 실제 Studio 플레이 결과로 확정함",
+      "supersedes": "world-art-bible@v001",
       "sources": [
-        "docs/art/character-world-art-direction.md",
-        "Assets/Characters/Player/Reference/player_chibi_absurd_8direction_concept_v2.png",
-        "Assets/Characters/Player/Reference/player_female_chibi_absurd_8direction_concept_v2.png",
+        "wiki/content/pages/world-art-bible/v001.md",
+        "wiki/content/media/world-art-bible/v002/concept.png",
+        "wiki/content/media/world-art-bible/v002/studio-final-play.jpg",
         "Assets/World/Concepts/junkwind_meadow_field_concept_v1.png",
-        "Assets/World/Concepts/junkwind_meadow_terrain_props_concept_v1.png",
-        "Assets/Monsters/Concepts/junkwind_meadow_monster_roster_concept_v1.png"
+        "Assets/World/Backgrounds/junkwind_meadow_distant_panorama_v2.png",
+        "Assets/World/PanelSprites/junkwind_meadow_boundaries_landmarks_atlas_v2.png",
+        "Assets/World/PanelSprites/junkwind_meadow_edge_facades_atlas_v6.png",
+        "Assets/World/PanelSprites/junkwind_meadow_props_atlas_v2.png",
+        "Assets/World/Textures/junkwind_meadow_field_layout_v1.png",
+        "Assets/World/Textures/junkwind_meadow_outer_undergrowth_tile_v2.png",
+        "src/ServerScriptService/FieldBuilder.luau",
+        "src/ServerScriptService/WorldBootstrap.server.luau",
+        "src/ReplicatedStorage/Character2D/Config.luau",
+        "src/ReplicatedStorage/Character2D/QuarterViewCamera.luau"
       ],
       "related": [
         "character-2d-rendering",
-        "project-overview"
+        "project-overview",
+        "studio-automation-routing"
       ],
       "validation": [
-        "최종 콘셉트 PNG 4종: 1536×1024 RGB, 저장소 자산과 위키 미디어 사본 SHA-256 일치",
+        "Roblox Studio MCP Play, iPhone 17 Pro 세로 401×776: CameraType Scriptable, FOV 40, 캐릭터 캔버스 72×72px",
+        "Roblox Studio MCP Server: PackBoundField v8, 접지 보정 패널 69개, 비고정 파트 0개",
+        "Roblox Studio MCP 경계 충돌: X=120 이동 명령 후 X=90.4877에서 정지, 캐릭터 생존",
+        "Roblox Studio MCP Play 콘솔: 오류 출력 없음",
+        "rojo build packbound.project.json",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
         "python3 -m unittest tests/test_wiki.py",
-        "node tests/markdown-media.spec.js",
         "git diff --check"
       ],
-      "source_path": "wiki/content/pages/world-art-bible/v001.md",
-      "body": "# PackBound 캐릭터·월드 아트 바이블\n\n## 결과\n\nPackBound의 기존 아트 방향을 한 명의 남성형 플레이어 참고 이미지에서 게임 세계\n전체를 제작할 수 있는 기준으로 확장했습니다. 여성형 루키는 같은 판정과 같은\n가방 가독성을 유지하면서 얼굴과 머리 실루엣만으로 분명히 구분되며, 개인 장식은\n노란 오리 대신 무심하고 심술궂은 표정의 스코티시 폴드 뚱냥이 참을 사용합니다.\n\n첫 필드 `고물바람 초원`은 보라색 전투 바닥, 청록·코럴 경계, 시안 상호작용,\n주황 위험과 분홍·보라·금색 보상이라는 색 문법을 가르칩니다. 지형과 지물은 이\n문법을 실제 제작 단위로 나눴고, 여섯 몬스터는 장착한 폐품의 실루엣만 보고도\n근접, 돌진, 정면 방어, 원거리, 엘리트와 미니보스 역할을 알 수 있게 설계했습니다.\n\n## 제품 목표와 플레이 경험\n\n- 세로형 모바일 화면과 높은 쿼터탑 카메라에서 플레이어, 이동 바닥, 위험 방향과\n  보상이 한눈에 분리되어야 합니다.\n- 폐품 세계는 잔혹하거나 사실적인 폐허가 아니라 두툼한 장난감 디오라마처럼\n  우습고 만지고 싶게 보여야 합니다.\n- 캐릭터 선택지는 성별에 따라 전투 가독성이나 능력의 차이를 만들지 않습니다.\n- 배경 오브젝트는 장식 수량을 늘리기보다 이동 경계, 상호작용, 위험과 보상의\n  위치를 설명해야 합니다.\n- 몬스터의 전투 역할은 이름이나 UI 설명이 없어도 색과 전면 실루엣으로 먼저\n  전달되어야 합니다.\n\n## 여성형 루키\n\n여성형은 남성형을 가늘게 만들거나 색만 바꾼 파생형이 아닙니다. 같은 2등신,\n같은 화면상 어깨·신발 크기, 같은 접지점과 큰 전기 보라색 가방을 유지합니다.\n검보라 비대칭 보브와 짧은 사이드 포니테일, 큰 아몬드형 눈, 짧은 속눈썹, 얇고\n완만한 눈썹과 부드러운 턱선이 여성형의 핵심 식별자입니다.\n\n![여성형 루키 8방향 콘셉트](./media/world-art-bible/v001/female-rookie-turnaround.png \"부드러운 여성형 얼굴과 심술궂지만 귀여운 스코티시 폴드 뚱냥이 참이 반영된 최종 8방향 디자인 시트\")\n\n가방 장식은 둥근 만두형 몸과 볼, 앞으로 낮게 접힌 귀, 반쯤 감긴 눈, 작게 심술\n난 입, 짧은 발, 말린 꼬리와 코럴 목줄을 가진 노란 스코티시 폴드 뚱냥이\n참입니다. 무심하고 조금 고약해 보이지만 계속 보면 귀여운 표정을 모든 방향에서\n유지하며, 같은 고리에 매달리고 가방 외곽을 가리지 않습니다. 필드의 대형 오리\n조형물은 월드 랜드마크로 남기며 여성형의 개인 장식과 서로 교체하지 않습니다.\n\n## 첫 필드: 고물바람 초원\n\n고물바람 초원은 하단 진입부, 넓은 중앙 전투 공터, 양옆 자원 포켓과 상단의\n망가진 중계문을 순환 동선으로 잇는 초반 필드입니다. 캐릭터 주변은 디테일 밀도를\n낮추고 수풀, 절벽, 웅덩이와 울타리를 길 가장자리로 보내 이동 가능 영역을\n명확하게 유지합니다.\n\n![고물바람 초원 필드 콘셉트](./media/world-art-bible/v001/junkwind-meadow-field.png \"여성형 루키와 초반 몬스터가 배치된 고물바람 초원 최종 키아트\")\n\n중앙 위의 중계탑과 상단 중계문은 진행 방향을 잡고, 대형 오리 조형물과 수풀에\n묻힌 쇼핑카트는 구역을 기억하게 합니다. 시안 발광은 작동 가능한 대상, 주황은\n위험, 분홍·보라 상자는 보상으로 제한해 전투 중의 해석 비용을 줄입니다.\n\n## 지형과 지물 키트\n\n![고물바람 초원 지형·지물 키트](./media/world-art-bible/v001/junkwind-meadow-terrain-props.png \"경계·상호작용·위험·보상 역할별 12종 모듈 콘셉트\")\n\n| 역할 | 제작 단위 | 승인 기준 |\n| --- | --- | --- |\n| 이동면 | 잔디 절벽, 보라 길 T자, 청록 웅덩이 | 이동 가능한 윗면과 낙차가 쿼터탑에서 분리됨 |\n| 경계 | 수풀 벽, 바위 군집, 폐품 울타리 | 보이지 않는 벽 없이 통과 불가를 설명함 |\n| 상호작용 | 자판기, 시안 코일 파일런 | 시안 발광점이 작고 반복 가능함 |\n| 탐색 | 쇼핑카트 수풀, 통·타이어·볼트 | 자원 포켓을 암시하되 길을 덮지 않음 |\n| 위험 | 원뿔, 차단판, 스프링 플레이트 | 따뜻한 주황이 피해 위치에 집중됨 |\n| 보상·랜드마크 | 보급 상자, 대형 오리 | 화면에서 희소한 강색으로 기억점을 만듦 |\n\n## 몬스터 로스터\n\n![고물바람 초원 몬스터 로스터](./media/world-art-bible/v001/junkwind-meadow-monsters.png \"폐품 실루엣으로 전투 역할을 구분하는 6종 몬스터 최종 콘셉트\")\n\n| 몬스터 | 전투 역할 | 핵심 시각 예고 |\n| --- | --- | --- |\n| 머그먹 `Mugmuck` | 근접 추적 | 크림색 머그 손잡이가 옆 실루엣을 만듦 |\n| 꼬깔박치기 `Conebonk` | 직선 돌진 | 큰 주황 원뿔이 공격 방향을 가리킴 |\n| 깡통딱정 `Tinback` | 정면 방어 | 캔 뚜껑 정면판과 뒤쪽 시안 태엽이 약점을 나눔 |\n| 플러그퐁 `Plugpop` | 원거리 전기 | 플러그 귀와 시안 코일 코어가 사거리를 예고함 |\n| 카트꿀꺽 `Cartmaw` | 엘리트 공간 압박 | 넓은 카트 입과 붉은 손잡이 뿔이 길목 점유를 보임 |\n| 자판두꺼비 `Vendatoad` | 미니보스 구역 제어 | 위성 접시, 시안 목 코일과 큰 자판기 몸이 범위를 암시함 |\n\n초반에는 머그먹, 꼬깔박치기와 깡통딱정으로 이동, 회피 방향과 후면 공략을\n학습시킵니다. 이후 플러그퐁으로 원거리 압박을 더하고 카트꿀꺽과 자판두꺼비는\n이미 익힌 실루엣 문법을 큰 공간 제어 패턴으로 확장합니다.\n\n## 제작 결정과 경계\n\n- 네 콘셉트 이미지는 최종 디자인 기준이지만 런타임 스프라이트나 Roblox 모델은\n  아닙니다.\n- 여성형도 현재 `Head`와 `Body` 두 슬롯을 사용하며 새로운 성별 전용 런타임\n  시스템을 만들지 않습니다.\n- 기존 남성형 오리 참을 소급 교체하지 않고 여성형의 스코티시 폴드 뚱냥이 참을\n  개인 식별자로 사용합니다.\n- 필드 구현은 지물 장식보다 이동 바닥과 경계 그레이박스를 먼저 승인합니다.\n- 몬스터 구현은 일반 3종, 상호작용 지물, 원거리, 엘리트, 미니보스 순으로\n  확장해 한 번에 과도한 제작 범위를 열지 않습니다.\n- 후속 이미지 생성은 원본을 덮어쓰지 않고 버전 파일을 추가한 뒤 기준 문서에서\n  승인 경로를 승격합니다.\n\n## 검증과 후속 작업\n\n최종 이미지 네 장은 모두 1536×1024 RGB PNG이며 저장소 기준 자산과 위키 미디어\n사본의 SHA-256이 일치합니다. 위키 파서 테스트, 위키 빌드와 생성 데이터·미디어\n동기화 검사, 공백 오류 검사를 통과해야 이 버전을 활성 상태로 유지합니다.\n\n다음 제작 단계는 고물바람 초원의 Roblox 그레이박스, 일반 몬스터 세 종의 크기\n비교 시트, 여성형 South Walk 8프레임의 별도 승인 게이트입니다. 실제 Studio\n결과를 만드는 후속 변경에서는 대표 플레이 화면을 새 위키 버전의 최종 증거로\n추가해야 합니다.\n",
+      "source_path": "wiki/content/pages/world-art-bible/v002.md",
+      "body": "# PackBound 캐릭터·월드 아트 바이블\n\n## 기획 배경과 목표\n\n고물바람 초원의 첫 시안은 중앙의 보라색 이동면과 좌우의 녹지 포켓, 상단의\n중계탑·중계문, 대형 오리와 자판기 같은 기억점을 한 장의 넓은 키아트로\n정의했습니다. 이번 구현의 목표는 이 이미지를 그대로 평면 배경으로 복사하는 것이\n아니라, 세로 모바일 플레이에서도 같은 장소라고 느낄 수 있는 2.5D 공간 문법으로\n번역하는 것입니다.\n\n플레이어는 어디로 이동할 수 있는지 즉시 알아야 하고, 필드 끝은 갑자기 잘린\n사각형이 아니라 수풀·절벽·폐품 울타리로 닫힌 막다른 공간처럼 보여야 합니다.\n동시에 카메라를 과도하게 확대하거나 3D 기물을 추가하지 않고, 판넬에 그린 2D\n이미지를 세워 두는 프로젝트의 시각 정체성을 유지해야 합니다.\n\n![고물바람 초원 승인 시안](./media/world-art-bible/v002/concept.png \"중앙 보라색 길, 좌우 녹지 포켓, 상단 타워와 게이트, 대형 오리와 폐품 랜드마크가 만드는 필드 구성 기준\")\n\n## 사용자 경험\n\n플레이어는 화면 중앙에 고정되고 캐릭터 자체의 표시 크기는 이전보다 정확히\n1.5배 커집니다. 카메라를 캐릭터 쪽으로 당겨 주변 정보를 버리는 방식이 아니므로,\n중앙 캐릭터의 가독성과 전방 필드의 탐색 정보가 함께 유지됩니다.\n\n보라색 길은 직사각형 타일을 이어 붙인 모양 대신 넓은 중앙 공터와 여러 방향의\n분기를 가진 유기적인 이동면으로 보입니다. 녹지에는 작은 꽃과 청록 웅덩이가\n깔리고, 화면 위쪽에는 중계탑과 중계문, 좌측에는 대형 오리와 자판기, 주변에는\n코일·차단판·상자·쇼핑카트가 배치되어 시안의 기억점과 역할 색을 실제 플레이에서도\n찾을 수 있습니다.\n\n가장자리의 수풀, 절벽 단면, 울타리와 바위는 이동 불가 영역을 시각적으로 먼저\n설명합니다. 그 뒤에 어두운 외곽 녹지와 노을빛 원경을 겹쳐, 필드가 갑자기 끝나거나\n기물이 공중에 떠 있는 인상을 줄입니다.\n\n![고물바람 초원 Studio 최종 결과](./media/world-art-bible/v002/studio-final-play.jpg \"iPhone 17 Pro 세로 Play 화면에서 중앙 고정·1.5배 캐릭터, 유기적인 보라 길, 접지된 2D 랜드마크와 다층 경계를 확인\")\n\n## 핵심 원칙과 설계 철학\n\n### 3D 형태가 아니라 2D 패널의 겹침으로 깊이를 만든다\n\n필드의 랜드마크, 수풀, 절벽, 울타리, 상호작용 지물과 작은 장식은 모두\nBillboardGui 기반 2D 패널입니다. 화면 깊이는 3D 모델의 면 수가 아니라 카메라\n각도, 패널 크기, 전경·중경·후경 배치와 배경 레이어의 겹침으로 만듭니다.\n충돌은 투명 파트가 담당하며 그림의 형태와 물리 경계를 분리합니다.\n\n### 이동면은 한 장의 읽기 쉬운 구성으로 유지한다\n\n바닥은 보라색 중앙 길과 녹지 포켓, 낮은 돌 경계와 청록 웅덩이를 한 장에 정리한\n필드 레이아웃 텍스처를 사용합니다. 이 방식은 반복 타일과 직사각형 겹침이 만드는\n기계적인 경계를 없애고, 몬스터·보상·상호작용 기물을 추가해도 중앙 전투 공간을\n열어 둡니다. 높이가 있는 수풀과 바위는 바닥에 굽지 않고 별도 패널로 유지해\n낮아진 카메라에서도 납작하게 보이지 않게 합니다.\n\n### 화면 구도와 월드 배치는 함께 조정한다\n\n최종 카메라는 Yaw 45도, Pitch 36도, 거리 140, FOV 40, 초점 높이 3을 사용합니다.\n카메라 전방 오프셋은 0으로 두어 플레이어가 화면 중앙에서 벗어나지 않게 합니다.\n넓은 시안의 모든 오브젝트를 세로 화면에 억지로 축소하지 않고, 타워·게이트·오리·\n자판기 같은 핵심 실루엣을 중앙 축에 더 가깝게 재배치해 모바일 크롭에서도 장소의\n정체성을 보존합니다.\n\n### 접지점은 이미지의 실제 알파 하단을 기준으로 한다\n\n각 스프라이트 셀의 하단 투명 여백을 패널 크기에 맞게 환산해 시각적 밑동이\nY=0에 닿도록 패널 중심을 내립니다. 보이는 그림과 충돌 파트를 함께 이동하므로,\n고정 오브젝트가 하늘에 뜨거나 충돌 위치만 따로 남지 않습니다.\n\n## 결정 사항과 범위\n\n- 플레이 필드는 188×188 스터드이며 스폰은 (12, 0.65, 30)입니다.\n- 필드 레이아웃 이미지는 rbxassetid://105093818434394를 사용합니다.\n- 경계·랜드마크, 소형 지물, 절벽 단면은 각각 최종 3×3 아틀라스를 사용합니다.\n- 중계탑은 좌상단, 중계문은 우상단, 오리와 자판기는 좌측 중경, 보급 상자와\n  쇼핑카트는 우측·하단 기억점으로 배치합니다.\n- 필드 가장자리에는 투명 충돌벽과 2D 절벽·수풀 패널을 함께 둡니다.\n- 캐릭터 화면 배율은 0.1875에서 0.28125로 변경해 48×48px에서 72×72px로\n  정확히 1.5배 확대합니다.\n- 캐릭터 확대는 카메라 거리 변경으로 대신하지 않습니다.\n- 이번 범위에는 3D 환경 모델, PC 전용 구도, 몬스터 배치와 전투 밸런스가\n  포함되지 않습니다.\n\n## 현재 결과\n\nStudio의 iPhone 17 Pro 세로 Play 화면에서 캐릭터는 화면 중앙에 고정되고,\n보라색 길 양쪽의 녹지와 전경 수풀, 상단 랜드마크가 동시에 읽힙니다. 낮아진\n카메라가 타워·게이트·자판기의 정면 실루엣을 충분히 보여 주며, 필드 바깥은 절벽\n단면과 어두운 녹지, 노을 원경으로 이어집니다.\n\n필드에는 117개의 BillboardGui가 있고 SurfaceGui 기반 3D 기물은 없습니다.\n69개 패널에 스프라이트별 접지 보정을 적용했으며 모든 필드 파트는 고정 상태입니다.\n\n## 구현 참고\n\nFieldBuilder가 바닥, 배경, 경계 충돌, 절벽 단면, 랜드마크와 장식을 하나의\nPackBoundField v8 모델로 결정론적으로 구성합니다. WorldBootstrap은 서버\n시작 시 빌더를 실행하며 같은 버전이 이미 있으면 중복 생성을 피합니다.\n\nQuarterViewCamera는 설정된 Yaw·Pitch·거리로 카메라 오프셋을 만들고,\nLookAheadDistance를 수평 전방 벡터로 환산합니다. 현재 값은 0이므로 캐릭터의\n초점이 화면 중앙에 유지됩니다. 전체 캐릭터 확대에는 머리 앵커용\nFrameSprites.DisplayScale이 아니라 전체 캔버스의 CharacterScreenScale을\n사용해 머리와 몸의 정렬을 보존합니다.\n\n## 검증\n\n- Studio MCP Play에서 iPhone 17 Pro 세로 뷰포트가 401×776, 카메라가\n  Scriptable, FOV가 40임을 확인했습니다.\n- 캐릭터 CharacterScreenScale은 0.28125이고 실제 캔버스는 72×72px였습니다.\n- 서버 필드는 v8, 접지 보정 패널은 69개, 비고정 파트는 0개였습니다.\n- 동쪽 경계 밖 X=120으로 이동시킨 캐릭터는 X=90.4877에서 멈췄고 생존했습니다.\n- Play 콘솔에는 오류 출력이 없었습니다.\n- Rojo 빌드와 위키 빌드·동기화 검사, 위키 단위 테스트와 공백 검사를 모두\n  통과했습니다.\n\n## 후속 기획\n\n- 실제 몬스터를 배치할 때는 중앙 보라색 전투 공터의 가독성을 우선하고, 새 장식은\n  녹지 포켓과 가장자리로 제한합니다.\n- 추가 모바일 기기에서는 캐릭터 중앙 고정과 터치 UI가 함께 보이는 상태를 별도로\n  검증하되, 월드 카메라 값을 기기별 상수로 분기하지 않습니다.\n- 새 필드를 제작할 때도 바닥 레이아웃, 2D 패널, 알파 접지점, 충돌 경계와 원경의\n  다섯 계층을 같은 순서로 구성합니다.\n",
       "revisions": [
+        {
+          "id": "world-art-bible",
+          "title": "PackBound 캐릭터·월드 아트 바이블",
+          "summary": "고물바람 초원의 승인 시안을 세로 모바일 플레이에 맞는 2.5D 패널 필드로 구현하고, 중앙 고정된 확대 캐릭터와 유기적인 길·절벽 경계·원경이 하나의 화면 깊이로 읽히도록 확정했습니다.",
+          "status": "active",
+          "category": "art",
+          "tags": [
+            "art",
+            "environment",
+            "field",
+            "2.5d",
+            "camera",
+            "mobile",
+            "roblox",
+            "visual-language"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-10",
+          "authors": [
+            "Codex"
+          ],
+          "version": 2,
+          "change_type": "updated",
+          "change_summary": "넓은 키아트의 랜드마크·색·동선 원칙을 세로 모바일 화면에 맞게 재구성하고, 모든 고정 기물을 2D 패널로 유지하면서 바닥 접지·맵 경계·배경·카메라·캐릭터 화면 크기를 실제 Studio 플레이 결과로 확정함",
+          "supersedes": "world-art-bible@v001",
+          "sources": [
+            "wiki/content/pages/world-art-bible/v001.md",
+            "wiki/content/media/world-art-bible/v002/concept.png",
+            "wiki/content/media/world-art-bible/v002/studio-final-play.jpg",
+            "Assets/World/Concepts/junkwind_meadow_field_concept_v1.png",
+            "Assets/World/Backgrounds/junkwind_meadow_distant_panorama_v2.png",
+            "Assets/World/PanelSprites/junkwind_meadow_boundaries_landmarks_atlas_v2.png",
+            "Assets/World/PanelSprites/junkwind_meadow_edge_facades_atlas_v6.png",
+            "Assets/World/PanelSprites/junkwind_meadow_props_atlas_v2.png",
+            "Assets/World/Textures/junkwind_meadow_field_layout_v1.png",
+            "Assets/World/Textures/junkwind_meadow_outer_undergrowth_tile_v2.png",
+            "src/ServerScriptService/FieldBuilder.luau",
+            "src/ServerScriptService/WorldBootstrap.server.luau",
+            "src/ReplicatedStorage/Character2D/Config.luau",
+            "src/ReplicatedStorage/Character2D/QuarterViewCamera.luau"
+          ],
+          "related": [
+            "character-2d-rendering",
+            "project-overview",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "Roblox Studio MCP Play, iPhone 17 Pro 세로 401×776: CameraType Scriptable, FOV 40, 캐릭터 캔버스 72×72px",
+            "Roblox Studio MCP Server: PackBoundField v8, 접지 보정 패널 69개, 비고정 파트 0개",
+            "Roblox Studio MCP 경계 충돌: X=120 이동 명령 후 X=90.4877에서 정지, 캐릭터 생존",
+            "Roblox Studio MCP Play 콘솔: 오류 출력 없음",
+            "rojo build packbound.project.json",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "git diff --check"
+          ],
+          "body": "# PackBound 캐릭터·월드 아트 바이블\n\n## 기획 배경과 목표\n\n고물바람 초원의 첫 시안은 중앙의 보라색 이동면과 좌우의 녹지 포켓, 상단의\n중계탑·중계문, 대형 오리와 자판기 같은 기억점을 한 장의 넓은 키아트로\n정의했습니다. 이번 구현의 목표는 이 이미지를 그대로 평면 배경으로 복사하는 것이\n아니라, 세로 모바일 플레이에서도 같은 장소라고 느낄 수 있는 2.5D 공간 문법으로\n번역하는 것입니다.\n\n플레이어는 어디로 이동할 수 있는지 즉시 알아야 하고, 필드 끝은 갑자기 잘린\n사각형이 아니라 수풀·절벽·폐품 울타리로 닫힌 막다른 공간처럼 보여야 합니다.\n동시에 카메라를 과도하게 확대하거나 3D 기물을 추가하지 않고, 판넬에 그린 2D\n이미지를 세워 두는 프로젝트의 시각 정체성을 유지해야 합니다.\n\n![고물바람 초원 승인 시안](./media/world-art-bible/v002/concept.png \"중앙 보라색 길, 좌우 녹지 포켓, 상단 타워와 게이트, 대형 오리와 폐품 랜드마크가 만드는 필드 구성 기준\")\n\n## 사용자 경험\n\n플레이어는 화면 중앙에 고정되고 캐릭터 자체의 표시 크기는 이전보다 정확히\n1.5배 커집니다. 카메라를 캐릭터 쪽으로 당겨 주변 정보를 버리는 방식이 아니므로,\n중앙 캐릭터의 가독성과 전방 필드의 탐색 정보가 함께 유지됩니다.\n\n보라색 길은 직사각형 타일을 이어 붙인 모양 대신 넓은 중앙 공터와 여러 방향의\n분기를 가진 유기적인 이동면으로 보입니다. 녹지에는 작은 꽃과 청록 웅덩이가\n깔리고, 화면 위쪽에는 중계탑과 중계문, 좌측에는 대형 오리와 자판기, 주변에는\n코일·차단판·상자·쇼핑카트가 배치되어 시안의 기억점과 역할 색을 실제 플레이에서도\n찾을 수 있습니다.\n\n가장자리의 수풀, 절벽 단면, 울타리와 바위는 이동 불가 영역을 시각적으로 먼저\n설명합니다. 그 뒤에 어두운 외곽 녹지와 노을빛 원경을 겹쳐, 필드가 갑자기 끝나거나\n기물이 공중에 떠 있는 인상을 줄입니다.\n\n![고물바람 초원 Studio 최종 결과](./media/world-art-bible/v002/studio-final-play.jpg \"iPhone 17 Pro 세로 Play 화면에서 중앙 고정·1.5배 캐릭터, 유기적인 보라 길, 접지된 2D 랜드마크와 다층 경계를 확인\")\n\n## 핵심 원칙과 설계 철학\n\n### 3D 형태가 아니라 2D 패널의 겹침으로 깊이를 만든다\n\n필드의 랜드마크, 수풀, 절벽, 울타리, 상호작용 지물과 작은 장식은 모두\nBillboardGui 기반 2D 패널입니다. 화면 깊이는 3D 모델의 면 수가 아니라 카메라\n각도, 패널 크기, 전경·중경·후경 배치와 배경 레이어의 겹침으로 만듭니다.\n충돌은 투명 파트가 담당하며 그림의 형태와 물리 경계를 분리합니다.\n\n### 이동면은 한 장의 읽기 쉬운 구성으로 유지한다\n\n바닥은 보라색 중앙 길과 녹지 포켓, 낮은 돌 경계와 청록 웅덩이를 한 장에 정리한\n필드 레이아웃 텍스처를 사용합니다. 이 방식은 반복 타일과 직사각형 겹침이 만드는\n기계적인 경계를 없애고, 몬스터·보상·상호작용 기물을 추가해도 중앙 전투 공간을\n열어 둡니다. 높이가 있는 수풀과 바위는 바닥에 굽지 않고 별도 패널로 유지해\n낮아진 카메라에서도 납작하게 보이지 않게 합니다.\n\n### 화면 구도와 월드 배치는 함께 조정한다\n\n최종 카메라는 Yaw 45도, Pitch 36도, 거리 140, FOV 40, 초점 높이 3을 사용합니다.\n카메라 전방 오프셋은 0으로 두어 플레이어가 화면 중앙에서 벗어나지 않게 합니다.\n넓은 시안의 모든 오브젝트를 세로 화면에 억지로 축소하지 않고, 타워·게이트·오리·\n자판기 같은 핵심 실루엣을 중앙 축에 더 가깝게 재배치해 모바일 크롭에서도 장소의\n정체성을 보존합니다.\n\n### 접지점은 이미지의 실제 알파 하단을 기준으로 한다\n\n각 스프라이트 셀의 하단 투명 여백을 패널 크기에 맞게 환산해 시각적 밑동이\nY=0에 닿도록 패널 중심을 내립니다. 보이는 그림과 충돌 파트를 함께 이동하므로,\n고정 오브젝트가 하늘에 뜨거나 충돌 위치만 따로 남지 않습니다.\n\n## 결정 사항과 범위\n\n- 플레이 필드는 188×188 스터드이며 스폰은 (12, 0.65, 30)입니다.\n- 필드 레이아웃 이미지는 rbxassetid://105093818434394를 사용합니다.\n- 경계·랜드마크, 소형 지물, 절벽 단면은 각각 최종 3×3 아틀라스를 사용합니다.\n- 중계탑은 좌상단, 중계문은 우상단, 오리와 자판기는 좌측 중경, 보급 상자와\n  쇼핑카트는 우측·하단 기억점으로 배치합니다.\n- 필드 가장자리에는 투명 충돌벽과 2D 절벽·수풀 패널을 함께 둡니다.\n- 캐릭터 화면 배율은 0.1875에서 0.28125로 변경해 48×48px에서 72×72px로\n  정확히 1.5배 확대합니다.\n- 캐릭터 확대는 카메라 거리 변경으로 대신하지 않습니다.\n- 이번 범위에는 3D 환경 모델, PC 전용 구도, 몬스터 배치와 전투 밸런스가\n  포함되지 않습니다.\n\n## 현재 결과\n\nStudio의 iPhone 17 Pro 세로 Play 화면에서 캐릭터는 화면 중앙에 고정되고,\n보라색 길 양쪽의 녹지와 전경 수풀, 상단 랜드마크가 동시에 읽힙니다. 낮아진\n카메라가 타워·게이트·자판기의 정면 실루엣을 충분히 보여 주며, 필드 바깥은 절벽\n단면과 어두운 녹지, 노을 원경으로 이어집니다.\n\n필드에는 117개의 BillboardGui가 있고 SurfaceGui 기반 3D 기물은 없습니다.\n69개 패널에 스프라이트별 접지 보정을 적용했으며 모든 필드 파트는 고정 상태입니다.\n\n## 구현 참고\n\nFieldBuilder가 바닥, 배경, 경계 충돌, 절벽 단면, 랜드마크와 장식을 하나의\nPackBoundField v8 모델로 결정론적으로 구성합니다. WorldBootstrap은 서버\n시작 시 빌더를 실행하며 같은 버전이 이미 있으면 중복 생성을 피합니다.\n\nQuarterViewCamera는 설정된 Yaw·Pitch·거리로 카메라 오프셋을 만들고,\nLookAheadDistance를 수평 전방 벡터로 환산합니다. 현재 값은 0이므로 캐릭터의\n초점이 화면 중앙에 유지됩니다. 전체 캐릭터 확대에는 머리 앵커용\nFrameSprites.DisplayScale이 아니라 전체 캔버스의 CharacterScreenScale을\n사용해 머리와 몸의 정렬을 보존합니다.\n\n## 검증\n\n- Studio MCP Play에서 iPhone 17 Pro 세로 뷰포트가 401×776, 카메라가\n  Scriptable, FOV가 40임을 확인했습니다.\n- 캐릭터 CharacterScreenScale은 0.28125이고 실제 캔버스는 72×72px였습니다.\n- 서버 필드는 v8, 접지 보정 패널은 69개, 비고정 파트는 0개였습니다.\n- 동쪽 경계 밖 X=120으로 이동시킨 캐릭터는 X=90.4877에서 멈췄고 생존했습니다.\n- Play 콘솔에는 오류 출력이 없었습니다.\n- Rojo 빌드와 위키 빌드·동기화 검사, 위키 단위 테스트와 공백 검사를 모두\n  통과했습니다.\n\n## 후속 기획\n\n- 실제 몬스터를 배치할 때는 중앙 보라색 전투 공터의 가독성을 우선하고, 새 장식은\n  녹지 포켓과 가장자리로 제한합니다.\n- 추가 모바일 기기에서는 캐릭터 중앙 고정과 터치 UI가 함께 보이는 상태를 별도로\n  검증하되, 월드 카메라 값을 기기별 상수로 분기하지 않습니다.\n- 새 필드를 제작할 때도 바닥 레이아웃, 2D 패널, 알파 접지점, 충돌 경계와 원경의\n  다섯 계층을 같은 순서로 구성합니다.\n",
+          "source_path": "wiki/content/pages/world-art-bible/v002.md"
+        },
         {
           "id": "world-art-bible",
           "title": "PackBound 캐릭터·월드 아트 바이블",
