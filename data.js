@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-10",
+  "generated_at": "2026-08-11",
   "page_count": 7,
-  "revision_count": 28,
+  "revision_count": 29,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -345,7 +345,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "inventory-item-concept",
       "title": "인벤토리와 아이템 개념",
-      "summary": "아이템의 크기와 실루엣을 격자 플레이에 맞게 다시 정리하고, ItemDB를 게임·위키 이미지의 단일 최신 원본으로 고정했습니다.",
+      "summary": "아이템 제작자가 육각형 점유 칸과 이미지 방향을 한 화면에서 맞추고, 칸 설정 중에는 반투명 이미지를 기준으로 실루엣을 판단할 수 있게 했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
@@ -353,39 +353,33 @@ window.PACKBOUND_WIKI = {
         "item",
         "backpack",
         "item-db",
+        "hex-grid",
         "ui",
-        "asset-lifecycle",
-        "responsive"
+        "authoring"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-07",
+      "updated_at": "2026-08-11",
       "authors": [
         "Codex"
       ],
-      "version": 5,
+      "version": 6,
       "change_type": "updated",
-      "change_summary": "과도하거나 의미가 불명확한 아이템 둘을 폐기하고, 포켓 네일건과 배달부 반망토 재킷을 작은 격자 형태로 재설계해 게임과 위키가 같은 최신 데이터를 사용하도록 연결했습니다.",
-      "supersedes": "inventory-item-concept@v004",
+      "change_summary": "ItemDB 편집 흐름을 flat-top 육각형과 60도 회전 계약으로 전환하고, 칸 설정 상태의 이미지를 70% 투명하게 보여 주어 점유 실루엣을 직접 대조할 수 있게 했습니다.",
+      "supersedes": "inventory-item-concept@v005",
       "sources": [
-        "AGENTS.md",
-        "README.md",
-        "Assets/Items/InventoryIcons/Equipment/Outfits/armor_courier_cape_jacket.png",
-        "Assets/Items/InventoryIcons/Weapons/Guns/weapon_pocket_nailgun.png",
-        "Assets/UI/Backpack/uploaded_asset_ids.json",
         "docs/gameplay/inventory-item-art-catalog.md",
         "docs/gameplay/inventory-item-layouts.json",
-        "src/ReplicatedStorage/BackpackUI/Assets.luau",
         "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
         "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
         "src/ReplicatedStorage/BackpackUI/Screen.luau",
+        "tests/item-db.spec.js",
         "tests/test_item_db.py",
         "tools/item_db.py",
+        "wiki/site/app.css",
         "wiki/site/app.js",
         "wiki/site/item-db-data.js",
-        "wiki/content/media/inventory-item-concept/v005/pocket-nailgun-concept.png",
-        "wiki/content/media/inventory-item-concept/v005/courier-cape-jacket-concept.png",
-        "wiki/content/media/inventory-item-concept/v005/itemdb-redraw-result.jpg",
-        "wiki/content/media/inventory-item-concept/v005/studio-item-redraw-result.png"
+        "wiki/site/item-db.js",
+        "wiki/content/media/inventory-item-concept/v006/itemdb-hex-editor-cell-mode.jpg"
       ],
       "related": [
         "development-wiki",
@@ -397,14 +391,77 @@ window.PACKBOUND_WIKI = {
         "python3 tools/item_db.py check",
         "python3 -m unittest tests.test_item_db",
         "node tests/item-db.spec.js",
-        "rojo build packbound.project.json --output /tmp/PackBound-item-redraw-final.rbxlx",
-        "로컬 위키 ItemDB에서 해시가 포함된 최신 이미지 URL과 폐기 아이템 제외 확인",
-        "Roblox Studio MCP HD 1080 PC 플레이에서 새 아이템 이미지와 배치 확인",
-        "Roblox Studio MCP iPhone 17 Pro 및 Galaxy A06 세로 플레이에서 터치 경로와 안전 영역 확인"
+        "node --check wiki/site/app.js",
+        "node --check wiki/site/item-db.js",
+        "rojo build packbound.project.json --output /tmp/PackBound-itemdb-hex.rbxlx",
+        "python3 tools/wiki.py build",
+        "python3 tools/wiki.py check",
+        "python3 -m unittest tests/test_wiki.py",
+        "로컬 ItemDB 브라우저에서 칸 설정 모드, opacity 0.3, 필터 무채색 제거와 콘솔 오류 없음 확인"
       ],
-      "source_path": "wiki/content/pages/inventory-item-concept/v005.md",
-      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템 이미지는 예쁜 개별 일러스트이면서 동시에 제한된 백팩 공간을\n판단하게 만드는 게임 정보입니다. 실루엣이 무엇인지 읽히지 않거나 아이템의 역할에 비해\n지나치게 많은 칸을 차지하면, 플레이어는 수납 결정을 재미있는 선택이 아니라 불합리한\n제약으로 받아들이게 됩니다.\n\n이번 목표는 아이템의 설정과 격자 점유 형태, 실제 게임 이미지가 한 의미를 전달하게\n맞추는 것입니다. 품질 기준에 맞지 않는 아이템은 단순히 숨겨 둔 채 남기지 않고 현재\n목록에서 폐기하며, 유지할 아이템은 작은 크기에서도 정체성과 방향이 즉시 읽히도록\n다시 설계했습니다. 또한 이후 아이템 변경이 게임에는 적용됐지만 위키에는 과거 이미지로\n남는 일을 막기 위해 ItemDB를 두 표면의 공통 최신 원본으로 정했습니다.\n\n## 사용자 경험\n\n- 포켓 네일건은 총구와 손잡이가 분명한 `ㄱ`자 3칸 아이템으로 보입니다.\n- 배달부 반망토 재킷은 망토 끝 때문에 불필요하게 넓어지지 않는 2×2, 4칸 방어구로\n  보입니다.\n- 점프잭 해머와 세탁기 드럼포는 아이템 목록, ItemDB와 게임 카탈로그에서 보이지\n  않습니다.\n- 기획자가 ItemDB에서 바꾼 점유 칸과 이미지 조정값은 생성된 게임 레이아웃에 반영되고,\n  위키는 브라우저 캐시와 관계없이 최신 이미지 판본을 표시합니다.\n- PC와 세로형 모바일 모두에서 새 실루엣, 선택 칸과 주요 조작을 같은 의미로 읽을 수\n  있습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 격자 크기는 아이템의 재미와 의미에 비례한다\n\n큰 아이템은 강한 선택 압력을 만들기 때문에 크기 자체가 밸런스 값입니다. 따라서 단순히\n그림이 큰 것을 이유로 많은 칸을 부여하지 않습니다. 포켓 네일건은 휴대 공구라는 이름과\n역할에 맞춰 3칸으로, 반망토 재킷은 몸에 착용하는 외투의 덩어리를 유지하면서도 4칸으로\n제한했습니다.\n\n### 약한 콘셉트는 호환성 명목으로 제품 목록에 남기지 않는다\n\n8칸이 과도한 점프잭 해머와 이미지 의미가 불명확한 세탁기 드럼포는 현재 아이템\n계약에서 제거했습니다. 소스 이미지, 위키 미디어와 데이터 항목을 함께 정리해 오래된\n리소스가 다시 노출될 여지를 줄였습니다.\n\n### ItemDB가 편집 원본이고 게임과 위키는 그 결과물이다\n\n아이템 아트 카탈로그와 레이아웃 데이터가 활성 아이템, 점유 칸, 이미지 배율과 위치를\n소유합니다. 생성 과정은 이 데이터를 Roblox용 `GeneratedItemLayouts`와 위키용\n`item-db-data.js`로 동시에 변환합니다. 이미지 URL에는 파일 내용 해시를 붙여 같은\n파일명으로 그림을 교체해도 브라우저가 이전 판본을 재사용하지 않게 했습니다.\n\n### 아이템 변경의 완료 조건에는 데이터 최신화가 포함된다\n\n앞으로 아이템을 추가·수정·폐기할 때 ItemDB 생성과 검사, 게임 레이아웃 생성물, 위키\n미디어가 함께 최신인지 확인해야 합니다. 이 규칙은 작업자 기억에만 의존하지 않도록\n저장소 작업 지침과 README에 명시했습니다.\n\n## 결정 사항과 범위\n\n`weapon.jumpjack_hammer`와 `weapon.washer_drum_cannon`은 활성 카탈로그 및 레이아웃\n데이터에서 제거하고 기존 PNG도 삭제했습니다. `weapon.pocket_nailgun`은 오른쪽 아래로\n손잡이가 이어지는 `■■/□■` 점유 형태로 바꿨고 새 Roblox Image ID\n`rbxassetid://72363117083279`를 연결했습니다. `armor.courier_cape_jacket`은 2×2 점유\n형태와 새 이미지로 교체하고 `rbxassetid://87146137876065`를 연결했습니다.\n\nRoblox 클라우드에 남은 이전 포켓 네일건 이미지는 프로젝트의 등록부와 런타임 참조에서\n제거했습니다. Creator Dashboard가 해당 Image에 보관 기능을 제공하지 않으므로 클라우드\n원본 자체를 삭제했다고 간주하지 않으며, 제품에서는 참조하지 않는 상태로 관리합니다.\n\n## 시안과 현재 결과\n\n![포켓 네일건 재설계 시안](./media/inventory-item-concept/v005/pocket-nailgun-concept.png \"작은 크기에서도 총구와 손잡이 방향이 읽히는 포켓 네일건\")\n\n포켓 네일건은 가로 본체와 아래 손잡이를 강조해 `ㄱ`자 3칸 점유 형태가 그림과\n일치하도록 만들었습니다.\n\n![배달부 반망토 재킷 재설계 시안](./media/inventory-item-concept/v005/courier-cape-jacket-concept.png \"망토의 특징은 남기고 2×2 안에 정리한 배달부 반망토 재킷\")\n\n반망토의 비대칭 인상은 유지하되 돌출된 천이 칸 수를 늘리지 않도록 외투 전체를 2×2\n실루엣 안에 정리했습니다.\n\n![ItemDB 최신 이미지와 3칸 배치](./media/inventory-item-concept/v005/itemdb-redraw-result.jpg \"내용 해시가 적용된 최신 포켓 네일건과 ㄱ자 3칸 선택 상태\")\n\n위키 ItemDB는 새 포켓 네일건 이미지, 3칸 점유와 현재 게임 적용 상태를 함께 보여 줍니다.\n폐기한 두 아이템은 검색과 목록에서 제외됩니다.\n\n![Roblox Studio 새 아이템 적용 결과](./media/inventory-item-concept/v005/studio-item-redraw-result.png \"Studio 플레이 화면에 적용된 2×2 재킷과 ㄱ자 포켓 네일건\")\n\n게임의 기본 백팩에도 새 반망토 재킷과 포켓 네일건을 배치해 데이터 연결과 실제 렌더링을\n동시에 확인했습니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 활성 카탈로그와 레이아웃을 검증한 뒤 게임용 Luau, 위키 데이터와\n미디어를 한 번에 생성합니다. 위키 데이터는 표시용 `image_url`과 동기화 검사용\n`media_path`를 분리해 해시 쿼리가 파일 경로 비교를 방해하지 않게 했습니다.\n\n게임에서는 `Assets.luau`가 새 Roblox Image ID를 소유하고, `ItemCatalog.luau`가 아이템\n정의와 능력치를, `GeneratedItemLayouts.luau`가 ItemDB에서 생성한 점유 형태와 이미지\n조정값을 사용합니다. 기본 데모 배치도 재킷과 네일건을 포함해 연결 실패가 즉시 보이게\n구성했습니다.\n\n## 검증\n\nItemDB 생성·검사와 Python·Node 회귀 테스트를 통과했고, PackBound Rojo 프로젝트를\n빌드했습니다. 로컬 위키에서 포켓 네일건과 반망토 재킷의 URL에 파일 내용 해시가 붙고,\n새로 고친 뒤에도 최신 이미지가 표시되며 폐기 아이템이 검색되지 않는 것을 확인했습니다.\n\nRoblox Studio MCP 플레이에서는 HD 1080 PC 뷰포트에서 두 아이템의 새 이미지와 점유\n형태를 확인했습니다. iPhone 17 Pro 세로 401×776과 Galaxy A06 세로 359×718에서도\n상단 안전 영역, 텍스트, 선택 상태와 터치 동등 조작 경로에 겹침이나 잘림이 없었습니다.\n출력창에는 아이템·백팩 UI 오류가 없었고, 별도 개발 플러그인인\n`WeaponAnimationTester`의 기존 모듈 경고만 남았습니다.\n\n## 후속 기획\n\n- 아이템 설정 변경은 카탈로그와 레이아웃을 먼저 수정하고 ItemDB 생성·검사를 완료한\n  뒤 게임과 위키 결과를 승인합니다.\n- 큰 점유 형태를 부여할 때는 그림 크기가 아니라 플레이 선택에 주는 압력과 아이템의\n  역할을 함께 근거로 남깁니다.\n- Roblox 이미지를 같은 이름으로 교체할 때도 새 ID와 내용 해시가 모두 갱신됐는지\n  확인합니다.\n",
+      "source_path": "wiki/content/pages/inventory-item-concept/v006.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템 그림은 육각형 가방 퍼즐에서 실제로 차지할 공간과 같은 방향으로\n읽혀야 합니다. 제작자가 사각형 편집 화면을 보며 육각형 게임 결과를 추측하거나, 그림을\n회전해 다시 내보낼 때마다 위치를 별도로 맞추면 아이템 실루엣과 점유 규칙이 쉽게\n어긋납니다.\n\n이번 변경의 목표는 ItemDB 자체를 게임의 육각형 공간 언어에 맞추는 것입니다. 아이템\n제작자는 한 화면에서 점유 칸, 이미지 위치와 배율, 기준 회전각을 함께 조정하고 저장된\n값을 위키와 게임 생성 데이터에 전달할 수 있습니다.\n\n## 사용자 경험\n\n- ItemDB의 점유 형태와 편집기는 flat-top 육각형으로 표시됩니다.\n- 편집기는 중심을 포함한 반지름 2의 19칸을 제공하고, 선택한 칸은 여섯 변 연결 규칙으로\n  검사합니다.\n- 이미지 회전각을 직접 입력하거나 `−60°`, `+60°` 버튼으로 빠르게 조정할 수 있습니다.\n- `칸 설정하기` 상태에서는 배치한 이미지가 70% 투명한 참조 레이어로 남아, 그림\n  실루엣을 보면서 칸을 고를 수 있습니다.\n- 저장 후 같은 기준 회전각이 ItemDB 목록 이미지와 게임용 레이아웃 데이터에 반영됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 편집 화면과 게임이 같은 공간 계약을 사용한다\n\n격자 구조는 `HexAxialFlatTop`, 점유 좌표는 정수 axial `(Q, R)`, 배치 회전은\n`0/60/120/180/240/300`도로 고정했습니다. 연결 검사도 사각형의 상하좌우가 아니라\n육각형의 여섯 이웃을 사용합니다.\n\n### 칸을 고를 때 그림은 사라지지 않는다\n\n칸 버튼의 선택 상태가 우선 읽혀야 하지만, 그림과 칸의 관계도 동시에 판단할 수 있어야\n합니다. 따라서 칸 설정 모드에서는 이미지 입력을 잠그고 불투명도만 `0.3`으로 낮췄습니다.\n무채색 필터는 사용하지 않아 아이템 고유 색과 실루엣을 참고 정보로 보존합니다.\n\n### 생성 데이터는 호환성을 끊지 않고 확장한다\n\n게임용 레이아웃은 새 `HexFootprintCells`, `GridTopology`, `IconRotation`을\n내보냅니다. 현재 사각형 런타임은 검증된 기존 fallback `Shape`로 계속 동작하고,\n육각형 런타임은 같은 생성물의 axial 필드를 사용할 수 있어 편집기 전환이 별도 시스템을\n갑자기 깨뜨리지 않습니다.\n\n## 결정 사항과 범위\n\n기존 직사각형 점유 형태는 육각형 연결과 최대 Q·R·S 축 길이 5에 맞게 정리했습니다.\n이미지 회전은 자유 각도 값을 저장하되 빠른 조작은 육각형 방향과 같은 60도 단위로\n제공합니다. 이번 범위는 ItemDB 제작 도구와 생성 데이터 계약이며, 가방 배치 로직이나\n게임 화면 전체를 새로 설계하는 작업은 포함하지 않습니다.\n\n## 현재 결과\n\n![칸 설정 모드의 육각형 ItemDB 편집기](./media/inventory-item-concept/v006/itemdb-hex-editor-cell-mode.jpg \"포켓 네일건 이미지가 70% 투명한 참조 레이어로 남아 선택한 세 육각 칸과 겹쳐 보이는 최종 편집 화면\")\n\n포켓 네일건 편집 화면에서 19칸 육각형 보드, 세 칸 점유 형태, 회전 조작과 반투명 참고\n이미지를 동시에 확인할 수 있습니다. 선택 칸은 선명하게 유지되고 이미지는 입력을 받지\n않으므로 터치나 클릭이 점유 칸 조작으로 전달됩니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 카탈로그의 axial 좌표와 레이아웃의 이미지 배율·오프셋·회전을\n검증한 뒤 웹 데이터와 Roblox용 생성물을 함께 만듭니다. 브라우저 편집기는 같은 육각형\n중심 계산으로 셀 위치, 이미지 경계와 저장 오프셋을 계산합니다. 서버 저장 단계에서도\n편집 반경, 중복, 여섯 변 연결과 Q·R·S 축 범위를 다시 검사합니다.\n\n게임 카탈로그는 생성된 기준 회전각을 선택 상세 이미지, 배치 이미지, 보관 이미지와\n드래그 고스트에 합성할 수 있도록 전달합니다. 플레이 중 배치 회전은 기존 회전값에 기준\n회전각을 더하므로 아이템 아트의 원래 방향을 잃지 않습니다.\n\n## 검증\n\nItemDB 생성·최신성 검사, Python과 Node 회귀 테스트, JavaScript 구문 검사와 Rojo 빌드를\n통과했습니다. 위키 생성·최신성 검사와 위키 단위 테스트도 통과했습니다.\n\n로컬 브라우저에서는 포켓 네일건 편집기를 `칸 설정하기` 상태로 전환해 스테이지 모드가\n`cells`, 이미지 계산 불투명도가 `0.3`, 포인터 입력이 비활성인지 확인했습니다.\n기존 무채색 필터는 제거됐고 브라우저 콘솔 오류도 없었습니다.\n\n## 후속 기획\n\n- 새 아이템 이미지는 ItemDB에서 육각 점유 칸, 위치, 배율과 기준 회전을 함께 승인합니다.\n- 아이템 변경 후에는 ItemDB 생성·검사와 게임용 생성 데이터 최신성 검사를 항상 같은\n  완료 조건으로 취급합니다.\n- 향후 육각형 게임 화면 전환은 `HexFootprintCells`를 직접 소비하되, 별도 검증이 끝날\n  때까지 현재 사각형 배치의 fallback footprint를 유지합니다.\n",
       "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "아이템 제작자가 육각형 점유 칸과 이미지 방향을 한 화면에서 맞추고, 칸 설정 중에는 반투명 이미지를 기준으로 실루엣을 판단할 수 있게 했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "item-db",
+            "hex-grid",
+            "ui",
+            "authoring"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-11",
+          "authors": [
+            "Codex"
+          ],
+          "version": 6,
+          "change_type": "updated",
+          "change_summary": "ItemDB 편집 흐름을 flat-top 육각형과 60도 회전 계약으로 전환하고, 칸 설정 상태의 이미지를 70% 투명하게 보여 주어 점유 실루엣을 직접 대조할 수 있게 했습니다.",
+          "supersedes": "inventory-item-concept@v005",
+          "sources": [
+            "docs/gameplay/inventory-item-art-catalog.md",
+            "docs/gameplay/inventory-item-layouts.json",
+            "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
+            "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
+            "src/ReplicatedStorage/BackpackUI/Screen.luau",
+            "tests/item-db.spec.js",
+            "tests/test_item_db.py",
+            "tools/item_db.py",
+            "wiki/site/app.css",
+            "wiki/site/app.js",
+            "wiki/site/item-db-data.js",
+            "wiki/site/item-db.js",
+            "wiki/content/media/inventory-item-concept/v006/itemdb-hex-editor-cell-mode.jpg"
+          ],
+          "related": [
+            "development-wiki",
+            "backpack-combat-stat-database",
+            "project-overview"
+          ],
+          "validation": [
+            "python3 tools/item_db.py build",
+            "python3 tools/item_db.py check",
+            "python3 -m unittest tests.test_item_db",
+            "node tests/item-db.spec.js",
+            "node --check wiki/site/app.js",
+            "node --check wiki/site/item-db.js",
+            "rojo build packbound.project.json --output /tmp/PackBound-itemdb-hex.rbxlx",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "로컬 ItemDB 브라우저에서 칸 설정 모드, opacity 0.3, 필터 무채색 제거와 콘솔 오류 없음 확인"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템 그림은 육각형 가방 퍼즐에서 실제로 차지할 공간과 같은 방향으로\n읽혀야 합니다. 제작자가 사각형 편집 화면을 보며 육각형 게임 결과를 추측하거나, 그림을\n회전해 다시 내보낼 때마다 위치를 별도로 맞추면 아이템 실루엣과 점유 규칙이 쉽게\n어긋납니다.\n\n이번 변경의 목표는 ItemDB 자체를 게임의 육각형 공간 언어에 맞추는 것입니다. 아이템\n제작자는 한 화면에서 점유 칸, 이미지 위치와 배율, 기준 회전각을 함께 조정하고 저장된\n값을 위키와 게임 생성 데이터에 전달할 수 있습니다.\n\n## 사용자 경험\n\n- ItemDB의 점유 형태와 편집기는 flat-top 육각형으로 표시됩니다.\n- 편집기는 중심을 포함한 반지름 2의 19칸을 제공하고, 선택한 칸은 여섯 변 연결 규칙으로\n  검사합니다.\n- 이미지 회전각을 직접 입력하거나 `−60°`, `+60°` 버튼으로 빠르게 조정할 수 있습니다.\n- `칸 설정하기` 상태에서는 배치한 이미지가 70% 투명한 참조 레이어로 남아, 그림\n  실루엣을 보면서 칸을 고를 수 있습니다.\n- 저장 후 같은 기준 회전각이 ItemDB 목록 이미지와 게임용 레이아웃 데이터에 반영됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 편집 화면과 게임이 같은 공간 계약을 사용한다\n\n격자 구조는 `HexAxialFlatTop`, 점유 좌표는 정수 axial `(Q, R)`, 배치 회전은\n`0/60/120/180/240/300`도로 고정했습니다. 연결 검사도 사각형의 상하좌우가 아니라\n육각형의 여섯 이웃을 사용합니다.\n\n### 칸을 고를 때 그림은 사라지지 않는다\n\n칸 버튼의 선택 상태가 우선 읽혀야 하지만, 그림과 칸의 관계도 동시에 판단할 수 있어야\n합니다. 따라서 칸 설정 모드에서는 이미지 입력을 잠그고 불투명도만 `0.3`으로 낮췄습니다.\n무채색 필터는 사용하지 않아 아이템 고유 색과 실루엣을 참고 정보로 보존합니다.\n\n### 생성 데이터는 호환성을 끊지 않고 확장한다\n\n게임용 레이아웃은 새 `HexFootprintCells`, `GridTopology`, `IconRotation`을\n내보냅니다. 현재 사각형 런타임은 검증된 기존 fallback `Shape`로 계속 동작하고,\n육각형 런타임은 같은 생성물의 axial 필드를 사용할 수 있어 편집기 전환이 별도 시스템을\n갑자기 깨뜨리지 않습니다.\n\n## 결정 사항과 범위\n\n기존 직사각형 점유 형태는 육각형 연결과 최대 Q·R·S 축 길이 5에 맞게 정리했습니다.\n이미지 회전은 자유 각도 값을 저장하되 빠른 조작은 육각형 방향과 같은 60도 단위로\n제공합니다. 이번 범위는 ItemDB 제작 도구와 생성 데이터 계약이며, 가방 배치 로직이나\n게임 화면 전체를 새로 설계하는 작업은 포함하지 않습니다.\n\n## 현재 결과\n\n![칸 설정 모드의 육각형 ItemDB 편집기](./media/inventory-item-concept/v006/itemdb-hex-editor-cell-mode.jpg \"포켓 네일건 이미지가 70% 투명한 참조 레이어로 남아 선택한 세 육각 칸과 겹쳐 보이는 최종 편집 화면\")\n\n포켓 네일건 편집 화면에서 19칸 육각형 보드, 세 칸 점유 형태, 회전 조작과 반투명 참고\n이미지를 동시에 확인할 수 있습니다. 선택 칸은 선명하게 유지되고 이미지는 입력을 받지\n않으므로 터치나 클릭이 점유 칸 조작으로 전달됩니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 카탈로그의 axial 좌표와 레이아웃의 이미지 배율·오프셋·회전을\n검증한 뒤 웹 데이터와 Roblox용 생성물을 함께 만듭니다. 브라우저 편집기는 같은 육각형\n중심 계산으로 셀 위치, 이미지 경계와 저장 오프셋을 계산합니다. 서버 저장 단계에서도\n편집 반경, 중복, 여섯 변 연결과 Q·R·S 축 범위를 다시 검사합니다.\n\n게임 카탈로그는 생성된 기준 회전각을 선택 상세 이미지, 배치 이미지, 보관 이미지와\n드래그 고스트에 합성할 수 있도록 전달합니다. 플레이 중 배치 회전은 기존 회전값에 기준\n회전각을 더하므로 아이템 아트의 원래 방향을 잃지 않습니다.\n\n## 검증\n\nItemDB 생성·최신성 검사, Python과 Node 회귀 테스트, JavaScript 구문 검사와 Rojo 빌드를\n통과했습니다. 위키 생성·최신성 검사와 위키 단위 테스트도 통과했습니다.\n\n로컬 브라우저에서는 포켓 네일건 편집기를 `칸 설정하기` 상태로 전환해 스테이지 모드가\n`cells`, 이미지 계산 불투명도가 `0.3`, 포인터 입력이 비활성인지 확인했습니다.\n기존 무채색 필터는 제거됐고 브라우저 콘솔 오류도 없었습니다.\n\n## 후속 기획\n\n- 새 아이템 이미지는 ItemDB에서 육각 점유 칸, 위치, 배율과 기준 회전을 함께 승인합니다.\n- 아이템 변경 후에는 ItemDB 생성·검사와 게임용 생성 데이터 최신성 검사를 항상 같은\n  완료 조건으로 취급합니다.\n- 향후 육각형 게임 화면 전환은 `HexFootprintCells`를 직접 소비하되, 별도 검증이 끝날\n  때까지 현재 사각형 배치의 fallback footprint를 유지합니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v006.md"
+        },
         {
           "id": "inventory-item-concept",
           "title": "인벤토리와 아이템 개념",

@@ -34,6 +34,13 @@
   const rojoStatusText = document.getElementById("rojo-status-text");
   const publicWikiLink = document.getElementById("public-wiki-link");
   const wikiThemeHero = "theme/packbound-wiki-hero.webp";
+  const itemDbEditorRadius = 2;
+  const itemDbHexCellWidth = 2 / Math.sqrt(3);
+  const itemDbHexColumnStep = Math.sqrt(3) / 2;
+  const itemDbEditorStageWidth = itemDbHexCellWidth + itemDbEditorRadius * 2 * itemDbHexColumnStep;
+  const itemDbEditorStageHeight = itemDbEditorRadius * 2 + 1;
+  const itemDbEditorOriginX = itemDbEditorRadius * itemDbHexColumnStep + itemDbHexCellWidth / 2;
+  const itemDbEditorOriginY = itemDbEditorRadius + 0.5;
   const canControlRojo = Boolean(localAccess?.canUseRojoControl(window.location.hostname));
   const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
   const canEditItemDb = canControlRojo;
@@ -721,18 +728,57 @@
     `;
   }
 
+  function axialCenter(q, r) {
+    return { x: q * itemDbHexColumnStep, y: r + q / 2 };
+  }
+
+  function axialVisualBounds(cells) {
+    const centers = cells.map(([q, r]) => axialCenter(q, r));
+    return {
+      minX: Math.min(...centers.map((cell) => cell.x)) - itemDbHexCellWidth / 2,
+      minY: Math.min(...centers.map((cell) => cell.y)) - 0.5,
+      maxX: Math.max(...centers.map((cell) => cell.x)) + itemDbHexCellWidth / 2,
+      maxY: Math.max(...centers.map((cell) => cell.y)) + 0.5,
+    };
+  }
+
+  function centerAxialCells(cells) {
+    let best = null;
+    for (let deltaQ = -5; deltaQ <= 5; deltaQ += 1) {
+      for (let deltaR = -5; deltaR <= 5; deltaR += 1) {
+        const candidate = cells.map(([q, r]) => [q + deltaQ, r + deltaR]);
+        const fits = candidate.every(([q, r]) => (
+          Math.max(Math.abs(q), Math.abs(r), Math.abs(-q - r)) <= itemDbEditorRadius
+        ));
+        if (!fits) continue;
+        const bounds = axialVisualBounds(candidate);
+        const centerX = (bounds.minX + bounds.maxX) / 2;
+        const centerY = (bounds.minY + bounds.maxY) / 2;
+        const score = centerX ** 2 + centerY ** 2;
+        if (!best || score < best.score) best = { cells: candidate, score };
+      }
+    }
+    return best?.cells || cells.map((cell) => [...cell]);
+  }
+
   function renderFootprint(item) {
     const occupied = new Set(item.coordinates.map(([x, y]) => `${x},${y}`));
     const cells = [];
-    for (let y = 0; y < item.bounds.height; y += 1) {
-      for (let x = 0; x < item.bounds.width; x += 1) {
-        cells.push(`<i class="${occupied.has(`${x},${y}`) ? "occupied" : "empty"}"></i>`);
-      }
-    }
+    const cellHeight = 12;
+    const bounds = axialVisualBounds(item.coordinates);
+    item.coordinates.forEach(([q, r]) => {
+      const center = axialCenter(q, r);
+      const left = (center.x - itemDbHexCellWidth / 2 - bounds.minX) * cellHeight;
+      const top = (center.y - 0.5 - bounds.minY) * cellHeight;
+      cells.push(`<i class="${occupied.has(`${q},${r}`) ? "occupied" : "empty"}" style="left:${left}px;top:${top}px"></i>`);
+    });
+    const visualWidth = (bounds.maxX - bounds.minX) * cellHeight;
+    const visualHeight = (bounds.maxY - bounds.minY) * cellHeight;
+    const spans = item.axial_bounds || {};
     return `
       <div class="itemdb-footprint">
-        <span class="itemdb-footprint-grid" style="grid-template-columns:repeat(${item.bounds.width}, 12px)">${cells.join("")}</span>
-        <span><strong>${item.bounds.width}×${item.bounds.height} · ${item.occupied_cells}칸</strong><code>${escapeHtml(item.pattern)}</code></span>
+        <span class="itemdb-footprint-grid" style="width:${visualWidth + 10}px;height:${visualHeight + 10}px">${cells.join("")}</span>
+        <span><strong>Q${spans.q || "–"} · R${spans.r || "–"} · S${spans.s || "–"} · ${item.occupied_cells}칸</strong><code>${escapeHtml(item.pattern)}</code></span>
       </div>
     `;
   }
@@ -742,7 +788,7 @@
       <tr>
         <td class="itemdb-image-cell">
           <a href="${escapeHtml(item.image_url || item.image)}" target="_blank" rel="noopener" aria-label="${escapeHtml(item.name)} 원본 이미지 열기">
-            <img src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 아이템 이미지" loading="lazy" decoding="async">
+            <img src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 아이템 이미지" loading="lazy" decoding="async" style="transform:rotate(${Number(item.image_layout?.rotation_degrees || 0)}deg)">
           </a>
         </td>
         <td class="itemdb-identity"><strong>${escapeHtml(item.name)}</strong><code>${escapeHtml(item.id)}</code></td>
@@ -768,8 +814,21 @@
   function clampEditorImage(state) {
     const width = state.canvasWidth * state.scale;
     const height = state.canvasHeight * state.scale;
-    state.imageX = Math.min(4.5, Math.max(0.5 - width, state.imageX));
-    state.imageY = Math.min(4.5, Math.max(0.5 - height, state.imageY));
+    const radians = state.rotation * Math.PI / 180;
+    const rotatedWidth = Math.abs(width * Math.cos(radians)) + Math.abs(height * Math.sin(radians));
+    const rotatedHeight = Math.abs(width * Math.sin(radians)) + Math.abs(height * Math.cos(radians));
+    const centerX = state.imageX + width / 2;
+    const centerY = state.imageY + height / 2;
+    const clampedCenterX = Math.min(
+      itemDbEditorStageWidth - itemDbEditorOriginX - 0.5 + rotatedWidth / 2,
+      Math.max(-itemDbEditorOriginX + 0.5 - rotatedWidth / 2, centerX),
+    );
+    const clampedCenterY = Math.min(
+      itemDbEditorStageHeight - itemDbEditorOriginY - 0.5 + rotatedHeight / 2,
+      Math.max(-itemDbEditorOriginY + 0.5 - rotatedHeight / 2, centerY),
+    );
+    state.imageX = clampedCenterX - width / 2;
+    state.imageY = clampedCenterY - height / 2;
   }
 
   function updateItemDbEditor() {
@@ -785,21 +844,24 @@
     const validation = itemDbTools.validateLayout(
       [...state.selected].map((key) => key.split(",").map(Number)),
       state.scale,
+      state.rotation,
     );
 
     stage.dataset.mode = state.mode;
-    image.style.left = `${state.imageX * 20}%`;
-    image.style.top = `${state.imageY * 20}%`;
-    image.style.width = `${state.canvasWidth * state.scale * 20}%`;
-    image.style.height = `${state.canvasHeight * state.scale * 20}%`;
+    image.style.left = `${(state.imageX + itemDbEditorOriginX) / itemDbEditorStageWidth * 100}%`;
+    image.style.top = `${(state.imageY + itemDbEditorOriginY) / itemDbEditorStageHeight * 100}%`;
+    image.style.width = `${state.canvasWidth * state.scale / itemDbEditorStageWidth * 100}%`;
+    image.style.height = `${state.canvasHeight * state.scale / itemDbEditorStageHeight * 100}%`;
+    image.style.transform = `rotate(${state.rotation}deg)`;
     modeButton.textContent = state.mode === "cells" ? "이미지 이동하기" : "칸 설정하기";
     modeText.textContent = state.mode === "cells"
       ? "이미지는 잠겼습니다. 바닥 칸을 눌러 점유 영역을 선택하세요."
       : "이미지를 드래그해 위치를 정한 뒤 칸 설정하기를 누르세요.";
     count.textContent = `${state.selected.size}칸 선택`;
-    position.textContent = `이미지 위치 X ${state.imageX.toFixed(2)} · Y ${state.imageY.toFixed(2)}`;
+    position.textContent = `X ${state.imageX.toFixed(2)} · Y ${state.imageY.toFixed(2)} · 회전 ${state.rotation.toFixed(1)}°`;
     dialog.querySelectorAll("[data-itemdb-editor-cell]").forEach((cell) => {
       cell.classList.toggle("selected", state.selected.has(cell.dataset.itemdbEditorCell));
+      cell.setAttribute("aria-pressed", String(state.selected.has(cell.dataset.itemdbEditorCell)));
     });
     dialog.querySelector("[data-itemdb-editor-save]").disabled = state.saving;
     const error = dialog.querySelector("[data-itemdb-editor-error]");
@@ -816,7 +878,7 @@
     const dialog = document.getElementById("itemdb-editor-dialog");
     if (!state || !dialog || state.saving) return;
     const coordinates = [...state.selected].map((key) => key.split(",").map(Number));
-    const validation = itemDbTools.validateLayout(coordinates, state.scale);
+    const validation = itemDbTools.validateLayout(coordinates, state.scale, state.rotation);
     state.showErrors = true;
     if (!validation.valid) {
       updateItemDbEditor();
@@ -838,13 +900,14 @@
           scale: validation.scale,
           image_x: state.imageX,
           image_y: state.imageY,
+          rotation_degrees: validation.rotation,
         }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `저장에 실패했습니다. (${response.status})`);
       const index = itemDb.items.findIndex((item) => item.id === state.item.id);
       if (index >= 0) itemDb.items[index] = payload.item;
-      itemDbNotice = `${payload.item.name}의 이미지 위치와 ${payload.item.occupied_cells}칸 점유 형태를 게임 데이터에 저장했습니다.`;
+      itemDbNotice = `${payload.item.name}의 이미지 위치·${payload.item.image_layout.rotation_degrees}° 회전과 ${payload.item.occupied_cells}칸 육각 점유 형태를 게임 데이터에 저장했습니다.`;
       closeItemDbEditor();
       renderItemDb();
     } catch (error) {
@@ -859,12 +922,13 @@
     const item = itemDb.items.find((candidate) => candidate.id === itemId);
     if (!item || !canEditItemDb) return;
     closeItemDbEditor();
-    const originX = Math.floor((5 - item.bounds.width) / 2);
-    const originY = Math.floor((5 - item.bounds.height) / 2);
+    const centeredCoordinates = centerAxialCells(item.coordinates);
+    const footprintBounds = axialVisualBounds(centeredCoordinates);
     const layout = item.image_layout || {
       scale: 1,
       offset_x: 0,
       offset_y: 0,
+      rotation_degrees: 0,
       canvas_width: item.bounds.width,
       canvas_height: item.bounds.height,
     };
@@ -873,9 +937,10 @@
       scale: Number(layout.scale),
       canvasWidth: Number(layout.canvas_width),
       canvasHeight: Number(layout.canvas_height),
-      imageX: originX + Number(layout.offset_x),
-      imageY: originY + Number(layout.offset_y),
-      selected: new Set(item.coordinates.map(([x, y]) => editorCellKey(x + originX, y + originY))),
+      imageX: footprintBounds.minX + Number(layout.offset_x),
+      imageY: footprintBounds.minY + Number(layout.offset_y),
+      rotation: itemDbTools.normalizeRotation(layout.rotation_degrees || 0),
+      selected: new Set(centeredCoordinates.map(([q, r]) => editorCellKey(q, r))),
       mode: "move",
       saving: false,
       showErrors: false,
@@ -885,10 +950,19 @@
     clampEditorImage(itemDbEditorState);
 
     const gridCells = [];
-    for (let y = 0; y < 5; y += 1) {
-      for (let x = 0; x < 5; x += 1) {
-        const key = editorCellKey(x, y);
-        gridCells.push(`<button type="button" data-itemdb-editor-cell="${key}" aria-label="${x + 1}열 ${y + 1}행"></button>`);
+    for (let q = -itemDbEditorRadius; q <= itemDbEditorRadius; q += 1) {
+      const minR = Math.max(-itemDbEditorRadius, -q - itemDbEditorRadius);
+      const maxR = Math.min(itemDbEditorRadius, -q + itemDbEditorRadius);
+      for (let r = minR; r <= maxR; r += 1) {
+        const key = editorCellKey(q, r);
+        const center = axialCenter(q, r);
+        const left = (center.x - itemDbHexCellWidth / 2 + itemDbEditorOriginX)
+          / itemDbEditorStageWidth * 100;
+        const top = (center.y - 0.5 + itemDbEditorOriginY) / itemDbEditorStageHeight * 100;
+        const width = itemDbHexCellWidth / itemDbEditorStageWidth * 100;
+        const height = 1 / itemDbEditorStageHeight * 100;
+        const selected = itemDbEditorState.selected.has(key);
+        gridCells.push(`<button type="button" data-itemdb-editor-cell="${key}" aria-label="Q ${q}, R ${r} 육각 칸" aria-pressed="${selected}" style="left:${left}%;top:${top}%;width:${width}%;height:${height}%"></button>`);
       }
     }
     document.body.insertAdjacentHTML("beforeend", `
@@ -909,11 +983,17 @@
             <aside class="itemdb-editor-controls">
               <label for="itemdb-editor-scale"><span>Image Scale</span><small>0.1–4.0 배율</small></label>
               <input id="itemdb-editor-scale" type="number" min="0.1" max="4" step="0.05" value="${escapeHtml(layout.scale)}">
+              <label class="itemdb-editor-rotation-label" for="itemdb-editor-rotation"><span>Image Rotation</span><small>자유 각도 · ±60° 빠른 조절</small></label>
+              <div class="itemdb-editor-rotation">
+                <button type="button" data-itemdb-editor-rotate="-60" aria-label="이미지를 왼쪽으로 60도 회전">−60°</button>
+                <input id="itemdb-editor-rotation" type="number" min="-180" max="180" step="1" value="${escapeHtml(itemDbEditorState.rotation)}" aria-label="이미지 회전각">
+                <button type="button" data-itemdb-editor-rotate="60" aria-label="이미지를 오른쪽으로 60도 회전">+60°</button>
+              </div>
               <p data-itemdb-editor-mode-text></p>
               <button type="button" class="itemdb-editor-mode" data-itemdb-editor-mode>칸 설정하기</button>
               <div class="itemdb-editor-rules">
                 <strong>저장 규칙</strong>
-                <span>1칸 이상 선택</span><span>가로·세로 최대 5칸</span><span>상하좌우로 연결</span>
+                <span>1칸 이상 선택</span><span>Q·R·S 각 축 최대 5칸</span><span>육각형 변으로 연결</span>
               </div>
               <p class="itemdb-editor-error" data-itemdb-editor-error role="alert" hidden></p>
             </aside>
@@ -928,6 +1008,7 @@
     const stage = dialog.querySelector(".itemdb-editor-stage");
     const image = dialog.querySelector(".itemdb-editor-image");
     const scaleInput = dialog.querySelector("#itemdb-editor-scale");
+    const rotationInput = dialog.querySelector("#itemdb-editor-rotation");
     dialog.querySelectorAll("[data-itemdb-editor-close]").forEach((button) => button.addEventListener("click", closeItemDbEditor));
     document.getElementById("itemdb-editor-backdrop").addEventListener("click", (event) => {
       if (event.target.id === "itemdb-editor-backdrop") closeItemDbEditor();
@@ -951,7 +1032,8 @@
       const nextScale = Number(scaleInput.value);
       if (!Number.isFinite(nextScale) || nextScale <= 0) return;
       const centerX = itemDbEditorState.imageX + itemDbEditorState.canvasWidth * itemDbEditorState.scale / 2;
-      const centerY = itemDbEditorState.imageY + itemDbEditorState.canvasHeight * itemDbEditorState.scale / 2;
+      const centerY = itemDbEditorState.imageY
+        + itemDbEditorState.canvasHeight * itemDbEditorState.scale / 2;
       itemDbEditorState.scale = nextScale;
       itemDbEditorState.imageX = centerX - itemDbEditorState.canvasWidth * nextScale / 2;
       itemDbEditorState.imageY = centerY - itemDbEditorState.canvasHeight * nextScale / 2;
@@ -959,6 +1041,22 @@
       itemDbEditorState.showErrors = false;
       itemDbEditorState.serverError = "";
       updateItemDbEditor();
+    });
+    const setRotation = (value) => {
+      const rotation = itemDbTools.normalizeRotation(value);
+      if (!Number.isFinite(rotation)) return;
+      itemDbEditorState.rotation = rotation;
+      rotationInput.value = String(rotation);
+      clampEditorImage(itemDbEditorState);
+      itemDbEditorState.showErrors = false;
+      itemDbEditorState.serverError = "";
+      updateItemDbEditor();
+    };
+    rotationInput.addEventListener("input", () => setRotation(rotationInput.value));
+    dialog.querySelectorAll("[data-itemdb-editor-rotate]").forEach((button) => {
+      button.addEventListener("click", () => {
+        setRotation(itemDbEditorState.rotation + Number(button.dataset.itemdbEditorRotate));
+      });
     });
     image.addEventListener("pointerdown", (event) => {
       if (itemDbEditorState.mode !== "move") return;
@@ -976,8 +1074,10 @@
       const drag = itemDbEditorState?.drag;
       if (!drag || drag.pointerId !== event.pointerId) return;
       const bounds = stage.getBoundingClientRect();
-      itemDbEditorState.imageX = drag.imageX + (event.clientX - drag.clientX) / bounds.width * 5;
-      itemDbEditorState.imageY = drag.imageY + (event.clientY - drag.clientY) / bounds.height * 5;
+      itemDbEditorState.imageX = drag.imageX
+        + (event.clientX - drag.clientX) / bounds.width * itemDbEditorStageWidth;
+      itemDbEditorState.imageY = drag.imageY
+        + (event.clientY - drag.clientY) / bounds.height * itemDbEditorStageHeight;
       clampEditorImage(itemDbEditorState);
       updateItemDbEditor();
     });
@@ -1039,6 +1139,7 @@
           </div>
           <div class="itemdb-contract">
             <div><span>기준 방향</span><strong>${escapeHtml(itemDb.common.native_facing)}</strong></div>
+            <div><span>격자 구조</span><strong>${escapeHtml(itemDb.common.grid_topology)}</strong></div>
             <div><span>허용 회전</span><strong>${itemDb.common.rotations.map((value) => `${value}°`).join(" · ")}</strong></div>
             <div><span>최대 스택</span><strong>${itemDb.common.maximum_stack}</strong></div>
             <div><span>단일 원본</span><code>${escapeHtml(itemDb.source)}</code></div>

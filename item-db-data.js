@@ -3,11 +3,14 @@ window.PACKBOUND_ITEM_DB = {
   "count": 30,
   "common": {
     "native_facing": "NativeFacing = Up",
+    "grid_topology": "HexAxialFlatTop",
     "rotations": [
       0,
-      90,
+      60,
+      120,
       180,
-      270
+      240,
+      300
     ],
     "maximum_stack": 1
   },
@@ -39,7 +42,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "안테나 리커브 보우",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "활·조금 큰 6칸",
+      "type_size": "활·조금 큰 3칸",
       "concept": "라디오 안테나와 조절 노브를 활 몸체로 쓴 기계식 리커브 보우",
       "stats": [
         "AttackPower 21",
@@ -48,178 +51,13 @@ window.PACKBOUND_ITEM_DB = {
         "ProjectilePierceCount 1"
       ],
       "bounds": {
-        "width": 2,
-        "height": 3
-      },
-      "pattern": "■■/■■/■■",
-      "occupied_cells": 6,
-      "coordinates": [
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
-        ]
-      ],
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "canvas_width": 2,
-        "canvas_height": 3,
-        "applied_to_game": false
-      },
-      "media_path": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png",
-      "image": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png?v=7b54a419c314cbcf",
-      "image_url": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png?v=7b54a419c314cbcf",
-      "source_image": "Assets/Items/InventoryIcons/Weapons/Bows/weapon_antenna_recurve_bow.png"
-    },
-    {
-      "id": "weapon.can_opener_smg",
-      "name": "캔따개 기관단총",
-      "family": "weapon",
-      "family_label": "무기",
-      "type_size": "총·조금 큰 5칸",
-      "concept": "통조림 두 개를 탄창처럼 붙인 짧고 넓은 기관단총",
-      "stats": [
-        "AttackPower 7",
-        "AttackCooldown 0.18",
-        "AttackRange 18",
-        "CriticalChance 0.04"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 3
-      },
-      "pattern": "□■□/■■■/□■□",
-      "occupied_cells": 5,
-      "coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          1,
-          2
-        ]
-      ],
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 3,
-        "applied_to_game": false
-      },
-      "media_path": "./item-media/Weapons/Guns/weapon_can_opener_smg.png",
-      "image": "./item-media/Weapons/Guns/weapon_can_opener_smg.png?v=49c9388410e19811",
-      "image_url": "./item-media/Weapons/Guns/weapon_can_opener_smg.png?v=49c9388410e19811",
-      "source_image": "Assets/Items/InventoryIcons/Weapons/Guns/weapon_can_opener_smg.png"
-    },
-    {
-      "id": "weapon.cart_chain_greatsword",
-      "name": "카트 체인 대검",
-      "family": "weapon",
-      "family_label": "무기",
-      "type_size": "검·큰 6칸",
-      "concept": "쇼핑카트 프레임, 체인 톱니, 배터리를 십자형으로 묶은 거대검",
-      "stats": [
-        "AttackPower 42",
-        "AttackCooldown 1.55",
-        "AttackRange 9",
-        "KnockbackPower 8"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 4
-      },
-      "pattern": "□■□/□■□/■■■/□■□",
-      "occupied_cells": 6,
-      "coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          2,
-          2
-        ],
-        [
-          1,
-          3
-        ]
-      ],
-      "image_layout": {
-        "scale": 0.8,
-        "offset_x": 0.2715,
-        "offset_y": 0.5731,
-        "canvas_width": 3,
-        "canvas_height": 4,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png",
-      "image": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png?v=b8f982d1bae56630",
-      "image_url": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png?v=b8f982d1bae56630",
-      "source_image": "Assets/Items/InventoryIcons/Weapons/Swords/weapon_cart_chain_greatsword.png"
-    },
-    {
-      "id": "weapon.extinguisher_mace",
-      "name": "소화기 철퇴",
-      "family": "weapon",
-      "family_label": "무기",
-      "type_size": "둔기·조금 큰 3칸",
-      "concept": "소화기 통과 밸브를 타격부로 만든 묵직한 철퇴",
-      "stats": [
-        "AttackPower 27",
-        "AttackCooldown 1.30",
-        "AttackRange 6",
-        "KnockbackPower 7"
-      ],
-      "bounds": {
         "width": 1,
         "height": 3
+      },
+      "axial_bounds": {
+        "q": 1,
+        "r": 3,
+        "s": 3
       },
       "pattern": "■/■/■",
       "occupied_cells": 3,
@@ -238,9 +76,182 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "image_layout": {
+        "scale": 1.0,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rotation_degrees": 0.0,
+        "canvas_width": 2,
+        "canvas_height": 3,
+        "applied_to_game": false
+      },
+      "media_path": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png",
+      "image": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png?v=7b54a419c314cbcf",
+      "image_url": "./item-media/Weapons/Bows/weapon_antenna_recurve_bow.png?v=7b54a419c314cbcf",
+      "source_image": "Assets/Items/InventoryIcons/Weapons/Bows/weapon_antenna_recurve_bow.png"
+    },
+    {
+      "id": "weapon.can_opener_smg",
+      "name": "캔따개 기관단총",
+      "family": "weapon",
+      "family_label": "무기",
+      "type_size": "총·조금 큰 6칸",
+      "concept": "통조림 두 개를 탄창처럼 붙인 짧고 넓은 기관단총",
+      "stats": [
+        "AttackPower 7",
+        "AttackCooldown 0.18",
+        "AttackRange 18",
+        "CriticalChance 0.04"
+      ],
+      "bounds": {
+        "width": 3,
+        "height": 4
+      },
+      "axial_bounds": {
+        "q": 3,
+        "r": 4,
+        "s": 4
+      },
+      "pattern": "□■□/□■■/■■□/□■□",
+      "occupied_cells": 6,
+      "coordinates": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "image_layout": {
+        "scale": 1.0,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rotation_degrees": 0.0,
+        "canvas_width": 3,
+        "canvas_height": 3,
+        "applied_to_game": false
+      },
+      "media_path": "./item-media/Weapons/Guns/weapon_can_opener_smg.png",
+      "image": "./item-media/Weapons/Guns/weapon_can_opener_smg.png?v=49c9388410e19811",
+      "image_url": "./item-media/Weapons/Guns/weapon_can_opener_smg.png?v=49c9388410e19811",
+      "source_image": "Assets/Items/InventoryIcons/Weapons/Guns/weapon_can_opener_smg.png"
+    },
+    {
+      "id": "weapon.cart_chain_greatsword",
+      "name": "카트 체인 대검",
+      "family": "weapon",
+      "family_label": "무기",
+      "type_size": "검·큰 5칸",
+      "concept": "쇼핑카트 프레임, 체인 톱니, 배터리를 십자형으로 묶은 거대검",
+      "stats": [
+        "AttackPower 42",
+        "AttackCooldown 1.55",
+        "AttackRange 9",
+        "KnockbackPower 8"
+      ],
+      "bounds": {
+        "width": 3,
+        "height": 3
+      },
+      "axial_bounds": {
+        "q": 3,
+        "r": 3,
+        "s": 3
+      },
+      "pattern": "□■□/□■■/■■□",
+      "occupied_cells": 5,
+      "coordinates": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "image_layout": {
+        "scale": 0.8,
+        "offset_x": 0.2715,
+        "offset_y": 0.5731,
+        "rotation_degrees": 0.0,
+        "canvas_width": 3,
+        "canvas_height": 4,
+        "applied_to_game": true
+      },
+      "media_path": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png",
+      "image": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png?v=b8f982d1bae56630",
+      "image_url": "./item-media/Weapons/Swords/weapon_cart_chain_greatsword.png?v=b8f982d1bae56630",
+      "source_image": "Assets/Items/InventoryIcons/Weapons/Swords/weapon_cart_chain_greatsword.png"
+    },
+    {
+      "id": "weapon.extinguisher_mace",
+      "name": "소화기 철퇴",
+      "family": "weapon",
+      "family_label": "무기",
+      "type_size": "둔기·조금 큰 2칸",
+      "concept": "소화기 통과 밸브를 타격부로 만든 묵직한 철퇴",
+      "stats": [
+        "AttackPower 27",
+        "AttackCooldown 1.30",
+        "AttackRange 6",
+        "KnockbackPower 7"
+      ],
+      "bounds": {
+        "width": 1,
+        "height": 2
+      },
+      "axial_bounds": {
+        "q": 1,
+        "r": 2,
+        "s": 2
+      },
+      "pattern": "■/■",
+      "occupied_cells": 2,
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "image_layout": {
         "scale": 0.8,
         "offset_x": -0.6866,
         "offset_y": 0.2668,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 3,
         "applied_to_game": true
@@ -265,16 +276,17 @@ window.PACKBOUND_ITEM_DB = {
       ],
       "bounds": {
         "width": 2,
-        "height": 2
+        "height": 3
       },
-      "pattern": "■■/■■",
+      "axial_bounds": {
+        "q": 2,
+        "r": 3,
+        "s": 2
+      },
+      "pattern": "□■/■■/■□",
       "occupied_cells": 4,
       "coordinates": [
         [
-          0,
-          0
-        ],
-        [
           1,
           0
         ],
@@ -285,12 +297,17 @@ window.PACKBOUND_ITEM_DB = {
         [
           1,
           1
+        ],
+        [
+          0,
+          2
         ]
       ],
       "image_layout": {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 2,
         "applied_to_game": false
@@ -317,7 +334,12 @@ window.PACKBOUND_ITEM_DB = {
         "width": 2,
         "height": 2
       },
-      "pattern": "■■/□■",
+      "axial_bounds": {
+        "q": 2,
+        "r": 2,
+        "s": 2
+      },
+      "pattern": "■■/■□",
       "occupied_cells": 3,
       "coordinates": [
         [
@@ -329,7 +351,7 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          1,
+          0,
           1
         ]
       ],
@@ -337,6 +359,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 2,
         "applied_to_game": true
@@ -351,7 +374,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "위성접시 장궁",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "활·큰 6칸",
+      "type_size": "활·큰 5칸",
       "concept": "TV 안테나 팔과 위성접시 팁을 길게 휜 대형 장궁",
       "stats": [
         "AttackPower 32",
@@ -363,8 +386,13 @@ window.PACKBOUND_ITEM_DB = {
         "width": 2,
         "height": 4
       },
-      "pattern": "■■/□■/□■/■■",
-      "occupied_cells": 6,
+      "axial_bounds": {
+        "q": 2,
+        "r": 4,
+        "s": 4
+      },
+      "pattern": "■■/□■/□■/■□",
+      "occupied_cells": 5,
       "coordinates": [
         [
           0,
@@ -385,16 +413,13 @@ window.PACKBOUND_ITEM_DB = {
         [
           0,
           3
-        ],
-        [
-          1,
-          3
         ]
       ],
       "image_layout": {
         "scale": 1.0,
         "offset_x": -0.2197,
         "offset_y": -0.0287,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 4,
         "applied_to_game": true
@@ -420,6 +445,11 @@ window.PACKBOUND_ITEM_DB = {
         "width": 1,
         "height": 3
       },
+      "axial_bounds": {
+        "q": 1,
+        "r": 3,
+        "s": 3
+      },
       "pattern": "■/■/■",
       "occupied_cells": 3,
       "coordinates": [
@@ -440,6 +470,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 1,
         "canvas_height": 3,
         "applied_to_game": false
@@ -466,7 +497,12 @@ window.PACKBOUND_ITEM_DB = {
         "width": 2,
         "height": 2
       },
-      "pattern": "■■/□■",
+      "axial_bounds": {
+        "q": 2,
+        "r": 2,
+        "s": 2
+      },
+      "pattern": "■■/■□",
       "occupied_cells": 3,
       "coordinates": [
         [
@@ -478,7 +514,7 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          1,
+          0,
           1
         ]
       ],
@@ -486,6 +522,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0982,
         "offset_y": -0.0142,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 2,
         "applied_to_game": true
@@ -500,7 +537,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "신호등 식칼",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "검·조금 큰 4칸",
+      "type_size": "검·조금 큰 8칸",
       "concept": "깨진 주황 신호등 렌즈와 갈고리 가드를 단 비대칭 대검",
       "stats": [
         "AttackPower 24",
@@ -509,14 +546,19 @@ window.PACKBOUND_ITEM_DB = {
         "KnockbackPower 4"
       ],
       "bounds": {
-        "width": 1,
-        "height": 4
+        "width": 2,
+        "height": 5
       },
-      "pattern": "■/■/■/■",
-      "occupied_cells": 4,
+      "axial_bounds": {
+        "q": 2,
+        "r": 5,
+        "s": 4
+      },
+      "pattern": "□■/■■/■■/■■/■□",
+      "occupied_cells": 8,
       "coordinates": [
         [
-          0,
+          1,
           0
         ],
         [
@@ -524,18 +566,35 @@ window.PACKBOUND_ITEM_DB = {
           1
         ],
         [
+          1,
+          1
+        ],
+        [
           0,
+          2
+        ],
+        [
+          1,
           2
         ],
         [
           0,
           3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          0,
+          4
         ]
       ],
       "image_layout": {
         "scale": 0.85,
         "offset_x": -0.3321,
         "offset_y": 0.3246,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 4,
         "applied_to_game": true
@@ -557,26 +616,27 @@ window.PACKBOUND_ITEM_DB = {
         "MaxHealth 10"
       ],
       "bounds": {
-        "width": 2,
-        "height": 3
+        "width": 3,
+        "height": 4
       },
-      "pattern": "■■/■■/■■",
+      "axial_bounds": {
+        "q": 3,
+        "r": 4,
+        "s": 2
+      },
+      "pattern": "□□■/□■■/■■□/■□□",
       "occupied_cells": 6,
       "coordinates": [
         [
-          0,
+          2,
           0
         ],
         [
           1,
-          0
-        ],
-        [
-          0,
           1
         ],
         [
-          1,
+          2,
           1
         ],
         [
@@ -586,12 +646,17 @@ window.PACKBOUND_ITEM_DB = {
         [
           1,
           2
+        ],
+        [
+          0,
+          3
         ]
       ],
       "image_layout": {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 3,
         "applied_to_game": false
@@ -614,16 +679,17 @@ window.PACKBOUND_ITEM_DB = {
       ],
       "bounds": {
         "width": 2,
-        "height": 2
+        "height": 3
       },
-      "pattern": "■■/■■",
+      "axial_bounds": {
+        "q": 2,
+        "r": 3,
+        "s": 2
+      },
+      "pattern": "□■/■■/■□",
       "occupied_cells": 4,
       "coordinates": [
         [
-          0,
-          0
-        ],
-        [
           1,
           0
         ],
@@ -634,12 +700,17 @@ window.PACKBOUND_ITEM_DB = {
         [
           1,
           1
+        ],
+        [
+          0,
+          2
         ]
       ],
       "image_layout": {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 2,
         "applied_to_game": true
@@ -661,16 +732,17 @@ window.PACKBOUND_ITEM_DB = {
       ],
       "bounds": {
         "width": 2,
-        "height": 2
+        "height": 3
       },
-      "pattern": "■■/■■",
+      "axial_bounds": {
+        "q": 2,
+        "r": 3,
+        "s": 2
+      },
+      "pattern": "□■/■■/■□",
       "occupied_cells": 4,
       "coordinates": [
         [
-          0,
-          0
-        ],
-        [
           1,
           0
         ],
@@ -681,12 +753,17 @@ window.PACKBOUND_ITEM_DB = {
         [
           1,
           1
+        ],
+        [
+          0,
+          2
         ]
       ],
       "image_layout": {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 2,
         "applied_to_game": false
@@ -711,6 +788,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 3,
         "height": 2
+      },
+      "axial_bounds": {
+        "q": 3,
+        "r": 2,
+        "s": 4
       },
       "pattern": "■■■/■■■",
       "occupied_cells": 6,
@@ -744,6 +826,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 0.8,
         "offset_x": -0.1085,
         "offset_y": 0.2091,
+        "rotation_degrees": 0.0,
         "canvas_width": 4,
         "canvas_height": 2,
         "applied_to_game": true
@@ -767,6 +850,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 2,
         "height": 2
+      },
+      "axial_bounds": {
+        "q": 2,
+        "r": 2,
+        "s": 3
       },
       "pattern": "■■/■■",
       "occupied_cells": 4,
@@ -792,6 +880,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 2,
         "applied_to_game": false
@@ -817,6 +906,11 @@ window.PACKBOUND_ITEM_DB = {
         "width": 2,
         "height": 2
       },
+      "axial_bounds": {
+        "q": 2,
+        "r": 2,
+        "s": 3
+      },
       "pattern": "■■/■■",
       "occupied_cells": 4,
       "coordinates": [
@@ -841,6 +935,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 0.85,
         "offset_x": -0.2198,
         "offset_y": 0.1728,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 2,
         "applied_to_game": true
@@ -865,6 +960,11 @@ window.PACKBOUND_ITEM_DB = {
         "width": 2,
         "height": 1
       },
+      "axial_bounds": {
+        "q": 2,
+        "r": 1,
+        "s": 2
+      },
       "pattern": "■■",
       "occupied_cells": 2,
       "coordinates": [
@@ -881,6 +981,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 1,
         "applied_to_game": false
@@ -904,6 +1005,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 2,
         "height": 2
+      },
+      "axial_bounds": {
+        "q": 2,
+        "r": 2,
+        "s": 3
       },
       "pattern": "■■/■■",
       "occupied_cells": 4,
@@ -929,6 +1035,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 2,
         "canvas_height": 2,
         "applied_to_game": false
@@ -952,6 +1059,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 2,
         "height": 2
+      },
+      "axial_bounds": {
+        "q": 2,
+        "r": 2,
+        "s": 3
       },
       "pattern": "■■/■■",
       "occupied_cells": 4,
@@ -977,6 +1089,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 0.65,
         "offset_x": 0.0316,
         "offset_y": 0.0421,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 3,
         "applied_to_game": true
@@ -1001,6 +1114,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 3,
         "height": 2
+      },
+      "axial_bounds": {
+        "q": 3,
+        "r": 2,
+        "s": 4
       },
       "pattern": "■■■/■■■",
       "occupied_cells": 6,
@@ -1034,6 +1152,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": -0.4188,
         "offset_y": -0.0174,
+        "rotation_degrees": 0.0,
         "canvas_width": 4,
         "canvas_height": 2,
         "applied_to_game": true
@@ -1058,6 +1177,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 3,
         "height": 2
+      },
+      "axial_bounds": {
+        "q": 3,
+        "r": 2,
+        "s": 4
       },
       "pattern": "■■■/■■■",
       "occupied_cells": 6,
@@ -1091,6 +1215,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 2,
         "applied_to_game": false
@@ -1115,6 +1240,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 2,
         "height": 3
+      },
+      "axial_bounds": {
+        "q": 2,
+        "r": 3,
+        "s": 4
       },
       "pattern": "■■/■■/■■",
       "occupied_cells": 6,
@@ -1148,6 +1278,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 0.75,
         "offset_x": -0.1409,
         "offset_y": 0.0125,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 4,
         "applied_to_game": true
@@ -1171,6 +1302,11 @@ window.PACKBOUND_ITEM_DB = {
         "width": 1,
         "height": 1
       },
+      "axial_bounds": {
+        "q": 1,
+        "r": 1,
+        "s": 1
+      },
       "pattern": "■",
       "occupied_cells": 1,
       "coordinates": [
@@ -1183,6 +1319,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 1,
         "canvas_height": 1,
         "applied_to_game": false
@@ -1206,6 +1343,11 @@ window.PACKBOUND_ITEM_DB = {
         "width": 1,
         "height": 2
       },
+      "axial_bounds": {
+        "q": 1,
+        "r": 2,
+        "s": 2
+      },
       "pattern": "■/■",
       "occupied_cells": 2,
       "coordinates": [
@@ -1222,6 +1364,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 1,
         "canvas_height": 2,
         "applied_to_game": false
@@ -1245,6 +1388,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 4,
         "height": 1
+      },
+      "axial_bounds": {
+        "q": 4,
+        "r": 1,
+        "s": 4
       },
       "pattern": "■■■■",
       "occupied_cells": 4,
@@ -1270,6 +1418,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 4,
         "canvas_height": 1,
         "applied_to_game": false
@@ -1294,6 +1443,11 @@ window.PACKBOUND_ITEM_DB = {
         "width": 1,
         "height": 2
       },
+      "axial_bounds": {
+        "q": 1,
+        "r": 2,
+        "s": 2
+      },
       "pattern": "■/■",
       "occupied_cells": 2,
       "coordinates": [
@@ -1310,6 +1464,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 0.8,
         "offset_x": -0.7,
         "offset_y": 0.2,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 2,
         "applied_to_game": true
@@ -1333,6 +1488,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 3,
         "height": 3
+      },
+      "axial_bounds": {
+        "q": 3,
+        "r": 3,
+        "s": 3
       },
       "pattern": "□■□/■■■/□■□",
       "occupied_cells": 5,
@@ -1362,6 +1522,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 0.75,
         "offset_x": 0.398,
         "offset_y": 0.4498,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 3,
         "applied_to_game": true
@@ -1386,6 +1547,11 @@ window.PACKBOUND_ITEM_DB = {
         "width": 1,
         "height": 1
       },
+      "axial_bounds": {
+        "q": 1,
+        "r": 1,
+        "s": 1
+      },
       "pattern": "■",
       "occupied_cells": 1,
       "coordinates": [
@@ -1398,6 +1564,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 1,
         "canvas_height": 1,
         "applied_to_game": false
@@ -1422,6 +1589,11 @@ window.PACKBOUND_ITEM_DB = {
         "width": 1,
         "height": 2
       },
+      "axial_bounds": {
+        "q": 1,
+        "r": 2,
+        "s": 2
+      },
       "pattern": "■/■",
       "occupied_cells": 2,
       "coordinates": [
@@ -1438,6 +1610,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": 0.0,
         "offset_y": 0.0,
+        "rotation_degrees": 0.0,
         "canvas_width": 1,
         "canvas_height": 2,
         "applied_to_game": false
@@ -1461,6 +1634,11 @@ window.PACKBOUND_ITEM_DB = {
       "bounds": {
         "width": 2,
         "height": 4
+      },
+      "axial_bounds": {
+        "q": 2,
+        "r": 4,
+        "s": 5
       },
       "pattern": "■■/■■/■■/■■",
       "occupied_cells": 8,
@@ -1502,6 +1680,7 @@ window.PACKBOUND_ITEM_DB = {
         "scale": 1.0,
         "offset_x": -0.461,
         "offset_y": -0.0167,
+        "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 4,
         "applied_to_game": true
