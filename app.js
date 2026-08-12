@@ -27,11 +27,6 @@
   const tagToolbar = document.getElementById("tag-toolbar");
   const tagCount = document.getElementById("tag-count");
   const tagSortButtons = [...document.querySelectorAll("[data-tag-sort]")];
-  const rojoControl = document.getElementById("rojo-control");
-  const rojoStateDot = document.getElementById("rojo-state-dot");
-  const rojoPlaceSelect = document.getElementById("rojo-place-select");
-  const rojoToggle = document.getElementById("rojo-toggle");
-  const rojoStatusText = document.getElementById("rojo-status-text");
   const publicWikiLink = document.getElementById("public-wiki-link");
   const wikiThemeHero = "theme/packbound-wiki-hero.webp";
   const itemDbEditorRadius = 2;
@@ -41,12 +36,9 @@
   const itemDbEditorStageHeight = itemDbEditorRadius * 2 + 1;
   const itemDbEditorOriginX = itemDbEditorRadius * itemDbHexColumnStep + itemDbHexCellWidth / 2;
   const itemDbEditorOriginY = itemDbEditorRadius + 0.5;
-  const canControlRojo = Boolean(localAccess?.canUseRojoControl(window.location.hostname));
+  const hasLocalAccess = Boolean(localAccess?.isLocalHost(window.location.hostname));
   const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
-  const canEditItemDb = canControlRojo;
-  let rojoSnapshot = null;
-  let rojoSelectedId = null;
-  let rojoBusy = false;
+  const canEditItemDb = hasLocalAccess;
   let searchMode = "pages";
   let tagSort = "recent";
   let selectedTag = null;
@@ -303,97 +295,6 @@
       day: "numeric",
       ...(showTime ? { hour: "2-digit", minute: "2-digit" } : {}),
     }).format(date);
-  }
-
-  function setRojoUnavailable(message) {
-    rojoControl.dataset.state = "error";
-    rojoStateDot.className = "rojo-state-dot error";
-    rojoPlaceSelect.innerHTML = "<option>로컬 제어 없음</option>";
-    rojoPlaceSelect.disabled = true;
-    rojoToggle.textContent = "사용 불가";
-    rojoToggle.disabled = true;
-    rojoStatusText.textContent = "위키 서버 필요";
-    rojoControl.title = message;
-  }
-
-  function renderRojoControl() {
-    const places = rojoSnapshot?.places || [];
-    if (!places.length) {
-      setRojoUnavailable("등록된 Rojo 플레이스가 없습니다.");
-      return;
-    }
-    if (!rojoSelectedId || !places.some((place) => place.id === rojoSelectedId)) {
-      rojoSelectedId = rojoSnapshot.active_id || places[0].id;
-    }
-    const optionSignature = places.map((place) => place.id).join("|");
-    if (rojoPlaceSelect.dataset.options !== optionSignature) {
-      rojoPlaceSelect.innerHTML = places.map((place) => `<option value="${escapeHtml(place.id)}">${escapeHtml(place.label)}</option>`).join("");
-      rojoPlaceSelect.dataset.options = optionSignature;
-    }
-    rojoPlaceSelect.value = rojoSelectedId;
-    rojoPlaceSelect.disabled = rojoBusy;
-
-    const place = places.find((candidate) => candidate.id === rojoSelectedId);
-    const anotherManaged = rojoSnapshot.active_id && rojoSnapshot.active_id !== place.id;
-    const state = rojoBusy ? (place.state === "running" ? "stopping" : "starting") : place.state;
-    const labels = {
-      stopped: `:${place.port} · 정지`,
-      starting: `:${place.port} · 시작 중`,
-      running: `:${place.port} · 실행 중`,
-      stopping: `:${place.port} · 종료 중`,
-      external: `:${place.port} · 외부 실행`,
-    };
-    rojoControl.dataset.state = state;
-    rojoStateDot.className = `rojo-state-dot ${state}`;
-    rojoStatusText.textContent = labels[state] || "상태 알 수 없음";
-    rojoToggle.textContent = state === "running" ? "서버 끄기" : state === "external" ? "외부 실행" : state === "starting" ? "시작 중" : state === "stopping" ? "종료 중" : "서버 켜기";
-    rojoToggle.disabled = rojoBusy || state === "external" || state === "starting" || state === "stopping" || Boolean(anotherManaged);
-    const errorHint = rojoSnapshot.last_error ? `\n최근 오류: ${rojoSnapshot.last_error}` : "";
-    rojoControl.title = `${place.label} · ${place.project} · 127.0.0.1:${place.port}${errorHint}`;
-    if (anotherManaged) {
-      rojoStatusText.textContent = "다른 플레이스 실행 중";
-      rojoToggle.textContent = "대기 중";
-    }
-  }
-
-  async function refreshRojoStatus() {
-    try {
-      const response = await fetch("/api/rojo/status", {
-        cache: "no-store",
-        headers: { Accept: "application/json" },
-      });
-      if (!response.ok) throw new Error(`Rojo 상태 API ${response.status}`);
-      rojoSnapshot = await response.json();
-      renderRojoControl();
-    } catch (error) {
-      setRojoUnavailable(`Rojo 제어는 'python3 tools/wiki.py serve'로 연 로컬 위키에서 사용할 수 있습니다. ${error}`);
-    }
-  }
-
-  async function toggleRojo() {
-    const place = rojoSnapshot?.places?.find((candidate) => candidate.id === rojoSelectedId);
-    if (!place || rojoBusy) return;
-    const action = place.state === "running" && place.managed ? "stop" : "start";
-    rojoBusy = true;
-    renderRojoControl();
-    try {
-      const response = await fetch(`/api/rojo/${action}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ place_id: place.id }),
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error || `Rojo 제어 API ${response.status}`);
-      rojoSnapshot = payload;
-    } catch (error) {
-      rojoControl.dataset.state = "error";
-      rojoStateDot.className = "rojo-state-dot error";
-      rojoStatusText.textContent = "제어 실패";
-      rojoControl.title = String(error);
-    } finally {
-      rojoBusy = false;
-      await refreshRojoStatus();
-    }
   }
 
   function readRoute() {
@@ -1535,16 +1436,8 @@
       sidebarTabs[nextIndex].focus();
     });
   });
-  if (canControlRojo) {
+  if (hasLocalAccess) {
     publicWikiLink.hidden = false;
-    rojoControl.hidden = false;
-    rojoPlaceSelect.addEventListener("change", () => {
-      rojoSelectedId = rojoPlaceSelect.value;
-      renderRojoControl();
-    });
-    rojoToggle.addEventListener("click", toggleRojo);
-    window.setInterval(refreshRojoStatus, 3000);
-    refreshRojoStatus();
   }
   document.addEventListener("keydown", (event) => {
     if (event.key === "/" && !/input|textarea/i.test(document.activeElement?.tagName || "")) {

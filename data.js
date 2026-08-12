@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-11",
+  "generated_at": "2026-08-12",
   "page_count": 7,
-  "revision_count": 29,
+  "revision_count": 31,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -1223,7 +1223,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "project-overview",
       "title": "PackBound 프로젝트 개요",
-      "summary": "PackBound의 플레이 액션을 대시와 쳐내기로 한정하고, 지원하지 않는 구르기 계약을 입력·상태·렌더링·문서에서 완전히 제거한 현재 구조입니다.",
+      "summary": "PackBound는 저장소 Luau를 소스 작성 기준으로 유지하고, 라이브 Roblox 상태는 Studio MCP로 조작·검증하는 단일 개발 계약을 사용합니다.",
       "status": "active",
       "category": "project",
       "tags": [
@@ -1231,52 +1231,91 @@ window.PACKBOUND_WIKI = {
         "gameplay",
         "architecture",
         "mobile",
-        "pc",
         "controls",
-        "input",
-        "cleanup",
-        "wiki"
+        "tooling",
+        "studio-mcp",
+        "validation"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-06",
+      "updated_at": "2026-08-12",
       "authors": [
         "Codex"
       ],
-      "version": 4,
-      "change_type": "corrected",
-      "change_summary": "프로젝트에 존재하지 않는 구르기를 PC·게임패드·터치 입력, 액션 상태, 무적 속성, 포즈·이펙트와 문서에서 제거하고 대시·쳐내기만 공식 플레이 액션으로 확정함",
-      "supersedes": "project-overview@v003",
+      "version": 5,
+      "change_type": "updated",
+      "change_summary": "저장소 소스·정적 테스트와 라이브 Studio 조작의 책임을 분리하고, 별도 동기화 계층 없이 Studio MCP를 현재 프로젝트의 유일한 라이브 제어 경로로 확정했습니다.",
+      "supersedes": "project-overview@v004",
       "sources": [
+        "AGENTS.md",
         "README.md",
-        "docs/gameplay/character-actions.md",
-        "src/ReplicatedStorage/Character2D/AnimationLibrary.luau",
-        "src/ReplicatedStorage/Character2D/CharacterController.luau",
-        "src/ReplicatedStorage/Character2D/Config.luau",
-        "src/ReplicatedStorage/Character2D/CutoutRig.luau",
-        "src/ReplicatedStorage/Character2D/FrameSpriteRig.luau",
-        "src/ReplicatedStorage/Character2D/PlayerActionController.luau",
-        "tests/AnimationLibrary.spec.luau"
+        "rokit.toml",
+        "tests/test_repository_policy.py"
       ],
       "related": [
-        "character-2d-rendering",
         "development-wiki",
-        "studio-automation-routing"
+        "studio-automation-routing",
+        "character-2d-rendering"
       ],
       "validation": [
-        "rojo build packbound.project.json --output /tmp/PackBound-no-roll.rbxlx",
-        "luau-compile src/ReplicatedStorage/Character2D/Config.luau src/ReplicatedStorage/Character2D/PlayerActionController.luau src/ReplicatedStorage/Character2D/AnimationLibrary.luau src/ReplicatedStorage/Character2D/CharacterController.luau src/ReplicatedStorage/Character2D/FrameSpriteRig.luau src/ReplicatedStorage/Character2D/CutoutRig.luau",
-        "luau tests/AnimationLibrary.spec.luau",
-        "luau tests/DirectionResolver.spec.luau",
-        "luau tests/MobileJoystickGate.spec.luau",
-        "luau tests/MobileJoystickGesture.spec.luau",
-        "luau tests/MobileJoystickMovement.spec.luau",
-        "구르기 계약 정적 검색: 활성 소스·문서·테스트에서 Roll, PackBoundRoll, 구르기 참조 0건",
-        "Studio MCP PC 플레이테스트: PackBoundRoll 미등록, Q 입력 후 액션 시리얼 0 유지",
-        "Studio MCP 회귀 테스트: Shift 대시와 Space 쳐내기 액션 시리얼 증가, Space 점프 차단 확인"
+        "rokit install",
+        "python3 -m unittest tests.test_repository_policy tests.test_wiki",
+        "python3 tools/wiki.py build",
+        "python3 tools/wiki.py check",
+        "Roblox Studio MCP: 프로젝트 소유 주요 서비스에 폐기한 통합 이름의 인스턴스 0건",
+        "Roblox Studio MCP: StarterGui ScreenOrientation=Portrait, StarterPlayer DevTouchMovementMode=Scriptable",
+        "git diff --check"
       ],
-      "source_path": "wiki/content/pages/project-overview/v004.md",
-      "body": "# PackBound 프로젝트 개요\n\n## 결과\n\nPackBound는 2D 캐릭터 표현과 Roblox의 3D 이동·물리를 결합한 세로형 2.5D\n아케이드 RPG 프로토타입입니다. 보이는 캐릭터는 몸통과 머리를 분리한 8방향\n프레임 아틀라스로 렌더링하고, 숨겨진 Roblox 캐릭터는 이동, 충돌과 네트워크\n기준을 유지합니다.\n\n현재 플레이 액션은 `Dash`와 `Parry` 두 가지입니다. PC에서는 좌·우 `Shift`로\n대시하고 `Space`로 쳐내며, 모바일에서는 하나의 조이스틱이 이동, 중앙 짧은 탭\n쳐내기와 외부 링 대시를 처리합니다. 구르기는 게임 기획에 없는 기능이므로 입력,\n런타임 상태, 렌더링과 문서 어디에서도 지원하지 않습니다.\n\n## 구현 내용\n\n### 입력과 액션\n\n- `PlayerActionController`는 대시와 쳐내기만 바인딩하고 실행합니다.\n- PC의 `LeftShift`와 `RightShift`는 대시, `Space`는 쳐내기입니다.\n- `Space`는 프로젝트 입력 우선순위에서 소비해 Roblox 기본 점프가 함께 발생하지\n  않습니다.\n- 게임패드 `ButtonX`는 쳐내기를 유지합니다. `ButtonA`에는 별도 액션을\n  배정하지 않았습니다.\n- 모바일 중앙 짧은 탭과 외부 링 드래그는 같은 `TryParry`, `TryDash` 경로를\n  사용합니다.\n\n### 구르기 계약 제거\n\n- `Q`, `ButtonA`와 자동 생성 터치 `ROLL` 버튼 바인딩을 삭제했습니다.\n- 구르기 속도·지속시간·쿨다운 설정과 `PackBoundRollInvulnerable` 속성을\n  삭제했습니다.\n- `TryRoll`, 지연 무적 창 스케줄러와 구르기 전용 액션 상태를 삭제했습니다.\n- 절차형 구르기 포즈와 이펙트, 프레임 스프라이트의 구르기→대시 대체 렌더링을\n  삭제했습니다.\n- 액션 문서와 애니메이션 테스트는 대시·쳐내기 계약만 설명하고 검증합니다.\n\n### 현재 렌더링과 모바일 계약\n\n- 기본 `FrameSpriteV2`는 별도 몸통과 머리 아틀라스를 합성합니다.\n- 8방향 Move, Dash, Hit와 동·서 Death, Clear 프레임을 지원합니다.\n- 모바일 이동은 중앙 데드존 밖에서 고정 속도이며, 대시는 조이스틱 본체와\n  물리적으로 떨어진 외부 링을 넘어야 발동합니다.\n- 쳐내기는 0.3초 서버 유효 창을 사용하며 현재 클라이언트에 반투명 보호 효과를\n  즉시 표시합니다.\n\n## 변경 파일\n\n| 파일 | 최종 책임 |\n| --- | --- |\n| `Config.luau` | 대시·쳐내기 설정과 서버 패리 속성만 유지 |\n| `PlayerActionController.luau` | PC·게임패드 입력, 대시 추진과 쳐내기 요청 |\n| `CharacterController.luau` | 구르기를 제외한 시각 액션 상태 재생 |\n| `AnimationLibrary.luau` | Dash·Parry 절차형 포즈 |\n| `FrameSpriteRig.luau` | 실제 프레임 상태를 다른 액션으로 위장하지 않고 렌더링 |\n| `CutoutRig.luau` | Dash·Parry 액션 이펙트 |\n| `README.md`, `character-actions.md` | 공식 플랫폼별 입력과 런타임 계약 |\n| `AnimationLibrary.spec.luau` | 현재 지원하는 액션 포즈 회귀 테스트 |\n\n## 검증\n\nRojo 플레이스 빌드와 변경된 여섯 Luau 모듈 컴파일이 성공했습니다. 절차형\n애니메이션, 8방향 해석, 모바일 대시 게이트, 탭·드래그 판정과 디지털 이동\n테스트도 모두 통과했습니다. 활성 소스·문서·테스트에서는 구르기 이름, 바인딩과\n무적 속성 참조가 더 이상 발견되지 않았습니다.\n\nStudio 플레이 테스트에서는 `PackBoundRoll` 액션과 구르기 속성이 등록되지\n않았고 `Q`를 눌러도 액션 시리얼이 0에 머물렀습니다. 이어서 `Shift`는 `Dash`,\n`Space`는 `Parry`를 발생시켰으며 쳐내기 후에도 휴머노이드는 점프하지 않았습니다.\n\n## 결정 사항\n\n- 구현된 프로토타입이라는 이유만으로 기획에 없는 액션을 호환 기능으로 유지하지\n  않습니다.\n- 공식 액션 목록, 입력, 설정, 시각 상태와 테스트는 같은 계약을 가져야 합니다.\n- 사용하지 않는 무적 속성과 서버 확장 의무를 남기지 않아 후속 전투 해결기가\n  존재하지 않는 구르기 판정을 구현해야 한다는 오해를 방지합니다.\n- 구르기 입력만 끄는 대신 관련 코드와 시각 처리를 함께 제거해 죽은 분기와 모바일\n  UI 노출 가능성을 없앱니다.\n- 현재 PC 계약은 `Shift = Dash`, `Space = Parry`이며 모바일은 통합 조이스틱을\n  유지합니다.\n\n## 후속 작업\n\n- 대시에 긴 재사용 대기시간을 도입할 때 PC와 모바일이 같은 사용 가능 상태와\n  피드백을 공유해야 합니다.\n- 실제 피해 해결기에 0.3초 쳐내기 창의 피해 취소와 공격자 반사를 연결해야 합니다.\n- 게임패드 대시 키와 전체 액션 재바인딩 정책은 게임패드 UX 작업에서 확정합니다.\n",
+      "source_path": "wiki/content/pages/project-overview/v005.md",
+      "body": "# PackBound 프로젝트 개요\n\n## 프로젝트 목표\n\nPackBound는 2D 캐릭터 표현과 Roblox의 3D 이동·물리를 결합한 세로형 2.5D 아케이드\nRPG입니다. 프레임 기반 캐릭터, 모바일 중심 입력, 공간형 백팩 인벤토리와 데이터 중심\n아이템 규칙을 한 플레이 경험으로 연결합니다. 저장소의 문서와 테스트는 이 제품 방향을\n재현할 수 있는 기준이고, Roblox Studio는 실제 플레이스 상태와 런타임 결과의 기준입니다.\n\n개발 운영의 목표는 두 기준을 혼동하지 않으면서도 작업자가 한 경로만 기억하게 하는\n것입니다. 소스 수정과 정적 검증은 저장소에서 수행하고, 라이브 DataModel 변경과 플레이\n검증은 Studio MCP에서 수행합니다. 중간 동기화 계층을 두지 않아 오래된 연결 상태나 별도\n빌드 결과를 실제 플레이스 상태로 오인하지 않습니다.\n\n## 플레이어 경험과 현재 시스템\n\n캐릭터는 몸과 머리를 분리한 8방향 프레임 아틀라스로 표현되고, 보이지 않는 Roblox\n캐릭터가 이동·충돌·네트워크 기준을 유지합니다. 플레이 액션은 대시와 쳐내기에 집중하며,\n모바일 입력과 카메라가 세로 화면 전투의 가독성을 우선합니다.\n\n백팩 인벤토리는 아이템 데이터, 배치 규칙과 전투 능력치 계약을 분리합니다. ItemDB는\n아이콘과 점유 형태의 공개·런타임 파생 데이터를 동기화하고, 개발 위키는 제품 결정과\n검증 근거를 커밋 단위의 불변 버전으로 보존합니다.\n\n## 개발 원칙\n\n### 저장소는 소스와 정적 계약을 소유합니다\n\n`src`의 Luau 파일, gameplay·art 문서, ItemDB 원본과 자동화 테스트가 변경의 검토\n단위입니다. Luau 컴파일러와 각 도메인 테스트는 모듈 계약, 데이터 최신성과 회귀를 직접\n검증합니다. 정적 검증은 전체 플레이스 생성 여부에 의존하지 않습니다.\n\n### Studio MCP는 라이브 상태를 소유합니다\n\nStudio 선택, 인스턴스와 속성 검사·변경, Luau 실행, Play 모드, 콘솔, 스크린샷과 런타임\n검증은 Studio MCP를 첫 번째이자 권위 있는 경로로 사용합니다. 저장소 파일이 올바르다는\n사실만으로 라이브 적용을 주장하지 않고, 실제 Studio 상태가 필요한 완료 조건에는 MCP\n근거를 기록합니다.\n\n### 운영 경로는 하나만 유지합니다\n\n별도 파일시스템 동기화 설정, 서버와 오프라인 플레이스 빌드 게이트는 현재 프로젝트에\n추가하지 않습니다. 과거 프로젝트의 도구 선택은 PackBound의 기본값이 아니며, 새로운\n도구 계층은 기존 공식 경로가 제공하지 못하는 명확한 제품·운영 요구가 승인될 때만\n검토합니다.\n\n## 현재 개발 흐름\n\n1. 저장소에서 제품 의도와 현재 계약을 확인하고 Luau·문서·데이터를 수정합니다.\n2. 관련 Luau 컴파일, 도메인 테스트, ItemDB와 위키 최신성 검사를 실행합니다.\n3. 라이브 결과가 필요한 작업은 Studio MCP로 올바른 플레이스를 선택하고 적용·검증합니다.\n4. 사용자가 커밋을 요청하면 최종 diff와 시각 증거를 위키의 다음 불변 버전에 기록합니다.\n5. 코드, 문서, 테스트, 위키 원본과 생성 데이터를 같은 커밋으로 게시합니다.\n\n## 이번 결정과 결과\n\n현재 저장소의 툴 선언은 Luau 버전만 관리합니다. 에이전트 지침과 README는 Studio MCP와\n정적 테스트의 책임을 일관되게 설명하고, 저장소 정책 테스트는 폐기한 동기화 계층이 활성\n파일이나 파일명으로 다시 들어오는 것을 차단합니다. 개발 위키도 문서 탐색과 ItemDB 편집에\n집중하도록 단순화됐습니다.\n\n커밋된 과거 위키는 당시의 사실을 보존하지만 최신 프로젝트 계약으로 사용하지 않습니다.\n현재 판단은 이 버전과 `AGENTS.md`, 최신 gameplay 문서, 실제 Studio MCP 상태를 우선합니다.\n\n## 검증과 후속 운영\n\n정책·위키 테스트와 위키·ItemDB·CombatDB 최신성 검사를 통과했습니다. Studio MCP에서\n프로젝트 소유 주요 서비스에 폐기한 통합의 인스턴스가 없음을 확인했고, 매핑 파일이 과거에\n선언하던 세로 화면과 스크립트형 터치 이동 속성은 현재 Studio에 유지돼 있습니다.\n\n앞으로 개발 경로를 바꾸는 결정은 편의 기능 추가가 아니라 소유권·검증·복구 전략 변경으로\n취급합니다. 변경이 승인되면 지침, 테스트와 위키를 같은 커밋에서 갱신해 사람과 에이전트가\n서로 다른 운영 가정을 갖지 않도록 합니다.\n",
       "revisions": [
+        {
+          "id": "project-overview",
+          "title": "PackBound 프로젝트 개요",
+          "summary": "PackBound는 저장소 Luau를 소스 작성 기준으로 유지하고, 라이브 Roblox 상태는 Studio MCP로 조작·검증하는 단일 개발 계약을 사용합니다.",
+          "status": "active",
+          "category": "project",
+          "tags": [
+            "roblox",
+            "gameplay",
+            "architecture",
+            "mobile",
+            "controls",
+            "tooling",
+            "studio-mcp",
+            "validation"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-12",
+          "authors": [
+            "Codex"
+          ],
+          "version": 5,
+          "change_type": "updated",
+          "change_summary": "저장소 소스·정적 테스트와 라이브 Studio 조작의 책임을 분리하고, 별도 동기화 계층 없이 Studio MCP를 현재 프로젝트의 유일한 라이브 제어 경로로 확정했습니다.",
+          "supersedes": "project-overview@v004",
+          "sources": [
+            "AGENTS.md",
+            "README.md",
+            "rokit.toml",
+            "tests/test_repository_policy.py"
+          ],
+          "related": [
+            "development-wiki",
+            "studio-automation-routing",
+            "character-2d-rendering"
+          ],
+          "validation": [
+            "rokit install",
+            "python3 -m unittest tests.test_repository_policy tests.test_wiki",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "Roblox Studio MCP: 프로젝트 소유 주요 서비스에 폐기한 통합 이름의 인스턴스 0건",
+            "Roblox Studio MCP: StarterGui ScreenOrientation=Portrait, StarterPlayer DevTouchMovementMode=Scriptable",
+            "git diff --check"
+          ],
+          "body": "# PackBound 프로젝트 개요\n\n## 프로젝트 목표\n\nPackBound는 2D 캐릭터 표현과 Roblox의 3D 이동·물리를 결합한 세로형 2.5D 아케이드\nRPG입니다. 프레임 기반 캐릭터, 모바일 중심 입력, 공간형 백팩 인벤토리와 데이터 중심\n아이템 규칙을 한 플레이 경험으로 연결합니다. 저장소의 문서와 테스트는 이 제품 방향을\n재현할 수 있는 기준이고, Roblox Studio는 실제 플레이스 상태와 런타임 결과의 기준입니다.\n\n개발 운영의 목표는 두 기준을 혼동하지 않으면서도 작업자가 한 경로만 기억하게 하는\n것입니다. 소스 수정과 정적 검증은 저장소에서 수행하고, 라이브 DataModel 변경과 플레이\n검증은 Studio MCP에서 수행합니다. 중간 동기화 계층을 두지 않아 오래된 연결 상태나 별도\n빌드 결과를 실제 플레이스 상태로 오인하지 않습니다.\n\n## 플레이어 경험과 현재 시스템\n\n캐릭터는 몸과 머리를 분리한 8방향 프레임 아틀라스로 표현되고, 보이지 않는 Roblox\n캐릭터가 이동·충돌·네트워크 기준을 유지합니다. 플레이 액션은 대시와 쳐내기에 집중하며,\n모바일 입력과 카메라가 세로 화면 전투의 가독성을 우선합니다.\n\n백팩 인벤토리는 아이템 데이터, 배치 규칙과 전투 능력치 계약을 분리합니다. ItemDB는\n아이콘과 점유 형태의 공개·런타임 파생 데이터를 동기화하고, 개발 위키는 제품 결정과\n검증 근거를 커밋 단위의 불변 버전으로 보존합니다.\n\n## 개발 원칙\n\n### 저장소는 소스와 정적 계약을 소유합니다\n\n`src`의 Luau 파일, gameplay·art 문서, ItemDB 원본과 자동화 테스트가 변경의 검토\n단위입니다. Luau 컴파일러와 각 도메인 테스트는 모듈 계약, 데이터 최신성과 회귀를 직접\n검증합니다. 정적 검증은 전체 플레이스 생성 여부에 의존하지 않습니다.\n\n### Studio MCP는 라이브 상태를 소유합니다\n\nStudio 선택, 인스턴스와 속성 검사·변경, Luau 실행, Play 모드, 콘솔, 스크린샷과 런타임\n검증은 Studio MCP를 첫 번째이자 권위 있는 경로로 사용합니다. 저장소 파일이 올바르다는\n사실만으로 라이브 적용을 주장하지 않고, 실제 Studio 상태가 필요한 완료 조건에는 MCP\n근거를 기록합니다.\n\n### 운영 경로는 하나만 유지합니다\n\n별도 파일시스템 동기화 설정, 서버와 오프라인 플레이스 빌드 게이트는 현재 프로젝트에\n추가하지 않습니다. 과거 프로젝트의 도구 선택은 PackBound의 기본값이 아니며, 새로운\n도구 계층은 기존 공식 경로가 제공하지 못하는 명확한 제품·운영 요구가 승인될 때만\n검토합니다.\n\n## 현재 개발 흐름\n\n1. 저장소에서 제품 의도와 현재 계약을 확인하고 Luau·문서·데이터를 수정합니다.\n2. 관련 Luau 컴파일, 도메인 테스트, ItemDB와 위키 최신성 검사를 실행합니다.\n3. 라이브 결과가 필요한 작업은 Studio MCP로 올바른 플레이스를 선택하고 적용·검증합니다.\n4. 사용자가 커밋을 요청하면 최종 diff와 시각 증거를 위키의 다음 불변 버전에 기록합니다.\n5. 코드, 문서, 테스트, 위키 원본과 생성 데이터를 같은 커밋으로 게시합니다.\n\n## 이번 결정과 결과\n\n현재 저장소의 툴 선언은 Luau 버전만 관리합니다. 에이전트 지침과 README는 Studio MCP와\n정적 테스트의 책임을 일관되게 설명하고, 저장소 정책 테스트는 폐기한 동기화 계층이 활성\n파일이나 파일명으로 다시 들어오는 것을 차단합니다. 개발 위키도 문서 탐색과 ItemDB 편집에\n집중하도록 단순화됐습니다.\n\n커밋된 과거 위키는 당시의 사실을 보존하지만 최신 프로젝트 계약으로 사용하지 않습니다.\n현재 판단은 이 버전과 `AGENTS.md`, 최신 gameplay 문서, 실제 Studio MCP 상태를 우선합니다.\n\n## 검증과 후속 운영\n\n정책·위키 테스트와 위키·ItemDB·CombatDB 최신성 검사를 통과했습니다. Studio MCP에서\n프로젝트 소유 주요 서비스에 폐기한 통합의 인스턴스가 없음을 확인했고, 매핑 파일이 과거에\n선언하던 세로 화면과 스크립트형 터치 이동 속성은 현재 Studio에 유지돼 있습니다.\n\n앞으로 개발 경로를 바꾸는 결정은 편의 기능 추가가 아니라 소유권·검증·복구 전략 변경으로\n취급합니다. 변경이 승인되면 지침, 테스트와 위키를 같은 커밋에서 갱신해 사람과 에이전트가\n서로 다른 운영 가정을 갖지 않도록 합니다.\n",
+          "source_path": "wiki/content/pages/project-overview/v005.md"
+        },
         {
           "id": "project-overview",
           "title": "PackBound 프로젝트 개요",
@@ -1487,47 +1526,111 @@ window.PACKBOUND_WIKI = {
     {
       "id": "development-wiki",
       "title": "개발 위키와 변경 이력 시스템",
-      "summary": "공개 미러 푸시와 실제 GitHub Pages 노출을 분리해 검증하고, 실패 자동 재시도와 원본 리비전 대조를 거쳐야 발행 성공으로 판정하도록 강화했습니다.",
+      "summary": "PackBound의 개발 흐름을 Studio MCP와 저장소 정적 검증으로 단순화하고, 위키에서 더 이상 사용하지 않는 동기화 서버 제어와 설정 경로를 제거했습니다.",
       "status": "active",
       "category": "tooling",
       "tags": [
         "documentation",
         "wiki",
-        "publishing",
-        "reliability",
-        "github-pages"
+        "tooling",
+        "studio-mcp",
+        "validation",
+        "cleanup",
+        "reliability"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-07",
+      "updated_at": "2026-08-12",
       "authors": [
         "Codex"
       ],
-      "version": 8,
+      "version": 9,
       "change_type": "updated",
-      "change_summary": "공개 저장소 동기화만으로 발행 완료를 선언하던 구조를 폐기하고, Pages 실행 성공과 실제 공개 URL의 원본 리비전 일치까지 확인하는 실패 폐쇄형 발행 게이트를 추가했습니다.",
-      "supersedes": "development-wiki@v007",
+      "change_summary": "라이브 Studio 작업은 Studio MCP, 정적 검증은 Luau와 저장소 테스트가 소유하도록 운영 경계를 확정하고, 개발 위키의 불필요한 서버 제어 기능과 재유입 가능성을 제거했습니다.",
+      "supersedes": "development-wiki@v008",
       "sources": [
-        "tools/publish_public_wiki.py",
-        "wiki/public-publishing.json",
-        "tests/test_publish_public_wiki.py"
+        "AGENTS.md",
+        "README.md",
+        "rokit.toml",
+        "tools/wiki.py",
+        "wiki/site/index.html",
+        "wiki/site/app.js",
+        "wiki/site/app.css",
+        "wiki/site/local-access.js",
+        "tests/test_repository_policy.py",
+        "wiki/content/media/development-wiki/v009/local-wiki-header.jpg"
       ],
       "related": [
-        "project-overview"
+        "project-overview",
+        "studio-automation-routing"
       ],
       "validation": [
-        "python3 -m unittest tests.test_publish_public_wiki",
-        "python3 tools/publish_public_wiki.py --check",
+        "rokit install",
+        "python3 -m unittest tests.test_repository_policy tests.test_wiki",
+        "node tests/local-access.spec.js",
+        "node --check wiki/site/app.js",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
-        "python3 -m unittest tests.test_publish_public_wiki tests.test_wiki",
-        "node tests/markdown-media.spec.js",
-        "node --test tests/local-access.spec.js",
-        "GitHub API: github-pages 환경 재생성 후 main 브랜치 정책 확인",
+        "로컬 HTTP 스모크 테스트: ItemDB 상태 API 200, 폐기된 제어 API 404",
+        "인앱 브라우저: 로컬 개발 위키 상단 구성 확인, 콘솔 경고·오류 0건",
         "git diff --check"
       ],
-      "source_path": "wiki/content/pages/development-wiki/v008.md",
-      "body": "# 개발 위키와 변경 이력 시스템\n\n## 운영 목표와 독자 경험\n\n공개 위키의 발행 완료는 파일을 공개 저장소에 복사했다는 뜻이 아니라, 독자가 여는 주소에서\n그 파일을 실제로 읽을 수 있다는 뜻이어야 합니다. 이번 장애에서는 원본 위키와 공개 미러가\n모두 최신이었지만 GitHub Pages 배포가 완료되지 않아 독자는 이전 화면을 계속 보았습니다.\n그럼에도 기존 도구가 푸시 직후 성공을 반환해 문제를 캐시 지연으로 오인하게 만들었습니다.\n\n운영 목표를 “미러 동기화”에서 “검증 가능한 공개”로 다시 정의했습니다. 앞으로 발행 명령은\n최신 버전이 실제 공개 URL에 나타날 때까지 끝나지 않으며, 중간 단계가 실패하면 성공 문구를\n출력하지 않습니다. 독자는 별도 새로고침 요령이나 캐시 대기 추측 없이 하나의 공식 주소에서\n최신 문서와 PackBound 테마를 보게 됩니다.\n\n## 장애 원인과 판단\n\n장애 당시 원본 커밋 `b887da5d89d0`과 공개 미러 커밋 `ed94371d611a`에는 7개 문서, 22개\n리비전과 새 테마 자산이 정상 반영돼 있었습니다. 그러나 Pages 실행의 빌드와 상태 보고 작업만\n성공했고, 배포 작업은 `deployment_queued`에서 10분 동안 전진하지 못한 뒤 타임아웃으로\n취소됐습니다. Pages 상태도 `errored`였으므로 CDN 캐시가 늦게 갱신된 상황이 아니었습니다.\n\n직접 원인은 GitHub Pages 배포 큐의 실패였고, 프로젝트 측 재발 원인은 그 실패를 감지하지\n않는 완료 조건이었습니다. 기존 발행기는 공개 저장소의 `git push`가 성공하면 즉시 “Published”를\n출력했습니다. 저장소, Actions, Pages와 실제 URL이라는 네 상태가 서로 다를 수 있는데 첫 번째\n경계까지만 확인한 것이 문제였습니다.\n\n## 발행 신뢰성 원칙과 결정\n\n### 공개 리비전 계약\n\n공개 미러 루트에 `deployment.json`을 생성하고 원본 ProjectBackpack 커밋 SHA를\n`source_revision`으로 기록합니다. 정확한 작업 시각이나 비공개 저장소 내용은 넣지 않아 기존\n공개 정보 최소화 원칙을 유지합니다. 캐시 무효화 쿼리와 `no-cache` 요청을 함께 사용하므로\n발행기는 오래된 응답을 최신 결과로 오인하지 않습니다.\n\n### 단계별 실패 폐쇄\n\n발행 흐름은 다음 순서를 모두 통과해야 합니다.\n\n1. 원본 위키 빌드와 공개용 시간 정보 제거 규칙을 검사합니다.\n2. 공개 미러를 갱신하고 그 미러의 정확한 커밋 SHA를 확정합니다.\n3. 같은 공개 SHA로 생성된 `pages build and deployment` 실행을 찾습니다.\n4. 워크플로가 `success`로 끝날 때까지 제한 시간 안에서 기다립니다.\n5. 실패하면 내용은 유지한 새 공개 커밋으로 배포 버전을 바꿔 한 번 재시도합니다.\n6. 공개 URL의 `deployment.json`이 원본 SHA와 정확히 일치하는지 확인합니다.\n\n어느 단계든 실패하거나 제한 시간을 넘으면 예외로 종료합니다. 따라서 “푸시는 됐지만 사이트는\n옛 버전”인 상태를 발행 성공으로 보고할 수 없습니다.\n\n### Pages 전용 재시도\n\nGitHub가 자동 생성하는 Pages 워크플로는 공개 커밋 SHA를 배포 버전으로 사용합니다. 실패한\nSHA를 일반 Actions 재실행이나 Pages 빌드 API로 반복 요청하면 새 실행이 생겨도 같은 배포\n버전이 취소될 수 있음을 복구 과정에서 확인했습니다. 따라서 재시도는 공개 콘텐츠를 바꾸지\n않는 빈 커밋을 만들고, 그 새 SHA로 생성된 실행만 추적합니다. 정상 발행 이력은 결정적인\n콘텐츠 커밋으로 유지하면서 장애 복구 때만 새 배포 버전을 부여합니다.\n\n## 구현과 운영 기준\n\n발행 설정은 Pages 실행 15분 대기, 5초 폴링, 실패 시 1회 재요청, 공개 URL 반영 5분 대기를\n명시합니다. 이 값들은 GitHub의 10분 배포 타임아웃보다 길어 플랫폼이 최종 실패 상태를 기록할\n시간을 주면서도 무한 대기를 막습니다. 동일 내용이라 새 미러 커밋이 생기지 않는 경우에도 기존\n공개 SHA의 배포 상태와 실제 리비전을 다시 검사합니다.\n\n단위 테스트는 GitHub 저장소 주소 해석, 공개 리비전 표식 생성, Pages 성공 필수 조건, 실패\n폐쇄, 새 공개 SHA 기반 자동 재시도, 최신·오래된 공개 리비전 판별을 다룹니다. 기존 공개 시간\n정보 제거 테스트도 함께 유지해 신뢰성 개선이 개인정보 노출 방지 규칙을 우회하지 않게 했습니다.\n\n## 검증과 후속 운영\n\n정적 검사에서는 공개 트리와 설정이 유효하고 7개 문서, 23개 리비전이 빌드되는지 확인했습니다.\n종단간 발행에서는 공개 미러 커밋, 해당 SHA의 Pages 실행 성공, 공개 `deployment.json`의 원본\nSHA 일치를 순서대로 확인합니다. 마지막으로 실제 공개 브라우저에서 PackBound 히어로와\n스코티시 폴드 비네트, 전체 문서 트리와 콘솔 상태를 점검합니다.\n\n후속 발행에서도 성공 로그만 보지 않고 반환 코드가 성공인지 확인해야 합니다. 실패 메시지에는\n워크플로 실행 ID, 결론과 URL 또는 마지막으로 관측한 공개 리비전이 포함되므로, 캐시 추측 대신\n미러·Actions·Pages·실제 응답 중 어느 경계가 멈췄는지 바로 조사할 수 있습니다.\n",
+      "source_path": "wiki/content/pages/development-wiki/v009.md",
+      "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 운영 목표\n\nPackBound는 라이브 Roblox Studio 상태와 저장소 소스를 서로 다른 책임으로 관리합니다.\n플레이스의 실제 DataModel을 확인하고 바꾸는 작업은 Studio MCP가 소유하고, 저장소의\nLuau 파일과 테스트 스크립트는 소스 작성과 정적 검증을 소유합니다. 개발자가 별도의\n동기화 서버, 포트 또는 플레이스 빌드 파일을 기억해야 하는 이중 운영은 현재 프로젝트의\n작업 방식과 맞지 않습니다.\n\n이번 정리의 목표는 단순한 파일 삭제가 아니라 앞으로의 판단 기준을 하나로 만드는\n것입니다. 사람과 에이전트는 라이브 상태를 말할 때 Studio MCP 근거를 사용하고, 저장소\n변경의 건전성은 Luau 컴파일과 도메인 테스트로 증명합니다. 위키는 이 경계를 설명하고\n개발 기록을 탐색하는 도구이며 외부 프로세스 실행기가 아닙니다.\n\n## 사용자와 운영자 경험\n\n로컬 개발 위키 상단은 이제 문서 검색과 기록 동기화 상태에 집중합니다. 사용하지 않는\n플레이스 선택, 포트 상태, 서버 시작·중지 조작이 사라져 실제 개발 경로와 화면이 일치합니다.\nItemDB 편집은 계속 loopback 호스트에서만 제공되고 공개 미러는 읽기 전용이므로, 기존의\n콘텐츠 편집 경험과 공개 보안 경계는 유지됩니다.\n\n![개발 위키 최종 상단](./media/development-wiki/v009/local-wiki-header.jpg \"문서 검색과 기록 상태만 남긴 로컬 개발 위키의 최종 상단\")\n\n## 핵심 원칙과 설계 철학\n\n### 라이브 상태의 단일 권위\n\nStudio 발견, DataModel 검사와 변경, Play 모드, 콘솔, 스크린샷과 런타임 검증은 Studio\nMCP를 첫 번째이자 권위 있는 경로로 사용합니다. 저장소 파일만 보고 라이브 플레이스가\n같다고 추정하지 않으며, 라이브 결과를 주장할 때는 Studio MCP 증거를 남깁니다.\n\n### 저장소 정적 검증의 독립성\n\nLuau 모듈은 컴파일러와 저장소 테스트 스크립트로 직접 검증합니다. 정적 검사에 전체\n플레이스 파일 생성을 요구하지 않으므로, 테스트 실패가 게임 로직 문제인지 개발 환경\n동기화 문제인지 혼동하지 않습니다. `rokit` 도구 선언도 현재 필요한 Luau 버전만 소유합니다.\n\n### 재유입을 실패로 처리\n\n운영 문구만 바꾸고 끝내면 오래된 예제나 설정이 다시 복사될 수 있습니다. 저장소 정책\n테스트는 불변 위키 이력을 제외한 활성 파일의 내용과 이름을 검사하고, 폐기한 동기화 도구,\n프로젝트 매핑 또는 관련 파일명이 돌아오면 실패합니다. 이 검사는 일반 개발 명령과 커밋\n시점 위키 검증에 모두 포함됩니다.\n\n## 결정 사항과 범위\n\n- 프로젝트 매핑과 전용 실행 스크립트는 현재 개발 경로가 아니므로 삭제했습니다.\n- 개발 위키의 프로세스 관리자, 상태·시작·중지 API, 상단 제어 UI와 반응형 스타일을\n  제거했습니다.\n- 로컬 호스트 판정은 ItemDB 편집과 정확한 시간 표시라는 현재 책임만 표현하도록\n  일반화했습니다.\n- README, 에이전트 지침과 프로젝트 작업 문서는 Studio MCP와 Luau 검증만 안내합니다.\n- 커밋된 과거 위키 버전은 당시의 사실을 보존하는 불변 기록이므로 수정하지 않습니다.\n  최신 버전이 현재 운영 계약을 명확히 대체합니다.\n- Studio 전역 플러그인 설치 상태는 플레이스나 저장소가 소유하지 않으므로 프로젝트\n  정리 범위에 포함하지 않습니다.\n\n## 현재 결과와 구현 참고\n\n`tools/wiki.py`의 로컬 서버는 정적 위키 제공과 ItemDB 상태·저장 API만 담당합니다.\n프로세스 탐색, 외부 포트 판정, 하위 프로세스 수명주기 코드는 존재하지 않습니다.\n브라우저의 `index.html`, `app.js`, `app.css`도 같은 책임 축소를 반영해 불필요한 DOM,\n폴링, 이벤트와 모바일 보조 행을 제거했습니다.\n\n`AGENTS.md`와 `README.md`는 저장소 Luau를 소스 작성 경로로, Studio MCP를 라이브\n조작 경로로 선언합니다. `tests/test_repository_policy.py`는 활성 저장소 전반을 검사하며,\n커밋 스킬도 이 테스트를 필수 검증으로 실행합니다.\n\n## 검증\n\n위키와 저장소 정책 Python 테스트 6개, 로컬 접근 Node 테스트와 JavaScript 구문 검사를\n통과했습니다. 커밋 스냅샷의 위키 최신성 검사에서는 7개 문서, 31개 리비전,\nItemDB 30개 아이템과 CombatDB 178개 레코드를 확인했습니다. 로컬 서버에서 ItemDB\n상태 API는 정상 응답하고 폐기된 제어 경로는 404를 반환했습니다.\n\n인앱 브라우저에서는 최종 상단 구성, 문서·DB 탐색과 공개 페이지 링크를 확인했으며\n콘솔 경고와 오류는 없었습니다. Studio MCP로 프로젝트가 소유하는 Workspace,\nReplicatedStorage, ServerScriptService, StarterGui와 StarterPlayer를 검색했을 때\n폐기한 통합 이름의 인스턴스는 발견되지 않았습니다. 기존 모바일 핵심 속성인 세로 화면과\n스크립트형 터치 이동 모드도 유지됐습니다.\n\n## 후속 기획\n\n새 개발 도구가 필요해지면 먼저 Studio MCP와 저장소 테스트가 제공하지 못하는 구체적인\n역할을 정의해야 합니다. 단순한 편의나 이전 프로젝트와의 관성만으로 별도 동기화 계층을\n추가하지 않으며, 운영 경계가 바뀌면 구현과 같은 커밋에서 지침·검증·위키를 함께 갱신합니다.\n",
       "revisions": [
+        {
+          "id": "development-wiki",
+          "title": "개발 위키와 변경 이력 시스템",
+          "summary": "PackBound의 개발 흐름을 Studio MCP와 저장소 정적 검증으로 단순화하고, 위키에서 더 이상 사용하지 않는 동기화 서버 제어와 설정 경로를 제거했습니다.",
+          "status": "active",
+          "category": "tooling",
+          "tags": [
+            "documentation",
+            "wiki",
+            "tooling",
+            "studio-mcp",
+            "validation",
+            "cleanup",
+            "reliability"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-12",
+          "authors": [
+            "Codex"
+          ],
+          "version": 9,
+          "change_type": "updated",
+          "change_summary": "라이브 Studio 작업은 Studio MCP, 정적 검증은 Luau와 저장소 테스트가 소유하도록 운영 경계를 확정하고, 개발 위키의 불필요한 서버 제어 기능과 재유입 가능성을 제거했습니다.",
+          "supersedes": "development-wiki@v008",
+          "sources": [
+            "AGENTS.md",
+            "README.md",
+            "rokit.toml",
+            "tools/wiki.py",
+            "wiki/site/index.html",
+            "wiki/site/app.js",
+            "wiki/site/app.css",
+            "wiki/site/local-access.js",
+            "tests/test_repository_policy.py",
+            "wiki/content/media/development-wiki/v009/local-wiki-header.jpg"
+          ],
+          "related": [
+            "project-overview",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "rokit install",
+            "python3 -m unittest tests.test_repository_policy tests.test_wiki",
+            "node tests/local-access.spec.js",
+            "node --check wiki/site/app.js",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "로컬 HTTP 스모크 테스트: ItemDB 상태 API 200, 폐기된 제어 API 404",
+            "인앱 브라우저: 로컬 개발 위키 상단 구성 확인, 콘솔 경고·오류 0건",
+            "git diff --check"
+          ],
+          "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 운영 목표\n\nPackBound는 라이브 Roblox Studio 상태와 저장소 소스를 서로 다른 책임으로 관리합니다.\n플레이스의 실제 DataModel을 확인하고 바꾸는 작업은 Studio MCP가 소유하고, 저장소의\nLuau 파일과 테스트 스크립트는 소스 작성과 정적 검증을 소유합니다. 개발자가 별도의\n동기화 서버, 포트 또는 플레이스 빌드 파일을 기억해야 하는 이중 운영은 현재 프로젝트의\n작업 방식과 맞지 않습니다.\n\n이번 정리의 목표는 단순한 파일 삭제가 아니라 앞으로의 판단 기준을 하나로 만드는\n것입니다. 사람과 에이전트는 라이브 상태를 말할 때 Studio MCP 근거를 사용하고, 저장소\n변경의 건전성은 Luau 컴파일과 도메인 테스트로 증명합니다. 위키는 이 경계를 설명하고\n개발 기록을 탐색하는 도구이며 외부 프로세스 실행기가 아닙니다.\n\n## 사용자와 운영자 경험\n\n로컬 개발 위키 상단은 이제 문서 검색과 기록 동기화 상태에 집중합니다. 사용하지 않는\n플레이스 선택, 포트 상태, 서버 시작·중지 조작이 사라져 실제 개발 경로와 화면이 일치합니다.\nItemDB 편집은 계속 loopback 호스트에서만 제공되고 공개 미러는 읽기 전용이므로, 기존의\n콘텐츠 편집 경험과 공개 보안 경계는 유지됩니다.\n\n![개발 위키 최종 상단](./media/development-wiki/v009/local-wiki-header.jpg \"문서 검색과 기록 상태만 남긴 로컬 개발 위키의 최종 상단\")\n\n## 핵심 원칙과 설계 철학\n\n### 라이브 상태의 단일 권위\n\nStudio 발견, DataModel 검사와 변경, Play 모드, 콘솔, 스크린샷과 런타임 검증은 Studio\nMCP를 첫 번째이자 권위 있는 경로로 사용합니다. 저장소 파일만 보고 라이브 플레이스가\n같다고 추정하지 않으며, 라이브 결과를 주장할 때는 Studio MCP 증거를 남깁니다.\n\n### 저장소 정적 검증의 독립성\n\nLuau 모듈은 컴파일러와 저장소 테스트 스크립트로 직접 검증합니다. 정적 검사에 전체\n플레이스 파일 생성을 요구하지 않으므로, 테스트 실패가 게임 로직 문제인지 개발 환경\n동기화 문제인지 혼동하지 않습니다. `rokit` 도구 선언도 현재 필요한 Luau 버전만 소유합니다.\n\n### 재유입을 실패로 처리\n\n운영 문구만 바꾸고 끝내면 오래된 예제나 설정이 다시 복사될 수 있습니다. 저장소 정책\n테스트는 불변 위키 이력을 제외한 활성 파일의 내용과 이름을 검사하고, 폐기한 동기화 도구,\n프로젝트 매핑 또는 관련 파일명이 돌아오면 실패합니다. 이 검사는 일반 개발 명령과 커밋\n시점 위키 검증에 모두 포함됩니다.\n\n## 결정 사항과 범위\n\n- 프로젝트 매핑과 전용 실행 스크립트는 현재 개발 경로가 아니므로 삭제했습니다.\n- 개발 위키의 프로세스 관리자, 상태·시작·중지 API, 상단 제어 UI와 반응형 스타일을\n  제거했습니다.\n- 로컬 호스트 판정은 ItemDB 편집과 정확한 시간 표시라는 현재 책임만 표현하도록\n  일반화했습니다.\n- README, 에이전트 지침과 프로젝트 작업 문서는 Studio MCP와 Luau 검증만 안내합니다.\n- 커밋된 과거 위키 버전은 당시의 사실을 보존하는 불변 기록이므로 수정하지 않습니다.\n  최신 버전이 현재 운영 계약을 명확히 대체합니다.\n- Studio 전역 플러그인 설치 상태는 플레이스나 저장소가 소유하지 않으므로 프로젝트\n  정리 범위에 포함하지 않습니다.\n\n## 현재 결과와 구현 참고\n\n`tools/wiki.py`의 로컬 서버는 정적 위키 제공과 ItemDB 상태·저장 API만 담당합니다.\n프로세스 탐색, 외부 포트 판정, 하위 프로세스 수명주기 코드는 존재하지 않습니다.\n브라우저의 `index.html`, `app.js`, `app.css`도 같은 책임 축소를 반영해 불필요한 DOM,\n폴링, 이벤트와 모바일 보조 행을 제거했습니다.\n\n`AGENTS.md`와 `README.md`는 저장소 Luau를 소스 작성 경로로, Studio MCP를 라이브\n조작 경로로 선언합니다. `tests/test_repository_policy.py`는 활성 저장소 전반을 검사하며,\n커밋 스킬도 이 테스트를 필수 검증으로 실행합니다.\n\n## 검증\n\n위키와 저장소 정책 Python 테스트 6개, 로컬 접근 Node 테스트와 JavaScript 구문 검사를\n통과했습니다. 커밋 스냅샷의 위키 최신성 검사에서는 7개 문서, 31개 리비전,\nItemDB 30개 아이템과 CombatDB 178개 레코드를 확인했습니다. 로컬 서버에서 ItemDB\n상태 API는 정상 응답하고 폐기된 제어 경로는 404를 반환했습니다.\n\n인앱 브라우저에서는 최종 상단 구성, 문서·DB 탐색과 공개 페이지 링크를 확인했으며\n콘솔 경고와 오류는 없었습니다. Studio MCP로 프로젝트가 소유하는 Workspace,\nReplicatedStorage, ServerScriptService, StarterGui와 StarterPlayer를 검색했을 때\n폐기한 통합 이름의 인스턴스는 발견되지 않았습니다. 기존 모바일 핵심 속성인 세로 화면과\n스크립트형 터치 이동 모드도 유지됐습니다.\n\n## 후속 기획\n\n새 개발 도구가 필요해지면 먼저 Studio MCP와 저장소 테스트가 제공하지 못하는 구체적인\n역할을 정의해야 합니다. 단순한 편의나 이전 프로젝트와의 관성만으로 별도 동기화 계층을\n추가하지 않으며, 운영 경계가 바뀌면 구현과 같은 커밋에서 지침·검증·위키를 함께 갱신합니다.\n",
+          "source_path": "wiki/content/pages/development-wiki/v009.md"
+        },
         {
           "id": "development-wiki",
           "title": "개발 위키와 변경 이력 시스템",

@@ -6,7 +6,7 @@
       id: "development",
       label: "개발",
       description: "구현, 구조, 도구와 자동화",
-      keywords: ["development", "architecture", "system", "tooling", "automation", "mcp", "rojo", "roblox", "server", "client", "code", "api", "mobile", "validation", "navigation"],
+      keywords: ["development", "architecture", "system", "tooling", "automation", "mcp", "roblox", "server", "client", "code", "api", "mobile", "validation", "navigation"],
       categories: ["architecture", "system", "tooling"],
     },
     {

@@ -9,16 +9,16 @@
       .replace(/\.$/, "");
   }
 
-  function canUseRojoControl(hostname) {
+  function isLocalHost(hostname) {
     const normalized = normalizeHostname(hostname);
     return normalized === "localhost" || normalized === "127.0.0.1" || normalized === "::1";
   }
 
   function shouldShowExactTimestamps(hostname) {
-    return canUseRojoControl(hostname);
+    return isLocalHost(hostname);
   }
 
-  const api = { canUseRojoControl, shouldShowExactTimestamps };
+  const api = { isLocalHost, shouldShowExactTimestamps };
   root.PACKBOUND_LOCAL_ACCESS = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);
