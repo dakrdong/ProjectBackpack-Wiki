@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
   "generated_at": "2026-08-12",
   "page_count": 7,
-  "revision_count": 31,
+  "revision_count": 32,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -345,7 +345,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "inventory-item-concept",
       "title": "인벤토리와 아이템 개념",
-      "summary": "아이템 제작자가 육각형 점유 칸과 이미지 방향을 한 화면에서 맞추고, 칸 설정 중에는 반투명 이미지를 기준으로 실루엣을 판단할 수 있게 했습니다.",
+      "summary": "아이템 제작자가 긴 편집 내용을 탐색하는 동안에도 저장과 취소를 즉시 실행하고, 칸 설정에서는 아이템 실루엣을 30% 참조 레이어로 보며 점유 칸을 고를 수 있게 했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
@@ -358,28 +358,18 @@ window.PACKBOUND_WIKI = {
         "authoring"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-11",
+      "updated_at": "2026-08-12",
       "authors": [
         "Codex"
       ],
-      "version": 6,
-      "change_type": "updated",
-      "change_summary": "ItemDB 편집 흐름을 flat-top 육각형과 60도 회전 계약으로 전환하고, 칸 설정 상태의 이미지를 70% 투명하게 보여 주어 점유 실루엣을 직접 대조할 수 있게 했습니다.",
-      "supersedes": "inventory-item-concept@v005",
+      "version": 7,
+      "change_type": "corrected",
+      "change_summary": "ItemDB 편집기의 저장·취소를 스크롤 바깥 상단에 고정하고, 칸 레이어에 가려졌던 30% 불투명 아이템 이미지를 선택 칸 위의 참조 레이어로 복구했습니다.",
+      "supersedes": "inventory-item-concept@v006",
       "sources": [
-        "docs/gameplay/inventory-item-art-catalog.md",
-        "docs/gameplay/inventory-item-layouts.json",
-        "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
-        "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
-        "src/ReplicatedStorage/BackpackUI/Screen.luau",
-        "tests/item-db.spec.js",
-        "tests/test_item_db.py",
-        "tools/item_db.py",
         "wiki/site/app.css",
         "wiki/site/app.js",
-        "wiki/site/item-db-data.js",
-        "wiki/site/item-db.js",
-        "wiki/content/media/inventory-item-concept/v006/itemdb-hex-editor-cell-mode.jpg"
+        "wiki/content/media/inventory-item-concept/v007/itemdb-editor-fixed-actions-cell-reference.jpg"
       ],
       "related": [
         "development-wiki",
@@ -387,21 +377,71 @@ window.PACKBOUND_WIKI = {
         "project-overview"
       ],
       "validation": [
-        "python3 tools/item_db.py build",
-        "python3 tools/item_db.py check",
-        "python3 -m unittest tests.test_item_db",
-        "node tests/item-db.spec.js",
         "node --check wiki/site/app.js",
-        "node --check wiki/site/item-db.js",
-        "rojo build packbound.project.json --output /tmp/PackBound-itemdb-hex.rbxlx",
+        "node tests/item-db.spec.js",
+        "node tests/local-access.spec.js",
+        "python3 tools/item_db.py check",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
         "python3 -m unittest tests/test_wiki.py",
-        "로컬 ItemDB 브라우저에서 칸 설정 모드, opacity 0.3, 필터 무채색 제거와 콘솔 오류 없음 확인"
+        "python3 -m unittest tests.test_repository_policy",
+        "로컬 ItemDB 브라우저에서 칸 설정 모드 opacity 0.3, 이미지 z-index 3, 칸 z-index 2, 이미지 pointer-events none 확인",
+        "본문을 끝까지 스크롤한 뒤 저장 버튼 위치 유지와 실제 클릭 대상 확인",
+        "Chrome에서 구형 local-access 캐시와 신형 앱 조합의 초기 로딩 복구 및 콘솔 신규 오류 없음 확인"
       ],
-      "source_path": "wiki/content/pages/inventory-item-concept/v006.md",
-      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nPackBound의 아이템 그림은 육각형 가방 퍼즐에서 실제로 차지할 공간과 같은 방향으로\n읽혀야 합니다. 제작자가 사각형 편집 화면을 보며 육각형 게임 결과를 추측하거나, 그림을\n회전해 다시 내보낼 때마다 위치를 별도로 맞추면 아이템 실루엣과 점유 규칙이 쉽게\n어긋납니다.\n\n이번 변경의 목표는 ItemDB 자체를 게임의 육각형 공간 언어에 맞추는 것입니다. 아이템\n제작자는 한 화면에서 점유 칸, 이미지 위치와 배율, 기준 회전각을 함께 조정하고 저장된\n값을 위키와 게임 생성 데이터에 전달할 수 있습니다.\n\n## 사용자 경험\n\n- ItemDB의 점유 형태와 편집기는 flat-top 육각형으로 표시됩니다.\n- 편집기는 중심을 포함한 반지름 2의 19칸을 제공하고, 선택한 칸은 여섯 변 연결 규칙으로\n  검사합니다.\n- 이미지 회전각을 직접 입력하거나 `−60°`, `+60°` 버튼으로 빠르게 조정할 수 있습니다.\n- `칸 설정하기` 상태에서는 배치한 이미지가 70% 투명한 참조 레이어로 남아, 그림\n  실루엣을 보면서 칸을 고를 수 있습니다.\n- 저장 후 같은 기준 회전각이 ItemDB 목록 이미지와 게임용 레이아웃 데이터에 반영됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 편집 화면과 게임이 같은 공간 계약을 사용한다\n\n격자 구조는 `HexAxialFlatTop`, 점유 좌표는 정수 axial `(Q, R)`, 배치 회전은\n`0/60/120/180/240/300`도로 고정했습니다. 연결 검사도 사각형의 상하좌우가 아니라\n육각형의 여섯 이웃을 사용합니다.\n\n### 칸을 고를 때 그림은 사라지지 않는다\n\n칸 버튼의 선택 상태가 우선 읽혀야 하지만, 그림과 칸의 관계도 동시에 판단할 수 있어야\n합니다. 따라서 칸 설정 모드에서는 이미지 입력을 잠그고 불투명도만 `0.3`으로 낮췄습니다.\n무채색 필터는 사용하지 않아 아이템 고유 색과 실루엣을 참고 정보로 보존합니다.\n\n### 생성 데이터는 호환성을 끊지 않고 확장한다\n\n게임용 레이아웃은 새 `HexFootprintCells`, `GridTopology`, `IconRotation`을\n내보냅니다. 현재 사각형 런타임은 검증된 기존 fallback `Shape`로 계속 동작하고,\n육각형 런타임은 같은 생성물의 axial 필드를 사용할 수 있어 편집기 전환이 별도 시스템을\n갑자기 깨뜨리지 않습니다.\n\n## 결정 사항과 범위\n\n기존 직사각형 점유 형태는 육각형 연결과 최대 Q·R·S 축 길이 5에 맞게 정리했습니다.\n이미지 회전은 자유 각도 값을 저장하되 빠른 조작은 육각형 방향과 같은 60도 단위로\n제공합니다. 이번 범위는 ItemDB 제작 도구와 생성 데이터 계약이며, 가방 배치 로직이나\n게임 화면 전체를 새로 설계하는 작업은 포함하지 않습니다.\n\n## 현재 결과\n\n![칸 설정 모드의 육각형 ItemDB 편집기](./media/inventory-item-concept/v006/itemdb-hex-editor-cell-mode.jpg \"포켓 네일건 이미지가 70% 투명한 참조 레이어로 남아 선택한 세 육각 칸과 겹쳐 보이는 최종 편집 화면\")\n\n포켓 네일건 편집 화면에서 19칸 육각형 보드, 세 칸 점유 형태, 회전 조작과 반투명 참고\n이미지를 동시에 확인할 수 있습니다. 선택 칸은 선명하게 유지되고 이미지는 입력을 받지\n않으므로 터치나 클릭이 점유 칸 조작으로 전달됩니다.\n\n## 구현 참고\n\n`tools/item_db.py`는 카탈로그의 axial 좌표와 레이아웃의 이미지 배율·오프셋·회전을\n검증한 뒤 웹 데이터와 Roblox용 생성물을 함께 만듭니다. 브라우저 편집기는 같은 육각형\n중심 계산으로 셀 위치, 이미지 경계와 저장 오프셋을 계산합니다. 서버 저장 단계에서도\n편집 반경, 중복, 여섯 변 연결과 Q·R·S 축 범위를 다시 검사합니다.\n\n게임 카탈로그는 생성된 기준 회전각을 선택 상세 이미지, 배치 이미지, 보관 이미지와\n드래그 고스트에 합성할 수 있도록 전달합니다. 플레이 중 배치 회전은 기존 회전값에 기준\n회전각을 더하므로 아이템 아트의 원래 방향을 잃지 않습니다.\n\n## 검증\n\nItemDB 생성·최신성 검사, Python과 Node 회귀 테스트, JavaScript 구문 검사와 Rojo 빌드를\n통과했습니다. 위키 생성·최신성 검사와 위키 단위 테스트도 통과했습니다.\n\n로컬 브라우저에서는 포켓 네일건 편집기를 `칸 설정하기` 상태로 전환해 스테이지 모드가\n`cells`, 이미지 계산 불투명도가 `0.3`, 포인터 입력이 비활성인지 확인했습니다.\n기존 무채색 필터는 제거됐고 브라우저 콘솔 오류도 없었습니다.\n\n## 후속 기획\n\n- 새 아이템 이미지는 ItemDB에서 육각 점유 칸, 위치, 배율과 기준 회전을 함께 승인합니다.\n- 아이템 변경 후에는 ItemDB 생성·검사와 게임용 생성 데이터 최신성 검사를 항상 같은\n  완료 조건으로 취급합니다.\n- 향후 육각형 게임 화면 전환은 `HexFootprintCells`를 직접 소비하되, 별도 검증이 끝날\n  때까지 현재 사각형 배치의 fallback footprint를 유지합니다.\n",
+      "source_path": "wiki/content/pages/inventory-item-concept/v007.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nItemDB 편집기는 아이템 이미지와 육각형 점유 형태를 승인하는 제작 도구입니다. 편집\n항목이 늘어나 세로 스크롤이 길어지더라도 제작자가 저장이나 취소를 찾기 위해 화면 끝을\n왕복해서는 안 됩니다. 또한 칸을 고르는 순간 아이템 그림이 사라지면 실루엣과 점유 형태를\n비교한다는 편집기의 핵심 목적을 잃습니다.\n\n이번 변경은 편집 내용의 길이와 관계없이 주요 결정을 항상 실행할 수 있게 하고, 칸 설정\n중에도 아이템 그림을 방해되지 않는 참고 정보로 유지하는 데 목적이 있습니다.\n\n## 사용자 경험\n\n- 제목과 닫기 아래에 `취소`와 `저장`이 고정되어 본문 스크롤 위치와 무관하게 보입니다.\n- 이미지·육각 칸·조절 항목을 담은 본문만 편집기 내부에서 스크롤됩니다.\n- `칸 설정하기`에서는 아이템 이미지가 30% 불투명도로 선택 칸 위에 남습니다.\n- 반투명 이미지는 입력을 받지 않으므로 보이는 그림을 통과해 육각 칸을 선택할 수 있습니다.\n- `이미지 이동하기`로 돌아오면 이미지는 즉시 100% 불투명도로 복원됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 결정 버튼은 콘텐츠 길이에 종속되지 않는다\n\n저장과 취소는 편집 내용이 아니라 편집 세션 자체에 대한 행동입니다. 따라서 스크롤되는\n본문과 분리해 상단 액션 영역에 고정했습니다. 새로운 설정이 추가되더라도 주요 행동의\n위치와 접근성은 변하지 않습니다.\n\n### 참조 이미지는 보이되 칸 조작을 막지 않는다\n\n칸 설정 모드의 이미지는 `opacity: 0.3`으로 낮추고 포인터 입력을 비활성화합니다. 이미지\n레이어는 육각 칸보다 위에 두어 실루엣이 색칠된 선택 칸에 가려지지 않게 했습니다. 클릭은\n아래의 칸으로 전달되므로 시각적 참고와 직접 조작을 동시에 만족합니다.\n\n### 캐시 시차도 로컬 제작 도구를 멈추게 하지 않는다\n\n로컬 위키 앱은 현재 접근 판별 API와 브라우저에 남을 수 있는 이전 함수명을 모두\n수용합니다. 브라우저 캐시에 두 버전이 잠시 섞여도 앱 초기화가 중단되지 않고 문서와\n데이터베이스를 계속 표시합니다.\n\n## 결정 사항과 범위\n\n이번 범위는 ItemDB 편집 모달의 행동 배치, 내부 스크롤, 칸 설정 참조 이미지 레이어와\n로컬 접근 판별의 하위 호환성입니다. 아이템 데이터, 점유 좌표, 이미지 리소스와 게임\n런타임 배치 규칙은 변경하지 않았습니다.\n\n## 현재 결과\n\n![상단 고정 행동과 반투명 참조 이미지를 적용한 ItemDB 편집기](./media/inventory-item-concept/v007/itemdb-editor-fixed-actions-cell-reference.jpg \"취소·저장이 상단에 고정되고 안테나 리커브 보우가 선택한 세 육각 칸 위에 30% 불투명도로 보이는 최종 화면\")\n\n칸 설정 상태에서도 활의 세로 실루엣이 선택된 세 칸 위에 남습니다. 저장과 취소는 본문\n스크롤 바깥에 있어 편집 중 어느 위치에서도 같은 자리에 유지됩니다.\n\n## 구현 참고\n\n편집 모달은 고정 헤더, 고정 액션 영역과 스크롤 본문으로 나뉩니다. 상태 갱신 함수는\n모드가 `cells`일 때 이미지 인라인 불투명도를 `0.3`, 이동 모드에서는 `1`로 명시해\n스타일 적용을 상태와 직접 동기화합니다. 칸 설정의 이미지 레이어는 `z-index: 3`, 육각\n그리드는 `z-index: 2`이며 이미지의 `pointer-events`는 `none`입니다.\n\n로컬 접근 판별은 현재 API를 우선 사용하고, 없을 때만 분리된 문자열로 보존한 이전 함수\n키를 조회합니다. 현재 소스 계약에는 폐기된 이름을 다시 노출하지 않으면서 캐시 시차만\n안전하게 흡수합니다.\n\n## 검증\n\n로컬 브라우저에서 칸 설정과 이미지 이동을 왕복하며 계산 불투명도 `0.3`과 `1`, 레이어\n순서와 포인터 입력 비활성화를 확인했습니다. 내부 본문을 끝까지 스크롤한 뒤에도 액션\n영역과 저장 버튼 좌표가 유지됐고, 저장 버튼 중심의 실제 클릭 대상도 버튼 자신이었습니다.\n\nChrome에서는 이전 접근 모듈이 캐시된 상태에서 새 앱을 불러오는 조합을 재현한 뒤 문서\n7개와 데이터베이스 탐색이 정상 복구되고 새 콘솔 오류가 발생하지 않는 것을 확인했습니다.\n정적 구문 검사, ItemDB 검사, 관련 Node 테스트와 위키 생성·정책 검사를 함께 수행했습니다.\n\n## 후속 기획\n\n- ItemDB에 새로운 편집 항목을 추가해도 저장·취소는 고정 액션 영역에 유지합니다.\n- 칸 설정 시 아이템 고유 색과 실루엣을 보존하며, 이미지가 칸 선택 입력을 가로채지 않게\n  합니다.\n- 로컬 전용 API를 이름 변경할 때는 최소 한 버전 동안 양방향 호환 별칭을 유지합니다.\n",
       "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "아이템 제작자가 긴 편집 내용을 탐색하는 동안에도 저장과 취소를 즉시 실행하고, 칸 설정에서는 아이템 실루엣을 30% 참조 레이어로 보며 점유 칸을 고를 수 있게 했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "item-db",
+            "hex-grid",
+            "ui",
+            "authoring"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-12",
+          "authors": [
+            "Codex"
+          ],
+          "version": 7,
+          "change_type": "corrected",
+          "change_summary": "ItemDB 편집기의 저장·취소를 스크롤 바깥 상단에 고정하고, 칸 레이어에 가려졌던 30% 불투명 아이템 이미지를 선택 칸 위의 참조 레이어로 복구했습니다.",
+          "supersedes": "inventory-item-concept@v006",
+          "sources": [
+            "wiki/site/app.css",
+            "wiki/site/app.js",
+            "wiki/content/media/inventory-item-concept/v007/itemdb-editor-fixed-actions-cell-reference.jpg"
+          ],
+          "related": [
+            "development-wiki",
+            "backpack-combat-stat-database",
+            "project-overview"
+          ],
+          "validation": [
+            "node --check wiki/site/app.js",
+            "node tests/item-db.spec.js",
+            "node tests/local-access.spec.js",
+            "python3 tools/item_db.py check",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "python3 -m unittest tests.test_repository_policy",
+            "로컬 ItemDB 브라우저에서 칸 설정 모드 opacity 0.3, 이미지 z-index 3, 칸 z-index 2, 이미지 pointer-events none 확인",
+            "본문을 끝까지 스크롤한 뒤 저장 버튼 위치 유지와 실제 클릭 대상 확인",
+            "Chrome에서 구형 local-access 캐시와 신형 앱 조합의 초기 로딩 복구 및 콘솔 신규 오류 없음 확인"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nItemDB 편집기는 아이템 이미지와 육각형 점유 형태를 승인하는 제작 도구입니다. 편집\n항목이 늘어나 세로 스크롤이 길어지더라도 제작자가 저장이나 취소를 찾기 위해 화면 끝을\n왕복해서는 안 됩니다. 또한 칸을 고르는 순간 아이템 그림이 사라지면 실루엣과 점유 형태를\n비교한다는 편집기의 핵심 목적을 잃습니다.\n\n이번 변경은 편집 내용의 길이와 관계없이 주요 결정을 항상 실행할 수 있게 하고, 칸 설정\n중에도 아이템 그림을 방해되지 않는 참고 정보로 유지하는 데 목적이 있습니다.\n\n## 사용자 경험\n\n- 제목과 닫기 아래에 `취소`와 `저장`이 고정되어 본문 스크롤 위치와 무관하게 보입니다.\n- 이미지·육각 칸·조절 항목을 담은 본문만 편집기 내부에서 스크롤됩니다.\n- `칸 설정하기`에서는 아이템 이미지가 30% 불투명도로 선택 칸 위에 남습니다.\n- 반투명 이미지는 입력을 받지 않으므로 보이는 그림을 통과해 육각 칸을 선택할 수 있습니다.\n- `이미지 이동하기`로 돌아오면 이미지는 즉시 100% 불투명도로 복원됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 결정 버튼은 콘텐츠 길이에 종속되지 않는다\n\n저장과 취소는 편집 내용이 아니라 편집 세션 자체에 대한 행동입니다. 따라서 스크롤되는\n본문과 분리해 상단 액션 영역에 고정했습니다. 새로운 설정이 추가되더라도 주요 행동의\n위치와 접근성은 변하지 않습니다.\n\n### 참조 이미지는 보이되 칸 조작을 막지 않는다\n\n칸 설정 모드의 이미지는 `opacity: 0.3`으로 낮추고 포인터 입력을 비활성화합니다. 이미지\n레이어는 육각 칸보다 위에 두어 실루엣이 색칠된 선택 칸에 가려지지 않게 했습니다. 클릭은\n아래의 칸으로 전달되므로 시각적 참고와 직접 조작을 동시에 만족합니다.\n\n### 캐시 시차도 로컬 제작 도구를 멈추게 하지 않는다\n\n로컬 위키 앱은 현재 접근 판별 API와 브라우저에 남을 수 있는 이전 함수명을 모두\n수용합니다. 브라우저 캐시에 두 버전이 잠시 섞여도 앱 초기화가 중단되지 않고 문서와\n데이터베이스를 계속 표시합니다.\n\n## 결정 사항과 범위\n\n이번 범위는 ItemDB 편집 모달의 행동 배치, 내부 스크롤, 칸 설정 참조 이미지 레이어와\n로컬 접근 판별의 하위 호환성입니다. 아이템 데이터, 점유 좌표, 이미지 리소스와 게임\n런타임 배치 규칙은 변경하지 않았습니다.\n\n## 현재 결과\n\n![상단 고정 행동과 반투명 참조 이미지를 적용한 ItemDB 편집기](./media/inventory-item-concept/v007/itemdb-editor-fixed-actions-cell-reference.jpg \"취소·저장이 상단에 고정되고 안테나 리커브 보우가 선택한 세 육각 칸 위에 30% 불투명도로 보이는 최종 화면\")\n\n칸 설정 상태에서도 활의 세로 실루엣이 선택된 세 칸 위에 남습니다. 저장과 취소는 본문\n스크롤 바깥에 있어 편집 중 어느 위치에서도 같은 자리에 유지됩니다.\n\n## 구현 참고\n\n편집 모달은 고정 헤더, 고정 액션 영역과 스크롤 본문으로 나뉩니다. 상태 갱신 함수는\n모드가 `cells`일 때 이미지 인라인 불투명도를 `0.3`, 이동 모드에서는 `1`로 명시해\n스타일 적용을 상태와 직접 동기화합니다. 칸 설정의 이미지 레이어는 `z-index: 3`, 육각\n그리드는 `z-index: 2`이며 이미지의 `pointer-events`는 `none`입니다.\n\n로컬 접근 판별은 현재 API를 우선 사용하고, 없을 때만 분리된 문자열로 보존한 이전 함수\n키를 조회합니다. 현재 소스 계약에는 폐기된 이름을 다시 노출하지 않으면서 캐시 시차만\n안전하게 흡수합니다.\n\n## 검증\n\n로컬 브라우저에서 칸 설정과 이미지 이동을 왕복하며 계산 불투명도 `0.3`과 `1`, 레이어\n순서와 포인터 입력 비활성화를 확인했습니다. 내부 본문을 끝까지 스크롤한 뒤에도 액션\n영역과 저장 버튼 좌표가 유지됐고, 저장 버튼 중심의 실제 클릭 대상도 버튼 자신이었습니다.\n\nChrome에서는 이전 접근 모듈이 캐시된 상태에서 새 앱을 불러오는 조합을 재현한 뒤 문서\n7개와 데이터베이스 탐색이 정상 복구되고 새 콘솔 오류가 발생하지 않는 것을 확인했습니다.\n정적 구문 검사, ItemDB 검사, 관련 Node 테스트와 위키 생성·정책 검사를 함께 수행했습니다.\n\n## 후속 기획\n\n- ItemDB에 새로운 편집 항목을 추가해도 저장·취소는 고정 액션 영역에 유지합니다.\n- 칸 설정 시 아이템 고유 색과 실루엣을 보존하며, 이미지가 칸 선택 입력을 가로채지 않게\n  합니다.\n- 로컬 전용 API를 이름 변경할 때는 최소 한 버전 동안 양방향 호환 별칭을 유지합니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v007.md"
+        },
         {
           "id": "inventory-item-concept",
           "title": "인벤토리와 아이템 개념",

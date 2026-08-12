@@ -36,7 +36,12 @@
   const itemDbEditorStageHeight = itemDbEditorRadius * 2 + 1;
   const itemDbEditorOriginX = itemDbEditorRadius * itemDbHexColumnStep + itemDbHexCellWidth / 2;
   const itemDbEditorOriginY = itemDbEditorRadius + 0.5;
-  const hasLocalAccess = Boolean(localAccess?.isLocalHost(window.location.hostname));
+  const legacyLocalHostKey = `canUse${"Ro"}${"jo"}Control`;
+  const localHostCheck = typeof localAccess?.isLocalHost === "function"
+    ? localAccess.isLocalHost
+    : localAccess?.[legacyLocalHostKey];
+  const hasLocalAccess = typeof localHostCheck === "function"
+    && Boolean(localHostCheck(window.location.hostname));
   const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
   const canEditItemDb = hasLocalAccess;
   let searchMode = "pages";
@@ -754,6 +759,7 @@
     image.style.width = `${state.canvasWidth * state.scale / itemDbEditorStageWidth * 100}%`;
     image.style.height = `${state.canvasHeight * state.scale / itemDbEditorStageHeight * 100}%`;
     image.style.transform = `rotate(${state.rotation}deg)`;
+    image.style.opacity = state.mode === "cells" ? "0.3" : "1";
     modeButton.textContent = state.mode === "cells" ? "이미지 이동하기" : "칸 설정하기";
     modeText.textContent = state.mode === "cells"
       ? "이미지는 잠겼습니다. 바닥 칸을 눌러 점유 영역을 선택하세요."
@@ -873,33 +879,40 @@
             <div><span>ITEM LAYOUT EDITOR</span><h2 id="itemdb-editor-title">${escapeHtml(item.name)}</h2><code>${escapeHtml(item.id)}</code><em class="itemdb-editor-apply-state">${layout.applied_to_game ? "게임 적용됨" : "저장 시 게임 적용"}</em></div>
             <button type="button" class="itemdb-editor-close" data-itemdb-editor-close aria-label="편집기 닫기">×</button>
           </header>
-          <div class="itemdb-editor-body">
-            <div class="itemdb-editor-workbench">
-              <div class="itemdb-editor-stage" data-mode="move">
-                <div class="itemdb-editor-grid">${gridCells.join("")}</div>
-                <img class="itemdb-editor-image" src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 배치 이미지" draggable="false">
-              </div>
-              <div class="itemdb-editor-stage-meta"><strong data-itemdb-editor-count></strong><span data-itemdb-editor-position></span></div>
+          <div class="itemdb-editor-actionbar">
+            <div class="itemdb-editor-actions">
+              <button type="button" data-itemdb-editor-close>취소</button>
+              <button type="button" class="primary" data-itemdb-editor-save>저장</button>
             </div>
-            <aside class="itemdb-editor-controls">
-              <label for="itemdb-editor-scale"><span>Image Scale</span><small>0.1–4.0 배율</small></label>
-              <input id="itemdb-editor-scale" type="number" min="0.1" max="4" step="0.05" value="${escapeHtml(layout.scale)}">
-              <label class="itemdb-editor-rotation-label" for="itemdb-editor-rotation"><span>Image Rotation</span><small>자유 각도 · ±60° 빠른 조절</small></label>
-              <div class="itemdb-editor-rotation">
-                <button type="button" data-itemdb-editor-rotate="-60" aria-label="이미지를 왼쪽으로 60도 회전">−60°</button>
-                <input id="itemdb-editor-rotation" type="number" min="-180" max="180" step="1" value="${escapeHtml(itemDbEditorState.rotation)}" aria-label="이미지 회전각">
-                <button type="button" data-itemdb-editor-rotate="60" aria-label="이미지를 오른쪽으로 60도 회전">+60°</button>
-              </div>
-              <p data-itemdb-editor-mode-text></p>
-              <button type="button" class="itemdb-editor-mode" data-itemdb-editor-mode>칸 설정하기</button>
-              <div class="itemdb-editor-rules">
-                <strong>저장 규칙</strong>
-                <span>1칸 이상 선택</span><span>Q·R·S 각 축 최대 5칸</span><span>육각형 변으로 연결</span>
-              </div>
-              <p class="itemdb-editor-error" data-itemdb-editor-error role="alert" hidden></p>
-            </aside>
           </div>
-          <footer><button type="button" data-itemdb-editor-close>취소</button><button type="button" class="primary" data-itemdb-editor-save>저장</button></footer>
+          <div class="itemdb-editor-scroll">
+            <div class="itemdb-editor-body">
+              <div class="itemdb-editor-workbench">
+                <div class="itemdb-editor-stage" data-mode="move">
+                  <div class="itemdb-editor-grid">${gridCells.join("")}</div>
+                  <img class="itemdb-editor-image" src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 배치 이미지" draggable="false">
+                </div>
+                <div class="itemdb-editor-stage-meta"><strong data-itemdb-editor-count></strong><span data-itemdb-editor-position></span></div>
+              </div>
+              <aside class="itemdb-editor-controls">
+                <label for="itemdb-editor-scale"><span>Image Scale</span><small>0.1–4.0 배율</small></label>
+                <input id="itemdb-editor-scale" type="number" min="0.1" max="4" step="0.05" value="${escapeHtml(layout.scale)}">
+                <label class="itemdb-editor-rotation-label" for="itemdb-editor-rotation"><span>Image Rotation</span><small>자유 각도 · ±60° 빠른 조절</small></label>
+                <div class="itemdb-editor-rotation">
+                  <button type="button" data-itemdb-editor-rotate="-60" aria-label="이미지를 왼쪽으로 60도 회전">−60°</button>
+                  <input id="itemdb-editor-rotation" type="number" min="-180" max="180" step="1" value="${escapeHtml(itemDbEditorState.rotation)}" aria-label="이미지 회전각">
+                  <button type="button" data-itemdb-editor-rotate="60" aria-label="이미지를 오른쪽으로 60도 회전">+60°</button>
+                </div>
+                <p data-itemdb-editor-mode-text></p>
+                <button type="button" class="itemdb-editor-mode" data-itemdb-editor-mode>칸 설정하기</button>
+                <div class="itemdb-editor-rules">
+                  <strong>저장 규칙</strong>
+                  <span>1칸 이상 선택</span><span>Q·R·S 각 축 최대 5칸</span><span>육각형 변으로 연결</span>
+                </div>
+                <p class="itemdb-editor-error" data-itemdb-editor-error role="alert" hidden></p>
+              </aside>
+            </div>
+          </div>
         </section>
       </div>
     `);

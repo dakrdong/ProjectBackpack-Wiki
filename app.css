@@ -543,13 +543,20 @@ kbd { padding: 1px 7px; border: 1px solid #364862; border-radius: 5px; backgroun
 .itemdb-save-notice { margin: -12px 0 24px; padding: 11px 13px; border: 1px solid rgba(69, 214, 202, 0.3); border-radius: 8px; background: var(--cyan-soft); color: #a8e6e0; font-size: 10px; }
 body.itemdb-editor-open { overflow: hidden; }
 .itemdb-editor-backdrop { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; padding: 24px; background: rgba(2, 7, 13, 0.82); backdrop-filter: blur(10px); }
-.itemdb-editor-dialog { width: min(980px, 100%); max-height: calc(100vh - 48px); overflow: auto; border: 1px solid #31445d; border-radius: 16px; background: #0c1625; box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55); }
-.itemdb-editor-dialog > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+.itemdb-editor-dialog { display: flex; flex-direction: column; width: min(980px, 100%); max-height: calc(100vh - 48px); overflow: hidden; border: 1px solid #31445d; border-radius: 16px; background: #0c1625; box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55); }
+.itemdb-editor-dialog > header { display: flex; flex: 0 0 auto; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
 .itemdb-editor-dialog > header span { color: var(--cyan); font-size: 8px; font-weight: 900; letter-spacing: 0.16em; }
 .itemdb-editor-dialog > header h2 { margin: 5px 0 2px; font-size: 24px; }
 .itemdb-editor-dialog > header code { color: var(--faint); font-size: 9px; }
 .itemdb-editor-apply-state { display: inline-flex; margin-left: 9px; padding: 3px 7px; border-radius: 99px; background: var(--cyan-soft); color: var(--cyan); font-size: 8px; font-style: normal; font-weight: 800; }
 .itemdb-editor-close { width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: 22px; }
+.itemdb-editor-actionbar { display: flex; flex: 0 0 auto; justify-content: flex-end; padding: 16px 24px 0; background: #0c1625; }
+.itemdb-editor-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; width: 260px; }
+.itemdb-editor-actions button { min-width: 0; height: 44px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: 10px; font-weight: 800; }
+.itemdb-editor-actions button.primary { border-color: var(--cyan); background: var(--cyan); color: #07121d; }
+.itemdb-editor-actions button:hover, .itemdb-editor-actions button:focus-visible { border-color: var(--cyan); outline: 0; }
+.itemdb-editor-actions button:disabled { cursor: wait; opacity: 0.55; }
+.itemdb-editor-scroll { min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
 .itemdb-editor-body { display: grid; grid-template-columns: minmax(340px, 1fr) 260px; gap: 26px; padding: 24px; }
 .itemdb-editor-workbench { min-width: 0; }
 .itemdb-editor-stage { position: relative; width: min(100%, 406px); aspect-ratio: 4.618802 / 5; margin: 0 auto; overflow: hidden; border: 1px solid #3a5069; border-radius: 12px; background: radial-gradient(circle at 50% 42%, rgba(69, 214, 202, 0.05), transparent 62%), #09121f; touch-action: none; user-select: none; }
@@ -561,7 +568,7 @@ body.itemdb-editor-open { overflow: hidden; }
 .itemdb-editor-grid button.selected::before { background: rgba(69, 214, 202, 0.43); }
 .itemdb-editor-image { position: absolute; z-index: 3; object-fit: contain; cursor: grab; filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35)); touch-action: none; user-select: none; -webkit-user-drag: none; }
 .itemdb-editor-image:active { cursor: grabbing; }
-.itemdb-editor-stage[data-mode="cells"] .itemdb-editor-grid { z-index: 4; pointer-events: auto; }
+.itemdb-editor-stage[data-mode="cells"] .itemdb-editor-grid { z-index: 2; pointer-events: auto; }
 .itemdb-editor-stage[data-mode="cells"] .itemdb-editor-image { opacity: 0.3; pointer-events: none; }
 .itemdb-editor-stage-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; color: var(--faint); font-size: 9px; }
 .itemdb-editor-stage-meta strong { color: var(--cyan); }
@@ -583,11 +590,6 @@ body.itemdb-editor-open { overflow: hidden; }
 .itemdb-editor-rules span { color: var(--faint); font-size: 9px; }
 .itemdb-editor-rules span::before { margin-right: 7px; color: var(--cyan); content: "✓"; }
 .itemdb-editor-error { margin: 14px 0 0; padding: 10px; border: 1px solid rgba(242, 116, 126, 0.35); border-radius: 7px; background: rgba(242, 116, 126, 0.08); color: #ff9ca5; font-size: 9px; line-height: 1.55; }
-.itemdb-editor-dialog > footer { display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px 20px; border-top: 1px solid var(--line); }
-.itemdb-editor-dialog > footer button { min-width: 92px; height: 40px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: 10px; font-weight: 800; }
-.itemdb-editor-dialog > footer button.primary { border-color: var(--cyan); background: var(--cyan); color: #07121d; }
-.itemdb-editor-dialog > footer button:disabled { cursor: wait; opacity: 0.55; }
-
 .structured-db-layout { width: 100%; max-width: 1540px; margin: 0 auto; padding: 58px clamp(24px, 4vw, 64px) 90px; }
 .structured-db-hero { margin-bottom: 26px; }
 .structured-db-hero-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; }
@@ -841,10 +843,11 @@ body.itemdb-editor-open { overflow: hidden; }
   .itemdb-editor-backdrop { align-items: end; padding: 0; }
   .itemdb-editor-dialog { width: 100%; max-height: 96vh; border-right: 0; border-bottom: 0; border-left: 0; border-radius: 16px 16px 0 0; }
   .itemdb-editor-dialog > header { padding: 17px 18px 14px; }
+  .itemdb-editor-actionbar { padding: 12px 18px 0; }
+  .itemdb-editor-actions { width: min(100%, 260px); }
   .itemdb-editor-body { grid-template-columns: 1fr; gap: 18px; padding: 18px; }
   .itemdb-editor-stage { width: min(100%, 340px); }
   .itemdb-editor-controls > p:not(.itemdb-editor-error) { min-height: 0; }
-  .itemdb-editor-dialog > footer { position: sticky; bottom: 0; padding: 12px 18px 16px; background: #0c1625; }
   .structured-db-layout { padding: 40px 16px 72px; }
   .structured-db-hero-row { align-items: flex-start; }
   .structured-db-hero h1 { font-size: 38px; }
