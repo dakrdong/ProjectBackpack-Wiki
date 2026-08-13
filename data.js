@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-12",
+  "generated_at": "2026-08-13",
   "page_count": 7,
-  "revision_count": 32,
+  "revision_count": 37,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -78,7 +78,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "world-art-bible",
       "title": "PackBound 캐릭터·월드 아트 바이블",
-      "summary": "고물바람 초원의 승인 시안을 세로 모바일 플레이에 맞는 2.5D 패널 필드로 구현하고, 중앙 고정된 확대 캐릭터와 유기적인 길·절벽 경계·원경이 하나의 화면 깊이로 읽히도록 확정했습니다.",
+      "summary": "고물바람 초원을 전경 차폐, 원·중경 패럴랙스와 화면 밖까지 이어지는 식생으로 확장해 세로 모바일 이동 중에도 2D 패널 필드의 깊이와 캐릭터 가독성을 함께 유지합니다.",
       "status": "active",
       "category": "art",
       "tags": [
@@ -86,35 +86,32 @@ window.PACKBOUND_WIKI = {
         "environment",
         "field",
         "2.5d",
-        "camera",
+        "parallax",
+        "occlusion",
         "mobile",
-        "roblox",
-        "visual-language"
+        "roblox"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-10",
+      "updated_at": "2026-08-13",
       "authors": [
         "Codex"
       ],
-      "version": 2,
+      "version": 3,
       "change_type": "updated",
-      "change_summary": "넓은 키아트의 랜드마크·색·동선 원칙을 세로 모바일 화면에 맞게 재구성하고, 모든 고정 기물을 2D 패널로 유지하면서 바닥 접지·맵 경계·배경·카메라·캐릭터 화면 크기를 실제 Studio 플레이 결과로 확정함",
-      "supersedes": "world-art-bible@v001",
+      "change_summary": "필드 v21에서 원경과 중경을 카메라 이동에 따라 분리하고, 전경 패널의 캐릭터 주변만 타일 단위로 비우는 차폐와 화면 바깥 식생을 추가해 평면 배경의 끝과 캐릭터 가림을 함께 해결했습니다.",
+      "supersedes": "world-art-bible@v002",
       "sources": [
-        "wiki/content/pages/world-art-bible/v001.md",
-        "wiki/content/media/world-art-bible/v002/concept.png",
-        "wiki/content/media/world-art-bible/v002/studio-final-play.jpg",
-        "Assets/World/Concepts/junkwind_meadow_field_concept_v1.png",
-        "Assets/World/Backgrounds/junkwind_meadow_distant_panorama_v2.png",
-        "Assets/World/PanelSprites/junkwind_meadow_boundaries_landmarks_atlas_v2.png",
-        "Assets/World/PanelSprites/junkwind_meadow_edge_facades_atlas_v6.png",
-        "Assets/World/PanelSprites/junkwind_meadow_props_atlas_v2.png",
-        "Assets/World/Textures/junkwind_meadow_field_layout_v1.png",
-        "Assets/World/Textures/junkwind_meadow_outer_undergrowth_tile_v2.png",
+        "wiki/content/pages/world-art-bible/v002.md",
+        "wiki/content/media/world-art-bible/v003/studio-field-v21.jpg",
+        "Assets/World/Backgrounds/junkwind_mystic_castle_panorama_v1.png",
+        "Assets/World/Backgrounds/junkwind_parallax_far_ridges_v1.png",
+        "Assets/World/Backgrounds/junkwind_parallax_mid_canopy_v1.png",
+        "Assets/World/Foregrounds/junkwind_foreground_canopy_v1.png",
+        "Assets/World/Textures/junkwind_exterior_foliage_ground_v1.png",
         "src/ServerScriptService/FieldBuilder.luau",
-        "src/ServerScriptService/WorldBootstrap.server.luau",
-        "src/ReplicatedStorage/Character2D/Config.luau",
-        "src/ReplicatedStorage/Character2D/QuarterViewCamera.luau"
+        "src/ReplicatedStorage/Character2D/QuarterViewCamera.luau",
+        "src/ReplicatedStorage/Character2D/FieldOcclusionController.luau",
+        "src/StarterPlayer/StarterPlayerScripts/QuarterViewCameraBootstrap.client.luau"
       ],
       "related": [
         "character-2d-rendering",
@@ -122,19 +119,72 @@ window.PACKBOUND_WIKI = {
         "studio-automation-routing"
       ],
       "validation": [
-        "Roblox Studio MCP Play, iPhone 17 Pro 세로 401×776: CameraType Scriptable, FOV 40, 캐릭터 캔버스 72×72px",
-        "Roblox Studio MCP Server: PackBoundField v8, 접지 보정 패널 69개, 비고정 파트 0개",
-        "Roblox Studio MCP 경계 충돌: X=120 이동 명령 후 X=90.4877에서 정지, 캐릭터 생존",
+        "Roblox Studio MCP Play, iPhone 17 Pro 세로 401×777: PackBoundField v21, 142 parts, 119 billboards, 864 occlusion tiles",
+        "Roblox Studio MCP Play: 캐릭터 주변 전경 차폐, 다층 원경, 화면 경계와 접지 상태 시각 검사",
         "Roblox Studio MCP Play 콘솔: 오류 출력 없음",
-        "rojo build packbound.project.json",
+        "bash tools/test_character_assets.sh",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
-        "python3 -m unittest tests/test_wiki.py",
         "git diff --check"
       ],
-      "source_path": "wiki/content/pages/world-art-bible/v002.md",
-      "body": "# PackBound 캐릭터·월드 아트 바이블\n\n## 기획 배경과 목표\n\n고물바람 초원의 첫 시안은 중앙의 보라색 이동면과 좌우의 녹지 포켓, 상단의\n중계탑·중계문, 대형 오리와 자판기 같은 기억점을 한 장의 넓은 키아트로\n정의했습니다. 이번 구현의 목표는 이 이미지를 그대로 평면 배경으로 복사하는 것이\n아니라, 세로 모바일 플레이에서도 같은 장소라고 느낄 수 있는 2.5D 공간 문법으로\n번역하는 것입니다.\n\n플레이어는 어디로 이동할 수 있는지 즉시 알아야 하고, 필드 끝은 갑자기 잘린\n사각형이 아니라 수풀·절벽·폐품 울타리로 닫힌 막다른 공간처럼 보여야 합니다.\n동시에 카메라를 과도하게 확대하거나 3D 기물을 추가하지 않고, 판넬에 그린 2D\n이미지를 세워 두는 프로젝트의 시각 정체성을 유지해야 합니다.\n\n![고물바람 초원 승인 시안](./media/world-art-bible/v002/concept.png \"중앙 보라색 길, 좌우 녹지 포켓, 상단 타워와 게이트, 대형 오리와 폐품 랜드마크가 만드는 필드 구성 기준\")\n\n## 사용자 경험\n\n플레이어는 화면 중앙에 고정되고 캐릭터 자체의 표시 크기는 이전보다 정확히\n1.5배 커집니다. 카메라를 캐릭터 쪽으로 당겨 주변 정보를 버리는 방식이 아니므로,\n중앙 캐릭터의 가독성과 전방 필드의 탐색 정보가 함께 유지됩니다.\n\n보라색 길은 직사각형 타일을 이어 붙인 모양 대신 넓은 중앙 공터와 여러 방향의\n분기를 가진 유기적인 이동면으로 보입니다. 녹지에는 작은 꽃과 청록 웅덩이가\n깔리고, 화면 위쪽에는 중계탑과 중계문, 좌측에는 대형 오리와 자판기, 주변에는\n코일·차단판·상자·쇼핑카트가 배치되어 시안의 기억점과 역할 색을 실제 플레이에서도\n찾을 수 있습니다.\n\n가장자리의 수풀, 절벽 단면, 울타리와 바위는 이동 불가 영역을 시각적으로 먼저\n설명합니다. 그 뒤에 어두운 외곽 녹지와 노을빛 원경을 겹쳐, 필드가 갑자기 끝나거나\n기물이 공중에 떠 있는 인상을 줄입니다.\n\n![고물바람 초원 Studio 최종 결과](./media/world-art-bible/v002/studio-final-play.jpg \"iPhone 17 Pro 세로 Play 화면에서 중앙 고정·1.5배 캐릭터, 유기적인 보라 길, 접지된 2D 랜드마크와 다층 경계를 확인\")\n\n## 핵심 원칙과 설계 철학\n\n### 3D 형태가 아니라 2D 패널의 겹침으로 깊이를 만든다\n\n필드의 랜드마크, 수풀, 절벽, 울타리, 상호작용 지물과 작은 장식은 모두\nBillboardGui 기반 2D 패널입니다. 화면 깊이는 3D 모델의 면 수가 아니라 카메라\n각도, 패널 크기, 전경·중경·후경 배치와 배경 레이어의 겹침으로 만듭니다.\n충돌은 투명 파트가 담당하며 그림의 형태와 물리 경계를 분리합니다.\n\n### 이동면은 한 장의 읽기 쉬운 구성으로 유지한다\n\n바닥은 보라색 중앙 길과 녹지 포켓, 낮은 돌 경계와 청록 웅덩이를 한 장에 정리한\n필드 레이아웃 텍스처를 사용합니다. 이 방식은 반복 타일과 직사각형 겹침이 만드는\n기계적인 경계를 없애고, 몬스터·보상·상호작용 기물을 추가해도 중앙 전투 공간을\n열어 둡니다. 높이가 있는 수풀과 바위는 바닥에 굽지 않고 별도 패널로 유지해\n낮아진 카메라에서도 납작하게 보이지 않게 합니다.\n\n### 화면 구도와 월드 배치는 함께 조정한다\n\n최종 카메라는 Yaw 45도, Pitch 36도, 거리 140, FOV 40, 초점 높이 3을 사용합니다.\n카메라 전방 오프셋은 0으로 두어 플레이어가 화면 중앙에서 벗어나지 않게 합니다.\n넓은 시안의 모든 오브젝트를 세로 화면에 억지로 축소하지 않고, 타워·게이트·오리·\n자판기 같은 핵심 실루엣을 중앙 축에 더 가깝게 재배치해 모바일 크롭에서도 장소의\n정체성을 보존합니다.\n\n### 접지점은 이미지의 실제 알파 하단을 기준으로 한다\n\n각 스프라이트 셀의 하단 투명 여백을 패널 크기에 맞게 환산해 시각적 밑동이\nY=0에 닿도록 패널 중심을 내립니다. 보이는 그림과 충돌 파트를 함께 이동하므로,\n고정 오브젝트가 하늘에 뜨거나 충돌 위치만 따로 남지 않습니다.\n\n## 결정 사항과 범위\n\n- 플레이 필드는 188×188 스터드이며 스폰은 (12, 0.65, 30)입니다.\n- 필드 레이아웃 이미지는 rbxassetid://105093818434394를 사용합니다.\n- 경계·랜드마크, 소형 지물, 절벽 단면은 각각 최종 3×3 아틀라스를 사용합니다.\n- 중계탑은 좌상단, 중계문은 우상단, 오리와 자판기는 좌측 중경, 보급 상자와\n  쇼핑카트는 우측·하단 기억점으로 배치합니다.\n- 필드 가장자리에는 투명 충돌벽과 2D 절벽·수풀 패널을 함께 둡니다.\n- 캐릭터 화면 배율은 0.1875에서 0.28125로 변경해 48×48px에서 72×72px로\n  정확히 1.5배 확대합니다.\n- 캐릭터 확대는 카메라 거리 변경으로 대신하지 않습니다.\n- 이번 범위에는 3D 환경 모델, PC 전용 구도, 몬스터 배치와 전투 밸런스가\n  포함되지 않습니다.\n\n## 현재 결과\n\nStudio의 iPhone 17 Pro 세로 Play 화면에서 캐릭터는 화면 중앙에 고정되고,\n보라색 길 양쪽의 녹지와 전경 수풀, 상단 랜드마크가 동시에 읽힙니다. 낮아진\n카메라가 타워·게이트·자판기의 정면 실루엣을 충분히 보여 주며, 필드 바깥은 절벽\n단면과 어두운 녹지, 노을 원경으로 이어집니다.\n\n필드에는 117개의 BillboardGui가 있고 SurfaceGui 기반 3D 기물은 없습니다.\n69개 패널에 스프라이트별 접지 보정을 적용했으며 모든 필드 파트는 고정 상태입니다.\n\n## 구현 참고\n\nFieldBuilder가 바닥, 배경, 경계 충돌, 절벽 단면, 랜드마크와 장식을 하나의\nPackBoundField v8 모델로 결정론적으로 구성합니다. WorldBootstrap은 서버\n시작 시 빌더를 실행하며 같은 버전이 이미 있으면 중복 생성을 피합니다.\n\nQuarterViewCamera는 설정된 Yaw·Pitch·거리로 카메라 오프셋을 만들고,\nLookAheadDistance를 수평 전방 벡터로 환산합니다. 현재 값은 0이므로 캐릭터의\n초점이 화면 중앙에 유지됩니다. 전체 캐릭터 확대에는 머리 앵커용\nFrameSprites.DisplayScale이 아니라 전체 캔버스의 CharacterScreenScale을\n사용해 머리와 몸의 정렬을 보존합니다.\n\n## 검증\n\n- Studio MCP Play에서 iPhone 17 Pro 세로 뷰포트가 401×776, 카메라가\n  Scriptable, FOV가 40임을 확인했습니다.\n- 캐릭터 CharacterScreenScale은 0.28125이고 실제 캔버스는 72×72px였습니다.\n- 서버 필드는 v8, 접지 보정 패널은 69개, 비고정 파트는 0개였습니다.\n- 동쪽 경계 밖 X=120으로 이동시킨 캐릭터는 X=90.4877에서 멈췄고 생존했습니다.\n- Play 콘솔에는 오류 출력이 없었습니다.\n- Rojo 빌드와 위키 빌드·동기화 검사, 위키 단위 테스트와 공백 검사를 모두\n  통과했습니다.\n\n## 후속 기획\n\n- 실제 몬스터를 배치할 때는 중앙 보라색 전투 공터의 가독성을 우선하고, 새 장식은\n  녹지 포켓과 가장자리로 제한합니다.\n- 추가 모바일 기기에서는 캐릭터 중앙 고정과 터치 UI가 함께 보이는 상태를 별도로\n  검증하되, 월드 카메라 값을 기기별 상수로 분기하지 않습니다.\n- 새 필드를 제작할 때도 바닥 레이아웃, 2D 패널, 알파 접지점, 충돌 경계와 원경의\n  다섯 계층을 같은 순서로 구성합니다.\n",
+      "source_path": "wiki/content/pages/world-art-bible/v003.md",
+      "body": "# PackBound 캐릭터·월드 아트 바이블\n\n## 기획 배경과 목표\n\n고물바람 초원의 v002는 한 장의 유기적인 이동면과 2D 패널 랜드마크로 장소의 정체성을\n확정했습니다. 그러나 카메라가 이동할 때 원경과 필드가 같은 속도로 따라오면 배경이\n붙어 있는 판처럼 느껴지고, 화면 가까이 들어오는 수풀은 캐릭터 전체를 가리거나 갑자기\n사라져 깊이 표현과 플레이 가독성이 충돌했습니다.\n\n이번 확장의 목표는 3D 오브젝트를 늘리지 않고도 화면 앞·필드·원경이 서로 다른 깊이에\n있다고 느끼게 하는 것입니다. 캐릭터가 전경 뒤로 지나갈 때는 주변만 자연스럽게 열리고,\n필드 바깥은 검은 빈 공간이 아니라 계속 이어지는 식생과 성채 원경으로 보여야 합니다.\n\n## 플레이어 경험\n\n카메라를 따라 이동하면 먼 능선, 중간 수풀과 플레이 필드가 서로 다른 속도로 움직여\n공간의 깊이가 읽힙니다. 화면 아래의 전경 수풀과 폐품 구조물은 캐릭터보다 앞에 놓이지만,\n캐릭터가 가까워지면 작은 타일 단위로 필요한 부분만 투명해져 위치와 방향을 놓치지\n않습니다. 상단의 성채, 청록 수로와 보라 이동면은 기존 장소의 기억점을 유지합니다.\n\n![고물바람 초원 필드 v21](./media/world-art-bible/v003/studio-field-v21.jpg \"iPhone 17 Pro 세로 Play에서 성채 원경, 청록 녹지, 보라 이동면, 전경 패널과 중앙 캐릭터의 깊이 관계를 확인\")\n\n## 핵심 원칙과 설계 철학\n\n### 2D 레이어의 상대 이동으로 깊이를 만든다\n\n원경과 중경 패널에는 각자의 패럴랙스 계수와 기준점을 저장합니다. 카메라 초점이 움직일\n때 `QuarterViewCamera`가 기준점에서의 차이를 계수만큼 반영하므로, 가까운 월드와 먼\n실루엣이 같은 속도로 미끄러지지 않습니다. 런타임에서 그림을 재생성하지 않고 패널의\n위치만 갱신합니다.\n\n### 차폐는 패널 전체가 아니라 알파 타일을 연다\n\n전경 패널은 8×9 타일로 나뉜 이미지 레이어를 가지며 캐릭터 주변 반경과 겹치는 타일만\n숨깁니다. 원본 패널을 통째로 투명하게 만들지 않아 수풀의 존재감과 화면 구도를 유지하고,\n캐릭터 실루엣에 필요한 최소 창만 만듭니다.\n\n### 필드 경계도 세계의 일부로 보인다\n\n외곽 식생 바닥과 전경 캐노피를 카메라 크롭 바깥까지 배치해 플레이 가능한 바닥이 끝난\n뒤에도 같은 생태가 이어지는 인상을 만듭니다. 충돌 경계는 기존처럼 투명 파트가 담당하고,\n화면의 막힘은 수풀·폐품·절벽 실루엣이 먼저 설명합니다.\n\n## 결정 사항과 정리 범위\n\n- 권위 있는 런타임 필드는 `PackBoundField` v21입니다.\n- 현재 필드는 142개 파트, 119개 BillboardGui와 864개 차폐 타일을 사용합니다.\n- 최종 원경·중경·전경·외곽 식생 이미지만 유지하고 이전 버전 및 중복 아틀라스는\n  복구 가능한 휴지통으로 이동했습니다.\n- 차폐 컨트롤러는 로컬 캐릭터를 기준으로 매 프레임 필요한 타일만 갱신합니다.\n- 월드의 고정 기물은 계속 2D 패널이며 3D 환경 모델 전환은 이번 범위가 아닙니다.\n\n## 현재 결과와 구현 참고\n\n`FieldBuilder`는 원경과 패럴랙스 레이어, 전경 차폐 패널을 결정론적으로 만들고 각 패널에\n기준점과 차폐 속성을 기록합니다. `QuarterViewCameraBootstrap`은 카메라와\n`FieldOcclusionController`를 함께 시작합니다. 카메라는 초점 이동 후 패럴랙스 레이어를\n갱신하고, 차폐 컨트롤러는 캐릭터 화면 위치와 전경 타일의 영역을 비교합니다.\n\n## 검증\n\nStudio MCP의 iPhone 17 Pro 세로 401×777 Play에서 v21 필드의 성채 원경, 청록 녹지,\n보라 이동면, 전경 구조물과 중앙 캐릭터가 한 화면에 읽히는 것을 확인했습니다. 서버\n검사에서 142개 파트, 119개 BillboardGui와 864개 차폐 타일이 생성됐고 런타임 콘솔에는\n오류가 없었습니다. 캐릭터 에셋 검사와 저장소 전체 자동 테스트도 통과했습니다. 검증 후\nStudio는 기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 몬스터와 대형 전경 기물을 추가할 때는 차폐 타일 수와 갱신 비용을 함께 측정합니다.\n- 패럴랙스 계수는 필드별 화면 깊이를 표현하는 토큰으로 관리하고 기기 해상도별 상수로\n  분기하지 않습니다.\n- 새 배경 시안은 원경, 중경, 플레이면, 전경과 차폐 반경을 하나의 레이어 계획으로\n  승인합니다.\n",
       "revisions": [
+        {
+          "id": "world-art-bible",
+          "title": "PackBound 캐릭터·월드 아트 바이블",
+          "summary": "고물바람 초원을 전경 차폐, 원·중경 패럴랙스와 화면 밖까지 이어지는 식생으로 확장해 세로 모바일 이동 중에도 2D 패널 필드의 깊이와 캐릭터 가독성을 함께 유지합니다.",
+          "status": "active",
+          "category": "art",
+          "tags": [
+            "art",
+            "environment",
+            "field",
+            "2.5d",
+            "parallax",
+            "occlusion",
+            "mobile",
+            "roblox"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-13",
+          "authors": [
+            "Codex"
+          ],
+          "version": 3,
+          "change_type": "updated",
+          "change_summary": "필드 v21에서 원경과 중경을 카메라 이동에 따라 분리하고, 전경 패널의 캐릭터 주변만 타일 단위로 비우는 차폐와 화면 바깥 식생을 추가해 평면 배경의 끝과 캐릭터 가림을 함께 해결했습니다.",
+          "supersedes": "world-art-bible@v002",
+          "sources": [
+            "wiki/content/pages/world-art-bible/v002.md",
+            "wiki/content/media/world-art-bible/v003/studio-field-v21.jpg",
+            "Assets/World/Backgrounds/junkwind_mystic_castle_panorama_v1.png",
+            "Assets/World/Backgrounds/junkwind_parallax_far_ridges_v1.png",
+            "Assets/World/Backgrounds/junkwind_parallax_mid_canopy_v1.png",
+            "Assets/World/Foregrounds/junkwind_foreground_canopy_v1.png",
+            "Assets/World/Textures/junkwind_exterior_foliage_ground_v1.png",
+            "src/ServerScriptService/FieldBuilder.luau",
+            "src/ReplicatedStorage/Character2D/QuarterViewCamera.luau",
+            "src/ReplicatedStorage/Character2D/FieldOcclusionController.luau",
+            "src/StarterPlayer/StarterPlayerScripts/QuarterViewCameraBootstrap.client.luau"
+          ],
+          "related": [
+            "character-2d-rendering",
+            "project-overview",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "Roblox Studio MCP Play, iPhone 17 Pro 세로 401×777: PackBoundField v21, 142 parts, 119 billboards, 864 occlusion tiles",
+            "Roblox Studio MCP Play: 캐릭터 주변 전경 차폐, 다층 원경, 화면 경계와 접지 상태 시각 검사",
+            "Roblox Studio MCP Play 콘솔: 오류 출력 없음",
+            "bash tools/test_character_assets.sh",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "git diff --check"
+          ],
+          "body": "# PackBound 캐릭터·월드 아트 바이블\n\n## 기획 배경과 목표\n\n고물바람 초원의 v002는 한 장의 유기적인 이동면과 2D 패널 랜드마크로 장소의 정체성을\n확정했습니다. 그러나 카메라가 이동할 때 원경과 필드가 같은 속도로 따라오면 배경이\n붙어 있는 판처럼 느껴지고, 화면 가까이 들어오는 수풀은 캐릭터 전체를 가리거나 갑자기\n사라져 깊이 표현과 플레이 가독성이 충돌했습니다.\n\n이번 확장의 목표는 3D 오브젝트를 늘리지 않고도 화면 앞·필드·원경이 서로 다른 깊이에\n있다고 느끼게 하는 것입니다. 캐릭터가 전경 뒤로 지나갈 때는 주변만 자연스럽게 열리고,\n필드 바깥은 검은 빈 공간이 아니라 계속 이어지는 식생과 성채 원경으로 보여야 합니다.\n\n## 플레이어 경험\n\n카메라를 따라 이동하면 먼 능선, 중간 수풀과 플레이 필드가 서로 다른 속도로 움직여\n공간의 깊이가 읽힙니다. 화면 아래의 전경 수풀과 폐품 구조물은 캐릭터보다 앞에 놓이지만,\n캐릭터가 가까워지면 작은 타일 단위로 필요한 부분만 투명해져 위치와 방향을 놓치지\n않습니다. 상단의 성채, 청록 수로와 보라 이동면은 기존 장소의 기억점을 유지합니다.\n\n![고물바람 초원 필드 v21](./media/world-art-bible/v003/studio-field-v21.jpg \"iPhone 17 Pro 세로 Play에서 성채 원경, 청록 녹지, 보라 이동면, 전경 패널과 중앙 캐릭터의 깊이 관계를 확인\")\n\n## 핵심 원칙과 설계 철학\n\n### 2D 레이어의 상대 이동으로 깊이를 만든다\n\n원경과 중경 패널에는 각자의 패럴랙스 계수와 기준점을 저장합니다. 카메라 초점이 움직일\n때 `QuarterViewCamera`가 기준점에서의 차이를 계수만큼 반영하므로, 가까운 월드와 먼\n실루엣이 같은 속도로 미끄러지지 않습니다. 런타임에서 그림을 재생성하지 않고 패널의\n위치만 갱신합니다.\n\n### 차폐는 패널 전체가 아니라 알파 타일을 연다\n\n전경 패널은 8×9 타일로 나뉜 이미지 레이어를 가지며 캐릭터 주변 반경과 겹치는 타일만\n숨깁니다. 원본 패널을 통째로 투명하게 만들지 않아 수풀의 존재감과 화면 구도를 유지하고,\n캐릭터 실루엣에 필요한 최소 창만 만듭니다.\n\n### 필드 경계도 세계의 일부로 보인다\n\n외곽 식생 바닥과 전경 캐노피를 카메라 크롭 바깥까지 배치해 플레이 가능한 바닥이 끝난\n뒤에도 같은 생태가 이어지는 인상을 만듭니다. 충돌 경계는 기존처럼 투명 파트가 담당하고,\n화면의 막힘은 수풀·폐품·절벽 실루엣이 먼저 설명합니다.\n\n## 결정 사항과 정리 범위\n\n- 권위 있는 런타임 필드는 `PackBoundField` v21입니다.\n- 현재 필드는 142개 파트, 119개 BillboardGui와 864개 차폐 타일을 사용합니다.\n- 최종 원경·중경·전경·외곽 식생 이미지만 유지하고 이전 버전 및 중복 아틀라스는\n  복구 가능한 휴지통으로 이동했습니다.\n- 차폐 컨트롤러는 로컬 캐릭터를 기준으로 매 프레임 필요한 타일만 갱신합니다.\n- 월드의 고정 기물은 계속 2D 패널이며 3D 환경 모델 전환은 이번 범위가 아닙니다.\n\n## 현재 결과와 구현 참고\n\n`FieldBuilder`는 원경과 패럴랙스 레이어, 전경 차폐 패널을 결정론적으로 만들고 각 패널에\n기준점과 차폐 속성을 기록합니다. `QuarterViewCameraBootstrap`은 카메라와\n`FieldOcclusionController`를 함께 시작합니다. 카메라는 초점 이동 후 패럴랙스 레이어를\n갱신하고, 차폐 컨트롤러는 캐릭터 화면 위치와 전경 타일의 영역을 비교합니다.\n\n## 검증\n\nStudio MCP의 iPhone 17 Pro 세로 401×777 Play에서 v21 필드의 성채 원경, 청록 녹지,\n보라 이동면, 전경 구조물과 중앙 캐릭터가 한 화면에 읽히는 것을 확인했습니다. 서버\n검사에서 142개 파트, 119개 BillboardGui와 864개 차폐 타일이 생성됐고 런타임 콘솔에는\n오류가 없었습니다. 캐릭터 에셋 검사와 저장소 전체 자동 테스트도 통과했습니다. 검증 후\nStudio는 기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 몬스터와 대형 전경 기물을 추가할 때는 차폐 타일 수와 갱신 비용을 함께 측정합니다.\n- 패럴랙스 계수는 필드별 화면 깊이를 표현하는 토큰으로 관리하고 기기 해상도별 상수로\n  분기하지 않습니다.\n- 새 배경 시안은 원경, 중경, 플레이면, 전경과 차폐 반경을 하나의 레이어 계획으로\n  승인합니다.\n",
+          "source_path": "wiki/content/pages/world-art-bible/v003.md"
+        },
         {
           "id": "world-art-bible",
           "title": "PackBound 캐릭터·월드 아트 바이블",
@@ -345,7 +395,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "inventory-item-concept",
       "title": "인벤토리와 아이템 개념",
-      "summary": "아이템 제작자가 긴 편집 내용을 탐색하는 동안에도 저장과 취소를 즉시 실행하고, 칸 설정에서는 아이템 실루엣을 30% 참조 레이어로 보며 점유 칸을 고를 수 있게 했습니다.",
+      "summary": "세로 모바일에서 배치 보드를 가장 큰 작업면으로 유지하는 네이티브 육각 인벤토리를 확정하고, 100종 ItemDB와 현재 사용 중인 제어 리소스만 런타임에 연결했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
@@ -355,21 +405,34 @@ window.PACKBOUND_WIKI = {
         "item-db",
         "hex-grid",
         "ui",
-        "authoring"
+        "mobile",
+        "roblox"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-12",
+      "updated_at": "2026-08-13",
       "authors": [
         "Codex"
       ],
-      "version": 7,
-      "change_type": "corrected",
-      "change_summary": "ItemDB 편집기의 저장·취소를 스크롤 바깥 상단에 고정하고, 칸 레이어에 가려졌던 30% 불투명 아이템 이미지를 선택 칸 위의 참조 레이어로 복구했습니다.",
-      "supersedes": "inventory-item-concept@v006",
+      "version": 8,
+      "change_type": "updated",
+      "change_summary": "여러 시안의 이미지 프레임을 폐기하고 Roblox 네이티브 레이아웃과 단일 제어 키트로 모바일 인벤토리를 재구성했으며, 100종 ItemDB·육각 점유 형태·시너지·서버 권위를 한 계약으로 동기화했습니다.",
+      "supersedes": "inventory-item-concept@v007",
       "sources": [
-        "wiki/site/app.css",
-        "wiki/site/app.js",
-        "wiki/content/media/inventory-item-concept/v007/itemdb-editor-fixed-actions-cell-reference.jpg"
+        "wiki/content/pages/inventory-item-concept/v007.md",
+        "wiki/content/media/inventory-item-concept/v008/studio-native-mobile-inventory.jpg",
+        "docs/gameplay/inventory-item-art-catalog.md",
+        "docs/gameplay/inventory-item-layouts.json",
+        "docs/gameplay/backpack-inventory-planning-reference.md",
+        "Assets/UI/Backpack/CurrentControls",
+        "Assets/UI/Backpack/Hex/hex_fill.png",
+        "Assets/UI/Backpack/SynergyIcons",
+        "src/ReplicatedStorage/BackpackUI/VisualTokens.luau",
+        "src/ReplicatedStorage/BackpackUI/UIPrimitives.luau",
+        "src/ReplicatedStorage/BackpackUI/Screen.luau",
+        "src/ReplicatedStorage/BackpackUI/ScreenRenderer.luau",
+        "src/ReplicatedStorage/BackpackUI/InventoryBoardModel.luau",
+        "src/ServerScriptService/InventoryService.luau",
+        "tests/BackpackUI.spec.luau"
       ],
       "related": [
         "development-wiki",
@@ -377,21 +440,78 @@ window.PACKBOUND_WIKI = {
         "project-overview"
       ],
       "validation": [
-        "node --check wiki/site/app.js",
-        "node tests/item-db.spec.js",
-        "node tests/local-access.spec.js",
-        "python3 tools/item_db.py check",
+        "ItemDB build/check: 활성 아이템 100종과 게임 런타임 레이아웃 동기화",
+        "python3 -m unittest discover -s tests -p 'test_*.py': 49 tests 통과",
+        "bash tools/test_backpack_ui.sh",
+        "Roblox Studio MCP Play, iPhone 17 Pro 세로 401×777: 보드·모드 탭·확대 조작·보관함 표시, ZoomIndex 변경, 콘솔 오류 없음",
+        "Roblox Studio MCP Play, ProjectBackpack HighRes 세로 1206×1626: Item 모드 전환, 완전한 카드 행과 터치 영역, 콘솔 오류 없음",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
-        "python3 -m unittest tests/test_wiki.py",
-        "python3 -m unittest tests.test_repository_policy",
-        "로컬 ItemDB 브라우저에서 칸 설정 모드 opacity 0.3, 이미지 z-index 3, 칸 z-index 2, 이미지 pointer-events none 확인",
-        "본문을 끝까지 스크롤한 뒤 저장 버튼 위치 유지와 실제 클릭 대상 확인",
-        "Chrome에서 구형 local-access 캐시와 신형 앱 조합의 초기 로딩 복구 및 콘솔 신규 오류 없음 확인"
+        "git diff --check"
       ],
-      "source_path": "wiki/content/pages/inventory-item-concept/v007.md",
-      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\nItemDB 편집기는 아이템 이미지와 육각형 점유 형태를 승인하는 제작 도구입니다. 편집\n항목이 늘어나 세로 스크롤이 길어지더라도 제작자가 저장이나 취소를 찾기 위해 화면 끝을\n왕복해서는 안 됩니다. 또한 칸을 고르는 순간 아이템 그림이 사라지면 실루엣과 점유 형태를\n비교한다는 편집기의 핵심 목적을 잃습니다.\n\n이번 변경은 편집 내용의 길이와 관계없이 주요 결정을 항상 실행할 수 있게 하고, 칸 설정\n중에도 아이템 그림을 방해되지 않는 참고 정보로 유지하는 데 목적이 있습니다.\n\n## 사용자 경험\n\n- 제목과 닫기 아래에 `취소`와 `저장`이 고정되어 본문 스크롤 위치와 무관하게 보입니다.\n- 이미지·육각 칸·조절 항목을 담은 본문만 편집기 내부에서 스크롤됩니다.\n- `칸 설정하기`에서는 아이템 이미지가 30% 불투명도로 선택 칸 위에 남습니다.\n- 반투명 이미지는 입력을 받지 않으므로 보이는 그림을 통과해 육각 칸을 선택할 수 있습니다.\n- `이미지 이동하기`로 돌아오면 이미지는 즉시 100% 불투명도로 복원됩니다.\n\n## 핵심 원칙과 설계 철학\n\n### 결정 버튼은 콘텐츠 길이에 종속되지 않는다\n\n저장과 취소는 편집 내용이 아니라 편집 세션 자체에 대한 행동입니다. 따라서 스크롤되는\n본문과 분리해 상단 액션 영역에 고정했습니다. 새로운 설정이 추가되더라도 주요 행동의\n위치와 접근성은 변하지 않습니다.\n\n### 참조 이미지는 보이되 칸 조작을 막지 않는다\n\n칸 설정 모드의 이미지는 `opacity: 0.3`으로 낮추고 포인터 입력을 비활성화합니다. 이미지\n레이어는 육각 칸보다 위에 두어 실루엣이 색칠된 선택 칸에 가려지지 않게 했습니다. 클릭은\n아래의 칸으로 전달되므로 시각적 참고와 직접 조작을 동시에 만족합니다.\n\n### 캐시 시차도 로컬 제작 도구를 멈추게 하지 않는다\n\n로컬 위키 앱은 현재 접근 판별 API와 브라우저에 남을 수 있는 이전 함수명을 모두\n수용합니다. 브라우저 캐시에 두 버전이 잠시 섞여도 앱 초기화가 중단되지 않고 문서와\n데이터베이스를 계속 표시합니다.\n\n## 결정 사항과 범위\n\n이번 범위는 ItemDB 편집 모달의 행동 배치, 내부 스크롤, 칸 설정 참조 이미지 레이어와\n로컬 접근 판별의 하위 호환성입니다. 아이템 데이터, 점유 좌표, 이미지 리소스와 게임\n런타임 배치 규칙은 변경하지 않았습니다.\n\n## 현재 결과\n\n![상단 고정 행동과 반투명 참조 이미지를 적용한 ItemDB 편집기](./media/inventory-item-concept/v007/itemdb-editor-fixed-actions-cell-reference.jpg \"취소·저장이 상단에 고정되고 안테나 리커브 보우가 선택한 세 육각 칸 위에 30% 불투명도로 보이는 최종 화면\")\n\n칸 설정 상태에서도 활의 세로 실루엣이 선택된 세 칸 위에 남습니다. 저장과 취소는 본문\n스크롤 바깥에 있어 편집 중 어느 위치에서도 같은 자리에 유지됩니다.\n\n## 구현 참고\n\n편집 모달은 고정 헤더, 고정 액션 영역과 스크롤 본문으로 나뉩니다. 상태 갱신 함수는\n모드가 `cells`일 때 이미지 인라인 불투명도를 `0.3`, 이동 모드에서는 `1`로 명시해\n스타일 적용을 상태와 직접 동기화합니다. 칸 설정의 이미지 레이어는 `z-index: 3`, 육각\n그리드는 `z-index: 2`이며 이미지의 `pointer-events`는 `none`입니다.\n\n로컬 접근 판별은 현재 API를 우선 사용하고, 없을 때만 분리된 문자열로 보존한 이전 함수\n키를 조회합니다. 현재 소스 계약에는 폐기된 이름을 다시 노출하지 않으면서 캐시 시차만\n안전하게 흡수합니다.\n\n## 검증\n\n로컬 브라우저에서 칸 설정과 이미지 이동을 왕복하며 계산 불투명도 `0.3`과 `1`, 레이어\n순서와 포인터 입력 비활성화를 확인했습니다. 내부 본문을 끝까지 스크롤한 뒤에도 액션\n영역과 저장 버튼 좌표가 유지됐고, 저장 버튼 중심의 실제 클릭 대상도 버튼 자신이었습니다.\n\nChrome에서는 이전 접근 모듈이 캐시된 상태에서 새 앱을 불러오는 조합을 재현한 뒤 문서\n7개와 데이터베이스 탐색이 정상 복구되고 새 콘솔 오류가 발생하지 않는 것을 확인했습니다.\n정적 구문 검사, ItemDB 검사, 관련 Node 테스트와 위키 생성·정책 검사를 함께 수행했습니다.\n\n## 후속 기획\n\n- ItemDB에 새로운 편집 항목을 추가해도 저장·취소는 고정 액션 영역에 유지합니다.\n- 칸 설정 시 아이템 고유 색과 실루엣을 보존하며, 이미지가 칸 선택 입력을 가로채지 않게\n  합니다.\n- 로컬 전용 API를 이름 변경할 때는 최소 한 버전 동안 양방향 호환 별칭을 유지합니다.\n",
+      "source_path": "wiki/content/pages/inventory-item-concept/v008.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n인벤토리 화면은 장식 프레임을 감상하는 메뉴가 아니라 육각 가방과 아이템을 반복해서\n집고, 돌리고, 놓는 작업대입니다. 시안이 바뀔 때마다 큰 래스터 프레임과 임시 버튼을\n덧대는 방식은 화면 비율이 달라질수록 배치가 흔들리고, 현재 무엇이 실제 런타임 자산인지\n구분하기 어렵게 만들었습니다.\n\n이번 버전은 배치 보드를 세로 모바일 화면의 주 작업면으로 고정하고, Roblox UI 객체가\n구조·반응형 배치·상태를 담당하도록 전환했습니다. 이미지 리소스는 육각형의 정확한 채움,\n현재 제어판과 아이콘, 시너지 심볼처럼 그림이 필요한 부분에만 제한했습니다. 동시에 웹\nItemDB의 아이템 정보가 카드와 배치 결과의 유일한 원본이 되도록 게임 런타임과 생성물을\n다시 묶었습니다.\n\n## 플레이어 경험\n\n- 상단 상태 바는 얇게 유지되고 배치 보드가 남은 세로 공간의 우선권을 가집니다.\n- 가방 배치와 아이템 배치 탭은 보드 왼쪽 안쪽 모서리에 붙어, 보드 전체 모드를 바꾸는\n  제어라는 의미를 전달합니다.\n- 확대·원점·축소는 보드 우측 상단에 모이고, 실제 터치 영역은 최소 48px을 유지합니다.\n- 보관함은 화면 아래에 붙고 최소 네 열과 완전한 두 행을 보장합니다. 더 넓거나 긴\n  세로 화면에서는 더 많은 열·행을 보여 주되 세로 방향의 반쪽 카드 행은 만들지 않습니다.\n- 아이템과 가방은 ItemDB의 회전, 각도, axial 육각 점유 형태와 크기를 그대로 사용합니다.\n- 드래그 중에는 손가락보다 조금 위에 실제 배치 크기의 대상이 보이고, 예상 위치는\n  아이콘을 중복하지 않는 초록색 또는 빨간색 육각 외곽선으로만 표시됩니다.\n- 잘못된 배치는 빨간 외곽선만 사용하며 빈번한 실수를 방해하는 토스트 경고는 띄우지\n  않습니다.\n\n![네이티브 모바일 인벤토리 최종 결과](./media/inventory-item-concept/v008/studio-native-mobile-inventory.jpg \"ProjectBackpack HighRes 세로 Play에서 얇은 상태 바, 넓은 배치 보드, 보드 결합 탭, 우측 보기 제어와 완전한 보관 카드 행을 확인\")\n\n## 핵심 원칙과 설계 철학\n\n### 보드가 화면의 주인이다\n\n헤더와 보관함은 필요한 정보와 조작만 차지하고, 남은 높이는 보드에 먼저 배정합니다.\n보관함의 카드 크기와 행 수는 보드 최소 높이를 침범하지 않는 범위에서 계산합니다.\n가로 방향은 남는 공간을 모두 쓰기 위해 다음 카드 일부가 잘려 보일 수 있지만, 세로\n방향은 완전한 행만 노출합니다.\n\n### 반응형 부모 안에서만 고정 픽셀을 쓴다\n\n화면 너비·높이에서 헤더, 보드, 보관함의 영역을 먼저 계산한 뒤 카드, 탭, 제어 버튼의\n픽셀 크기를 제한 범위 안에서 정합니다. 드래그 손가락 오프셋과 48px 터치 영역처럼\n물리적으로 일정해야 하는 값만 반응형 부모 내부의 고정값으로 둡니다. 따라서 해상도가\n높아져도 집은 아이템이 포인터에서 비정상적으로 멀어지지 않습니다.\n\n### 데이터와 시각 자산의 권위를 분리한다\n\n아이템 이름, 종류, 무게, 시너지, 아이콘, 점유 칸과 초기 회전은 ItemDB가 소유합니다.\nUI 리소스는 입력 상태를 읽기 좋게 표현할 뿐 아이템 규칙을 복제하지 않습니다.\n`tools/item_db.py`가 웹 데이터와 `GeneratedItemLayouts.luau`를 함께 생성하므로 ItemDB의\n수정이 카드 미리보기와 실제 배치에 같은 형태로 반영됩니다.\n\n### 서버가 최종 배치를 판정한다\n\n클라이언트는 드래그와 예상 외곽선을 즉시 그리지만, 아이템 이동·회전·보관과 전투 진입\n조건은 서버 인벤토리 서비스가 검증합니다. 클라이언트가 보여 주는 육각 기하와 서버가\n허용하는 점유 좌표는 같은 axial 회전 규칙을 공유합니다.\n\n## 결정 사항과 정리 범위\n\n- 활성 ItemDB는 아이콘을 가진 100종이며 각 항목은 0~3개 시너지와 axial footprint를\n  가집니다.\n- 현재 UI 로컬 리소스는 `CurrentControls` 16개, 공통 육각 채움 1개, 시너지 아이콘\n  26개와 그 재생성 원본만 유지합니다.\n- 과거 시안 프레임, 폐기된 버튼·타일·범용 아이콘, 중복 런타임 육각 PNG/SVG와 해당\n  생성기는 제거했습니다.\n- 가방/아이템 카드와 보드 셀은 정사각 채움이 아닌 동일한 flat-top 육각 기하를 사용합니다.\n- 필터는 선택, 사용 가능, 비활성의 세 상태를 가지며 선택 바는 아이콘과 겹치지 않습니다.\n- PC 전용 조밀도나 마우스 우선 동작은 이번 완료 기준에 포함하지 않습니다.\n\n## 현재 결과와 구현 참고\n\n`VisualTokens`가 현재 뷰포트에서 보드 우선 높이, 카드 폭, 완전한 행 수, 탭과 제어 레일의\n위치를 계산합니다. `ScreenRenderer`는 이 토큰과 `UIPrimitives`의 단일 제어 키트로 모든\n상태를 구성하고, `Screen`은 터치·드래그·보관함 횡스크롤·회전·선택을 연결합니다.\n\n기존 `Assets.luau`와 정사각 `GridModel`은 제거됐습니다. 육각 좌표, 외곽선과 충돌은\n`HexGrid`, `HexOutlineModel`, `InventoryBoardModel`이 담당하며 카드와 배치 보드가 같은\n기하를 사용합니다. 사용되지 않는 로컬 시안과 중간 리소스는 복구 가능한 휴지통으로\n이동해 저장소에는 최신 런타임과 재현에 필요한 원본만 남겼습니다.\n\n## 검증\n\nItemDB 생성·검사에서 활성 100종의 이미지와 배치 데이터가 웹 데이터와 게임 생성물에\n동일하게 존재함을 확인했습니다. Python 전체 49개 테스트, Node 기반 ItemDB·위키 정책\n테스트와 Luau 인벤토리 테스트를 통과했습니다.\n\nStudio MCP Play에서는 iPhone 17 Pro 세로 401×777과 별도 고해상도 세로\n1206×1626을 검증했습니다. 두 화면 모두 안전 영역 안에서 헤더·보드·탭·보기 제어·보관함이\n잘리거나 겹치지 않았습니다. 작은 화면에서는 확대 입력으로 `ZoomIndex` 변경을, 큰\n화면에서는 아이템 탭 입력으로 `Mode=Item` 전환을 확인했고 두 런타임 콘솔은 비어\n있었습니다. 검증 후 Studio는 기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 새 아이템은 ItemDB 원본을 수정하고 생성·검사를 통과한 뒤에만 런타임에 추가합니다.\n- 새 UI 제어가 필요하면 현재 제어 키트에 목적이 분명한 한 변형만 추가하고 임시 시안\n  폴더를 런타임 자산처럼 쌓지 않습니다.\n- 터치 드래그의 실제 손가락 가림 정도는 다른 물리 크기의 최신 폰에서도 지속 관찰하되,\n  화면 비율별 임의 배율이 아니라 고정 픽셀 오프셋 계약을 유지합니다.\n",
       "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "세로 모바일에서 배치 보드를 가장 큰 작업면으로 유지하는 네이티브 육각 인벤토리를 확정하고, 100종 ItemDB와 현재 사용 중인 제어 리소스만 런타임에 연결했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "item-db",
+            "hex-grid",
+            "ui",
+            "mobile",
+            "roblox"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-13",
+          "authors": [
+            "Codex"
+          ],
+          "version": 8,
+          "change_type": "updated",
+          "change_summary": "여러 시안의 이미지 프레임을 폐기하고 Roblox 네이티브 레이아웃과 단일 제어 키트로 모바일 인벤토리를 재구성했으며, 100종 ItemDB·육각 점유 형태·시너지·서버 권위를 한 계약으로 동기화했습니다.",
+          "supersedes": "inventory-item-concept@v007",
+          "sources": [
+            "wiki/content/pages/inventory-item-concept/v007.md",
+            "wiki/content/media/inventory-item-concept/v008/studio-native-mobile-inventory.jpg",
+            "docs/gameplay/inventory-item-art-catalog.md",
+            "docs/gameplay/inventory-item-layouts.json",
+            "docs/gameplay/backpack-inventory-planning-reference.md",
+            "Assets/UI/Backpack/CurrentControls",
+            "Assets/UI/Backpack/Hex/hex_fill.png",
+            "Assets/UI/Backpack/SynergyIcons",
+            "src/ReplicatedStorage/BackpackUI/VisualTokens.luau",
+            "src/ReplicatedStorage/BackpackUI/UIPrimitives.luau",
+            "src/ReplicatedStorage/BackpackUI/Screen.luau",
+            "src/ReplicatedStorage/BackpackUI/ScreenRenderer.luau",
+            "src/ReplicatedStorage/BackpackUI/InventoryBoardModel.luau",
+            "src/ServerScriptService/InventoryService.luau",
+            "tests/BackpackUI.spec.luau"
+          ],
+          "related": [
+            "development-wiki",
+            "backpack-combat-stat-database",
+            "project-overview"
+          ],
+          "validation": [
+            "ItemDB build/check: 활성 아이템 100종과 게임 런타임 레이아웃 동기화",
+            "python3 -m unittest discover -s tests -p 'test_*.py': 49 tests 통과",
+            "bash tools/test_backpack_ui.sh",
+            "Roblox Studio MCP Play, iPhone 17 Pro 세로 401×777: 보드·모드 탭·확대 조작·보관함 표시, ZoomIndex 변경, 콘솔 오류 없음",
+            "Roblox Studio MCP Play, ProjectBackpack HighRes 세로 1206×1626: Item 모드 전환, 완전한 카드 행과 터치 영역, 콘솔 오류 없음",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "git diff --check"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n인벤토리 화면은 장식 프레임을 감상하는 메뉴가 아니라 육각 가방과 아이템을 반복해서\n집고, 돌리고, 놓는 작업대입니다. 시안이 바뀔 때마다 큰 래스터 프레임과 임시 버튼을\n덧대는 방식은 화면 비율이 달라질수록 배치가 흔들리고, 현재 무엇이 실제 런타임 자산인지\n구분하기 어렵게 만들었습니다.\n\n이번 버전은 배치 보드를 세로 모바일 화면의 주 작업면으로 고정하고, Roblox UI 객체가\n구조·반응형 배치·상태를 담당하도록 전환했습니다. 이미지 리소스는 육각형의 정확한 채움,\n현재 제어판과 아이콘, 시너지 심볼처럼 그림이 필요한 부분에만 제한했습니다. 동시에 웹\nItemDB의 아이템 정보가 카드와 배치 결과의 유일한 원본이 되도록 게임 런타임과 생성물을\n다시 묶었습니다.\n\n## 플레이어 경험\n\n- 상단 상태 바는 얇게 유지되고 배치 보드가 남은 세로 공간의 우선권을 가집니다.\n- 가방 배치와 아이템 배치 탭은 보드 왼쪽 안쪽 모서리에 붙어, 보드 전체 모드를 바꾸는\n  제어라는 의미를 전달합니다.\n- 확대·원점·축소는 보드 우측 상단에 모이고, 실제 터치 영역은 최소 48px을 유지합니다.\n- 보관함은 화면 아래에 붙고 최소 네 열과 완전한 두 행을 보장합니다. 더 넓거나 긴\n  세로 화면에서는 더 많은 열·행을 보여 주되 세로 방향의 반쪽 카드 행은 만들지 않습니다.\n- 아이템과 가방은 ItemDB의 회전, 각도, axial 육각 점유 형태와 크기를 그대로 사용합니다.\n- 드래그 중에는 손가락보다 조금 위에 실제 배치 크기의 대상이 보이고, 예상 위치는\n  아이콘을 중복하지 않는 초록색 또는 빨간색 육각 외곽선으로만 표시됩니다.\n- 잘못된 배치는 빨간 외곽선만 사용하며 빈번한 실수를 방해하는 토스트 경고는 띄우지\n  않습니다.\n\n![네이티브 모바일 인벤토리 최종 결과](./media/inventory-item-concept/v008/studio-native-mobile-inventory.jpg \"ProjectBackpack HighRes 세로 Play에서 얇은 상태 바, 넓은 배치 보드, 보드 결합 탭, 우측 보기 제어와 완전한 보관 카드 행을 확인\")\n\n## 핵심 원칙과 설계 철학\n\n### 보드가 화면의 주인이다\n\n헤더와 보관함은 필요한 정보와 조작만 차지하고, 남은 높이는 보드에 먼저 배정합니다.\n보관함의 카드 크기와 행 수는 보드 최소 높이를 침범하지 않는 범위에서 계산합니다.\n가로 방향은 남는 공간을 모두 쓰기 위해 다음 카드 일부가 잘려 보일 수 있지만, 세로\n방향은 완전한 행만 노출합니다.\n\n### 반응형 부모 안에서만 고정 픽셀을 쓴다\n\n화면 너비·높이에서 헤더, 보드, 보관함의 영역을 먼저 계산한 뒤 카드, 탭, 제어 버튼의\n픽셀 크기를 제한 범위 안에서 정합니다. 드래그 손가락 오프셋과 48px 터치 영역처럼\n물리적으로 일정해야 하는 값만 반응형 부모 내부의 고정값으로 둡니다. 따라서 해상도가\n높아져도 집은 아이템이 포인터에서 비정상적으로 멀어지지 않습니다.\n\n### 데이터와 시각 자산의 권위를 분리한다\n\n아이템 이름, 종류, 무게, 시너지, 아이콘, 점유 칸과 초기 회전은 ItemDB가 소유합니다.\nUI 리소스는 입력 상태를 읽기 좋게 표현할 뿐 아이템 규칙을 복제하지 않습니다.\n`tools/item_db.py`가 웹 데이터와 `GeneratedItemLayouts.luau`를 함께 생성하므로 ItemDB의\n수정이 카드 미리보기와 실제 배치에 같은 형태로 반영됩니다.\n\n### 서버가 최종 배치를 판정한다\n\n클라이언트는 드래그와 예상 외곽선을 즉시 그리지만, 아이템 이동·회전·보관과 전투 진입\n조건은 서버 인벤토리 서비스가 검증합니다. 클라이언트가 보여 주는 육각 기하와 서버가\n허용하는 점유 좌표는 같은 axial 회전 규칙을 공유합니다.\n\n## 결정 사항과 정리 범위\n\n- 활성 ItemDB는 아이콘을 가진 100종이며 각 항목은 0~3개 시너지와 axial footprint를\n  가집니다.\n- 현재 UI 로컬 리소스는 `CurrentControls` 16개, 공통 육각 채움 1개, 시너지 아이콘\n  26개와 그 재생성 원본만 유지합니다.\n- 과거 시안 프레임, 폐기된 버튼·타일·범용 아이콘, 중복 런타임 육각 PNG/SVG와 해당\n  생성기는 제거했습니다.\n- 가방/아이템 카드와 보드 셀은 정사각 채움이 아닌 동일한 flat-top 육각 기하를 사용합니다.\n- 필터는 선택, 사용 가능, 비활성의 세 상태를 가지며 선택 바는 아이콘과 겹치지 않습니다.\n- PC 전용 조밀도나 마우스 우선 동작은 이번 완료 기준에 포함하지 않습니다.\n\n## 현재 결과와 구현 참고\n\n`VisualTokens`가 현재 뷰포트에서 보드 우선 높이, 카드 폭, 완전한 행 수, 탭과 제어 레일의\n위치를 계산합니다. `ScreenRenderer`는 이 토큰과 `UIPrimitives`의 단일 제어 키트로 모든\n상태를 구성하고, `Screen`은 터치·드래그·보관함 횡스크롤·회전·선택을 연결합니다.\n\n기존 `Assets.luau`와 정사각 `GridModel`은 제거됐습니다. 육각 좌표, 외곽선과 충돌은\n`HexGrid`, `HexOutlineModel`, `InventoryBoardModel`이 담당하며 카드와 배치 보드가 같은\n기하를 사용합니다. 사용되지 않는 로컬 시안과 중간 리소스는 복구 가능한 휴지통으로\n이동해 저장소에는 최신 런타임과 재현에 필요한 원본만 남겼습니다.\n\n## 검증\n\nItemDB 생성·검사에서 활성 100종의 이미지와 배치 데이터가 웹 데이터와 게임 생성물에\n동일하게 존재함을 확인했습니다. Python 전체 49개 테스트, Node 기반 ItemDB·위키 정책\n테스트와 Luau 인벤토리 테스트를 통과했습니다.\n\nStudio MCP Play에서는 iPhone 17 Pro 세로 401×777과 별도 고해상도 세로\n1206×1626을 검증했습니다. 두 화면 모두 안전 영역 안에서 헤더·보드·탭·보기 제어·보관함이\n잘리거나 겹치지 않았습니다. 작은 화면에서는 확대 입력으로 `ZoomIndex` 변경을, 큰\n화면에서는 아이템 탭 입력으로 `Mode=Item` 전환을 확인했고 두 런타임 콘솔은 비어\n있었습니다. 검증 후 Studio는 기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 새 아이템은 ItemDB 원본을 수정하고 생성·검사를 통과한 뒤에만 런타임에 추가합니다.\n- 새 UI 제어가 필요하면 현재 제어 키트에 목적이 분명한 한 변형만 추가하고 임시 시안\n  폴더를 런타임 자산처럼 쌓지 않습니다.\n- 터치 드래그의 실제 손가락 가림 정도는 다른 물리 크기의 최신 폰에서도 지속 관찰하되,\n  화면 비율별 임의 배율이 아니라 고정 픽셀 오프셋 계약을 유지합니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v008.md"
+        },
         {
           "id": "inventory-item-concept",
           "title": "인벤토리와 아이템 개념",
@@ -768,7 +888,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "character-2d-rendering",
       "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
-      "summary": "승인된 Pixel Engine 달리기 동작은 그대로 유지하면서 투명 외곽의 밝은 프린지를 제거해, 어두운 게임 배경에서도 캐릭터 실루엣이 깨끗하게 보이는 런타임 에셋으로 교체했습니다.",
+      "summary": "현재 승인된 East/West 달리기 아틀라스만 생산 기준으로 유지하고, 색상 마커의 물리적 소유 영역과 공급자 프레임 경로를 엄격히 구분해 잘못된 승격을 막습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
@@ -776,58 +896,101 @@ window.PACKBOUND_WIKI = {
         "sprite",
         "rendering",
         "animation",
-        "art",
         "pipeline",
         "validation",
         "locomotion",
-        "roblox",
-        "pixel-engine"
+        "roblox"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-10",
+      "updated_at": "2026-08-13",
       "authors": [
         "Codex"
       ],
-      "version": 7,
+      "version": 8,
       "change_type": "corrected",
-      "change_summary": "검은 배경에서 보이던 회색·흰색 외곽 도트를 생성형 재드로잉 없이 제거하고, 같은 8프레임 포즈를 1024px 보존 마스터와 새 Roblox 런타임 에셋으로 다시 배포함",
-      "supersedes": "character-2d-rendering@v006",
+      "change_summary": "색상 마커가 다른 소품에 재사용될 때도 실제 소유 팔다리를 증명하도록 영역 계약을 추가하고, 공급자 순서 프레임에는 모듈식 몸체 산출물을 만들지 않으며, 폐기된 8방향·Walk 중간물을 정리했습니다.",
+      "supersedes": "character-2d-rendering@v007",
       "sources": [
-        "wiki/content/pages/character-2d-rendering/v006.md",
-        "wiki/content/media/character-2d-rendering/v007/edge-fringe-before-after.png",
-        "wiki/content/media/character-2d-rendering/v007/edge-clean-east-run-8fps.gif",
-        "wiki/content/media/character-2d-rendering/v007/edge-clean-two-direction-contact-sheet.png",
-        "wiki/content/media/character-2d-rendering/v007/studio-edge-clean-live-result.jpg",
+        "wiki/content/pages/character-2d-rendering/v007.md",
+        "wiki/content/media/character-2d-rendering/v008/studio-runtime-character.jpg",
+        ".agents/skills/create-2d-sprite-animation/references/locomotion-landmark-schema.md",
+        ".agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py",
         "Assets/Characters/Player/SpriteProduction/production_manifest.json",
         "Assets/Characters/Player/SpriteProduction/Build/Run2D/RookieMale_Run_EastWest_Metadata.json",
-        "Assets/Characters/Player/SpriteProduction/Build/Run2D/QA/report.json",
-        "Assets/Characters/Player/SpriteProduction/Build/Run2D/uploaded_asset_ids.json",
-        "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/Refinement/edge-decontamination-v1/QA/report.json",
-        "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/Refinement/edge-decontamination-v1/user-approval.json",
-        "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Run/East/pixelengine-frameengine-east-v2-approved/promotion-approval.json",
-        "src/ReplicatedStorage/Character2D/AssetRegistry.luau",
-        "tests/test_two_direction_run_build.py"
+        "src/ReplicatedStorage/Character2D/CharacterRenderer.luau",
+        "tools/sprite_animation_pipeline.py",
+        "tests/test_sprite_animation_pipeline.py"
       ],
       "related": [
+        "world-art-bible",
         "project-overview",
         "studio-automation-routing"
       ],
       "validation": [
-        "East/West 1024px·256px·128px 시퀀스 QA 6종: 0 errors, 0 warnings",
-        "기존 대비 alpha>=128 실루엣 IoU 최소 0.999806",
-        "배경색 유사 외곽 픽셀 8프레임 합계: 483에서 9로 감소",
-        "East/West APNG 각각 8프레임 × 125ms = 1000ms 무한 루프",
-        "python3 -m unittest tests.test_two_direction_run_build",
+        "python3 .agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py --self-test",
+        "python3 -m unittest tests.test_sprite_animation_pipeline",
         "bash tools/test_character_assets.sh",
-        "luau-compile src/ReplicatedStorage/Character2D/AssetRegistry.luau",
-        "Roblox Studio MCP upload_image: rbxassetid://91295241781335",
-        "Roblox Studio MCP Play/Client: 업로드 에셋 16/16 로드, East Y=0, West Y=128, X=0..896",
-        "Roblox Studio MCP Play 콘솔: 게임 오류 출력 없음",
-        "Roblox Studio 삼성 갤럭시 A06 800×360 모바일 프리셋 검은 배경 시각 검사"
+        "Roblox Studio MCP Play, iPhone 17 Pro 세로: 필드 중앙 캐릭터 렌더링과 빈 런타임 콘솔 확인",
+        "python3 tools/wiki.py build",
+        "python3 tools/wiki.py check",
+        "git diff --check"
       ],
-      "source_path": "wiki/content/pages/character-2d-rendering/v007.md",
-      "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 기획 배경과 목표\n\n달리기 동작 자체는 Pixel Engine 결과로 충분한 품질을 얻었지만, 초기 로컬 배경 제거본은\n검은 화면에서 캐릭터 외곽에 회색 또는 흰색 도트가 드러났습니다. 이 문제는 포즈나 원화\n품질이 아니라 원래 회색 배경의 RGB가 반투명 가장자리 픽셀에 남은 알파 프린지였습니다.\n\n이번 교체의 목표는 승인된 8프레임 동작과 캐릭터 디자인을 다시 해석하지 않고, 어두운\n게임 배경에서도 실루엣이 깨끗하게 읽히도록 투명 외곽만 교정하는 것입니다. 생성형\n재드로잉은 얼굴·팔·신발·장비와 프레임 타이밍을 바꿀 수 있으므로 사용하지 않았습니다.\n\n## 사용자 경험\n\n플레이어가 달릴 때 머리카락, 배낭, 팔, 신발 가장자리 주변에 밝은 점선이 따라붙지\n않습니다. 캐릭터의 크기, 포즈, 속도와 1초짜리 8프레임 루프는 이전 승인본과 동일하게\n느껴지며, 차이는 배경과 맞닿는 외곽이 자연스럽게 정리됐다는 점입니다.\n\n![외곽 프린지 제거 전후](./media/character-2d-rendering/v007/edge-fringe-before-after.png \"위 행은 회색 배경 RGB가 남은 기존 컷아웃, 아래 행은 검은 배경에서 외곽 오염을 제거한 최종 프레임\")\n\n![외곽 교정 후 우측 달리기](./media/character-2d-rendering/v007/edge-clean-east-run-8fps.gif \"승인된 Pixel Engine 포즈와 8fps 타이밍을 그대로 유지한 최종 East Run\")\n\n## 핵심 원칙과 설계 철학\n\n### 동작 문제와 합성 문제를 분리\n\n좋은 동작을 다시 생성하면 해결된 모션까지 위험해집니다. 이번 문제는 합성 경계에만\n있었으므로 Pixel Engine이 만든 포즈와 불투명 내부를 보존하고, 반투명 가장자리의 회색\n배경 성분만 주변의 실제 캐릭터 색으로 복원했습니다.\n\n### 고해상도 보존과 런타임 출력을 분리\n\n원본 640px 셀에서 정리한 결과를 공통 변환으로 1024×1024 보존 마스터에 올리고,\npremultiplied-alpha 방식으로 256px 검수본과 128px Roblox 런타임본을 만들었습니다.\n프레임별 크기 맞춤이나 생성형 확대는 사용하지 않아 몸 크기가 펌핑되거나 포즈가\n변형되지 않습니다.\n\n### 승인된 픽셀만 승격\n\n검은 배경 전후 비교, 정리 보고서와 최종 런타임 PNG 해시를 새 사용자 승인에 묶었습니다.\n최종 1024×256 런타임 아틀라스 SHA-256은\n`eb499e4a3edaac7221476abe4823018665f7fde9068f9ef32119f6bbe5013b63`이며,\n새 Roblox 이미지 ID는 `rbxassetid://91295241781335`입니다.\n\n## 결정 사항과 범위\n\n- Pixel Engine Frame Engine 1.1의 East 8프레임 포즈와 순서를 그대로 유지합니다.\n- East/West 두 행, 8열, 8fps와 125ms 프레임 타이밍은 변경하지 않습니다.\n- 외곽 교정은 회색 배경 디컨탐네이션, premultiplied-alpha 리샘플링, alpha 4 이하\n  링잉 제거와 권위 연결 실루엣 보존으로 제한합니다.\n- 1024px 셀은 보존 마스터이며 Roblox는 128px 셀의 1024×256 아틀라스를 사용합니다.\n- West는 계속 East의 임시 수평 미러이므로 청록·빨강 신발과 소매 패치의 물리적 좌우가\n  화면상 뒤집히는 v006의 한계는 남아 있습니다.\n- 여성 캐릭터, 전용 West와 다른 애니메이션 클립은 이번 교정 범위가 아닙니다.\n\n![교정된 좌우 2방향 프레임](./media/character-2d-rendering/v007/edge-clean-two-direction-contact-sheet.png \"위 행 East와 아래 행 임시 West 모두 같은 외곽 교정과 공통 카메라 변환을 사용\")\n\n## 현재 결과\n\nRoblox Studio Play에서 새 업로드 에셋의 East/West 16셀을 검은 배경 위에 실제\n`ImageRectOffset`으로 표시했습니다. 16개 이미지가 모두 로드됐고, 작은 모바일 표시에서도\n외곽을 따라가던 밝은 도트가 다시 나타나지 않았습니다.\n\n![Studio 최종 외곽 검사](./media/character-2d-rendering/v007/studio-edge-clean-live-result.jpg \"삼성 갤럭시 A06 모바일 프리셋에서 새 Roblox 에셋의 East/West 16셀을 검은 배경으로 검사한 결과\")\n\n## 구현 참고\n\n`AssetRegistry`의 Run 에셋만 새 ID로 교체했으며 방향 해석과 애니메이션 상태 코드는\n바꾸지 않았습니다. 생산 메타데이터는 원본 Pixel Engine SHA, 외곽 교정 보고서,\n1024/256/128px 산출물, 사용자 승인과 업로드 ID를 함께 보존합니다.\n\n## 검증\n\n- East/West 각각 1024px 보존 마스터, 256px 검수본, 128px 런타임본의 RGBA, 안전\n  여백, 분리 조각, 중복과 크기·중심 드리프트 검사에서 오류와 경고가 모두 0건입니다.\n- 기존 프레임과 새 프레임의 `alpha >= 128` 실루엣 IoU는 최소 0.999806입니다.\n- 배경색과 유사한 외곽 픽셀은 8프레임 합계 483개에서 9개로 감소했습니다.\n- East/West APNG는 각각 8프레임, 프레임당 125ms, 총 1000ms 무한 루프입니다.\n- 빌드 단위 테스트 6개, 캐릭터 에셋 검사와 변경된 Registry Luau 컴파일을 통과했습니다.\n- Studio MCP에서 업로드와 새 ID를 확인하고 Play/Client에서 16/16 이미지 로드,\n  East 행 Y=0, West 행 Y=128, X=0부터 896까지의 셀 순회를 확인했습니다.\n- Studio 게임 콘솔에는 오류 출력이 없었습니다.\n\n## 후속 기획\n\n- 실제 필드의 여러 어두운 지형과 밝은 지형에서 캐릭터 표시 크기를 계속 관찰하되,\n  포즈를 바꾸지 않고 표시 스케일만 별도 조정합니다.\n- 전용 West를 만들 때는 이번 외곽 교정 방식을 그대로 적용하면서 신발과 소매 패치의\n  물리적 좌우 소유권을 복구합니다.\n- 이후 클립도 생성 품질과 투명 합성 품질을 분리해 승인하고, 검은 배경 외곽 검사를\n  공통 승격 게이트로 유지합니다.\n",
+      "source_path": "wiki/content/pages/character-2d-rendering/v008.md",
+      "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 기획 배경과 목표\n\nv007에서 승인된 East/West 8프레임 달리기 아틀라스는 실제 게임 기준으로 충분히 깨끗한\n상태입니다. 이후 실험에서 8방향 확장, 모듈식 Walk 몸체와 공급자 프레임 순서가 한 생산\n폴더 안에 섞이면서, 아직 승인되지 않은 중간물이 현재 런타임처럼 보이거나 한 경로의\n메타데이터가 다른 경로에 잘못 생성될 위험이 생겼습니다.\n\n또한 신발과 소매의 색상 마커는 팔다리 소유권을 증명하는 센서지만, 같은 색을 장비나\n장식이 사용하면 전역 색상 검색만으로는 잘못된 위치를 승인할 수 있습니다. 이번 정리는\n현재 승인본을 바꾸는 작업이 아니라 생산 경계와 검증 증거를 더 엄격히 만드는 작업입니다.\n\n## 제작자와 플레이어 경험\n\n플레이어가 보는 캐릭터와 8fps East/West 달리기 동작은 v007 승인본 그대로입니다.\n제작자는 새 프레임을 검수할 때 각 색상 마커가 어느 팔다리 영역에 있어야 하는지,\n같은 색을 허용할 수 있는 소품 영역은 어디인지 명시해야 합니다. 공급자가 완성 프레임\n순서를 제공한 Run은 하나의 합성 이미지로 취급하며, 존재하지 않는 모듈식 몸체와 머리\n작업 폴더를 자동으로 만들지 않습니다.\n\n![현재 필드의 승인 캐릭터 런타임](./media/character-2d-rendering/v008/studio-runtime-character.jpg \"iPhone 17 Pro 세로 Play에서 현재 East/West 승인 아틀라스를 사용하는 캐릭터가 필드 중앙에 렌더링된 결과\")\n\n## 핵심 원칙과 설계 철학\n\n### 마커 색이 아니라 물리적 소유 영역을 증명한다\n\n마커 영역 계약은 소유 팔다리 영역, 반대 팔다리 금지 영역과 명시적인 색 재사용 영역을\n구분합니다. 소유 영역 안에는 정확히 하나의 연결 컴포넌트가 완전히 들어와야 하고,\n반대 영역과 교차하거나 선언되지 않은 제3 위치에 같은 색이 있으면 실패합니다. 단순히\n색 픽셀 수가 맞는다는 이유로 손발이 바뀐 프레임을 승인하지 않습니다.\n\n### 서로 다른 생산 경로는 서로의 산출물을 흉내 내지 않는다\n\n`phasesFrom=providerFrameOrder`인 클립은 공급자 완성 프레임 경로입니다. 파이프라인은 이\n클립을 모듈식 body/head 합성 경로로 해석하지 않고, 현재 매니페스트에 없는 Walk 전용\n품질 게이트를 강요하지 않습니다. 대신 공통 프레임·접지·빌드 계약은 그대로 검사합니다.\n\n### 현재 승인본과 실험 중간물을 물리적으로 분리한다\n\n현재 권위는 `Build/Run2D`와 production manifest, 업로드 ID입니다. 폐기된 South Walk\n프로토타입, 미승인 8방향 참조, 중복 Prepared·Runtime·QA 복사본은 제거했습니다. 승인\n프레임, 외곽 교정 증거와 최종 빌드만 저장소에 남깁니다.\n\n## 현재 결과와 구현 참고\n\n랜드마크 검증기는 영역 정의의 범위, 중복 이름, 완전 포함, 금지 영역 교차와 선언되지\n않은 색 컴포넌트를 fail-closed 방식으로 검사합니다. 스프라이트 파이프라인은 클립의\n생산 방식을 먼저 판별해 공급자 프레임 Run에 모듈식 Work 메타데이터를 만들지 않습니다.\n런타임 `CharacterRenderer`는 Studio의 헤드리스·자동 검증에서도 애니메이션이 진행되도록\n렌더 스텝을 사용할 수 없을 때 Heartbeat 경로를 사용합니다.\n\n## 검증\n\n영역 계약 자체 테스트는 정상 소유, 잘못된 팔다리, 선언되지 않은 재사용과 영역 경계\n교차를 포함해 통과했습니다. 스프라이트 파이프라인 단위 테스트와 캐릭터 에셋 검사도\n통과했으며, Studio MCP iPhone 17 Pro 세로 Play에서 현재 캐릭터가 중앙에 렌더링되고\n런타임 콘솔이 비어 있음을 확인했습니다. 검증 후 Studio는 기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 전용 West 또는 새 방향을 만들 때는 새 프레임을 승인한 뒤에만 production manifest와\n  런타임 아틀라스에 추가합니다.\n- 마커와 같은 색을 장비가 사용해야 한다면 좁은 재사용 영역과 적용 프레임을 명시하고,\n  전역 허용이나 거리 완화로 우회하지 않습니다.\n- 새로운 생성 공급자를 연결할 때는 완성 프레임, 키프레임 보간, 모듈식 합성 중 어느\n  생산 경로인지 먼저 선언합니다.\n",
       "revisions": [
+        {
+          "id": "character-2d-rendering",
+          "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
+          "summary": "현재 승인된 East/West 달리기 아틀라스만 생산 기준으로 유지하고, 색상 마커의 물리적 소유 영역과 공급자 프레임 경로를 엄격히 구분해 잘못된 승격을 막습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "character",
+            "sprite",
+            "rendering",
+            "animation",
+            "pipeline",
+            "validation",
+            "locomotion",
+            "roblox"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-13",
+          "authors": [
+            "Codex"
+          ],
+          "version": 8,
+          "change_type": "corrected",
+          "change_summary": "색상 마커가 다른 소품에 재사용될 때도 실제 소유 팔다리를 증명하도록 영역 계약을 추가하고, 공급자 순서 프레임에는 모듈식 몸체 산출물을 만들지 않으며, 폐기된 8방향·Walk 중간물을 정리했습니다.",
+          "supersedes": "character-2d-rendering@v007",
+          "sources": [
+            "wiki/content/pages/character-2d-rendering/v007.md",
+            "wiki/content/media/character-2d-rendering/v008/studio-runtime-character.jpg",
+            ".agents/skills/create-2d-sprite-animation/references/locomotion-landmark-schema.md",
+            ".agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py",
+            "Assets/Characters/Player/SpriteProduction/production_manifest.json",
+            "Assets/Characters/Player/SpriteProduction/Build/Run2D/RookieMale_Run_EastWest_Metadata.json",
+            "src/ReplicatedStorage/Character2D/CharacterRenderer.luau",
+            "tools/sprite_animation_pipeline.py",
+            "tests/test_sprite_animation_pipeline.py"
+          ],
+          "related": [
+            "world-art-bible",
+            "project-overview",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "python3 .agents/skills/create-2d-sprite-animation/scripts/validate_locomotion_landmarks.py --self-test",
+            "python3 -m unittest tests.test_sprite_animation_pipeline",
+            "bash tools/test_character_assets.sh",
+            "Roblox Studio MCP Play, iPhone 17 Pro 세로: 필드 중앙 캐릭터 렌더링과 빈 런타임 콘솔 확인",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "git diff --check"
+          ],
+          "body": "# 프레임 캐릭터 렌더링과 스프라이트 제작\n\n## 기획 배경과 목표\n\nv007에서 승인된 East/West 8프레임 달리기 아틀라스는 실제 게임 기준으로 충분히 깨끗한\n상태입니다. 이후 실험에서 8방향 확장, 모듈식 Walk 몸체와 공급자 프레임 순서가 한 생산\n폴더 안에 섞이면서, 아직 승인되지 않은 중간물이 현재 런타임처럼 보이거나 한 경로의\n메타데이터가 다른 경로에 잘못 생성될 위험이 생겼습니다.\n\n또한 신발과 소매의 색상 마커는 팔다리 소유권을 증명하는 센서지만, 같은 색을 장비나\n장식이 사용하면 전역 색상 검색만으로는 잘못된 위치를 승인할 수 있습니다. 이번 정리는\n현재 승인본을 바꾸는 작업이 아니라 생산 경계와 검증 증거를 더 엄격히 만드는 작업입니다.\n\n## 제작자와 플레이어 경험\n\n플레이어가 보는 캐릭터와 8fps East/West 달리기 동작은 v007 승인본 그대로입니다.\n제작자는 새 프레임을 검수할 때 각 색상 마커가 어느 팔다리 영역에 있어야 하는지,\n같은 색을 허용할 수 있는 소품 영역은 어디인지 명시해야 합니다. 공급자가 완성 프레임\n순서를 제공한 Run은 하나의 합성 이미지로 취급하며, 존재하지 않는 모듈식 몸체와 머리\n작업 폴더를 자동으로 만들지 않습니다.\n\n![현재 필드의 승인 캐릭터 런타임](./media/character-2d-rendering/v008/studio-runtime-character.jpg \"iPhone 17 Pro 세로 Play에서 현재 East/West 승인 아틀라스를 사용하는 캐릭터가 필드 중앙에 렌더링된 결과\")\n\n## 핵심 원칙과 설계 철학\n\n### 마커 색이 아니라 물리적 소유 영역을 증명한다\n\n마커 영역 계약은 소유 팔다리 영역, 반대 팔다리 금지 영역과 명시적인 색 재사용 영역을\n구분합니다. 소유 영역 안에는 정확히 하나의 연결 컴포넌트가 완전히 들어와야 하고,\n반대 영역과 교차하거나 선언되지 않은 제3 위치에 같은 색이 있으면 실패합니다. 단순히\n색 픽셀 수가 맞는다는 이유로 손발이 바뀐 프레임을 승인하지 않습니다.\n\n### 서로 다른 생산 경로는 서로의 산출물을 흉내 내지 않는다\n\n`phasesFrom=providerFrameOrder`인 클립은 공급자 완성 프레임 경로입니다. 파이프라인은 이\n클립을 모듈식 body/head 합성 경로로 해석하지 않고, 현재 매니페스트에 없는 Walk 전용\n품질 게이트를 강요하지 않습니다. 대신 공통 프레임·접지·빌드 계약은 그대로 검사합니다.\n\n### 현재 승인본과 실험 중간물을 물리적으로 분리한다\n\n현재 권위는 `Build/Run2D`와 production manifest, 업로드 ID입니다. 폐기된 South Walk\n프로토타입, 미승인 8방향 참조, 중복 Prepared·Runtime·QA 복사본은 제거했습니다. 승인\n프레임, 외곽 교정 증거와 최종 빌드만 저장소에 남깁니다.\n\n## 현재 결과와 구현 참고\n\n랜드마크 검증기는 영역 정의의 범위, 중복 이름, 완전 포함, 금지 영역 교차와 선언되지\n않은 색 컴포넌트를 fail-closed 방식으로 검사합니다. 스프라이트 파이프라인은 클립의\n생산 방식을 먼저 판별해 공급자 프레임 Run에 모듈식 Work 메타데이터를 만들지 않습니다.\n런타임 `CharacterRenderer`는 Studio의 헤드리스·자동 검증에서도 애니메이션이 진행되도록\n렌더 스텝을 사용할 수 없을 때 Heartbeat 경로를 사용합니다.\n\n## 검증\n\n영역 계약 자체 테스트는 정상 소유, 잘못된 팔다리, 선언되지 않은 재사용과 영역 경계\n교차를 포함해 통과했습니다. 스프라이트 파이프라인 단위 테스트와 캐릭터 에셋 검사도\n통과했으며, Studio MCP iPhone 17 Pro 세로 Play에서 현재 캐릭터가 중앙에 렌더링되고\n런타임 콘솔이 비어 있음을 확인했습니다. 검증 후 Studio는 기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 전용 West 또는 새 방향을 만들 때는 새 프레임을 승인한 뒤에만 production manifest와\n  런타임 아틀라스에 추가합니다.\n- 마커와 같은 색을 장비가 사용해야 한다면 좁은 재사용 영역과 적용 프레임을 명시하고,\n  전역 허용이나 거리 완화로 우회하지 않습니다.\n- 새로운 생성 공급자를 연결할 때는 완성 프레임, 키프레임 보간, 모듈식 합성 중 어느\n  생산 경로인지 먼저 선언합니다.\n",
+          "source_path": "wiki/content/pages/character-2d-rendering/v008.md"
+        },
         {
           "id": "character-2d-rendering",
           "title": "프레임 캐릭터 렌더링과 스프라이트 제작",
@@ -1566,57 +1729,173 @@ window.PACKBOUND_WIKI = {
     {
       "id": "development-wiki",
       "title": "개발 위키와 변경 이력 시스템",
-      "summary": "PackBound의 개발 흐름을 Studio MCP와 저장소 정적 검증으로 단순화하고, 위키에서 더 이상 사용하지 않는 동기화 서버 제어와 설정 경로를 제거했습니다.",
+      "summary": "위키 본문과 ItemDB 이미지를 새 창으로 보내지 않고 현재 화면의 공용 이미지 레이어에서 크게 보고, 바깥 영역을 누르면 즉시 원래 탐색으로 돌아오게 했습니다.",
       "status": "active",
       "category": "tooling",
       "tags": [
         "documentation",
         "wiki",
         "tooling",
-        "studio-mcp",
-        "validation",
-        "cleanup",
-        "reliability"
+        "image-viewer",
+        "accessibility",
+        "item-db",
+        "responsive"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-12",
+      "updated_at": "2026-08-13",
       "authors": [
         "Codex"
       ],
-      "version": 9,
+      "version": 11,
       "change_type": "updated",
-      "change_summary": "라이브 Studio 작업은 Studio MCP, 정적 검증은 Luau와 저장소 테스트가 소유하도록 운영 경계를 확정하고, 개발 위키의 불필요한 서버 제어 기능과 재유입 가능성을 제거했습니다.",
-      "supersedes": "development-wiki@v008",
+      "change_summary": "이미지 확인 때문에 브라우저 창과 문서 맥락을 오가던 불편을 없애고, 본문 첨부 이미지와 ItemDB 아이템 이미지를 안전하고 일관된 인페이지 확대 경험으로 통합했습니다.",
+      "supersedes": "development-wiki@v010",
       "sources": [
-        "AGENTS.md",
-        "README.md",
-        "rokit.toml",
-        "tools/wiki.py",
         "wiki/site/index.html",
         "wiki/site/app.js",
         "wiki/site/app.css",
-        "wiki/site/local-access.js",
-        "tests/test_repository_policy.py",
-        "wiki/content/media/development-wiki/v009/local-wiki-header.jpg"
+        "wiki/site/markdown-media.js",
+        "tools/wiki.py",
+        "tests/markdown-media.spec.js",
+        "wiki/content/media/development-wiki/v011/world-art-image-viewer.jpg",
+        "wiki/content/media/development-wiki/v011/itemdb-image-viewer-mobile.jpg"
       ],
       "related": [
-        "project-overview",
-        "studio-automation-routing"
+        "world-art-bible",
+        "inventory-item-concept"
       ],
       "validation": [
-        "rokit install",
-        "python3 -m unittest tests.test_repository_policy tests.test_wiki",
-        "node tests/local-access.spec.js",
         "node --check wiki/site/app.js",
+        "node --check wiki/site/markdown-media.js",
+        "node tests/markdown-media.spec.js",
+        "node tests/item-db.spec.js",
+        "node tests/wiki-timeline.spec.js",
+        "python3 -m unittest tests.test_wiki tests.test_item_db tests.test_repository_policy",
+        "python3 tools/item_db.py check",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
-        "로컬 HTTP 스모크 테스트: ItemDB 상태 API 200, 폐기된 제어 API 404",
-        "인앱 브라우저: 로컬 개발 위키 상단 구성 확인, 콘솔 경고·오류 0건",
+        "python3 -m unittest tests/test_wiki.py",
+        "python3 -m unittest tests.test_repository_policy",
+        "curl 응답 헤더: 로컬 정적 파일 Cache-Control no-store, max-age=0 확인",
+        "인앱 브라우저 1280×720: world-art-bible 본문 이미지 레이어 표시, 새 탭 0개 증가 확인",
+        "인앱 브라우저 390×844: ItemDB 이미지 레이어 표시, 가로 넘침 없음 확인",
         "git diff --check"
       ],
-      "source_path": "wiki/content/pages/development-wiki/v009.md",
-      "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 운영 목표\n\nPackBound는 라이브 Roblox Studio 상태와 저장소 소스를 서로 다른 책임으로 관리합니다.\n플레이스의 실제 DataModel을 확인하고 바꾸는 작업은 Studio MCP가 소유하고, 저장소의\nLuau 파일과 테스트 스크립트는 소스 작성과 정적 검증을 소유합니다. 개발자가 별도의\n동기화 서버, 포트 또는 플레이스 빌드 파일을 기억해야 하는 이중 운영은 현재 프로젝트의\n작업 방식과 맞지 않습니다.\n\n이번 정리의 목표는 단순한 파일 삭제가 아니라 앞으로의 판단 기준을 하나로 만드는\n것입니다. 사람과 에이전트는 라이브 상태를 말할 때 Studio MCP 근거를 사용하고, 저장소\n변경의 건전성은 Luau 컴파일과 도메인 테스트로 증명합니다. 위키는 이 경계를 설명하고\n개발 기록을 탐색하는 도구이며 외부 프로세스 실행기가 아닙니다.\n\n## 사용자와 운영자 경험\n\n로컬 개발 위키 상단은 이제 문서 검색과 기록 동기화 상태에 집중합니다. 사용하지 않는\n플레이스 선택, 포트 상태, 서버 시작·중지 조작이 사라져 실제 개발 경로와 화면이 일치합니다.\nItemDB 편집은 계속 loopback 호스트에서만 제공되고 공개 미러는 읽기 전용이므로, 기존의\n콘텐츠 편집 경험과 공개 보안 경계는 유지됩니다.\n\n![개발 위키 최종 상단](./media/development-wiki/v009/local-wiki-header.jpg \"문서 검색과 기록 상태만 남긴 로컬 개발 위키의 최종 상단\")\n\n## 핵심 원칙과 설계 철학\n\n### 라이브 상태의 단일 권위\n\nStudio 발견, DataModel 검사와 변경, Play 모드, 콘솔, 스크린샷과 런타임 검증은 Studio\nMCP를 첫 번째이자 권위 있는 경로로 사용합니다. 저장소 파일만 보고 라이브 플레이스가\n같다고 추정하지 않으며, 라이브 결과를 주장할 때는 Studio MCP 증거를 남깁니다.\n\n### 저장소 정적 검증의 독립성\n\nLuau 모듈은 컴파일러와 저장소 테스트 스크립트로 직접 검증합니다. 정적 검사에 전체\n플레이스 파일 생성을 요구하지 않으므로, 테스트 실패가 게임 로직 문제인지 개발 환경\n동기화 문제인지 혼동하지 않습니다. `rokit` 도구 선언도 현재 필요한 Luau 버전만 소유합니다.\n\n### 재유입을 실패로 처리\n\n운영 문구만 바꾸고 끝내면 오래된 예제나 설정이 다시 복사될 수 있습니다. 저장소 정책\n테스트는 불변 위키 이력을 제외한 활성 파일의 내용과 이름을 검사하고, 폐기한 동기화 도구,\n프로젝트 매핑 또는 관련 파일명이 돌아오면 실패합니다. 이 검사는 일반 개발 명령과 커밋\n시점 위키 검증에 모두 포함됩니다.\n\n## 결정 사항과 범위\n\n- 프로젝트 매핑과 전용 실행 스크립트는 현재 개발 경로가 아니므로 삭제했습니다.\n- 개발 위키의 프로세스 관리자, 상태·시작·중지 API, 상단 제어 UI와 반응형 스타일을\n  제거했습니다.\n- 로컬 호스트 판정은 ItemDB 편집과 정확한 시간 표시라는 현재 책임만 표현하도록\n  일반화했습니다.\n- README, 에이전트 지침과 프로젝트 작업 문서는 Studio MCP와 Luau 검증만 안내합니다.\n- 커밋된 과거 위키 버전은 당시의 사실을 보존하는 불변 기록이므로 수정하지 않습니다.\n  최신 버전이 현재 운영 계약을 명확히 대체합니다.\n- Studio 전역 플러그인 설치 상태는 플레이스나 저장소가 소유하지 않으므로 프로젝트\n  정리 범위에 포함하지 않습니다.\n\n## 현재 결과와 구현 참고\n\n`tools/wiki.py`의 로컬 서버는 정적 위키 제공과 ItemDB 상태·저장 API만 담당합니다.\n프로세스 탐색, 외부 포트 판정, 하위 프로세스 수명주기 코드는 존재하지 않습니다.\n브라우저의 `index.html`, `app.js`, `app.css`도 같은 책임 축소를 반영해 불필요한 DOM,\n폴링, 이벤트와 모바일 보조 행을 제거했습니다.\n\n`AGENTS.md`와 `README.md`는 저장소 Luau를 소스 작성 경로로, Studio MCP를 라이브\n조작 경로로 선언합니다. `tests/test_repository_policy.py`는 활성 저장소 전반을 검사하며,\n커밋 스킬도 이 테스트를 필수 검증으로 실행합니다.\n\n## 검증\n\n위키와 저장소 정책 Python 테스트 6개, 로컬 접근 Node 테스트와 JavaScript 구문 검사를\n통과했습니다. 커밋 스냅샷의 위키 최신성 검사에서는 7개 문서, 31개 리비전,\nItemDB 30개 아이템과 CombatDB 178개 레코드를 확인했습니다. 로컬 서버에서 ItemDB\n상태 API는 정상 응답하고 폐기된 제어 경로는 404를 반환했습니다.\n\n인앱 브라우저에서는 최종 상단 구성, 문서·DB 탐색과 공개 페이지 링크를 확인했으며\n콘솔 경고와 오류는 없었습니다. Studio MCP로 프로젝트가 소유하는 Workspace,\nReplicatedStorage, ServerScriptService, StarterGui와 StarterPlayer를 검색했을 때\n폐기한 통합 이름의 인스턴스는 발견되지 않았습니다. 기존 모바일 핵심 속성인 세로 화면과\n스크립트형 터치 이동 모드도 유지됐습니다.\n\n## 후속 기획\n\n새 개발 도구가 필요해지면 먼저 Studio MCP와 저장소 테스트가 제공하지 못하는 구체적인\n역할을 정의해야 합니다. 단순한 편의나 이전 프로젝트와의 관성만으로 별도 동기화 계층을\n추가하지 않으며, 운영 경계가 바뀌면 구현과 같은 커밋에서 지침·검증·위키를 함께 갱신합니다.\n",
+      "source_path": "wiki/content/pages/development-wiki/v011.md",
+      "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\n개발 위키의 이미지는 문서 내용과 결정을 이해하기 위한 근거입니다. 이미지를 자세히\n보려는 순간 별도 브라우저 창이나 탭으로 이동하면 사용자는 확인을 마친 뒤 창을 닫고\n원래 문서 위치를 다시 찾아야 합니다. 특히 한 페이지에서 여러 결과 이미지를 비교하거나\nItemDB의 아이템을 연속해서 살펴볼 때 이 전환 비용이 반복됐습니다.\n\n이번 변경의 목표는 이미지 확인을 문서 탐색의 일부로 만드는 것입니다. 사용자는 현재\n페이지와 스크롤 맥락을 잃지 않은 채 이미지를 크게 보고, 이미지 바깥을 한 번 누르면\n즉시 원래 위치로 돌아올 수 있어야 합니다. 본문 첨부 이미지와 ItemDB 이미지는 출처가\n다르더라도 같은 조작 규칙을 따르도록 통합했습니다.\n\n## 사용자 경험\n\n위키 본문이나 ItemDB의 이미지를 누르면 현재 화면 최상단에 어두운 배경과 확대 이미지,\n설명 문구가 표시됩니다. 새 창이나 새 탭은 생성되지 않습니다. 확대된 이미지 자체는\n그대로 살펴볼 수 있고, 이미지 바깥 영역을 누르면 레이어가 사라집니다. 키보드 사용자는\n`Esc`로 닫을 수 있으며, 닫은 뒤에는 처음 눌렀던 이미지로 포커스가 돌아갑니다.\n\n레이어가 열린 동안에는 배경 스크롤을 잠가 문서가 실수로 움직이지 않게 했습니다.\n좁은 모바일 화면에서는 안전 여백 안에서 이미지 크기를 자동 조정하고 캡션을 이미지\n아래에 유지하므로 가로 스크롤 없이 같은 동작을 사용할 수 있습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 탐색 맥락을 보존하는 확대\n\n이미지 확대는 새 목적지로 이동하는 링크가 아니라 현재 문서 위에 잠시 올리는 보기\n상태입니다. 따라서 주소와 스크롤 위치를 바꾸지 않고, 닫기 조작 후 사용자가 시작했던\n위치와 입력 초점을 복원하는 것을 기본 계약으로 삼았습니다.\n\n### 하나의 공용 상호작용\n\nMarkdown 증거 이미지와 생성형 ItemDB 이미지를 별도 구현으로 취급하지 않습니다.\n두 경로는 동일한 `data-image-viewer-*` 계약과 하나의 공용 레이어를 사용합니다. 새로운\n위키 이미지 유형이 추가되더라도 같은 안전 검사와 닫기 동작을 재사용할 수 있습니다.\n\n### 안전한 로컬 이미지 경계\n\n레이어는 위키의 버전별 `media`와 생성된 `item-media` 아래의 지원 이미지 형식만\n허용합니다. 상위 경로 이동, 외부 URL, 임의 쿼리는 거부하고 ItemDB가 사용하는 콘텐츠\n해시 쿼리만 허용해 확대 기능이 우회 링크가 되지 않도록 했습니다.\n\n### 정적 파일은 한 버전으로 로드\n\n브라우저가 새 애플리케이션 코드와 과거 이미지 렌더러를 섞어 사용하면 한 화면에서\n서로 다른 동작이 나타날 수 있습니다. 로컬 위키 서버는 모든 정적 응답을 `no-store`로\n제공하고, 이미지 뷰어에 함께 바뀐 핵심 CSS와 JavaScript에는 동일한 버전 키를 부여해\n한 번의 새로고침으로 일관된 화면을 받도록 했습니다.\n\n## 결정 사항과 범위\n\n- 본문 첨부 이미지와 ItemDB 목록 이미지에서 새 창 링크를 제거합니다.\n- 닫기 전용 `X` 버튼을 필수 조작으로 두지 않고 이미지 바깥 전체를 닫기 영역으로\n  사용합니다.\n- 접근성 보조 경로로 `Esc`, 포커스 유지와 복귀, 대화상자 의미 구조를 제공합니다.\n- 확대 중 배경 스크롤을 잠그고 데스크톱과 모바일에서 뷰포트 안에 이미지를 맞춥니다.\n- 공개 위키 바로가기처럼 실제 외부 페이지로 이동하는 링크는 이미지 확대 대상이\n  아니므로 기존 새 창 동작을 유지합니다.\n- 확대·축소 배율 조절, 회전, 다운로드와 이미지 편집은 단순한 빠른 확인이라는 이번\n  범위에 포함하지 않습니다.\n\n## 현재 결과\n\n월드 아트 문서의 세로형 플레이 화면이 문서 위 공용 레이어에 표시됩니다. 배경은\n어둡게 유지되어 이미지에 집중할 수 있고 바깥 전체가 즉시 닫기 영역입니다.\n\n![월드 아트 본문 이미지 레이어](./media/development-wiki/v011/world-art-image-viewer.jpg \"새 탭 없이 현재 문서 위에 표시된 월드 아트 증거 이미지\")\n\nItemDB에서도 동일한 레이어를 사용합니다. 390×844 모바일 화면에서 세로형 아이템\n이미지와 이름이 안전 여백 안에 표시되며 가로 넘침이 없습니다.\n\n![ItemDB 모바일 이미지 레이어](./media/development-wiki/v011/itemdb-image-viewer-mobile.jpg \"390×844 화면에서 확대된 산성가시 뿌리창과 바깥 닫기 영역\")\n\n## 구현 참고\n\n`markdown-media.js`는 Markdown 이미지 링크를 확대 버튼으로 렌더링하고, 위키 미디어와\nItemDB 미디어 경로를 검증하는 순수 함수를 제공합니다. `app.js`는 이벤트 위임으로 두\n종류의 이미지 버튼을 하나의 레이어에 연결하며 열기, 바깥 클릭, `Esc`, 포커스 복귀와\n배경 스크롤 상태를 관리합니다.\n\n`index.html`은 공용 대화상자 구조와 핵심 정적 파일 버전 키를 소유하고, `app.css`는\n최상단 레이어, 이미지 크기 제한, 모바일 안전 여백과 확대 커서를 정의합니다.\n`tools/wiki.py`의 로컬 정적 서버는 캐시 금지 응답 헤더를 모든 파일에 적용합니다.\n\n## 검증\n\n- `world-art-bible`의 본문에서 새 창 이미지 링크가 0개이고 확대 버튼이 표시됨을\n  확인했습니다. 이미지를 눌러도 브라우저 탭 수는 증가하지 않았습니다.\n- ItemDB의 100개 이미지가 모두 같은 확대 버튼 계약을 사용하고, 첫 아이템을 눌렀을\n  때 이미지와 이름이 레이어에 표시됨을 확인했습니다.\n- 이미지 바깥 클릭과 `Esc` 닫기, 배경 스크롤 잠금, 원래 버튼으로 포커스 복귀를\n  확인했습니다.\n- 1280×720과 390×844 화면에서 대표 이미지를 확인했고 모바일 가로 넘침은 없었습니다.\n- 로컬 서버의 HTML과 JavaScript 응답에 `Cache-Control: no-store, max-age=0`이\n  포함됨을 확인했습니다.\n- JavaScript 구문·단위 테스트, ItemDB 검사, 위키 생성·무결성 검사와 저장소 정책\n  테스트를 통과했습니다.\n\n## 후속 기획\n\n향후 확대 이미지가 지도나 세부 설계도처럼 실제 줌 조작을 필요로 할 정도로 복잡해지면\n핀치 줌과 이동을 별도 기능으로 검토합니다. 그 전까지는 한 번 눌러 크게 보고 바깥을\n눌러 돌아오는 단순한 상호작용을 유지합니다.\n",
       "revisions": [
+        {
+          "id": "development-wiki",
+          "title": "개발 위키와 변경 이력 시스템",
+          "summary": "위키 본문과 ItemDB 이미지를 새 창으로 보내지 않고 현재 화면의 공용 이미지 레이어에서 크게 보고, 바깥 영역을 누르면 즉시 원래 탐색으로 돌아오게 했습니다.",
+          "status": "active",
+          "category": "tooling",
+          "tags": [
+            "documentation",
+            "wiki",
+            "tooling",
+            "image-viewer",
+            "accessibility",
+            "item-db",
+            "responsive"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-13",
+          "authors": [
+            "Codex"
+          ],
+          "version": 11,
+          "change_type": "updated",
+          "change_summary": "이미지 확인 때문에 브라우저 창과 문서 맥락을 오가던 불편을 없애고, 본문 첨부 이미지와 ItemDB 아이템 이미지를 안전하고 일관된 인페이지 확대 경험으로 통합했습니다.",
+          "supersedes": "development-wiki@v010",
+          "sources": [
+            "wiki/site/index.html",
+            "wiki/site/app.js",
+            "wiki/site/app.css",
+            "wiki/site/markdown-media.js",
+            "tools/wiki.py",
+            "tests/markdown-media.spec.js",
+            "wiki/content/media/development-wiki/v011/world-art-image-viewer.jpg",
+            "wiki/content/media/development-wiki/v011/itemdb-image-viewer-mobile.jpg"
+          ],
+          "related": [
+            "world-art-bible",
+            "inventory-item-concept"
+          ],
+          "validation": [
+            "node --check wiki/site/app.js",
+            "node --check wiki/site/markdown-media.js",
+            "node tests/markdown-media.spec.js",
+            "node tests/item-db.spec.js",
+            "node tests/wiki-timeline.spec.js",
+            "python3 -m unittest tests.test_wiki tests.test_item_db tests.test_repository_policy",
+            "python3 tools/item_db.py check",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "python3 -m unittest tests.test_repository_policy",
+            "curl 응답 헤더: 로컬 정적 파일 Cache-Control no-store, max-age=0 확인",
+            "인앱 브라우저 1280×720: world-art-bible 본문 이미지 레이어 표시, 새 탭 0개 증가 확인",
+            "인앱 브라우저 390×844: ItemDB 이미지 레이어 표시, 가로 넘침 없음 확인",
+            "git diff --check"
+          ],
+          "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\n개발 위키의 이미지는 문서 내용과 결정을 이해하기 위한 근거입니다. 이미지를 자세히\n보려는 순간 별도 브라우저 창이나 탭으로 이동하면 사용자는 확인을 마친 뒤 창을 닫고\n원래 문서 위치를 다시 찾아야 합니다. 특히 한 페이지에서 여러 결과 이미지를 비교하거나\nItemDB의 아이템을 연속해서 살펴볼 때 이 전환 비용이 반복됐습니다.\n\n이번 변경의 목표는 이미지 확인을 문서 탐색의 일부로 만드는 것입니다. 사용자는 현재\n페이지와 스크롤 맥락을 잃지 않은 채 이미지를 크게 보고, 이미지 바깥을 한 번 누르면\n즉시 원래 위치로 돌아올 수 있어야 합니다. 본문 첨부 이미지와 ItemDB 이미지는 출처가\n다르더라도 같은 조작 규칙을 따르도록 통합했습니다.\n\n## 사용자 경험\n\n위키 본문이나 ItemDB의 이미지를 누르면 현재 화면 최상단에 어두운 배경과 확대 이미지,\n설명 문구가 표시됩니다. 새 창이나 새 탭은 생성되지 않습니다. 확대된 이미지 자체는\n그대로 살펴볼 수 있고, 이미지 바깥 영역을 누르면 레이어가 사라집니다. 키보드 사용자는\n`Esc`로 닫을 수 있으며, 닫은 뒤에는 처음 눌렀던 이미지로 포커스가 돌아갑니다.\n\n레이어가 열린 동안에는 배경 스크롤을 잠가 문서가 실수로 움직이지 않게 했습니다.\n좁은 모바일 화면에서는 안전 여백 안에서 이미지 크기를 자동 조정하고 캡션을 이미지\n아래에 유지하므로 가로 스크롤 없이 같은 동작을 사용할 수 있습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 탐색 맥락을 보존하는 확대\n\n이미지 확대는 새 목적지로 이동하는 링크가 아니라 현재 문서 위에 잠시 올리는 보기\n상태입니다. 따라서 주소와 스크롤 위치를 바꾸지 않고, 닫기 조작 후 사용자가 시작했던\n위치와 입력 초점을 복원하는 것을 기본 계약으로 삼았습니다.\n\n### 하나의 공용 상호작용\n\nMarkdown 증거 이미지와 생성형 ItemDB 이미지를 별도 구현으로 취급하지 않습니다.\n두 경로는 동일한 `data-image-viewer-*` 계약과 하나의 공용 레이어를 사용합니다. 새로운\n위키 이미지 유형이 추가되더라도 같은 안전 검사와 닫기 동작을 재사용할 수 있습니다.\n\n### 안전한 로컬 이미지 경계\n\n레이어는 위키의 버전별 `media`와 생성된 `item-media` 아래의 지원 이미지 형식만\n허용합니다. 상위 경로 이동, 외부 URL, 임의 쿼리는 거부하고 ItemDB가 사용하는 콘텐츠\n해시 쿼리만 허용해 확대 기능이 우회 링크가 되지 않도록 했습니다.\n\n### 정적 파일은 한 버전으로 로드\n\n브라우저가 새 애플리케이션 코드와 과거 이미지 렌더러를 섞어 사용하면 한 화면에서\n서로 다른 동작이 나타날 수 있습니다. 로컬 위키 서버는 모든 정적 응답을 `no-store`로\n제공하고, 이미지 뷰어에 함께 바뀐 핵심 CSS와 JavaScript에는 동일한 버전 키를 부여해\n한 번의 새로고침으로 일관된 화면을 받도록 했습니다.\n\n## 결정 사항과 범위\n\n- 본문 첨부 이미지와 ItemDB 목록 이미지에서 새 창 링크를 제거합니다.\n- 닫기 전용 `X` 버튼을 필수 조작으로 두지 않고 이미지 바깥 전체를 닫기 영역으로\n  사용합니다.\n- 접근성 보조 경로로 `Esc`, 포커스 유지와 복귀, 대화상자 의미 구조를 제공합니다.\n- 확대 중 배경 스크롤을 잠그고 데스크톱과 모바일에서 뷰포트 안에 이미지를 맞춥니다.\n- 공개 위키 바로가기처럼 실제 외부 페이지로 이동하는 링크는 이미지 확대 대상이\n  아니므로 기존 새 창 동작을 유지합니다.\n- 확대·축소 배율 조절, 회전, 다운로드와 이미지 편집은 단순한 빠른 확인이라는 이번\n  범위에 포함하지 않습니다.\n\n## 현재 결과\n\n월드 아트 문서의 세로형 플레이 화면이 문서 위 공용 레이어에 표시됩니다. 배경은\n어둡게 유지되어 이미지에 집중할 수 있고 바깥 전체가 즉시 닫기 영역입니다.\n\n![월드 아트 본문 이미지 레이어](./media/development-wiki/v011/world-art-image-viewer.jpg \"새 탭 없이 현재 문서 위에 표시된 월드 아트 증거 이미지\")\n\nItemDB에서도 동일한 레이어를 사용합니다. 390×844 모바일 화면에서 세로형 아이템\n이미지와 이름이 안전 여백 안에 표시되며 가로 넘침이 없습니다.\n\n![ItemDB 모바일 이미지 레이어](./media/development-wiki/v011/itemdb-image-viewer-mobile.jpg \"390×844 화면에서 확대된 산성가시 뿌리창과 바깥 닫기 영역\")\n\n## 구현 참고\n\n`markdown-media.js`는 Markdown 이미지 링크를 확대 버튼으로 렌더링하고, 위키 미디어와\nItemDB 미디어 경로를 검증하는 순수 함수를 제공합니다. `app.js`는 이벤트 위임으로 두\n종류의 이미지 버튼을 하나의 레이어에 연결하며 열기, 바깥 클릭, `Esc`, 포커스 복귀와\n배경 스크롤 상태를 관리합니다.\n\n`index.html`은 공용 대화상자 구조와 핵심 정적 파일 버전 키를 소유하고, `app.css`는\n최상단 레이어, 이미지 크기 제한, 모바일 안전 여백과 확대 커서를 정의합니다.\n`tools/wiki.py`의 로컬 정적 서버는 캐시 금지 응답 헤더를 모든 파일에 적용합니다.\n\n## 검증\n\n- `world-art-bible`의 본문에서 새 창 이미지 링크가 0개이고 확대 버튼이 표시됨을\n  확인했습니다. 이미지를 눌러도 브라우저 탭 수는 증가하지 않았습니다.\n- ItemDB의 100개 이미지가 모두 같은 확대 버튼 계약을 사용하고, 첫 아이템을 눌렀을\n  때 이미지와 이름이 레이어에 표시됨을 확인했습니다.\n- 이미지 바깥 클릭과 `Esc` 닫기, 배경 스크롤 잠금, 원래 버튼으로 포커스 복귀를\n  확인했습니다.\n- 1280×720과 390×844 화면에서 대표 이미지를 확인했고 모바일 가로 넘침은 없었습니다.\n- 로컬 서버의 HTML과 JavaScript 응답에 `Cache-Control: no-store, max-age=0`이\n  포함됨을 확인했습니다.\n- JavaScript 구문·단위 테스트, ItemDB 검사, 위키 생성·무결성 검사와 저장소 정책\n  테스트를 통과했습니다.\n\n## 후속 기획\n\n향후 확대 이미지가 지도나 세부 설계도처럼 실제 줌 조작을 필요로 할 정도로 복잡해지면\n핀치 줌과 이동을 별도 기능으로 검토합니다. 그 전까지는 한 번 눌러 크게 보고 바깥을\n눌러 돌아오는 단순한 상호작용을 유지합니다.\n",
+          "source_path": "wiki/content/pages/development-wiki/v011.md"
+        },
+        {
+          "id": "development-wiki",
+          "title": "개발 위키와 변경 이력 시스템",
+          "summary": "PackBound의 모든 불변 위키 버전을 하나의 시간순 타임라인에서 최신순과 가장 오래된순으로 전환하고, 각 버전을 독립 기록으로 바로 열 수 있게 했습니다.",
+          "status": "active",
+          "category": "tooling",
+          "tags": [
+            "documentation",
+            "wiki",
+            "tooling",
+            "timeline",
+            "navigation",
+            "history",
+            "responsive"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-13",
+          "authors": [
+            "Codex"
+          ],
+          "version": 10,
+          "change_type": "updated",
+          "change_summary": "주제별 문서 트리만으로는 보기 어려웠던 프로젝트의 전체 변화 순서를 모든 버전이 독립된 타임라인 항목으로 보이게 하고, 최신순과 가장 오래된순을 즉시 전환하도록 개선했습니다.",
+          "supersedes": "development-wiki@v009",
+          "sources": [
+            "wiki/site/index.html",
+            "wiki/site/app.js",
+            "wiki/site/app.css",
+            "wiki/site/wiki-timeline.js",
+            "tests/wiki-timeline.spec.js",
+            "wiki/content/media/development-wiki/v010/timeline-latest-desktop.jpg",
+            "wiki/content/media/development-wiki/v010/timeline-oldest-mobile.jpg"
+          ],
+          "related": [
+            "project-overview",
+            "studio-automation-routing"
+          ],
+          "validation": [
+            "node --check wiki/site/wiki-timeline.js",
+            "node --check wiki/site/app.js",
+            "node tests/wiki-timeline.spec.js",
+            "python3 -m unittest tests.test_wiki tests.test_publish_public_wiki",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "python3 -m unittest tests.test_repository_policy",
+            "인앱 브라우저 1440×1000: 전체 버전 최신순 목록, 버전별 링크와 가로 넘침 없음 확인",
+            "인앱 브라우저 390×844: 가장 오래된순 전환, 42px 정렬 버튼과 가로 넘침 없음 확인",
+            "인앱 브라우저 콘솔 경고·오류 0건",
+            "git diff --check"
+          ],
+          "body": "# 개발 위키와 변경 이력 시스템\n\n## 기획 배경과 목표\n\nPackBound 위키는 기획과 구현 결정을 버전별 불변 문서로 보존하지만, 기존 전체 위키\n트리는 주제와 카테고리 구조를 이해하는 데 집중했습니다. 한 문서의 과거 버전은 그\n문서 아래에 모여 있어 프로젝트 전체에서 무엇이 먼저 결정되었고 최근에는 어떤 변화가\n이어졌는지 시간의 흐름으로 파악하려면 여러 문서를 차례로 열어야 했습니다.\n\n이번 변경의 목표는 위키를 문서 보관소에서 프로젝트의 연속된 기억을 읽는 도구로\n확장하는 것입니다. 최신 의사결정을 빠르게 훑는 사용자와 프로젝트의 출발점부터 맥락을\n복원하는 사용자가 같은 화면에서 각자의 방향으로 기록을 읽을 수 있어야 합니다. 이때\n논리 페이지의 최신본만 나열하지 않고 `v001`, `v002` 같은 모든 불변 버전을 독립된\n탐색 단위로 취급하는 것을 핵심 제품 규칙으로 삼았습니다.\n\n## 사용자 경험\n\n전체 위키 트리 상단에는 모든 문서 버전을 한 줄씩 펼친 `전체 버전 타임라인`이\n표시됩니다. 기본값은 최신순이어서 최근 결정부터 바로 확인할 수 있고, `가장 오래된순`\n버튼을 누르면 프로젝트의 최초 기록부터 순서대로 읽을 수 있습니다. 선택한 정렬은\n주소의 `sort` 값에 남으므로 새로고침하거나 링크를 공유해도 같은 관점을 복원합니다.\n\n각 항목은 시각, 문서 제목, 버전, 변경 요약, 카테고리, 변경 유형과 작성자를 함께\n보여 줍니다. 항목을 선택하면 그 논리 페이지의 최신본이 아니라 목록에 표시된 정확한\n버전으로 이동합니다. 기존 카테고리 트리는 타임라인 아래에 그대로 유지해 주제 중심\n탐색과 시간 중심 탐색이 서로 대체되지 않고 보완하도록 했습니다.\n\n## 핵심 원칙과 설계 철학\n\n### 불변 버전이 탐색의 기본 단위\n\n같은 페이지의 여러 버전은 하나로 합치지 않습니다. 모든 `revisions` 항목을 펼쳐\n보여 줌으로써 과거 결정이 최신 요약 뒤에 숨지 않으며, 목록 항목과 실제 Markdown\n버전 사이에 일대일 이동 경로를 유지합니다.\n\n### 시간 순서는 원본 메타데이터가 결정\n\n정렬은 각 버전의 `updated_at`을 기준으로 계산합니다. 동일한 시각에는 문서 ID와\n버전을 이용해 결과가 매번 흔들리지 않도록 안정적인 순서를 제공합니다. 공개 미러의\n날짜 단위 개인정보 정책은 그대로 유지하고, 로컬 위키에서만 정확한 시각을 표시하는\n기존 경계도 바꾸지 않았습니다.\n\n### 기존 정보 구조와 반응형 품질 보존\n\n시간순 목록은 카테고리 트리, 검색, 태그 탐색과 경쟁하는 새 최상위 화면이 아니라\n전체 트리 안의 보완 탐색 계층입니다. 데스크톱에서는 날짜와 문서 요약을 빠르게 훑을\n수 있는 가로 행으로, 모바일에서는 날짜와 본문을 세로로 재배치하고 정렬 버튼을 42px\n높이로 확장해 좁은 화면에서도 넘침 없이 터치할 수 있게 했습니다.\n\n## 결정 사항과 범위\n\n- 전체 문서의 최신본만이 아니라 모든 버전을 시간순 목록에 포함합니다.\n- 기본 정렬은 최근 변경을 빠르게 확인하는 최신순으로 둡니다.\n- 정렬 상태는 URL에 저장하되 별도의 사용자 설정이나 로컬 저장소는 만들지 않습니다.\n- 기존 카테고리 트리와 펼치기·접기 기능은 유지합니다.\n- 현재 33개 버전 규모에서는 전체 목록을 한 번에 보여 주며, 페이지네이션이나 추가\n  필터는 이번 범위에 포함하지 않습니다.\n\n## 현재 결과\n\n데스크톱에서는 최신순 타임라인이 현황 카드 바로 아래에 놓여 최근 변경과 버전 번호를\n한 화면에서 비교할 수 있습니다.\n\n![전체 버전 최신순 데스크톱 결과](./media/development-wiki/v010/timeline-latest-desktop.jpg \"전체 33개 불변 버전을 최신순으로 펼친 데스크톱 위키 트리\")\n\n모바일에서는 정렬 조작을 전체 너비 터치 영역으로 전환하고, 가장 오래된 기록부터\n제목·버전·변경 요약을 세로 흐름으로 읽을 수 있습니다.\n\n![전체 버전 가장 오래된순 모바일 결과](./media/development-wiki/v010/timeline-oldest-mobile.jpg \"가장 오래된순 선택과 초기 v001 기록을 보여 주는 390×844 모바일 위키\")\n\n## 구현 참고\n\n`wiki-timeline.js`는 페이지 배열의 `revisions`를 독립 항목으로 펼치고 정렬하는 순수\n모듈입니다. `app.js`는 트리 경로의 `sort` 값을 정규화하고 타임라인 항목을 정확한\n`?version=` 문서 링크로 렌더링합니다. 이 분리 덕분에 정렬 계약은 브라우저 UI와\n독립적으로 단위 테스트할 수 있습니다.\n\n`index.html`은 정렬 모듈을 위키 애플리케이션보다 먼저 로드하며, `app.css`는 데스크톱\n타임라인과 모바일 재배치·터치 크기를 소유합니다. 위키 생성기의 데이터 계약은 이미\n모든 버전과 타임스탬프를 제공하므로 변경하지 않았습니다.\n\n## 검증\n\n- 정렬 단위 테스트에서 최신순과 가장 오래된순의 양 끝 항목 및 전체 버전 보존을\n  확인했습니다.\n- 위키 생성과 무결성 검사에서 7개 논리 페이지, 33개 불변 버전과 버전별 미디어\n  동기화를 확인했습니다.\n- 1440×1000 데스크톱에서 최신순 기본값, 전체 항목 수와 버전 링크를 확인했습니다.\n- 390×844 모바일에서 가장 오래된순 선택, 42px 정렬 버튼, 가로 넘침 없음과 초기\n  `v001` 항목 노출을 확인했습니다.\n- 과거 버전 항목을 선택했을 때 정확한 버전 문서와 최신본 안내가 표시됨을 확인했습니다.\n- 브라우저 콘솔 경고와 오류는 없었습니다.\n\n## 후속 기획\n\n버전 수가 한 화면에서 훑기 어려울 정도로 증가하면 연도·월 그룹, 날짜 범위 또는\n카테고리 필터를 검토합니다. 그 전까지는 모든 불변 버전을 숨김없이 한 목록에 보여\n주는 단순한 계약을 유지합니다.\n",
+          "source_path": "wiki/content/pages/development-wiki/v010.md"
+        },
         {
           "id": "development-wiki",
           "title": "개발 위키와 변경 이력 시스템",

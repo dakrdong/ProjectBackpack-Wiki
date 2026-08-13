@@ -18,6 +18,8 @@
         item.concept,
         item.pattern,
         ...(item.stats || []),
+        ...(item.synergies || []),
+        ...(item.synergy_labels || []),
       ].join(" ").toLocaleLowerCase("ko-KR");
       return haystack.includes(normalizedQuery);
     });
@@ -47,6 +49,25 @@
     const numeric = Number(value);
     if (!Number.isFinite(numeric)) return Number.NaN;
     return ((numeric + 180) % 360 + 360) % 360 - 180;
+  }
+
+  function validateSynergies(synergies, availableIds = []) {
+    const errors = [];
+    if (!Array.isArray(synergies)) {
+      errors.push("시너지 선택값을 읽을 수 없습니다.");
+      return { valid: false, errors, synergies: [] };
+    }
+    if (synergies.length > 3) errors.push("시너지는 최대 3개까지 선택할 수 있습니다.");
+    if (new Set(synergies).size !== synergies.length) errors.push("같은 시너지를 중복 선택할 수 없습니다.");
+    const allowed = new Set(availableIds || []);
+    if (synergies.some((synergy) => typeof synergy !== "string" || !allowed.has(synergy))) {
+      errors.push("현재 시너지 카탈로그에 없는 값이 포함되어 있습니다.");
+    }
+    return {
+      valid: errors.length === 0,
+      errors: [...new Set(errors)],
+      synergies: [...synergies],
+    };
   }
 
   function validateLayout(cells, scale, rotationDegrees = 0, maxSpan = 5) {
@@ -126,7 +147,15 @@
     };
   }
 
-  const api = { filterItems, groupByFamily, hexNeighbors, normalize, normalizeRotation, validateLayout };
+  const api = {
+    filterItems,
+    groupByFamily,
+    hexNeighbors,
+    normalize,
+    normalizeRotation,
+    validateLayout,
+    validateSynergies,
+  };
   root.PACKBOUND_ITEM_DB_TOOLS = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

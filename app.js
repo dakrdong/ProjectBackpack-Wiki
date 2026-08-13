@@ -9,6 +9,7 @@
   const tagExplorer = window.PACKBOUND_TAG_EXPLORER;
   const localAccess = window.PACKBOUND_LOCAL_ACCESS;
   const markdownMedia = window.PACKBOUND_MARKDOWN_MEDIA;
+  const wikiTimeline = window.PACKBOUND_WIKI_TIMELINE;
   const main = document.getElementById("main-content");
   const navigation = document.getElementById("page-navigation");
   const sidebarTabWiki = document.getElementById("sidebar-tab-wiki");
@@ -28,6 +29,10 @@
   const tagCount = document.getElementById("tag-count");
   const tagSortButtons = [...document.querySelectorAll("[data-tag-sort]")];
   const publicWikiLink = document.getElementById("public-wiki-link");
+  const imageViewer = document.getElementById("image-viewer");
+  const imageViewerScrim = document.getElementById("image-viewer-scrim");
+  const imageViewerImage = document.getElementById("image-viewer-image");
+  const imageViewerCaption = document.getElementById("image-viewer-caption");
   const wikiThemeHero = "theme/packbound-wiki-hero.webp";
   const itemDbEditorRadius = 2;
   const itemDbHexCellWidth = 2 / Math.sqrt(3);
@@ -52,6 +57,7 @@
   let itemDbEditorState = null;
   let itemDbNotice = "";
   let structuredDbState = { databaseId: null, query: "", filters: {} };
+  let imageViewerReturnFocus = null;
   let dateRange = { from: "", to: "" };
   let filteredPages = wiki?.pages || [];
   let tagIndex = [];
@@ -88,6 +94,10 @@
   }
   if (!markdownMedia) {
     main.innerHTML = '<div class="empty-state">위키 이미지 모듈을 불러오지 못했습니다.</div>';
+    return;
+  }
+  if (!wikiTimeline) {
+    main.innerHTML = '<div class="empty-state">위키 시간순 탐색 모듈을 불러오지 못했습니다.</div>';
     return;
   }
   if (!combatDb || !combatDbTools) {
@@ -314,6 +324,7 @@
       slug: decodeURIComponent(kind === "database" ? (legacyItemDb ? "item-db" : segments[1] || "item-db") : segments[1] || defaultPage || ""),
       view: params.get("view") === "history" ? "history" : "article",
       version: Number.parseInt(params.get("version") || "", 10) || null,
+      treeView: wikiTimeline.normalizeView(params.get("sort")),
     };
   }
 
@@ -325,8 +336,9 @@
     return `#/page/${encodeURIComponent(slug)}${query ? `?${query}` : ""}`;
   }
 
-  function treeHref() {
-    return "#/tree";
+  function treeHref(view = "category") {
+    const normalized = wikiTimeline.normalizeView(view);
+    return normalized === "category" ? "#/tree" : `#/tree?sort=${encodeURIComponent(normalized)}`;
   }
 
   function databaseHref(databaseId) {
@@ -529,7 +541,9 @@
     `;
   }
 
-  function renderTree() {
+  function renderTree(viewMode = "category") {
+    const normalizedView = wikiTimeline.normalizeView(viewMode);
+    const isChronological = normalizedView !== "category";
     const groups = new Map();
     wiki.pages.forEach((page) => {
       if (!groups.has(page.category)) groups.set(page.category, []);
@@ -537,6 +551,14 @@
     });
     const latestPage = [...wiki.pages].sort((left, right) => new Date(right.updated_at) - new Date(left.updated_at))[0];
     const activeCount = wiki.pages.filter((page) => page.status === "active").length;
+    const chronologicalRevisions = isChronological
+      ? wikiTimeline.sortRevisions(wiki.pages, normalizedView)
+      : [];
+    const viewDescriptions = {
+      category: "주제와 카테고리 구조로 봅니다. 각 문서 아래에서 모든 버전을 열 수 있습니다.",
+      newest: "버전이 올라간 순서를 최신부터 봅니다. 같은 문서의 v001·v002도 각각 한 줄입니다.",
+      oldest: "버전이 올라간 순서를 최초부터 봅니다. 같은 문서의 v001·v002도 각각 한 줄입니다.",
+    };
 
     const categoryBranches = [...groups.entries()].map(([category, pages]) => {
       const revisions = pages.reduce((total, page) => total + page.revisions.length, 0);
@@ -607,10 +629,12 @@
                 <h1>전체 위키 트리</h1>
                 <p>PackBound의 세계, 시스템과 제작 결정을 하나의 살아 있는 지도에서 탐색합니다.</p>
               </div>
-              <div class="tree-actions" aria-label="트리 펼침 설정">
-                <button type="button" data-tree-action="expand">모두 펼치기</button>
-                <button type="button" data-tree-action="collapse">모두 접기</button>
-              </div>
+              ${normalizedView === "category" ? `
+                <div class="tree-actions" aria-label="트리 펼침 설정">
+                  <button type="button" data-tree-action="expand">모두 펼치기</button>
+                  <button type="button" data-tree-action="collapse">모두 접기</button>
+                </div>
+              ` : ""}
             </div>
           </div>
         </header>
@@ -622,14 +646,50 @@
           <div><strong>${activeCount}</strong><span>활성 문서</span></div>
         </section>
 
-        <section class="tree-root" aria-label="PackBound 위키 문서 트리">
-          <div class="tree-root-node">
-            <span class="tree-root-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span><strong>PackBound Development Wiki</strong><small>마지막 변경 · ${latestPage ? `${escapeHtml(latestPage.title)} · ${formatDate(latestPage.updated_at, true)}` : "없음"}</small></span>
-            <span class="tree-root-count">${wiki.page_count} pages</span>
+        <section class="tree-view-toolbar" aria-labelledby="tree-view-title">
+          <div class="tree-view-copy">
+            <strong id="tree-view-title">보기 방식</strong>
+            <p aria-live="polite">${viewDescriptions[normalizedView]}</p>
           </div>
-          <div class="tree-category-list">${categoryBranches}</div>
+          <div class="tree-view-options" role="group" aria-label="전체 위키 보기 방식">
+            <button type="button" class="${normalizedView === "category" ? "active" : ""}" data-tree-view="category" aria-pressed="${normalizedView === "category"}">카테고리</button>
+            <button type="button" class="${normalizedView === "newest" ? "active" : ""}" data-tree-view="newest" aria-pressed="${normalizedView === "newest"}">최신순</button>
+            <button type="button" class="${normalizedView === "oldest" ? "active" : ""}" data-tree-view="oldest" aria-pressed="${normalizedView === "oldest"}">오래된순</button>
+          </div>
         </section>
+
+        ${isChronological ? `
+          <section class="tree-chronology" aria-label="${normalizedView === "newest" ? "최신순" : "오래된순"} 전체 위키 버전 목록">
+            <ol class="tree-timeline-list">
+              ${chronologicalRevisions.map(({ page, revision }) => `
+                <li class="tree-timeline-item">
+                  <a href="${pageHref(page.id, "article", revision.version)}">
+                    <time datetime="${escapeHtml(revision.updated_at)}">${formatDate(revision.updated_at, true)}</time>
+                    <span class="tree-timeline-marker" aria-hidden="true"></span>
+                    <span class="tree-timeline-copy">
+                      <span class="tree-timeline-heading">
+                        <strong>${escapeHtml(revision.title)}</strong>
+                        <span class="tree-timeline-version">v${String(revision.version).padStart(3, "0")}</span>
+                      </span>
+                      <span class="tree-timeline-summary">${escapeHtml(revision.change_summary)}</span>
+                      <span class="tree-timeline-meta">${escapeHtml(categoryLabels[revision.category] || revision.category)} · ${escapeHtml(changeLabels[revision.change_type] || revision.change_type)} · ${revision.authors.map(escapeHtml).join(", ")}</span>
+                    </span>
+                    <span class="tree-open-arrow" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              `).join("")}
+            </ol>
+          </section>
+        ` : `
+          <section class="tree-root" aria-label="PackBound 위키 문서 트리">
+            <div class="tree-root-node">
+              <span class="tree-root-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span><strong>PackBound Development Wiki</strong><small>마지막 변경 · ${latestPage ? `${escapeHtml(latestPage.title)} · ${formatDate(latestPage.updated_at, true)}` : "없음"}</small></span>
+              <span class="tree-root-count">${wiki.page_count} pages</span>
+            </div>
+            <div class="tree-category-list">${categoryBranches}</div>
+          </section>
+        `}
       </div>
     `;
   }
@@ -689,17 +749,48 @@
     `;
   }
 
+  function renderItemSynergies(item) {
+    if (!item.synergies?.length) return '<span class="itemdb-synergy-empty">시너지 없음</span>';
+    const byId = new Map((itemDb.synergy_catalog || []).map((entry) => [entry.id, entry]));
+    return `<div class="itemdb-synergy-list">${item.synergies.map((synergyId) => {
+      const entry = byId.get(synergyId);
+      const color = entry?.color || { r: 110, g: 140, b: 170 };
+      return `<span class="itemdb-synergy-badge" style="--synergy-rgb:${color.r},${color.g},${color.b}"><strong>${escapeHtml(entry?.label || synergyId)}</strong><small>${escapeHtml(synergyId)}</small></span>`;
+    }).join("")}</div>`;
+  }
+
+  function renderItemDbSynergyOptions(selectedSynergies) {
+    const groups = new Map();
+    (itemDb.synergy_catalog || []).forEach((entry) => {
+      if (!groups.has(entry.family)) groups.set(entry.family, { label: entry.family_label, entries: [] });
+      groups.get(entry.family).entries.push(entry);
+    });
+    return [...groups.values()].map((group) => `
+      <section class="itemdb-editor-synergy-family">
+        <h3>${escapeHtml(group.label)}</h3>
+        <div class="itemdb-editor-synergy-grid">
+          ${group.entries.map((entry) => {
+            const selected = selectedSynergies.has(entry.id);
+            const color = entry.color || { r: 110, g: 140, b: 170 };
+            return `<button type="button" data-itemdb-editor-synergy="${escapeHtml(entry.id)}" aria-pressed="${selected}" style="--synergy-rgb:${color.r},${color.g},${color.b}"><span>${escapeHtml(entry.label)}</span><small>${escapeHtml(entry.id)}</small></button>`;
+          }).join("")}
+        </div>
+      </section>
+    `).join("");
+  }
+
   function renderItemRows(items) {
     return items.map((item) => `
       <tr>
         <td class="itemdb-image-cell">
-          <a href="${escapeHtml(item.image_url || item.image)}" target="_blank" rel="noopener" aria-label="${escapeHtml(item.name)} 원본 이미지 열기">
+          <button type="button" class="itemdb-image-trigger" data-image-viewer-src="${escapeHtml(item.image_url || item.image)}" data-image-viewer-alt="${escapeHtml(item.name)} 아이템 이미지" data-image-viewer-caption="${escapeHtml(item.name)}" aria-label="${escapeHtml(item.name)} 이미지 크게 보기">
             <img src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 아이템 이미지" loading="lazy" decoding="async" style="transform:rotate(${Number(item.image_layout?.rotation_degrees || 0)}deg)">
-          </a>
+          </button>
         </td>
         <td class="itemdb-identity"><strong>${escapeHtml(item.name)}</strong><code>${escapeHtml(item.id)}</code></td>
         <td><span class="itemdb-family-badge" data-family="${escapeHtml(item.family)}">${escapeHtml(item.family_label)}</span><small>${escapeHtml(item.type_size)}</small></td>
         <td>${renderFootprint(item)}</td>
+        <td>${renderItemSynergies(item)}</td>
         <td><div class="itemdb-stats">${item.stats.map((stat) => `<span>${escapeHtml(stat)}</span>`).join("")}</div></td>
         <td class="itemdb-concept">${escapeHtml(item.concept)}</td>
         ${canEditItemDb ? `<td class="itemdb-action-cell"><button type="button" data-itemdb-edit="${escapeHtml(item.id)}">Edit</button></td>` : ""}
@@ -752,6 +843,10 @@
       state.scale,
       state.rotation,
     );
+    const synergyValidation = itemDbTools.validateSynergies(
+      [...state.synergies],
+      (itemDb.synergy_catalog || []).map((entry) => entry.id),
+    );
 
     stage.dataset.mode = state.mode;
     image.style.left = `${(state.imageX + itemDbEditorOriginX) / itemDbEditorStageWidth * 100}%`;
@@ -770,14 +865,21 @@
       cell.classList.toggle("selected", state.selected.has(cell.dataset.itemdbEditorCell));
       cell.setAttribute("aria-pressed", String(state.selected.has(cell.dataset.itemdbEditorCell)));
     });
+    dialog.querySelector("[data-itemdb-editor-synergy-count]").textContent = `${state.synergies.size} / 3`;
+    dialog.querySelectorAll("[data-itemdb-editor-synergy]").forEach((button) => {
+      const selected = state.synergies.has(button.dataset.itemdbEditorSynergy);
+      button.classList.toggle("selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+      button.disabled = state.synergies.size >= 3 && !selected;
+    });
     dialog.querySelector("[data-itemdb-editor-save]").disabled = state.saving;
     const error = dialog.querySelector("[data-itemdb-editor-error]");
     if (!state.showErrors && !state.serverError) {
       error.hidden = true;
       return;
     }
-    error.textContent = state.serverError || validation.errors.join(" ");
-    error.hidden = !state.serverError && validation.valid;
+    error.textContent = state.serverError || [...validation.errors, ...synergyValidation.errors].join(" ");
+    error.hidden = !state.serverError && validation.valid && synergyValidation.valid;
   }
 
   async function saveItemDbEditor() {
@@ -786,8 +888,12 @@
     if (!state || !dialog || state.saving) return;
     const coordinates = [...state.selected].map((key) => key.split(",").map(Number));
     const validation = itemDbTools.validateLayout(coordinates, state.scale, state.rotation);
+    const synergyValidation = itemDbTools.validateSynergies(
+      [...state.synergies],
+      (itemDb.synergy_catalog || []).map((entry) => entry.id),
+    );
     state.showErrors = true;
-    if (!validation.valid) {
+    if (!validation.valid || !synergyValidation.valid) {
       updateItemDbEditor();
       return;
     }
@@ -808,13 +914,14 @@
           image_x: state.imageX,
           image_y: state.imageY,
           rotation_degrees: validation.rotation,
+          synergies: synergyValidation.synergies,
         }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `저장에 실패했습니다. (${response.status})`);
       const index = itemDb.items.findIndex((item) => item.id === state.item.id);
       if (index >= 0) itemDb.items[index] = payload.item;
-      itemDbNotice = `${payload.item.name}의 이미지 위치·${payload.item.image_layout.rotation_degrees}° 회전과 ${payload.item.occupied_cells}칸 육각 점유 형태를 게임 데이터에 저장했습니다.`;
+      itemDbNotice = `${payload.item.name}의 이미지 위치·${payload.item.image_layout.rotation_degrees}° 회전, ${payload.item.occupied_cells}칸 육각 점유 형태와 시너지 ${payload.item.synergies.length}개를 게임 데이터에 저장했습니다.`;
       closeItemDbEditor();
       renderItemDb();
     } catch (error) {
@@ -848,6 +955,7 @@
       imageY: footprintBounds.minY + Number(layout.offset_y),
       rotation: itemDbTools.normalizeRotation(layout.rotation_degrees || 0),
       selected: new Set(centeredCoordinates.map(([q, r]) => editorCellKey(q, r))),
+      synergies: new Set(item.synergies || []),
       mode: "move",
       saving: false,
       showErrors: false,
@@ -907,11 +1015,16 @@
                 <button type="button" class="itemdb-editor-mode" data-itemdb-editor-mode>칸 설정하기</button>
                 <div class="itemdb-editor-rules">
                   <strong>저장 규칙</strong>
-                  <span>1칸 이상 선택</span><span>Q·R·S 각 축 최대 5칸</span><span>육각형 변으로 연결</span>
+                  <span>1칸 이상 선택</span><span>Q·R·S 각 축 최대 5칸</span><span>육각형 변으로 연결</span><span>시너지 0~3개</span>
                 </div>
                 <p class="itemdb-editor-error" data-itemdb-editor-error role="alert" hidden></p>
               </aside>
             </div>
+            <section class="itemdb-editor-synergies" aria-labelledby="itemdb-editor-synergy-title">
+              <div class="itemdb-editor-synergy-heading"><strong id="itemdb-editor-synergy-title">Synergies</strong><span data-itemdb-editor-synergy-count></span></div>
+              <p>게임에 존재하는 시너지 중 0~3개를 선택하세요. 선택하지 않아도 저장할 수 있습니다.</p>
+              <div class="itemdb-editor-synergy-families">${renderItemDbSynergyOptions(itemDbEditorState.synergies)}</div>
+            </section>
           </div>
         </section>
       </div>
@@ -938,6 +1051,14 @@
       const key = cell.dataset.itemdbEditorCell;
       if (itemDbEditorState.selected.has(key)) itemDbEditorState.selected.delete(key);
       else itemDbEditorState.selected.add(key);
+      itemDbEditorState.showErrors = false;
+      itemDbEditorState.serverError = "";
+      updateItemDbEditor();
+    }));
+    dialog.querySelectorAll("[data-itemdb-editor-synergy]").forEach((button) => button.addEventListener("click", () => {
+      const synergyId = button.dataset.itemdbEditorSynergy;
+      if (itemDbEditorState.synergies.has(synergyId)) itemDbEditorState.synergies.delete(synergyId);
+      else if (itemDbEditorState.synergies.size < 3) itemDbEditorState.synergies.add(synergyId);
       itemDbEditorState.showErrors = false;
       itemDbEditorState.serverError = "";
       updateItemDbEditor();
@@ -1023,7 +1144,7 @@
         <header><h2>${escapeHtml(family.label)}</h2><span>${family.items.length}개</span></header>
         <div class="itemdb-table-wrap">
           <table class="itemdb-table">
-            <thead><tr><th>이미지</th><th>아이템</th><th>분류·크기</th><th>점유 형태</th><th>능력치 초안</th><th>콘셉트</th>${canEditItemDb ? "<th>편집</th>" : ""}</tr></thead>
+            <thead><tr><th>이미지</th><th>아이템</th><th>분류·크기</th><th>점유 형태</th><th>시너지</th><th>능력치 초안</th><th>콘셉트</th>${canEditItemDb ? "<th>편집</th>" : ""}</tr></thead>
             <tbody>${renderItemRows(family.items)}</tbody>
           </table>
         </div>
@@ -1048,7 +1169,7 @@
         <header class="itemdb-hero">
           <div class="page-eyebrow">Generated catalog</div>
           <div class="itemdb-hero-row">
-            <div><h1>ItemDB</h1><p>게임 아이템의 이미지, 점유 형태와 능력치 초안을 한 곳에서 비교합니다. 원본 카탈로그가 바뀌면 위키 빌드에서 자동 갱신됩니다.</p></div>
+            <div><h1>ItemDB</h1><p>게임 아이템의 이미지, 점유 형태, 시너지와 능력치 초안을 한 곳에서 비교합니다. 로컬 에디터의 저장값은 게임 데이터와 공개 DB에 함께 반영됩니다.</p></div>
             <span class="itemdb-total"><strong>${itemDb.count}</strong><small>ITEMS</small></span>
           </div>
           <div class="itemdb-contract">
@@ -1060,7 +1181,7 @@
           </div>
         </header>
         <section class="itemdb-toolbar" aria-label="ItemDB 검색과 분류">
-          <label><span class="visually-hidden">아이템 검색</span><input id="itemdb-search" type="search" value="${escapeHtml(itemDbQuery)}" placeholder="이름, ID, 능력치, 콘셉트 검색…"></label>
+          <label><span class="visually-hidden">아이템 검색</span><input id="itemdb-search" type="search" value="${escapeHtml(itemDbQuery)}" placeholder="이름, ID, 시너지, 능력치, 콘셉트 검색…"></label>
           <div class="itemdb-family-filter" role="group" aria-label="아이템 대분류">
             <button type="button" data-itemdb-family="all">전체 <span>${itemDb.count}</span></button>
             ${itemDb.families.map((family) => `<button type="button" data-itemdb-family="${escapeHtml(family.id)}">${escapeHtml(family.label)} <span>${family.count}</span></button>`).join("")}
@@ -1183,7 +1304,7 @@
     if (route.kind === "tree") {
       document.title = "전체 위키 트리 · PackBound Wiki";
       renderNavigation("", "tree");
-      main.innerHTML = renderTree();
+      main.innerHTML = renderTree(route.treeView);
       document.body.classList.remove("menu-open");
       window.scrollTo(0, 0);
       return;
@@ -1212,6 +1333,31 @@
     `;
     document.body.classList.remove("menu-open");
     window.scrollTo(0, 0);
+  }
+
+  function openImageViewer(trigger) {
+    const source = markdownMedia.safeViewerImageSource(trigger.dataset.imageViewerSrc);
+    if (!source) return;
+    imageViewerReturnFocus = trigger;
+    imageViewerImage.src = source;
+    imageViewerImage.alt = trigger.dataset.imageViewerAlt || "";
+    imageViewerCaption.textContent = trigger.dataset.imageViewerCaption || trigger.dataset.imageViewerAlt || "";
+    imageViewer.hidden = false;
+    imageViewer.setAttribute("aria-hidden", "false");
+    document.body.classList.add("image-viewer-open");
+    window.setTimeout(() => imageViewer.focus(), 0);
+  }
+
+  function closeImageViewer() {
+    if (imageViewer.hidden) return;
+    imageViewer.hidden = true;
+    imageViewer.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("image-viewer-open");
+    imageViewerImage.removeAttribute("src");
+    imageViewerImage.alt = "";
+    imageViewerCaption.textContent = "";
+    if (imageViewerReturnFocus?.isConnected) imageViewerReturnFocus.focus();
+    imageViewerReturnFocus = null;
   }
 
   function renderPageSearch(query = "") {
@@ -1421,9 +1567,19 @@
     if (event.target.closest("a")) closeSearch();
   });
   main.addEventListener("click", (event) => {
+    const imageTrigger = event.target.closest("[data-image-viewer-src]");
+    if (imageTrigger) {
+      openImageViewer(imageTrigger);
+      return;
+    }
     const tag = event.target.closest("[data-open-tag]")?.dataset.openTag;
     if (tag) {
       openSearch(tag);
+      return;
+    }
+    const treeView = event.target.closest("[data-tree-view]")?.dataset.treeView;
+    if (treeView) {
+      location.hash = treeHref(treeView);
       return;
     }
     const action = event.target.closest("[data-tree-action]")?.dataset.treeAction;
@@ -1432,6 +1588,7 @@
       category.open = action === "expand";
     });
   });
+  imageViewerScrim.addEventListener("click", closeImageViewer);
   document.getElementById("menu-button").addEventListener("click", () => document.body.classList.toggle("menu-open"));
   document.getElementById("sidebar-scrim").addEventListener("click", () => document.body.classList.remove("menu-open"));
   const sidebarTabs = [sidebarTabWiki, sidebarTabDb];
@@ -1453,6 +1610,15 @@
     publicWikiLink.hidden = false;
   }
   document.addEventListener("keydown", (event) => {
+    if (!imageViewer.hidden && event.key === "Tab") {
+      event.preventDefault();
+      imageViewer.focus();
+      return;
+    }
+    if (!imageViewer.hidden && event.key === "Escape") {
+      closeImageViewer();
+      return;
+    }
     if (event.key === "/" && !/input|textarea/i.test(document.activeElement?.tagName || "")) {
       event.preventDefault();
       openSearch();

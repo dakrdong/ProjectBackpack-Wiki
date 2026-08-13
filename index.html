@@ -9,7 +9,7 @@
     />
     <meta name="theme-color" content="#101b2c" />
     <title>PackBound 개발 위키</title>
-    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="app.css?v=20260813-image-viewer" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
@@ -138,6 +138,14 @@
       </section>
     </div>
 
+    <div class="image-viewer" id="image-viewer" role="dialog" aria-modal="true" aria-labelledby="image-viewer-caption" aria-hidden="true" tabindex="-1" hidden>
+      <button class="image-viewer-scrim" id="image-viewer-scrim" type="button" aria-label="확대 이미지 닫기"></button>
+      <figure class="image-viewer-content">
+        <img class="image-viewer-image" id="image-viewer-image" alt="" />
+        <figcaption id="image-viewer-caption"></figcaption>
+      </figure>
+    </div>
+
     <script src="data.js"></script>
     <script src="item-db-data.js"></script>
     <script src="item-db.js"></script>
@@ -145,7 +153,8 @@
     <script src="combat-db.js"></script>
     <script src="tag-explorer.js"></script>
     <script src="local-access.js"></script>
-    <script src="markdown-media.js"></script>
-    <script src="app.js"></script>
+    <script src="markdown-media.js?v=20260813-image-viewer"></script>
+    <script src="wiki-timeline.js"></script>
+    <script src="app.js?v=20260813-image-viewer"></script>
   </body>
 </html>

@@ -27,6 +27,21 @@
     return source;
   }
 
+  function safeViewerImageSource(value) {
+    const source = String(value || "").trim();
+    const [path, query = "", ...extra] = source.split("?");
+    if (extra.length || (query && !/^v=[A-Fa-f0-9]{8,64}$/.test(query))) return null;
+    if (path.startsWith("./media/")) {
+      const safePath = safeImageSource(path);
+      return safePath ? `${safePath}${query ? `?${query}` : ""}` : null;
+    }
+    if (!path.startsWith("./item-media/")) return null;
+    const segments = path.slice("./item-media/".length).split("/");
+    if (segments.length < 2 || segments.some((segment) => !SAFE_SEGMENT.test(segment))) return null;
+    if (!SAFE_EXTENSION.test(segments.at(-1))) return null;
+    return `${path}${query ? `?${query}` : ""}`;
+  }
+
   function isImageLine(value) {
     return String(value || "").trimStart().startsWith("![");
   }
@@ -49,13 +64,13 @@
     const caption = escapeHtml((title || altText).trim());
     return (
       '<figure class="wiki-figure">' +
-      `<a href="${safeSource}" target="_blank" rel="noopener" aria-label="원본 이미지 열기: ${safeAlt}">` +
+      `<button type="button" class="wiki-image-trigger" data-image-viewer-src="${safeSource}" data-image-viewer-alt="${safeAlt}" data-image-viewer-caption="${caption}" aria-label="이미지 크게 보기: ${safeAlt}">` +
       `<img src="${safeSource}" alt="${safeAlt}" loading="lazy" decoding="async">` +
-      "</a>" +
+      "</button>" +
       `<figcaption>${caption}</figcaption>` +
       "</figure>"
     );
   }
 
-  return { isImageLine, renderImageLine, safeImageSource };
+  return { isImageLine, renderImageLine, safeImageSource, safeViewerImageSource };
 });
