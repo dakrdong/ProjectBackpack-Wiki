@@ -16,6 +16,13 @@
 
   function compareEntries(left, right, order) {
     const direction = normalizeOrder(order) === "oldest" ? 1 : -1;
+    const leftOrder = Number(left.revision.timeline_order);
+    const rightOrder = Number(right.revision.timeline_order);
+    if (Number.isFinite(leftOrder) && Number.isFinite(rightOrder)) {
+      const orderDifference = leftOrder - rightOrder;
+      if (orderDifference !== 0) return orderDifference * direction;
+    }
+
     const timeDifference = timestamp(left.revision.updated_at) - timestamp(right.revision.updated_at);
     if (timeDifference !== 0) return timeDifference * direction;
 
