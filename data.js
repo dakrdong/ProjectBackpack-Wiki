@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
   "generated_at": "2026-08-14",
   "page_count": 7,
-  "revision_count": 40,
+  "revision_count": 42,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -400,35 +400,35 @@ window.PACKBOUND_WIKI = {
     {
       "id": "inventory-item-concept",
       "title": "인벤토리와 아이템 개념",
-      "summary": "가방을 집어 원하는 칸에 놓는 동작이 실제로 성립하도록 드래그 입력 계약을 바로잡고, 보관함이 두 제스처(스크롤·꺼내기)를 명시적 규칙으로 나눠 갖도록 정리했습니다.",
+      "summary": "모바일 보관함의 실제 내부 경계를 카드 표시 경계로 확정하고, 회전 아트의 누출과 가장자리 선택선 잘림을 투명 클리핑 구조로 해결했으며, 카드 점유 헥스를 밝게 낮춰 아이템을 먼저 읽게 했습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
         "inventory",
         "item",
         "backpack",
-        "item-db",
         "hex-grid",
         "ui",
         "ux",
-        "input",
         "mobile",
-        "roblox"
+        "scrolling",
+        "readability",
+        "roblox-studio"
       ],
       "created_at": "2026-08-06",
       "updated_at": "2026-08-14",
       "authors": [
-        "Codex"
+        "Hermes Agent"
       ],
-      "version": 10,
+      "version": 12,
       "change_type": "updated",
-      "change_summary": "포인터가 지나는 칸마다 드래그가 재시작되던 결함을 제거하고 잡은 칸이 포인터를 따라오도록 했으며, 보관함의 스크롤과 꺼내기를 네 가지 명시 규칙으로 분리하고 서랍 가장자리 처리와 겹친 가방 칸 표현을 정리했습니다.",
-      "supersedes": "inventory-item-concept@v009",
+      "change_summary": "보관함 위에 색 띠를 덧씌우는 대신 반응형 서랍 내부 전체를 투명 CanvasGroup 표시 영역으로 삼아 카드와 회전 아트를 실제 경계에서 자르고, 우측 선택선을 카드 안쪽에 보존했으며, 아이템 카드 전용 연한 헥스 색으로 그림 판독성을 높였습니다.",
+      "supersedes": "inventory-item-concept@v011",
       "sources": [
-        "wiki/content/pages/inventory-item-concept/v009.md",
-        "wiki/content/media/inventory-item-concept/v010/studio-vertical-storage-scrolled.png",
-        "src/ReplicatedStorage/BackpackUI/Screen.luau",
-        "src/ReplicatedStorage/BackpackUI/DragPlacementState.luau",
+        "wiki/content/pages/inventory-item-concept/v011.md",
+        "wiki/content/media/inventory-item-concept/v012/annotated-viewport-target.png",
+        "wiki/content/media/inventory-item-concept/v012/studio-itemmode-general-phone.jpg",
+        "wiki/content/media/inventory-item-concept/v012/studio-itemmode-small-phone.jpg",
         "src/ReplicatedStorage/BackpackUI/ScreenRenderer.luau",
         "src/ReplicatedStorage/BackpackUI/VisualTokens.luau",
         "tests/BackpackUI.spec.luau",
@@ -440,18 +440,142 @@ window.PACKBOUND_WIKI = {
         "project-overview"
       ],
       "validation": [
-        "bash tools/test_backpack_ui.sh",
-        "python3 -m unittest tests.test_repository_policy",
-        "Roblox Studio MCP Play, 세로 401×718: 실제 배치 데이터로 앵커 계산 검증 - 잡은 칸에서 놓으면 제자리, 한 칸 이동 시 정확히 한 칸",
-        "Roblox Studio MCP Play: 보관함 세로 스크롤 카드 79장·캔버스 3936px, 가로 잘림 0, 서랍 여백 마스크가 상단 0~14px·하단 304~315px를 정확히 덮음",
-        "Roblox Studio MCP Play: 겹친 가방 칸 5개가 각각 1회만 채색, 스택된 셀 0",
+        "LUAU_BIN=\"$(command -v luau)\" PATH=\"/usr/bin:/bin\" ./tools/test_backpack_ui.sh: Backpack hex inventory tests passed",
+        "native backpack UI source checks: 5 tests passed",
+        "Roblox Studio MCP Play, ItemMode 89개·400×718: CardViewport y=417~707이 보관함 내부 끝선과 일치, 상·하 스크롤 경계에서 불투명 마스크와 회전 아트 누출 없음",
+        "Roblox Studio MCP Play, ItemMode 89개·359×667: 카드 78×124로 반응형 재배치, 아이템 카드 헥스 RGB 184/204/216·투명도 0.32 유지, 겹침·잘림 회귀 없음",
+        "Roblox Studio Edit DataModel grep: 임시 ItemMode 검증 훅 없음, ItemCardFootprint 정의와 카드 전용 사용 경로 확인",
+        "git diff --check",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
-        "python3 -m unittest tests/test_wiki.py"
+        "python3 -m unittest tests/test_wiki.py",
+        "python3 -m unittest tests.test_repository_policy"
       ],
-      "source_path": "wiki/content/pages/inventory-item-concept/v010.md",
-      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n앞 버전에서 인벤토리는 전투 준비 씬으로서의 화면을 갖췄습니다. 그러나 작업대는 보기\n좋은 것만으로 성립하지 않습니다. 가방 칸을 집어 원하는 칸에 놓는 동작이 손에 맞아야\n비로소 작업대입니다.\n\n실제로 만져 보니 그 동작이 성립하지 않았습니다. 가방을 잡아도 들리지 않고, 칸이 아닌\n빈 공간까지 끌고 나가야 그제서야 들렸으며, 그때 들리는 것은 처음 잡은 가방이 아니라\n포인터가 마지막으로 지나간 가방이었습니다. 보관함에서는 목록을 넘기려는 손짓과 아이템을\n꺼내려는 손짓이 서로를 잡아먹었습니다.\n\n이번 버전은 화면을 더 꾸미지 않습니다. **입력이 의도한 대로 해석되게 만드는 것**만을\n목표로 삼았습니다.\n\n## 플레이어 경험\n\n가방 칸을 잡으면 그 즉시 들립니다. 잡은 칸이 포인터를 따라오므로, 한 칸 옆으로 밀면\n가방은 정확히 한 칸 움직입니다. 놓일 자리는 손에 든 그림 아래에 스냅된 윤곽으로 미리\n보입니다.\n\n보관함은 하나의 표면에서 두 가지 손짓을 받습니다. 카드 사이의 빈 곳을 잡으면 목록이\n넘어가고, 카드 가장자리를 잡아도 넘어갑니다. 카드 가운데를 잡고 바로 끌면 아이템이\n집히고, 잠깐 누르고 있다가 위아래로 움직이면 목록이 넘어갑니다. 어느 쪽을 원했든 손이\n먼저 알려 준 대로 동작합니다.\n\n목록을 넘기는 동안 서랍 위아래로 카드가 삐져나오지 않습니다. 아직 꺼낼지 넘길지 모르는\n동안에는 들린 아이템 그림도 나타나지 않고, 서랍 밖으로 손이 나가는 순간 나타납니다.\n\n## 핵심 원칙과 설계 철학\n\n**한 번의 누름은 하나의 조작이다.** 포인터가 다른 대상 위를 지난다는 이유로 진행 중인\n조작이 다시 시작되어서는 안 됩니다. 누름은 그것이 시작된 대상에 끝까지 속합니다.\n\n**손에 든 것이 조준한다.** 들어 올린 그림은 손가락을 피하기 위한 시각 장치이자 플레이어가\n겨누는 대상입니다. 시각과 조준이 어긋나면 그 차이는 조준 실패가 아니라 \"말을 안 듣는다\"로\n체감됩니다.\n\n**집은 자리를 기억한다.** 여러 칸을 차지하는 가방은 어느 칸을 잡았는지가 곧 손의 기준점\n입니다. 기준점을 잃으면 가방은 잡은 것과 다른 방식으로 움직입니다.\n\n**모호한 구간에서는 판단을 미룬다.** 보관함 안에서 손이 움직이는 동안에는 스크롤인지\n꺼내기인지 아직 알 수 없습니다. 확정되지 않은 의도를 화면에 미리 그리지 않습니다.\n\n**제스처는 추측이 아니라 규칙으로 나눈다.** 방향만으로 의도를 짐작하면 두 조작이 서로를\n빼앗습니다. 어떤 지점을 잡았는지, 얼마나 쥐고 있었는지 같은 관찰 가능한 조건으로 나눕니다.\n\n## 결정 사항과 범위\n\n- 보관함 제스처는 네 규칙으로 확정했습니다. ① 카드가 아닌 서랍 내부는 무조건 스크롤,\n  ② 카드 가장자리(중심에서 86% 밖)는 스크롤, ③ 카드 안쪽을 0.8초 이상 쥐고 있다가\n  위아래로 움직이면 스크롤, ④ 그 밖의 카드 드래그는 아이템 꺼내기입니다.\n- 포인터 리프트는 터치 36px, 마우스 0px입니다. 마우스 커서는 아무것도 가리지 않으므로\n  들어 올릴 이유가 없습니다.\n- 보드 드래그는 4px 이동에서 시작합니다. 보관함은 14px을 유지합니다. 서랍의 스크롤\n  제스처를 드래그가 가로채지 않아야 하기 때문입니다.\n- 서랍 안쪽 여백을 상단 14px, 하단 11px로 넓히고 그 여백을 불투명 띠로 덮었습니다.\n  잘린 카드가 서랍 테두리에 맞닿아 잘리면 그 단면이 패널 밖으로 새어 나온 것처럼\n  읽혔습니다.\n- 겹친 가방 칸은 한 번만, 무효 색으로 칠합니다. 겹치는 배치는 거부되지 않고 드래프트로\n  남는 설계이므로, 두 반투명 색이 쌓여 정체를 알 수 없는 색이 되던 문제를 정리했습니다.\n- 조작감 수치(리프트 36px, 대기 0.8초, 가장자리 86%)는 실기기 확인 후 조정할 여지를\n  남겨 둡니다. 이번 커밋에서는 규칙의 구조를 확정하는 데까지가 범위입니다.\n\n## 현재 결과\n\n![세로 스크롤 중인 보관함](./media/inventory-item-concept/v010/studio-vertical-storage-scrolled.png \"아이템 배치 모드에서 보관함을 중간까지 넘긴 상태. 카드는 가로로 잘리지 않고 세로로만 잘리며, 서랍 위아래 여백이 불투명 띠로 덮여 잘린 카드가 패널 밖으로 새지 않습니다\")\n\n## 구현 참고\n\n입력 계약은 `Screen.luau`와 `DragPlacementState.luau`가 나눠 갖습니다. 판단 규칙은 순수\n함수로 분리해 테스트가 직접 검증합니다.\n\n- `beginObjectPress`는 드래그가 이미 살아 있으면 새 누름을 무시합니다. Roblox는 버튼을\n  누른 채 포인터가 들어가는 모든 GuiObject에 `InputBegan`을 올리므로, 이를 그대로 받으면\n  포인터가 지나는 칸마다 `startDrag`가 다시 호출되어 드래그가 죽고 되살아났습니다.\n- `ResolveGrabOffset`과 `AnchorForGrab`이 집은 칸과 앵커의 차이를 보존합니다. 앵커가\n  포인터로 순간이동하면 가방은 그 차이만큼 도약하고, 원래 배치가 재현되는 유일한 포인터\n  위치가 앵커 칸이어서 제자리로 붙는 것처럼 보였습니다.\n- `IsCardRimGrab`은 카드 중심에서의 거리를 반폭·반높이의 비율로 재므로 화면 크기와\n  무관하게 같은 두께의 가장자리를 만듭니다. `ShouldStorageScrollAfterHold`는 첫 이동\n  시점의 경과 시간으로 규칙 ③을 판정합니다.\n- 드래그가 시작되면 `ScrollingFrame`의 자체 스크롤을 끕니다. 카드에서 시작한 드래그\n  중에도 프레임이 스크롤해 서랍이 손 밑에서 움직였습니다.\n\n`ScreenRenderer.luau`는 서랍 가장자리를 담당합니다. 여백을 덮는 불투명 띠와 그 안쪽의\n페이드가 함께 잘린 단면을 마감합니다. 카드와 카드 캔버스가 각각 자기 내용을 클리핑하고,\n회전을 쓰는 아이템 아트는 회전 없는 컨테이너 안에 가둡니다. Roblox는 조상 경계에 걸친\n회전 자손을 정확히 자르지 못하기 때문입니다.\n\n## 검증\n\n로컬에서 `tools/test_backpack_ui.sh`와 저장소 정책 테스트를 실행했습니다. 제스처 규칙과\n앵커 계산은 경계값 테스트로 고정했습니다. Roblox Studio MCP Play에서 실제 배치 데이터로\n앵커 계산을 확인했고(잡은 칸에서 놓으면 제자리, 한 칸 이동 시 정확히 한 칸), 보관함\n세로 스크롤에서 카드 79장이 가로 잘림 없이 3936px 캔버스를 채우며 서랍 여백 마스크가\n상단 0~14px·하단 304~315px를 정확히 덮는 것을 확인했습니다.\n\n드래그 조작 자체는 Studio의 클릭 시뮬레이션 좌표계가 디바이스 에뮬레이션과 어긋나\n자동 제스처로 재현하지 못했습니다. 규칙 함수와 렌더 결과는 검증했으나, **손으로 만졌을\n때의 감각은 아직 확인되지 않았습니다.**\n\n## 후속 기획\n\n- 실기기에서 조작감을 확인하고 리프트·대기 시간·가장자리 두께를 조정합니다.\n- 스크롤하려는 손짓에서 아이템이 집히는 빈도를 관찰합니다. 규칙 ④가 실사용에서 너무\n  자주 이기면 판정을 다시 나눠야 합니다.\n- 준비 씬에서 전투로 넘어가는 전환 연출을 설계합니다.\n",
+      "source_path": "wiki/content/pages/inventory-item-concept/v012.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n보관함은 카드가 움직이는 작업 영역입니다. 플레이어는 목록을 넘기면서 카드의 아이템 그림,\n점유 형태, 무게와 선택 상태를 한눈에 판단해야 합니다. 이때 카드 일부가 서랍 밖에 떠 보이거나,\n보관함 위에 덧씌운 색 띠가 실제 카드 영역을 가리면 화면이 어디까지 상호작용 가능한지 알기\n어렵습니다. 반대로 점유 형태의 헥스가 아이템 그림보다 진하면 플레이어가 가장 먼저 알아야 할\n아이템 자체가 배경에 묻힙니다.\n\n이번 버전의 목표는 보관함을 **하나의 명확한 창**으로 만드는 것입니다. 창의 크기는 현재\n모바일 화면에서 계산된 서랍 내부 끝선과 정확히 같고, 카드와 회전된 그림은 그 창 안에서만\n보입니다. 카드 안에서는 아이템이 먼저 읽히고 점유 헥스는 형태를 설명하는 보조 정보로\n물러납니다.\n\n## 플레이어 경험\n\n- 카드 목록은 보관함의 실제 상단과 하단 내부 경계까지 넓게 보입니다.\n- 목록을 맨 위나 맨 아래로 넘겨도 카드 이미지와 회전 아트가 배치 보드 쪽이나 화면 밖으로\n  새지 않습니다.\n- 별도의 불투명 띠가 카드를 덮지 않으므로 보이는 영역과 터치 가능한 영역이 일치합니다.\n- 가장 오른쪽 카드를 선택해도 초록 선택 테두리가 스크롤 경계에 잘리지 않습니다.\n- 아이템 카드의 점유 헥스는 연한 청회색으로 물러나고, 아이템 실루엣과 고유 색이 먼저\n  보입니다. 가방 카드의 시너지 색과 보드의 배치 상태 색은 그대로 유지됩니다.\n\n![사용자가 지정한 보관함 표시 목표](./media/inventory-item-concept/v012/annotated-viewport-target.png \"파란 상자는 과도하게 줄어든 표시 영역, 빨간 상자는 보관함 UI 내부 끝선까지 넓혀야 할 목표 영역을 나타냅니다\")\n\n![일반 모바일 ItemMode 최종 결과](./media/inventory-item-concept/v012/studio-itemmode-general-phone.jpg \"400×718 ItemMode 89개 카드 상태. 카드 표시 영역이 필터 레일과 같은 높이로 서랍 내부 전체를 사용하고, 연한 점유 헥스 위에서 아이템 이미지가 먼저 읽힙니다\")\n\n![소형 모바일 ItemMode 최종 결과](./media/inventory-item-concept/v012/studio-itemmode-small-phone.jpg \"359×667 반응형 상태. 카드가 78×124로 다시 계산되어도 점유 헥스·아이템 이미지·텍스트의 계층과 보관함 클리핑이 유지됩니다\")\n\n## 핵심 원칙과 설계 철학\n\n### 경계는 덮개가 아니라 실제 표시 영역이 소유한다\n\n보관함 밖의 그림을 감추기 위해 색이 있는 프레임, 페이드 또는 마스크를 카드 위에 놓지\n않습니다. 그런 도형은 특정 해상도에서는 맞아 보여도 표시 범위와 입력 범위를 갈라 놓고,\n배경색이나 화면 배율이 달라지면 새로운 띠로 드러납니다. 카드가 보일 수 있는 범위는 오직\n투명한 `CardViewport`의 위치와 크기로 결정합니다.\n\n### 화면 비율보다 현재 레이아웃의 실제 경계를 따른다\n\n표시 영역은 임의의 픽셀 여백이나 카드 높이 비율로 줄이지 않습니다. `StorageTop`,\n`ScrollHeight`, 카드 영역 너비와 스크롤바 레인처럼 현재 뷰포트에서 이미 계산된 값을 그대로\n사용합니다. 따라서 작은 폰과 큰 폰 모두에서 같은 수치가 아니라 같은 의미, 즉 **서랍 내부\n끝선까지 보인다**는 계약을 유지합니다.\n\n### 시각 정보에는 우선순위가 있다\n\n아이템 카드에서 가장 중요한 것은 아이템의 정체이고, 점유 헥스는 그것이 차지할 모양을\n설명하는 두 번째 정보입니다. 카드 전용 헥스는 밝게 낮추되 경계선은 유지해 형태를 셀 수\n있게 합니다. 보드 배치, 드래그, 유효·무효 상태와 가방 시너지는 게임 의미를 전달하는 강한\n색이므로 카드 가독성 조정에 함께 끌려가지 않습니다.\n\n### 클리핑은 바깥과 안쪽에서 함께 완성한다\n\n회전된 Roblox UI 자손은 일반 `Frame`이나 `ScrollingFrame` 경계에서 몇 픽셀 벗어나 그려질\n수 있습니다. 바깥쪽에는 독립 렌더 표면을 가진 투명 `CanvasGroup`을 두고, 카드 안쪽에는\n회전하지 않는 `Footprint`와 `ArtClip` 경계를 둡니다. 카드의 모든 시각 자손은 카드와 같은\nZ 계층에 놓여 조상 클리핑을 우회하지 못합니다.\n\n## 결정 사항과 범위\n\n- `CardViewport`는 배경이 없는 `CanvasGroup`이며 `GroupTransparency=0`,\n  `ClipsDescendants=true`입니다.\n- `Cards` 스크롤 프레임은 `CardViewport`를 `(0, 0)`에서 `(1, 1)`까지 채웁니다.\n- `CardViewport`의 Y와 높이는 각각 `StorageTop`, `ScrollHeight`에서 가져옵니다. 카드 높이에\n  따른 추가 안전 여백은 두지 않습니다.\n- 상·하 마스크와 페이드는 제품 구조에 존재하지 않습니다.\n- 카드 내부 `Footprint`와 `ArtClip`도 자손을 클리핑해 회전 이미지와 미니 헥스를 카드 안에\n  가둡니다.\n- 선택 테두리는 카드 가장자리에서 `선 두께 + 1px` 안쪽의 투명 오버레이에 그려 마지막\n  열에서도 선 전체가 보이게 합니다.\n- 아이템 카드 전용 `ItemCardFootprint`는 `RGB(184, 204, 216)`입니다. 기존\n  `ItemFootprint RGB(94, 126, 150)`는 보드와 드래그 피드백에 남습니다.\n- PC 전용 레이아웃과 ItemDB 데이터·아이콘 변경은 이번 버전의 범위가 아닙니다.\n\n## 현재 결과\n\n400×718 모바일 Play에서 보관함은 `y=403~718`, 카드 표시 영역은 서랍의 기존 반응형\n여백만 남긴 `y=417~707`입니다. 과도한 추가 축소 없이 필터 레일과 같은 세로 띠를 사용합니다.\nItemMode의 실제 카드 89개를 맨 위와 맨 아래까지 이동해도 카드 아트는 이 경계를 넘지\n않았습니다.\n\n359×667 상태에서는 보관함이 `351×291`, 카드 표시 영역이 `257×266`, 카드가 `78×124`로\n다시 계산됐습니다. 여러 아이템 카드의 런타임 `ImageColor3`는 `184/204/216`, 투명도는\n`0.32`였고, 아이템 이미지와 헥스 격자 경계가 모두 읽혔습니다.\n\n## 구현 참고\n\n`ScreenRenderer.Mount`가 `Storage > CardViewport > Cards > CardContent` 계층을 만들고,\n반응형 적용 함수가 `VisualTokens.CalculateResponsiveLayout`의 저장 영역 값을\n`CardViewport`에 연결합니다. `RenderStorage`는 카드 내부 클리핑, 선택 오버레이와 카드 전용\n헥스 색상을 구성합니다.\n\n소스 검사는 투명 `CanvasGroup`, 보관함 실제 경계 사용, 마스크·페이드 부재, 카드 내부\n클리핑, 선택선 인셋과 카드 전용 색상 경로를 계약으로 고정합니다.\n\n## 검증\n\nLuau 백팩 스펙과 네이티브 UI 소스 검사 5개를 통과했고 `git diff --check`로 공백 오류가\n없음을 확인했습니다. Roblox Studio MCP Play에서는 400×718과 359×667 두 모바일 크기의\nItemMode 89개 카드 상태를 사용했습니다. 일반 크기에서는 표시 영역과 상·하 스크롤 경계를,\n작은 크기에서는 카드 재배치와 색상 계층을 확인했습니다.\n\n검증에만 사용한 ItemMode 강제 훅은 Edit DataModel에서 제거했으며, 최종 grep에서 임시\nStudio 코드가 남지 않았음을 확인했습니다.\n\n## 후속 기획\n\n- 실제 손가락 스크롤에서 서랍 끝의 잘린 행이 다음 콘텐츠가 있음을 자연스럽게 알리는지\n  관찰합니다.\n- 새 카드 장식이나 희귀도 색을 추가할 때도 아이템 그림, 점유 형태, 상태 색의 우선순위를\n  뒤집지 않습니다.\n- Roblox의 회전 자손 클리핑 동작이 바뀌면 불투명 덮개를 되살리기보다 투명 렌더 경계가\n  여전히 필요한지 먼저 다시 측정합니다.\n",
       "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "모바일 보관함의 실제 내부 경계를 카드 표시 경계로 확정하고, 회전 아트의 누출과 가장자리 선택선 잘림을 투명 클리핑 구조로 해결했으며, 카드 점유 헥스를 밝게 낮춰 아이템을 먼저 읽게 했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "hex-grid",
+            "ui",
+            "ux",
+            "mobile",
+            "scrolling",
+            "readability",
+            "roblox-studio"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-14",
+          "authors": [
+            "Hermes Agent"
+          ],
+          "version": 12,
+          "change_type": "updated",
+          "change_summary": "보관함 위에 색 띠를 덧씌우는 대신 반응형 서랍 내부 전체를 투명 CanvasGroup 표시 영역으로 삼아 카드와 회전 아트를 실제 경계에서 자르고, 우측 선택선을 카드 안쪽에 보존했으며, 아이템 카드 전용 연한 헥스 색으로 그림 판독성을 높였습니다.",
+          "supersedes": "inventory-item-concept@v011",
+          "sources": [
+            "wiki/content/pages/inventory-item-concept/v011.md",
+            "wiki/content/media/inventory-item-concept/v012/annotated-viewport-target.png",
+            "wiki/content/media/inventory-item-concept/v012/studio-itemmode-general-phone.jpg",
+            "wiki/content/media/inventory-item-concept/v012/studio-itemmode-small-phone.jpg",
+            "src/ReplicatedStorage/BackpackUI/ScreenRenderer.luau",
+            "src/ReplicatedStorage/BackpackUI/VisualTokens.luau",
+            "tests/BackpackUI.spec.luau",
+            "tests/test_native_backpack_ui.py"
+          ],
+          "related": [
+            "development-wiki",
+            "backpack-combat-stat-database",
+            "project-overview"
+          ],
+          "validation": [
+            "LUAU_BIN=\"$(command -v luau)\" PATH=\"/usr/bin:/bin\" ./tools/test_backpack_ui.sh: Backpack hex inventory tests passed",
+            "native backpack UI source checks: 5 tests passed",
+            "Roblox Studio MCP Play, ItemMode 89개·400×718: CardViewport y=417~707이 보관함 내부 끝선과 일치, 상·하 스크롤 경계에서 불투명 마스크와 회전 아트 누출 없음",
+            "Roblox Studio MCP Play, ItemMode 89개·359×667: 카드 78×124로 반응형 재배치, 아이템 카드 헥스 RGB 184/204/216·투명도 0.32 유지, 겹침·잘림 회귀 없음",
+            "Roblox Studio Edit DataModel grep: 임시 ItemMode 검증 훅 없음, ItemCardFootprint 정의와 카드 전용 사용 경로 확인",
+            "git diff --check",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "python3 -m unittest tests.test_repository_policy"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n보관함은 카드가 움직이는 작업 영역입니다. 플레이어는 목록을 넘기면서 카드의 아이템 그림,\n점유 형태, 무게와 선택 상태를 한눈에 판단해야 합니다. 이때 카드 일부가 서랍 밖에 떠 보이거나,\n보관함 위에 덧씌운 색 띠가 실제 카드 영역을 가리면 화면이 어디까지 상호작용 가능한지 알기\n어렵습니다. 반대로 점유 형태의 헥스가 아이템 그림보다 진하면 플레이어가 가장 먼저 알아야 할\n아이템 자체가 배경에 묻힙니다.\n\n이번 버전의 목표는 보관함을 **하나의 명확한 창**으로 만드는 것입니다. 창의 크기는 현재\n모바일 화면에서 계산된 서랍 내부 끝선과 정확히 같고, 카드와 회전된 그림은 그 창 안에서만\n보입니다. 카드 안에서는 아이템이 먼저 읽히고 점유 헥스는 형태를 설명하는 보조 정보로\n물러납니다.\n\n## 플레이어 경험\n\n- 카드 목록은 보관함의 실제 상단과 하단 내부 경계까지 넓게 보입니다.\n- 목록을 맨 위나 맨 아래로 넘겨도 카드 이미지와 회전 아트가 배치 보드 쪽이나 화면 밖으로\n  새지 않습니다.\n- 별도의 불투명 띠가 카드를 덮지 않으므로 보이는 영역과 터치 가능한 영역이 일치합니다.\n- 가장 오른쪽 카드를 선택해도 초록 선택 테두리가 스크롤 경계에 잘리지 않습니다.\n- 아이템 카드의 점유 헥스는 연한 청회색으로 물러나고, 아이템 실루엣과 고유 색이 먼저\n  보입니다. 가방 카드의 시너지 색과 보드의 배치 상태 색은 그대로 유지됩니다.\n\n![사용자가 지정한 보관함 표시 목표](./media/inventory-item-concept/v012/annotated-viewport-target.png \"파란 상자는 과도하게 줄어든 표시 영역, 빨간 상자는 보관함 UI 내부 끝선까지 넓혀야 할 목표 영역을 나타냅니다\")\n\n![일반 모바일 ItemMode 최종 결과](./media/inventory-item-concept/v012/studio-itemmode-general-phone.jpg \"400×718 ItemMode 89개 카드 상태. 카드 표시 영역이 필터 레일과 같은 높이로 서랍 내부 전체를 사용하고, 연한 점유 헥스 위에서 아이템 이미지가 먼저 읽힙니다\")\n\n![소형 모바일 ItemMode 최종 결과](./media/inventory-item-concept/v012/studio-itemmode-small-phone.jpg \"359×667 반응형 상태. 카드가 78×124로 다시 계산되어도 점유 헥스·아이템 이미지·텍스트의 계층과 보관함 클리핑이 유지됩니다\")\n\n## 핵심 원칙과 설계 철학\n\n### 경계는 덮개가 아니라 실제 표시 영역이 소유한다\n\n보관함 밖의 그림을 감추기 위해 색이 있는 프레임, 페이드 또는 마스크를 카드 위에 놓지\n않습니다. 그런 도형은 특정 해상도에서는 맞아 보여도 표시 범위와 입력 범위를 갈라 놓고,\n배경색이나 화면 배율이 달라지면 새로운 띠로 드러납니다. 카드가 보일 수 있는 범위는 오직\n투명한 `CardViewport`의 위치와 크기로 결정합니다.\n\n### 화면 비율보다 현재 레이아웃의 실제 경계를 따른다\n\n표시 영역은 임의의 픽셀 여백이나 카드 높이 비율로 줄이지 않습니다. `StorageTop`,\n`ScrollHeight`, 카드 영역 너비와 스크롤바 레인처럼 현재 뷰포트에서 이미 계산된 값을 그대로\n사용합니다. 따라서 작은 폰과 큰 폰 모두에서 같은 수치가 아니라 같은 의미, 즉 **서랍 내부\n끝선까지 보인다**는 계약을 유지합니다.\n\n### 시각 정보에는 우선순위가 있다\n\n아이템 카드에서 가장 중요한 것은 아이템의 정체이고, 점유 헥스는 그것이 차지할 모양을\n설명하는 두 번째 정보입니다. 카드 전용 헥스는 밝게 낮추되 경계선은 유지해 형태를 셀 수\n있게 합니다. 보드 배치, 드래그, 유효·무효 상태와 가방 시너지는 게임 의미를 전달하는 강한\n색이므로 카드 가독성 조정에 함께 끌려가지 않습니다.\n\n### 클리핑은 바깥과 안쪽에서 함께 완성한다\n\n회전된 Roblox UI 자손은 일반 `Frame`이나 `ScrollingFrame` 경계에서 몇 픽셀 벗어나 그려질\n수 있습니다. 바깥쪽에는 독립 렌더 표면을 가진 투명 `CanvasGroup`을 두고, 카드 안쪽에는\n회전하지 않는 `Footprint`와 `ArtClip` 경계를 둡니다. 카드의 모든 시각 자손은 카드와 같은\nZ 계층에 놓여 조상 클리핑을 우회하지 못합니다.\n\n## 결정 사항과 범위\n\n- `CardViewport`는 배경이 없는 `CanvasGroup`이며 `GroupTransparency=0`,\n  `ClipsDescendants=true`입니다.\n- `Cards` 스크롤 프레임은 `CardViewport`를 `(0, 0)`에서 `(1, 1)`까지 채웁니다.\n- `CardViewport`의 Y와 높이는 각각 `StorageTop`, `ScrollHeight`에서 가져옵니다. 카드 높이에\n  따른 추가 안전 여백은 두지 않습니다.\n- 상·하 마스크와 페이드는 제품 구조에 존재하지 않습니다.\n- 카드 내부 `Footprint`와 `ArtClip`도 자손을 클리핑해 회전 이미지와 미니 헥스를 카드 안에\n  가둡니다.\n- 선택 테두리는 카드 가장자리에서 `선 두께 + 1px` 안쪽의 투명 오버레이에 그려 마지막\n  열에서도 선 전체가 보이게 합니다.\n- 아이템 카드 전용 `ItemCardFootprint`는 `RGB(184, 204, 216)`입니다. 기존\n  `ItemFootprint RGB(94, 126, 150)`는 보드와 드래그 피드백에 남습니다.\n- PC 전용 레이아웃과 ItemDB 데이터·아이콘 변경은 이번 버전의 범위가 아닙니다.\n\n## 현재 결과\n\n400×718 모바일 Play에서 보관함은 `y=403~718`, 카드 표시 영역은 서랍의 기존 반응형\n여백만 남긴 `y=417~707`입니다. 과도한 추가 축소 없이 필터 레일과 같은 세로 띠를 사용합니다.\nItemMode의 실제 카드 89개를 맨 위와 맨 아래까지 이동해도 카드 아트는 이 경계를 넘지\n않았습니다.\n\n359×667 상태에서는 보관함이 `351×291`, 카드 표시 영역이 `257×266`, 카드가 `78×124`로\n다시 계산됐습니다. 여러 아이템 카드의 런타임 `ImageColor3`는 `184/204/216`, 투명도는\n`0.32`였고, 아이템 이미지와 헥스 격자 경계가 모두 읽혔습니다.\n\n## 구현 참고\n\n`ScreenRenderer.Mount`가 `Storage > CardViewport > Cards > CardContent` 계층을 만들고,\n반응형 적용 함수가 `VisualTokens.CalculateResponsiveLayout`의 저장 영역 값을\n`CardViewport`에 연결합니다. `RenderStorage`는 카드 내부 클리핑, 선택 오버레이와 카드 전용\n헥스 색상을 구성합니다.\n\n소스 검사는 투명 `CanvasGroup`, 보관함 실제 경계 사용, 마스크·페이드 부재, 카드 내부\n클리핑, 선택선 인셋과 카드 전용 색상 경로를 계약으로 고정합니다.\n\n## 검증\n\nLuau 백팩 스펙과 네이티브 UI 소스 검사 5개를 통과했고 `git diff --check`로 공백 오류가\n없음을 확인했습니다. Roblox Studio MCP Play에서는 400×718과 359×667 두 모바일 크기의\nItemMode 89개 카드 상태를 사용했습니다. 일반 크기에서는 표시 영역과 상·하 스크롤 경계를,\n작은 크기에서는 카드 재배치와 색상 계층을 확인했습니다.\n\n검증에만 사용한 ItemMode 강제 훅은 Edit DataModel에서 제거했으며, 최종 grep에서 임시\nStudio 코드가 남지 않았음을 확인했습니다.\n\n## 후속 기획\n\n- 실제 손가락 스크롤에서 서랍 끝의 잘린 행이 다음 콘텐츠가 있음을 자연스럽게 알리는지\n  관찰합니다.\n- 새 카드 장식이나 희귀도 색을 추가할 때도 아이템 그림, 점유 형태, 상태 색의 우선순위를\n  뒤집지 않습니다.\n- Roblox의 회전 자손 클리핑 동작이 바뀌면 불투명 덮개를 되살리기보다 투명 렌더 경계가\n  여전히 필요한지 먼저 다시 측정합니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v012.md",
+          "timeline_order": 32
+        },
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "아이템 칸 형태의 유일한 출처를 ItemDB로 확정하고, 데이터베이스 빌드마다 리비전 지문을 남겨 게임이 옛 데이터를 쓰고 있는지 드러나게 했으며, 저장소의 최신 데이터를 Studio에 옮기는 한 번의 명시적 행위로 「게임에 굽기」를 두었습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "item-db",
+            "hex-grid",
+            "tooling",
+            "pipeline",
+            "roblox-studio",
+            "ui",
+            "roblox"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-14",
+          "authors": [
+            "Codex"
+          ],
+          "version": 11,
+          "change_type": "updated",
+          "change_summary": "위키에서 저장한 칸 형태가 게임에 닿지 않던 마지막 구간을 메웠습니다. 데이터베이스 빌드마다 리비전 지문을 남겨 어긋남이 드러나게 하고, ItemDB 페이지의 「게임에 굽기」와 `item_db.py bake`로 최신 데이터를 Studio에 한 번에 적용하며, 데이터베이스에서 사라진 아이템은 저장된 가방에서도 정리되게 했습니다.",
+          "supersedes": "inventory-item-concept@v010",
+          "sources": [
+            "wiki/content/pages/inventory-item-concept/v010.md",
+            "wiki/content/media/inventory-item-concept/v011/itemdb-bake-entry.png",
+            "wiki/content/media/inventory-item-concept/v011/itemdb-bake-dialog.png",
+            "tools/item_db.py",
+            "tools/wiki.py",
+            "wiki/site/app.js",
+            "wiki/site/app.css",
+            "src/ReplicatedStorage/BackpackUI/ItemCatalog.luau",
+            "src/ReplicatedStorage/BackpackUI/ItemInstanceHydrator.luau",
+            "src/ReplicatedStorage/BackpackUI/GeneratedItemLayouts.luau",
+            "AGENTS.md",
+            "README.md"
+          ],
+          "related": [
+            "development-wiki",
+            "studio-automation-routing",
+            "project-overview"
+          ],
+          "validation": [
+            "python3 tools/item_db.py build",
+            "python3 tools/item_db.py check",
+            "python3 -m unittest discover -s tests -p 'test_*.py'",
+            "bash tools/test_backpack_ui.sh",
+            "node tests/item-db.spec.js (및 wiki/site 스펙 5종)",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "python3 -m unittest tests.test_repository_policy",
+            "ItemDB 페이지 왕복: 테이프 철검을 3칸→4칸으로 저장해 GeneratedItemLayouts.luau와 리비전이 함께 바뀌는 것을 확인한 뒤 되돌려 파일이 원상 복구됨을 확인",
+            "Roblox Studio MCP: 실행 중인 place의 GeneratedItemLayouts를 읽어 80개·옛 점유 형태를 확인 (데이터베이스는 100개) — 격차 진단의 근거",
+            "브라우저 캡처(Chrome headless, 1440×900): ItemDB 페이지 진입점과 굽기 창"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n아이템의 칸 형태는 ItemDB에서 그립니다. 편집기에서 육각 칸을 찍고 저장하면 그 형태가\n곧 게임에서 가방을 차지하는 모양이 됩니다. 이 약속이 이 프로젝트에서 아이템을 다루는\n방식의 뿌리입니다.\n\n그런데 실제로는 위키에 저장한 형태와 게임 속 아이템의 형태가 달랐습니다. 저장소 안의\n연결은 멀쩡했습니다. 위키에서 저장하면 카탈로그 원본이 갱신되고, 거기서 게임용\n`GeneratedItemLayouts.luau`가 다시 만들어지고, 서버는 저장된 인벤토리를 불러올 때마다\n아이템의 모든 값을 데이터베이스 기준으로 다시 씌웁니다. 끊긴 곳은 **저장소와 Roblox\nStudio 사이**였습니다. Studio는 모든 모듈 스크립트의 사본을 자기 안에 들고 있어서,\n디스크의 파일을 다시 만들어도 열려 있는 place에는 닿지 않습니다. 실제로 실행 중인\nplace를 읽어 보니 아이템은 80개였고 점유 형태도 옛것이었습니다. 데이터베이스는 100개\n였습니다.\n\n이번 버전의 목표는 두 가지입니다. **데이터베이스가 아이템 형태의 유일한 출처라는 약속을\n검증 가능한 상태로 만드는 것**, 그리고 **그 데이터를 게임에 옮기는 행위를 한 번의 명시적\n동작으로 만드는 것**입니다.\n\n## 제작자 경험\n\nItemDB 페이지 머리말에 이제 데이터베이스의 **리비전**이 적혀 있습니다. 아이템 하나의 칸\n형태나 이미지 배치가 바뀌면 이 값이 바뀝니다. 게임이 어떤 리비전을 쓰고 있는지와 비교하면\n\"내가 저장한 게 게임에 들어갔나?\"를 100개 아이템을 뒤지지 않고 답할 수 있습니다.\n\n형태를 다 고쳤으면 **「게임에 굽기」**를 누릅니다. 창에는 현재 리비전과 아이템 수, 그리고\n세 줄짜리 순서가 있습니다. Studio를 정지하고, 적용 스크립트를 복사해 명령 창에 붙여넣고,\n출력 창에 새 리비전이 찍히면 저장하고 다시 실행합니다. 명령 창을 쓰기 어려운 상황을 위해\n모듈 소스만 복사하거나 `.luau` 파일로 내려받는 길도 함께 둡니다.\n\n적용 스크립트는 결과를 숨기지 않습니다. 실행(Play) 중이면 적용을 거부하고, 적용에\n성공하면 `revision 알 수 없음 (80개) → 73ea9cd8f70f5d9a (100개)`처럼 이전과 이후를 함께\n찍습니다. 굽기를 빼먹었는지, 이미 최신이었는지가 출력 한 줄로 갈립니다.\n\n굽고 나면 이미 저장돼 있던 인벤토리도 손댈 필요가 없습니다. 서버가 가방을 불러올 때마다\n아이템을 데이터베이스 기준으로 다시 씌우므로, 새 칸 형태는 다음 접속에서 저절로 적용\n됩니다.\n\n## 핵심 원칙과 설계 철학\n\n**아이템의 형태에는 출처가 하나뿐이다.** 게임은 칸 형태를 스스로 정하지 않고, 저장된\n스냅숏에 적힌 형태도 신뢰하지 않습니다. 저장 파일은 무엇을 어디에 두었는지(정체와 배치)만\n기억하고, 무엇이 어떻게 생겼는지는 언제나 데이터베이스에서 다시 받아옵니다.\n\n**어긋남은 조용히 지나가지 않는다.** 데이터가 낡았다는 사실은 아이템을 하나씩 비교해야만\n드러나는 종류의 문제였습니다. 같은 지문을 위키, 생성 모듈, 게임 런타임 세 곳에 함께 찍어\n두면 어긋남은 눈에 보이는 값의 차이가 됩니다.\n\n**Studio 반영은 자동이 아니라 명시적 행위다.** 이 저장소는 파일시스템과 Studio를 잇는\n상시 동기화를 금지합니다. 배경에서 조용히 place를 고치는 장치는 무엇이 언제 바뀌었는지를\n알 수 없게 만듭니다. 그래서 마지막 한 구간은 사람이 누르는 한 번의 동작으로 남겨 두고,\n대신 그 동작을 세 번의 클릭까지 줄였습니다.\n\n**데이터베이스에서 사라진 것은 게임에도 남지 않는다.** 아이템이 은퇴하면 그 아이템을 넣어\n둔 예전 가방에도 남아 있을 이유가 없습니다.\n\n## 결정 사항과 범위\n\n- 리비전은 게임이 실제로 읽는 값만으로 계산합니다. 아이디·이름·분류·아이콘·점유 좌표·\n  무게·시너지·능력치·이미지 배치가 대상이며, 콘셉트 문구처럼 런타임이 쓰지 않는 값은\n  리비전을 움직이지 않습니다. 짧은 16자리로 줄여 눈으로 비교할 수 있게 했습니다.\n- 굽기는 `GeneratedItemLayouts`와 `ItemCatalog`를 **함께** 덮어씁니다. 생성 모듈의 반환\n  형태가 바뀌어도 place가 반쪽만 갱신된 상태로 남지 않게 하기 위해서입니다.\n- 적용 스크립트는 Play 중 적용을 거부합니다. 이미 required된 사본을 고쳐 봤자 그 세션에는\n  반영되지 않으면서 성공한 것처럼 보이기 때문입니다.\n- 전달 방식은 세 가지를 둡니다. 명령 창용 적용 스크립트, 모듈 소스, `.luau` 내려받기.\n  터미널에서는 `python3 tools/item_db.py bake`로 같은 스크립트를 얻습니다.\n- 상시 동기화, 자동 적용, Studio를 향한 HTTP 채널은 범위에서 명시적으로 제외했습니다.\n  저장소 정책이 금지하며 정책 테스트가 이를 강제합니다.\n- 이번 커밋 시점에 실행 중이던 place에는 아직 굽기를 적용하지 않았습니다. 적용은 작업자가\n  Studio를 정지할 수 있는 시점에 수행하는 운영 동작입니다.\n\n## 현재 결과\n\n![ItemDB 페이지의 굽기 진입점](./media/inventory-item-concept/v011/itemdb-bake-entry.png \"머리말 오른쪽의 「게임에 굽기」 버튼과 계약 표의 DB 리비전. 이 값이 게임이 보고하는 리비전과 같으면 데이터베이스와 게임이 일치한 상태입니다\")\n\n![게임에 굽기 창](./media/inventory-item-concept/v011/itemdb-bake-dialog.png \"현재 리비전과 아이템 수, 세 단계 적용 순서, 그리고 적용 스크립트·모듈 소스·파일 내려받기 세 가지 전달 방식\")\n\n## 구현 참고\n\n`tools/item_db.py`가 데이터베이스 빌드의 중심입니다. `compute_revision`이 런타임이 읽는\n필드만 정규화해 sha256 지문을 만들고, 그 값이 위키 데이터(`item-db-data.js`)와 생성 모듈\n양쪽에 함께 들어갑니다. 생성 모듈은 이제 평평한 표 대신 `{ Revision, Layouts }`를 돌려\n주고, `ItemCatalog`가 이를 풀어 `Ordered`·`ById`와 함께 `Revision`을 공개합니다.\n\n`render_bake_script`는 생성한 모듈 소스를 Luau 긴 문자열에 그대로 담아 명령 창 스크립트로\n만듭니다. 대괄호 단계는 소스에 실제로 없는 깊이를 골라 잡으므로 어떤 내용이 들어와도\n문자열이 조기에 닫히지 않습니다. `tools/wiki.py`의 `/api/item-db/bake`는 이 스크립트를\n로컬 편집 권한이 있는 요청에만 내려 주고, 위키 앱은 그것을 클립보드나 파일로 전달합니다.\n\n`ItemInstanceHydrator.RefreshBoard`는 정의가 살아 있는 아이템을 데이터베이스 값으로 다시\n씌우고, 정의가 사라진 아이템은 인스턴스와 배치를 함께 지운 뒤 보드를 재검증합니다.\n\n## 검증\n\n데이터베이스 빌드·검사, 파이썬 테스트 54개, 백팩 Luau 스펙, 위키 사이트 자바스크립트\n스펙, 위키 빌드·검사, 저장소 정책 테스트를 모두 실행해 통과했습니다.\n\n파이프라인은 실제 페이지에서 왕복으로 확인했습니다. 테이프 철검의 점유 칸을 3칸에서\n4칸으로 바꿔 저장하자 `GeneratedItemLayouts.luau`의 해당 아이템이 4칸으로 바뀌고 리비전이\n함께 움직였으며, 다시 3칸으로 되돌리자 리비전과 파일이 원래 값으로 복구됐습니다.\n\n격차의 근거도 실측입니다. Roblox Studio MCP로 실행 중인 place의 생성 모듈을 읽어 아이템\n80개와 옛 점유 형태를 확인했습니다.\n\n다만 **적용 스크립트를 Studio 명령 창에서 실제로 실행한 결과는 아직 확인되지 않았습니다.**\n스크립트는 Luau 컴파일러로 구문을 검증했고 엔드포인트와 전달 경로는 브라우저에서\n확인했으나, 작업자가 Studio를 정지할 수 있는 시점이 아니어서 place 적용은 수행하지\n않았습니다.\n\n## 후속 기획\n\n- 굽기를 실제 place에 적용하고, 데이터베이스 리비전과 게임이 보고하는 리비전이 같아지는\n  것을 Studio에서 확인합니다.\n- 게임 화면 어딘가에서 현재 리비전을 읽을 수 있게 할지 검토합니다. 지금은 모듈을 직접\n  읽어야 알 수 있습니다.\n- 칸 형태를 바꾼 뒤 기존 배치가 무효가 되는 경우의 안내를 설계합니다. 지금은 배치가\n  무효로 표시될 뿐, 왜 무효가 됐는지는 알려 주지 않습니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v011.md",
+          "timeline_order": 31
+        },
         {
           "id": "inventory-item-concept",
           "title": "인벤토리와 아이템 개념",
