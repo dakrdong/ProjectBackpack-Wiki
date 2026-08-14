@@ -55,6 +55,7 @@
   let itemDbQuery = "";
   let itemDbFamily = "all";
   let itemDbEditorState = null;
+  let itemDbBakeState = null;
   let itemDbNotice = "";
   let structuredDbState = { databaseId: null, query: "", filters: {} };
   let imageViewerReturnFocus = null;
@@ -804,6 +805,134 @@
     itemDbEditorState = null;
   }
 
+  async function copyPlainText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "-1000px";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    const copied = document.execCommand("copy");
+    area.remove();
+    if (!copied) throw new Error("브라우저가 클립보드 복사를 거부했습니다.");
+  }
+
+  function downloadPlainText(filename, text) {
+    const url = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function closeItemDbBake() {
+    document.getElementById("itemdb-bake-backdrop")?.remove();
+    if (!itemDbEditorState) document.body.classList.remove("itemdb-editor-open");
+    itemDbBakeState = null;
+  }
+
+  // Studio keeps its own copy of every runtime module, so a saved database edit
+  // only reaches the game once this script is applied there.
+  async function openItemDbBake() {
+    if (!canEditItemDb || itemDbBakeState) return;
+    itemDbBakeState = { loading: true, payload: null, error: "", status: "" };
+    renderItemDbBake();
+    try {
+      const response = await fetch("/api/item-db/bake");
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `굽기에 실패했습니다. (${response.status})`);
+      if (itemDbBakeState) itemDbBakeState.payload = payload;
+    } catch (error) {
+      if (itemDbBakeState) itemDbBakeState.error = String(error.message || error);
+    }
+    if (!itemDbBakeState) return;
+    itemDbBakeState.loading = false;
+    renderItemDbBake();
+  }
+
+  function renderItemDbBake() {
+    const state = itemDbBakeState;
+    if (!state) return;
+    let backdrop = document.getElementById("itemdb-bake-backdrop");
+    if (!backdrop) {
+      document.body.insertAdjacentHTML("beforeend", `
+        <div id="itemdb-bake-backdrop" class="itemdb-editor-backdrop">
+          <section class="itemdb-editor-dialog itemdb-bake-dialog" role="dialog" aria-modal="true" aria-labelledby="itemdb-bake-title">
+            <header>
+              <div><span>DATABASE → GAME</span><h2 id="itemdb-bake-title">게임에 굽기</h2><code>ReplicatedStorage.BackpackUI</code></div>
+              <button type="button" class="itemdb-editor-close" data-itemdb-bake-close aria-label="굽기 창 닫기">×</button>
+            </header>
+            <div class="itemdb-bake-body"></div>
+          </section>
+        </div>
+      `);
+      document.body.classList.add("itemdb-editor-open");
+      backdrop = document.getElementById("itemdb-bake-backdrop");
+      backdrop.addEventListener("click", (event) => {
+        if (event.target.id === "itemdb-bake-backdrop") closeItemDbBake();
+      });
+      backdrop.querySelector("[data-itemdb-bake-close]").addEventListener("click", closeItemDbBake);
+    }
+    const body = backdrop.querySelector(".itemdb-bake-body");
+    if (state.loading) {
+      body.innerHTML = '<p class="itemdb-bake-status">현재 데이터베이스로 적용 스크립트를 만드는 중…</p>';
+      return;
+    }
+    if (state.error) {
+      body.innerHTML = `<p class="itemdb-bake-status" data-tone="error" role="alert">${escapeHtml(state.error)}</p>`;
+      return;
+    }
+    const payload = state.payload;
+    const container = String(payload.container || "ReplicatedStorage.BackpackUI");
+    body.innerHTML = `
+      <div class="itemdb-bake-summary">
+        <div><span>DB 리비전</span><code>${escapeHtml(payload.revision)}</code></div>
+        <div><span>아이템</span><strong>${Number(payload.count)}개</strong></div>
+      </div>
+      <ol class="itemdb-bake-steps">
+        <li>Studio가 실행 중이면 <strong>정지(Stop)</strong>해 Edit 모드로 돌아갑니다.</li>
+        <li><strong>적용 스크립트 복사</strong>를 누르고 Studio 명령 창(Command Bar)에 붙여넣은 뒤 Enter를 누릅니다.</li>
+        <li>출력 창에 <code>→ ${escapeHtml(payload.revision)}</code> 가 찍히면 저장하고 다시 Play 합니다.</li>
+      </ol>
+      <p class="itemdb-bake-note">명령 창을 쓰기 어렵다면 <strong>모듈 소스 복사</strong>를 눌러 <code>${escapeHtml(container)}.GeneratedItemLayouts</code>를 열고 전체 선택 후 붙여넣어도 결과는 같습니다.</p>
+      <div class="itemdb-bake-actions">
+        <button type="button" class="primary" data-itemdb-bake-copy="script">적용 스크립트 복사</button>
+        <button type="button" data-itemdb-bake-copy="module">모듈 소스 복사</button>
+        <button type="button" data-itemdb-bake-download>.luau 내려받기</button>
+      </div>
+      <p class="itemdb-bake-status" data-tone="${state.status ? "ok" : "info"}" role="status">${escapeHtml(state.status
+        || "게임 안의 리비전이 이 값과 같아질 때까지는 예전 칸 형태가 그대로 쓰입니다.")}</p>
+    `;
+    body.querySelectorAll("[data-itemdb-bake-copy]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const wantsScript = button.dataset.itemdbBakeCopy === "script";
+        try {
+          await copyPlainText(wantsScript ? payload.script : payload.module_source);
+          state.status = wantsScript
+            ? "적용 스크립트를 복사했습니다. Studio 명령 창에 붙여넣고 Enter를 누르세요."
+            : `모듈 소스를 복사했습니다. ${container}.GeneratedItemLayouts 전체를 이 내용으로 바꾸세요.`;
+        } catch (error) {
+          state.status = `클립보드 복사에 실패했습니다. 내려받기를 사용해 주세요. (${String(error.message || error)})`;
+        }
+        renderItemDbBake();
+      });
+    });
+    body.querySelector("[data-itemdb-bake-download]").addEventListener("click", () => {
+      downloadPlainText(payload.filename, payload.script);
+      state.status = `${payload.filename} 파일을 내려받았습니다.`;
+      renderItemDbBake();
+    });
+  }
+
   function editorCellKey(x, y) {
     return `${x},${y}`;
   }
@@ -1170,13 +1299,17 @@
           <div class="page-eyebrow">Generated catalog</div>
           <div class="itemdb-hero-row">
             <div><h1>ItemDB</h1><p>게임 아이템의 이미지, 점유 형태, 시너지와 능력치 초안을 한 곳에서 비교합니다. 로컬 에디터의 저장값은 게임 데이터와 공개 DB에 함께 반영됩니다.</p></div>
-            <span class="itemdb-total"><strong>${itemDb.count}</strong><small>ITEMS</small></span>
+            <div class="itemdb-hero-actions">
+              <span class="itemdb-total"><strong>${itemDb.count}</strong><small>ITEMS</small></span>
+              ${canEditItemDb ? '<button type="button" class="itemdb-bake-button" data-itemdb-bake>게임에 굽기</button>' : ""}
+            </div>
           </div>
           <div class="itemdb-contract">
             <div><span>기준 방향</span><strong>${escapeHtml(itemDb.common.native_facing)}</strong></div>
             <div><span>격자 구조</span><strong>${escapeHtml(itemDb.common.grid_topology)}</strong></div>
             <div><span>허용 회전</span><strong>${itemDb.common.rotations.map((value) => `${value}°`).join(" · ")}</strong></div>
             <div><span>최대 스택</span><strong>${itemDb.common.maximum_stack}</strong></div>
+            <div><span>DB 리비전</span><code>${escapeHtml(itemDb.revision || "—")}</code></div>
             <div><span>단일 원본</span><code>${escapeHtml(itemDb.source)}</code></div>
           </div>
         </header>
@@ -1202,6 +1335,7 @@
         renderItemDbResults();
       });
     });
+    document.querySelector("[data-itemdb-bake]")?.addEventListener("click", openItemDbBake);
     renderItemDbResults();
     document.body.classList.remove("menu-open");
     window.scrollTo(0, 0);
@@ -1624,6 +1758,7 @@
       openSearch();
     }
     if (event.key === "Escape") {
+      closeItemDbBake();
       closeSearch();
       document.body.classList.remove("menu-open");
     }

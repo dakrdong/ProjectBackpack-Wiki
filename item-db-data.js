@@ -9083,5 +9083,6 @@ window.PACKBOUND_ITEM_DB = {
       "image_url": "./item-media/Special/special_thunder_amp_guitar.png?v=1da783713166e8db",
       "source_image": "Assets/Items/InventoryIcons/Special/special_thunder_amp_guitar.png"
     }
-  ]
+  ],
+  "revision": "73ea9cd8f70f5d9a"
 };
