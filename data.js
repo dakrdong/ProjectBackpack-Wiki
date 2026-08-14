@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-13",
+  "generated_at": "2026-08-14",
   "page_count": 7,
-  "revision_count": 38,
+  "revision_count": 39,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -400,7 +400,7 @@ window.PACKBOUND_WIKI = {
     {
       "id": "inventory-item-concept",
       "title": "인벤토리와 아이템 개념",
-      "summary": "세로 모바일에서 배치 보드를 가장 큰 작업면으로 유지하는 네이티브 육각 인벤토리를 확정하고, 100종 ItemDB와 현재 사용 중인 제어 리소스만 런타임에 연결했습니다.",
+      "summary": "인벤토리를 전투 준비 씬으로 승격해 밝은 작업대 톤과 화면 전체 배경을 확정하고, 보드를 바꾸는 조작을 보드 오른쪽 도크로 모아 배치면을 비웠으며, 보관함을 세로 스크롤로 바꾸고 가방 드래그가 실제로 잡히도록 입력 계약을 바로잡았습니다.",
       "status": "active",
       "category": "gameplay",
       "tags": [
@@ -410,34 +410,31 @@ window.PACKBOUND_WIKI = {
         "item-db",
         "hex-grid",
         "ui",
+        "ux",
         "mobile",
         "roblox"
       ],
       "created_at": "2026-08-06",
-      "updated_at": "2026-08-13",
+      "updated_at": "2026-08-14",
       "authors": [
         "Codex"
       ],
-      "version": 8,
+      "version": 9,
       "change_type": "updated",
-      "change_summary": "여러 시안의 이미지 프레임을 폐기하고 Roblox 네이티브 레이아웃과 단일 제어 키트로 모바일 인벤토리를 재구성했으며, 100종 ItemDB·육각 점유 형태·시너지·서버 권위를 한 계약으로 동기화했습니다.",
-      "supersedes": "inventory-item-concept@v007",
+      "change_summary": "어두운 캐비닛 톤을 밝은 작업대 팔레트로 교체하고 인벤토리를 전투 준비 씬으로 전면화했으며, 모드 탭과 확대 조작을 보드 오른쪽 도크로 통합하고, 보관함 필터를 세로 레일로·카드 목록을 세로 스크롤로 전환했으며, 드래그가 칸마다 재시작되던 입력 결함을 제거했습니다.",
+      "supersedes": "inventory-item-concept@v008",
       "sources": [
-        "wiki/content/pages/inventory-item-concept/v007.md",
-        "wiki/content/media/inventory-item-concept/v008/studio-native-mobile-inventory.jpg",
-        "docs/gameplay/inventory-item-art-catalog.md",
-        "docs/gameplay/inventory-item-layouts.json",
-        "docs/gameplay/backpack-inventory-planning-reference.md",
-        "Assets/UI/Backpack/CurrentControls",
-        "Assets/UI/Backpack/Hex/hex_fill.png",
-        "Assets/UI/Backpack/SynergyIcons",
+        "wiki/content/pages/inventory-item-concept/v008.md",
+        "wiki/content/media/inventory-item-concept/v009/studio-bright-preparation-scene.png",
+        "wiki/content/media/inventory-item-concept/v009/studio-item-mode-vertical-storage.png",
         "src/ReplicatedStorage/BackpackUI/VisualTokens.luau",
-        "src/ReplicatedStorage/BackpackUI/UIPrimitives.luau",
-        "src/ReplicatedStorage/BackpackUI/Screen.luau",
         "src/ReplicatedStorage/BackpackUI/ScreenRenderer.luau",
-        "src/ReplicatedStorage/BackpackUI/InventoryBoardModel.luau",
-        "src/ServerScriptService/InventoryService.luau",
-        "tests/BackpackUI.spec.luau"
+        "src/ReplicatedStorage/BackpackUI/ScreenState.luau",
+        "src/ReplicatedStorage/BackpackUI/Screen.luau",
+        "src/ReplicatedStorage/BackpackUI/DragPlacementState.luau",
+        "src/ReplicatedStorage/BackpackUI/UIPrimitives.luau",
+        "tests/BackpackUI.spec.luau",
+        "tests/test_native_backpack_ui.py"
       ],
       "related": [
         "development-wiki",
@@ -445,18 +442,80 @@ window.PACKBOUND_WIKI = {
         "project-overview"
       ],
       "validation": [
-        "ItemDB build/check: 활성 아이템 100종과 게임 런타임 레이아웃 동기화",
-        "python3 -m unittest discover -s tests -p 'test_*.py': 49 tests 통과",
         "bash tools/test_backpack_ui.sh",
-        "Roblox Studio MCP Play, iPhone 17 Pro 세로 401×777: 보드·모드 탭·확대 조작·보관함 표시, ZoomIndex 변경, 콘솔 오류 없음",
-        "Roblox Studio MCP Play, ProjectBackpack HighRes 세로 1206×1626: Item 모드 전환, 완전한 카드 행과 터치 영역, 콘솔 오류 없음",
+        "python3 -m unittest tests.test_repository_policy",
+        "python3 -m unittest tests.test_item_db",
+        "bash tools/test_item_stats.sh",
+        "Roblox Studio MCP Play, 세로 401×718: 도크 경계·터치 타깃·클리핑 감사 통과, 보드 셀 18개 중 잘림 0, 콘솔 오류 없음",
+        "Roblox Studio MCP Play, 세로 359×718 / 375×667 / 430×932: 도크가 보드 높이에 수용, 필터 버튼 48px 이상 유지, 클리핑 없음",
+        "Roblox Studio MCP Play, Item 모드 보관함: 카드 79장 세로 캔버스 3963px, 가로 잘림 0, 끝까지 스크롤 도달",
         "python3 tools/wiki.py build",
         "python3 tools/wiki.py check",
-        "git diff --check"
+        "python3 -m unittest tests/test_wiki.py"
       ],
-      "source_path": "wiki/content/pages/inventory-item-concept/v008.md",
-      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n인벤토리 화면은 장식 프레임을 감상하는 메뉴가 아니라 육각 가방과 아이템을 반복해서\n집고, 돌리고, 놓는 작업대입니다. 시안이 바뀔 때마다 큰 래스터 프레임과 임시 버튼을\n덧대는 방식은 화면 비율이 달라질수록 배치가 흔들리고, 현재 무엇이 실제 런타임 자산인지\n구분하기 어렵게 만들었습니다.\n\n이번 버전은 배치 보드를 세로 모바일 화면의 주 작업면으로 고정하고, Roblox UI 객체가\n구조·반응형 배치·상태를 담당하도록 전환했습니다. 이미지 리소스는 육각형의 정확한 채움,\n현재 제어판과 아이콘, 시너지 심볼처럼 그림이 필요한 부분에만 제한했습니다. 동시에 웹\nItemDB의 아이템 정보가 카드와 배치 결과의 유일한 원본이 되도록 게임 런타임과 생성물을\n다시 묶었습니다.\n\n## 플레이어 경험\n\n- 상단 상태 바는 얇게 유지되고 배치 보드가 남은 세로 공간의 우선권을 가집니다.\n- 가방 배치와 아이템 배치 탭은 보드 왼쪽 안쪽 모서리에 붙어, 보드 전체 모드를 바꾸는\n  제어라는 의미를 전달합니다.\n- 확대·원점·축소는 보드 우측 상단에 모이고, 실제 터치 영역은 최소 48px을 유지합니다.\n- 보관함은 화면 아래에 붙고 최소 네 열과 완전한 두 행을 보장합니다. 더 넓거나 긴\n  세로 화면에서는 더 많은 열·행을 보여 주되 세로 방향의 반쪽 카드 행은 만들지 않습니다.\n- 아이템과 가방은 ItemDB의 회전, 각도, axial 육각 점유 형태와 크기를 그대로 사용합니다.\n- 드래그 중에는 손가락보다 조금 위에 실제 배치 크기의 대상이 보이고, 예상 위치는\n  아이콘을 중복하지 않는 초록색 또는 빨간색 육각 외곽선으로만 표시됩니다.\n- 잘못된 배치는 빨간 외곽선만 사용하며 빈번한 실수를 방해하는 토스트 경고는 띄우지\n  않습니다.\n\n![네이티브 모바일 인벤토리 최종 결과](./media/inventory-item-concept/v008/studio-native-mobile-inventory.jpg \"ProjectBackpack HighRes 세로 Play에서 얇은 상태 바, 넓은 배치 보드, 보드 결합 탭, 우측 보기 제어와 완전한 보관 카드 행을 확인\")\n\n## 핵심 원칙과 설계 철학\n\n### 보드가 화면의 주인이다\n\n헤더와 보관함은 필요한 정보와 조작만 차지하고, 남은 높이는 보드에 먼저 배정합니다.\n보관함의 카드 크기와 행 수는 보드 최소 높이를 침범하지 않는 범위에서 계산합니다.\n가로 방향은 남는 공간을 모두 쓰기 위해 다음 카드 일부가 잘려 보일 수 있지만, 세로\n방향은 완전한 행만 노출합니다.\n\n### 반응형 부모 안에서만 고정 픽셀을 쓴다\n\n화면 너비·높이에서 헤더, 보드, 보관함의 영역을 먼저 계산한 뒤 카드, 탭, 제어 버튼의\n픽셀 크기를 제한 범위 안에서 정합니다. 드래그 손가락 오프셋과 48px 터치 영역처럼\n물리적으로 일정해야 하는 값만 반응형 부모 내부의 고정값으로 둡니다. 따라서 해상도가\n높아져도 집은 아이템이 포인터에서 비정상적으로 멀어지지 않습니다.\n\n### 데이터와 시각 자산의 권위를 분리한다\n\n아이템 이름, 종류, 무게, 시너지, 아이콘, 점유 칸과 초기 회전은 ItemDB가 소유합니다.\nUI 리소스는 입력 상태를 읽기 좋게 표현할 뿐 아이템 규칙을 복제하지 않습니다.\n`tools/item_db.py`가 웹 데이터와 `GeneratedItemLayouts.luau`를 함께 생성하므로 ItemDB의\n수정이 카드 미리보기와 실제 배치에 같은 형태로 반영됩니다.\n\n### 서버가 최종 배치를 판정한다\n\n클라이언트는 드래그와 예상 외곽선을 즉시 그리지만, 아이템 이동·회전·보관과 전투 진입\n조건은 서버 인벤토리 서비스가 검증합니다. 클라이언트가 보여 주는 육각 기하와 서버가\n허용하는 점유 좌표는 같은 axial 회전 규칙을 공유합니다.\n\n## 결정 사항과 정리 범위\n\n- 활성 ItemDB는 아이콘을 가진 100종이며 각 항목은 0~3개 시너지와 axial footprint를\n  가집니다.\n- 현재 UI 로컬 리소스는 `CurrentControls` 16개, 공통 육각 채움 1개, 시너지 아이콘\n  26개와 그 재생성 원본만 유지합니다.\n- 과거 시안 프레임, 폐기된 버튼·타일·범용 아이콘, 중복 런타임 육각 PNG/SVG와 해당\n  생성기는 제거했습니다.\n- 가방/아이템 카드와 보드 셀은 정사각 채움이 아닌 동일한 flat-top 육각 기하를 사용합니다.\n- 필터는 선택, 사용 가능, 비활성의 세 상태를 가지며 선택 바는 아이콘과 겹치지 않습니다.\n- PC 전용 조밀도나 마우스 우선 동작은 이번 완료 기준에 포함하지 않습니다.\n\n## 현재 결과와 구현 참고\n\n`VisualTokens`가 현재 뷰포트에서 보드 우선 높이, 카드 폭, 완전한 행 수, 탭과 제어 레일의\n위치를 계산합니다. `ScreenRenderer`는 이 토큰과 `UIPrimitives`의 단일 제어 키트로 모든\n상태를 구성하고, `Screen`은 터치·드래그·보관함 횡스크롤·회전·선택을 연결합니다.\n\n기존 `Assets.luau`와 정사각 `GridModel`은 제거됐습니다. 육각 좌표, 외곽선과 충돌은\n`HexGrid`, `HexOutlineModel`, `InventoryBoardModel`이 담당하며 카드와 배치 보드가 같은\n기하를 사용합니다. 사용되지 않는 로컬 시안과 중간 리소스는 복구 가능한 휴지통으로\n이동해 저장소에는 최신 런타임과 재현에 필요한 원본만 남겼습니다.\n\n## 검증\n\nItemDB 생성·검사에서 활성 100종의 이미지와 배치 데이터가 웹 데이터와 게임 생성물에\n동일하게 존재함을 확인했습니다. Python 전체 49개 테스트, Node 기반 ItemDB·위키 정책\n테스트와 Luau 인벤토리 테스트를 통과했습니다.\n\nStudio MCP Play에서는 iPhone 17 Pro 세로 401×777과 별도 고해상도 세로\n1206×1626을 검증했습니다. 두 화면 모두 안전 영역 안에서 헤더·보드·탭·보기 제어·보관함이\n잘리거나 겹치지 않았습니다. 작은 화면에서는 확대 입력으로 `ZoomIndex` 변경을, 큰\n화면에서는 아이템 탭 입력으로 `Mode=Item` 전환을 확인했고 두 런타임 콘솔은 비어\n있었습니다. 검증 후 Studio는 기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 새 아이템은 ItemDB 원본을 수정하고 생성·검사를 통과한 뒤에만 런타임에 추가합니다.\n- 새 UI 제어가 필요하면 현재 제어 키트에 목적이 분명한 한 변형만 추가하고 임시 시안\n  폴더를 런타임 자산처럼 쌓지 않습니다.\n- 터치 드래그의 실제 손가락 가림 정도는 다른 물리 크기의 최신 폰에서도 지속 관찰하되,\n  화면 비율별 임의 배율이 아니라 고정 픽셀 오프셋 계약을 유지합니다.\n",
+      "source_path": "wiki/content/pages/inventory-item-concept/v009.md",
+      "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n이전 버전에서 인벤토리는 Roblox 네이티브 레이아웃으로 전환되며 구조를 얻었지만, 화면\n자체는 여전히 전투 중에 잠깐 열어보는 어두운 창이었습니다. 짙은 네이비 캐비닛 톤은\n육각 가방의 시너지 색과 아이템 아트를 눌렀고, 조작 버튼은 배치면 위에 떠 있었으며,\n보관함은 카드가 좌우로 잘린 채 가로로 흘렀습니다.\n\n이번 버전은 인벤토리를 **전투 준비 단계의 씬**으로 승격합니다. 플레이어가 잠깐 확인하고\n닫는 오버레이가 아니라, 전투에 나가기 전에 머무르며 가방을 짜는 하나의 장면입니다.\n그 전제에서 세 가지를 바꿨습니다. 화면 전체를 밝은 작업대로 채우고, 보드를 바꾸는\n조작을 배치면 밖으로 빼고, 보관함을 세로로 훑는 목록으로 되돌렸습니다.\n\n동시에 그동안 조작감을 망가뜨리던 입력 결함을 함께 제거했습니다. 배치 보드는 눈으로만\n좋아서는 의미가 없고, 가방 칸을 집어 원하는 칸에 놓는 동작이 정확해야 작업대로서 성립\n합니다.\n\n## 플레이어 경험\n\n준비 씬에 들어오면 화면 전체가 따뜻한 종이 톤의 작업대입니다. 상단에 무게와 레이아웃\n상태, 그 아래 배치 보드, 하단에 보관 서랍이 놓입니다. 게임 월드는 비치지 않습니다.\n\n보드를 다루는 조작은 모두 보드 오른쪽 가장자리에 세로로 붙어 있습니다. 위에서부터\n확대·원점·축소 다이얼, 그 아래 `가방 배치`와 `아이템 배치` 탭입니다. 지금 선택된 탭은\n보드와 같은 색으로 이어져 하나의 면처럼 보이고, 선택되지 않은 탭은 경계에서 멈춰\n닫힌 서류철처럼 물러나 있습니다. 어떤 모드인지 탭의 모양만으로 읽힙니다.\n\n보관 서랍에서는 카테고리 필터가 왼쪽에 세로로 서 있고, 아이템 카드가 그 오른쪽을\n가득 채웁니다. 카드는 **가로로는 절대 잘리지 않고** 세로로만 잘립니다. 아래쪽에 살짝\n걸친 다음 줄이 \"더 있다\"는 신호이며, 목록은 위아래로 훑습니다.\n\n가방 칸을 집으면 그 즉시 들립니다. 손가락이 가린 아트를 보기 위해 들린 그림은 포인터\n위로 떠 있지만, 놓일 자리는 언제나 포인터가 가리키는 칸이고 보드에 스냅된 윤곽으로\n미리 보입니다. 집은 칸이 포인터를 따라오므로 한 칸 옆으로 밀면 정확히 한 칸 움직입니다.\n\n## 핵심 원칙과 설계 철학\n\n**준비 씬은 배경까지 씬이다.** 인벤토리가 하나의 장면이라면 세이프 영역 밖까지 화면을\n소유해야 합니다. 상단 바 뒤를 포함해 화면 전체를 덮는 불투명 배경 레이어를 두고,\n상호작용 레이어는 세이프 영역 안에서만 배치를 계산합니다. 배경은 단색으로 고정합니다.\n\n**배치면 위에는 아무것도 두지 않는다.** 보드를 바꾸는 조작은 보드 자신의 가장자리에\n붙되 배치 영역 바깥에 있어야 합니다. 조작이 배치면 위에 떠 있으면 그 아래 칸은 영원히\n쓸 수 없는 자리가 됩니다.\n\n**정확해야 하는 축과 잘려도 되는 축을 구분한다.** 보관함이 세로로 스크롤한다면 가로는\n정확한 축입니다. 가로로 잘린 카드는 스크롤로 볼 방법이 없기 때문에 열이 폭을 정확히\n나눠 가져야 합니다. 반대로 세로로 잘린 줄은 결함이 아니라 스크롤 가능함을 알리는\n어포던스입니다.\n\n**시각 보정과 조작 좌표를 분리한다.** 들어 올린 그림은 손가락을 피하기 위한 시각 장치일\n뿐입니다. 이 보정값이 배치 계산에 섞이면 플레이어가 겨눈 칸과 실제로 놓이는 칸이\n어긋나고, 그 어긋남은 조준 실패가 아니라 \"칸이 말을 안 듣는다\"로 체감됩니다.\n\n**뷰는 플레이어의 조작으로만 움직인다.** 가방을 옮겼다고 보드가 다시 중앙을 잡으면\n플레이어는 자기가 옮긴 결과를 확인할 수 없습니다. 화면 재구성은 뷰포트 변화, 모드\n전환, 원점 복귀, 가방의 추가·보관처럼 배치 집합 자체가 달라질 때만 일어납니다.\n\n## 결정 사항과 범위\n\n- 팔레트를 `Scrim`·`Surface`·`Field`·`Paper`·`Recess`의 밝은 표면군과 `Ink`·`InkSoft`의\n  어두운 활자군으로 재정의했습니다. 기본 글자색을 밝은색에서 어두운 잉크로 뒤집고,\n  유효·무효·모드 강조색은 밝은 배경에서 읽히도록 채도를 높였습니다.\n- 버튼 판을 밝은 벡터 표면으로 그립니다. 확대·원점·축소·회전·보관은 자체적으로 어두운\n  원형 판을 포함한 완성형 그림이었기 때문에 잉크 벡터 글리프로 교체했고, 모드와 필터의\n  회화형 아이콘은 판이 없는 그림이라 그대로 두고 오히려 키웠습니다. 사용하지 않게 된\n  아이콘 자산 참조는 `UIPrimitives`에서 정리했습니다.\n- 바깥 모서리는 45도 모따기로 확정했습니다. `UICorner`는 둥근 모서리만 지원하므로\n  모서리를 깎는 마름모와 사선 테두리 두 프레임으로 구성했고, 이 방식이 성립하려면\n  배경이 단색이어야 하므로 배경 그라디언트를 포기했습니다.\n- 무게 표시는 카드 한 줄을 통째로 쓰던 배치를 버리고 아트 우하단의 자체 폭 칩으로\n  옮겼습니다. 저울 글리프는 16·22·28·40px에서 후보를 나란히 렌더해 비교한 결과\n  28px 아래에서 접시가 빔에 붙어 뭉개졌고, 폰의 카드 칩은 그보다 작기 때문에 모든\n  크기에서 형태가 유지되는 역기 형태를 선택했습니다.\n- 보관함 최소 열 수는 3열입니다. 세로 필터 레일이 가로 공간을 쓰므로 4열을 고집하면\n  카드가 이전보다 작아집니다. 두 줄이 들어가지 않는 화면에서는 카드를 줄이는 대신\n  열을 늘려, 폭이 언제나 정확히 채워지도록 했습니다.\n- PC 레이아웃은 이번에도 범위 밖입니다. 모바일 세로만 설계·검증 대상입니다.\n\n## 현재 결과\n\n![밝은 전투 준비 씬](./media/inventory-item-concept/v009/studio-bright-preparation-scene.png \"가방 배치 모드. 화면 전체가 밝은 작업대이고, 확대 다이얼과 두 모드 탭이 보드 오른쪽 가장자리 도크에 세로로 붙어 있으며 선택된 탭이 보드와 이어집니다\")\n\n![아이템 모드의 세로 보관함](./media/inventory-item-concept/v009/studio-item-mode-vertical-storage.png \"아이템 배치 모드. 필터가 왼쪽 세로 레일로 서고, 카드는 가로로 잘리지 않은 채 세로로 스크롤하며 아래쪽에 다음 줄이 걸쳐 보입니다\")\n\n## 구현 참고\n\n`VisualTokens`가 반응형 치수를 계산합니다. 보드는 오른쪽으로 도크 한 칸(`BoardRightInset`)\n만큼 물러나고, 도크 높이는 확대 패널이 쓰고 남은 공간을 두 탭이 나눠 갖습니다. 보관함은\n`CardAreaWidth`에서 스크롤바 레인을 먼저 뺀 뒤 열 수를 정하고, 남은 세로 여유를 다음 줄\n미리보기(`ScrollHeight`의 peek 구간)로 씁니다.\n\n`ScreenRenderer`는 팔레트와 그리기를 담당합니다. `chamferCorner`가 모따기 두 프레임을\n만들고, `setChamferSize`가 반응형 패스에서 크기를 갱신합니다. 활성 탭의 폭과 이음\n패치(`ActiveSeam`)도 이 반응형 패스가 소유합니다. 상태 쪽에서 크기를 정하면 다음\n렌더 패스가 그것을 되돌리기 때문입니다.\n\n입력 계약은 세 곳을 고쳤습니다.\n\n- `Screen.beginObjectPress`는 드래그가 이미 살아 있으면 새 누름을 무시합니다. Roblox는\n  버튼을 누른 채 포인터가 들어가는 모든 GuiObject에 `InputBegan`을 올리므로, 이를\n  그대로 받으면 포인터가 지나는 칸마다 드래그가 죽고 다시 시작됐습니다. 가방이 칸\n  안에서는 끝내 들리지 않고 칸 밖으로 나가야 마지막으로 밟은 가방이 들리던 원인입니다.\n- 포인터 리프트는 시각 전용입니다. 배치 후보는 리프트되지 않은 포인터 좌표로 계산합니다.\n- `DragPlacementState.ResolveGrabOffset`과 `AnchorForGrab`이 집은 칸과 앵커의 차이를\n  보존합니다. 앵커가 포인터로 순간이동하면 가방이 그 차이만큼 도약했고, 원래 배치가\n  재현되는 유일한 포인터 위치가 앵커 칸이라 제자리로 붙는 것처럼 보였습니다.\n\n`ScreenState`는 보드 맞춤을 캐싱합니다. 렌더마다 다시 맞추면 가방을 옮기는 순간 보드가\n재중심화됐습니다. 팬 제한도 뷰포트 비율이 아니라 실제 셀 경계로 계산해, 캔버스보다 작은\n배치는 가장자리를 넘어갈 수 없습니다.\n\n## 검증\n\n로컬에서 `tools/test_backpack_ui.sh`, 저장소 정책·ItemDB·ItemStats 테스트를 실행했고,\nRoblox Studio MCP Play에서 세로 401×718, 359×718, 375×667, 430×932를 확인했습니다.\n도크 경계·터치 타깃 48px·클리핑·오버플로 감사를 통과했으며 보드 셀 잘림은 0입니다.\nItem 모드 보관함에서 카드 79장이 세로 캔버스 3963px에 배치되고 가로 잘림 없이 끝까지\n스크롤됩니다. 콘솔 오류는 없습니다.\n\n드래그 조작은 Studio의 클릭 시뮬레이션 좌표계가 현재 창 상태와 어긋나 자동 제스처로는\n재현하지 못했습니다. 대신 실제 배치 데이터로 앵커 계산을 검증했고, 히트 테스트에서 두\n모드 탭과 확대 버튼이 최상위로 잡히는 것을 확인했습니다. 실제 손 조작 확인은 남아\n있습니다.\n\n## 후속 기획\n\n- 드래그 조작감을 실기기에서 확인하고 리프트 값과 드래그 시작 임계값을 조정합니다.\n- 보관함 세로 스크롤에서 카드 위 세로 스와이프가 스크롤로 넘어가는 판정이 아이템을\n  꺼내는 동작과 충돌하지 않는지 실사용에서 확인합니다.\n- 준비 씬에서 전투로 넘어가는 전환 연출을 설계합니다.\n",
       "revisions": [
+        {
+          "id": "inventory-item-concept",
+          "title": "인벤토리와 아이템 개념",
+          "summary": "인벤토리를 전투 준비 씬으로 승격해 밝은 작업대 톤과 화면 전체 배경을 확정하고, 보드를 바꾸는 조작을 보드 오른쪽 도크로 모아 배치면을 비웠으며, 보관함을 세로 스크롤로 바꾸고 가방 드래그가 실제로 잡히도록 입력 계약을 바로잡았습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "item",
+            "backpack",
+            "item-db",
+            "hex-grid",
+            "ui",
+            "ux",
+            "mobile",
+            "roblox"
+          ],
+          "created_at": "2026-08-06",
+          "updated_at": "2026-08-14",
+          "authors": [
+            "Codex"
+          ],
+          "version": 9,
+          "change_type": "updated",
+          "change_summary": "어두운 캐비닛 톤을 밝은 작업대 팔레트로 교체하고 인벤토리를 전투 준비 씬으로 전면화했으며, 모드 탭과 확대 조작을 보드 오른쪽 도크로 통합하고, 보관함 필터를 세로 레일로·카드 목록을 세로 스크롤로 전환했으며, 드래그가 칸마다 재시작되던 입력 결함을 제거했습니다.",
+          "supersedes": "inventory-item-concept@v008",
+          "sources": [
+            "wiki/content/pages/inventory-item-concept/v008.md",
+            "wiki/content/media/inventory-item-concept/v009/studio-bright-preparation-scene.png",
+            "wiki/content/media/inventory-item-concept/v009/studio-item-mode-vertical-storage.png",
+            "src/ReplicatedStorage/BackpackUI/VisualTokens.luau",
+            "src/ReplicatedStorage/BackpackUI/ScreenRenderer.luau",
+            "src/ReplicatedStorage/BackpackUI/ScreenState.luau",
+            "src/ReplicatedStorage/BackpackUI/Screen.luau",
+            "src/ReplicatedStorage/BackpackUI/DragPlacementState.luau",
+            "src/ReplicatedStorage/BackpackUI/UIPrimitives.luau",
+            "tests/BackpackUI.spec.luau",
+            "tests/test_native_backpack_ui.py"
+          ],
+          "related": [
+            "development-wiki",
+            "backpack-combat-stat-database",
+            "project-overview"
+          ],
+          "validation": [
+            "bash tools/test_backpack_ui.sh",
+            "python3 -m unittest tests.test_repository_policy",
+            "python3 -m unittest tests.test_item_db",
+            "bash tools/test_item_stats.sh",
+            "Roblox Studio MCP Play, 세로 401×718: 도크 경계·터치 타깃·클리핑 감사 통과, 보드 셀 18개 중 잘림 0, 콘솔 오류 없음",
+            "Roblox Studio MCP Play, 세로 359×718 / 375×667 / 430×932: 도크가 보드 높이에 수용, 필터 버튼 48px 이상 유지, 클리핑 없음",
+            "Roblox Studio MCP Play, Item 모드 보관함: 카드 79장 세로 캔버스 3963px, 가로 잘림 0, 끝까지 스크롤 도달",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py"
+          ],
+          "body": "# 인벤토리와 아이템 개념\n\n## 기획 배경과 목표\n\n이전 버전에서 인벤토리는 Roblox 네이티브 레이아웃으로 전환되며 구조를 얻었지만, 화면\n자체는 여전히 전투 중에 잠깐 열어보는 어두운 창이었습니다. 짙은 네이비 캐비닛 톤은\n육각 가방의 시너지 색과 아이템 아트를 눌렀고, 조작 버튼은 배치면 위에 떠 있었으며,\n보관함은 카드가 좌우로 잘린 채 가로로 흘렀습니다.\n\n이번 버전은 인벤토리를 **전투 준비 단계의 씬**으로 승격합니다. 플레이어가 잠깐 확인하고\n닫는 오버레이가 아니라, 전투에 나가기 전에 머무르며 가방을 짜는 하나의 장면입니다.\n그 전제에서 세 가지를 바꿨습니다. 화면 전체를 밝은 작업대로 채우고, 보드를 바꾸는\n조작을 배치면 밖으로 빼고, 보관함을 세로로 훑는 목록으로 되돌렸습니다.\n\n동시에 그동안 조작감을 망가뜨리던 입력 결함을 함께 제거했습니다. 배치 보드는 눈으로만\n좋아서는 의미가 없고, 가방 칸을 집어 원하는 칸에 놓는 동작이 정확해야 작업대로서 성립\n합니다.\n\n## 플레이어 경험\n\n준비 씬에 들어오면 화면 전체가 따뜻한 종이 톤의 작업대입니다. 상단에 무게와 레이아웃\n상태, 그 아래 배치 보드, 하단에 보관 서랍이 놓입니다. 게임 월드는 비치지 않습니다.\n\n보드를 다루는 조작은 모두 보드 오른쪽 가장자리에 세로로 붙어 있습니다. 위에서부터\n확대·원점·축소 다이얼, 그 아래 `가방 배치`와 `아이템 배치` 탭입니다. 지금 선택된 탭은\n보드와 같은 색으로 이어져 하나의 면처럼 보이고, 선택되지 않은 탭은 경계에서 멈춰\n닫힌 서류철처럼 물러나 있습니다. 어떤 모드인지 탭의 모양만으로 읽힙니다.\n\n보관 서랍에서는 카테고리 필터가 왼쪽에 세로로 서 있고, 아이템 카드가 그 오른쪽을\n가득 채웁니다. 카드는 **가로로는 절대 잘리지 않고** 세로로만 잘립니다. 아래쪽에 살짝\n걸친 다음 줄이 \"더 있다\"는 신호이며, 목록은 위아래로 훑습니다.\n\n가방 칸을 집으면 그 즉시 들립니다. 손가락이 가린 아트를 보기 위해 들린 그림은 포인터\n위로 떠 있지만, 놓일 자리는 언제나 포인터가 가리키는 칸이고 보드에 스냅된 윤곽으로\n미리 보입니다. 집은 칸이 포인터를 따라오므로 한 칸 옆으로 밀면 정확히 한 칸 움직입니다.\n\n## 핵심 원칙과 설계 철학\n\n**준비 씬은 배경까지 씬이다.** 인벤토리가 하나의 장면이라면 세이프 영역 밖까지 화면을\n소유해야 합니다. 상단 바 뒤를 포함해 화면 전체를 덮는 불투명 배경 레이어를 두고,\n상호작용 레이어는 세이프 영역 안에서만 배치를 계산합니다. 배경은 단색으로 고정합니다.\n\n**배치면 위에는 아무것도 두지 않는다.** 보드를 바꾸는 조작은 보드 자신의 가장자리에\n붙되 배치 영역 바깥에 있어야 합니다. 조작이 배치면 위에 떠 있으면 그 아래 칸은 영원히\n쓸 수 없는 자리가 됩니다.\n\n**정확해야 하는 축과 잘려도 되는 축을 구분한다.** 보관함이 세로로 스크롤한다면 가로는\n정확한 축입니다. 가로로 잘린 카드는 스크롤로 볼 방법이 없기 때문에 열이 폭을 정확히\n나눠 가져야 합니다. 반대로 세로로 잘린 줄은 결함이 아니라 스크롤 가능함을 알리는\n어포던스입니다.\n\n**시각 보정과 조작 좌표를 분리한다.** 들어 올린 그림은 손가락을 피하기 위한 시각 장치일\n뿐입니다. 이 보정값이 배치 계산에 섞이면 플레이어가 겨눈 칸과 실제로 놓이는 칸이\n어긋나고, 그 어긋남은 조준 실패가 아니라 \"칸이 말을 안 듣는다\"로 체감됩니다.\n\n**뷰는 플레이어의 조작으로만 움직인다.** 가방을 옮겼다고 보드가 다시 중앙을 잡으면\n플레이어는 자기가 옮긴 결과를 확인할 수 없습니다. 화면 재구성은 뷰포트 변화, 모드\n전환, 원점 복귀, 가방의 추가·보관처럼 배치 집합 자체가 달라질 때만 일어납니다.\n\n## 결정 사항과 범위\n\n- 팔레트를 `Scrim`·`Surface`·`Field`·`Paper`·`Recess`의 밝은 표면군과 `Ink`·`InkSoft`의\n  어두운 활자군으로 재정의했습니다. 기본 글자색을 밝은색에서 어두운 잉크로 뒤집고,\n  유효·무효·모드 강조색은 밝은 배경에서 읽히도록 채도를 높였습니다.\n- 버튼 판을 밝은 벡터 표면으로 그립니다. 확대·원점·축소·회전·보관은 자체적으로 어두운\n  원형 판을 포함한 완성형 그림이었기 때문에 잉크 벡터 글리프로 교체했고, 모드와 필터의\n  회화형 아이콘은 판이 없는 그림이라 그대로 두고 오히려 키웠습니다. 사용하지 않게 된\n  아이콘 자산 참조는 `UIPrimitives`에서 정리했습니다.\n- 바깥 모서리는 45도 모따기로 확정했습니다. `UICorner`는 둥근 모서리만 지원하므로\n  모서리를 깎는 마름모와 사선 테두리 두 프레임으로 구성했고, 이 방식이 성립하려면\n  배경이 단색이어야 하므로 배경 그라디언트를 포기했습니다.\n- 무게 표시는 카드 한 줄을 통째로 쓰던 배치를 버리고 아트 우하단의 자체 폭 칩으로\n  옮겼습니다. 저울 글리프는 16·22·28·40px에서 후보를 나란히 렌더해 비교한 결과\n  28px 아래에서 접시가 빔에 붙어 뭉개졌고, 폰의 카드 칩은 그보다 작기 때문에 모든\n  크기에서 형태가 유지되는 역기 형태를 선택했습니다.\n- 보관함 최소 열 수는 3열입니다. 세로 필터 레일이 가로 공간을 쓰므로 4열을 고집하면\n  카드가 이전보다 작아집니다. 두 줄이 들어가지 않는 화면에서는 카드를 줄이는 대신\n  열을 늘려, 폭이 언제나 정확히 채워지도록 했습니다.\n- PC 레이아웃은 이번에도 범위 밖입니다. 모바일 세로만 설계·검증 대상입니다.\n\n## 현재 결과\n\n![밝은 전투 준비 씬](./media/inventory-item-concept/v009/studio-bright-preparation-scene.png \"가방 배치 모드. 화면 전체가 밝은 작업대이고, 확대 다이얼과 두 모드 탭이 보드 오른쪽 가장자리 도크에 세로로 붙어 있으며 선택된 탭이 보드와 이어집니다\")\n\n![아이템 모드의 세로 보관함](./media/inventory-item-concept/v009/studio-item-mode-vertical-storage.png \"아이템 배치 모드. 필터가 왼쪽 세로 레일로 서고, 카드는 가로로 잘리지 않은 채 세로로 스크롤하며 아래쪽에 다음 줄이 걸쳐 보입니다\")\n\n## 구현 참고\n\n`VisualTokens`가 반응형 치수를 계산합니다. 보드는 오른쪽으로 도크 한 칸(`BoardRightInset`)\n만큼 물러나고, 도크 높이는 확대 패널이 쓰고 남은 공간을 두 탭이 나눠 갖습니다. 보관함은\n`CardAreaWidth`에서 스크롤바 레인을 먼저 뺀 뒤 열 수를 정하고, 남은 세로 여유를 다음 줄\n미리보기(`ScrollHeight`의 peek 구간)로 씁니다.\n\n`ScreenRenderer`는 팔레트와 그리기를 담당합니다. `chamferCorner`가 모따기 두 프레임을\n만들고, `setChamferSize`가 반응형 패스에서 크기를 갱신합니다. 활성 탭의 폭과 이음\n패치(`ActiveSeam`)도 이 반응형 패스가 소유합니다. 상태 쪽에서 크기를 정하면 다음\n렌더 패스가 그것을 되돌리기 때문입니다.\n\n입력 계약은 세 곳을 고쳤습니다.\n\n- `Screen.beginObjectPress`는 드래그가 이미 살아 있으면 새 누름을 무시합니다. Roblox는\n  버튼을 누른 채 포인터가 들어가는 모든 GuiObject에 `InputBegan`을 올리므로, 이를\n  그대로 받으면 포인터가 지나는 칸마다 드래그가 죽고 다시 시작됐습니다. 가방이 칸\n  안에서는 끝내 들리지 않고 칸 밖으로 나가야 마지막으로 밟은 가방이 들리던 원인입니다.\n- 포인터 리프트는 시각 전용입니다. 배치 후보는 리프트되지 않은 포인터 좌표로 계산합니다.\n- `DragPlacementState.ResolveGrabOffset`과 `AnchorForGrab`이 집은 칸과 앵커의 차이를\n  보존합니다. 앵커가 포인터로 순간이동하면 가방이 그 차이만큼 도약했고, 원래 배치가\n  재현되는 유일한 포인터 위치가 앵커 칸이라 제자리로 붙는 것처럼 보였습니다.\n\n`ScreenState`는 보드 맞춤을 캐싱합니다. 렌더마다 다시 맞추면 가방을 옮기는 순간 보드가\n재중심화됐습니다. 팬 제한도 뷰포트 비율이 아니라 실제 셀 경계로 계산해, 캔버스보다 작은\n배치는 가장자리를 넘어갈 수 없습니다.\n\n## 검증\n\n로컬에서 `tools/test_backpack_ui.sh`, 저장소 정책·ItemDB·ItemStats 테스트를 실행했고,\nRoblox Studio MCP Play에서 세로 401×718, 359×718, 375×667, 430×932를 확인했습니다.\n도크 경계·터치 타깃 48px·클리핑·오버플로 감사를 통과했으며 보드 셀 잘림은 0입니다.\nItem 모드 보관함에서 카드 79장이 세로 캔버스 3963px에 배치되고 가로 잘림 없이 끝까지\n스크롤됩니다. 콘솔 오류는 없습니다.\n\n드래그 조작은 Studio의 클릭 시뮬레이션 좌표계가 현재 창 상태와 어긋나 자동 제스처로는\n재현하지 못했습니다. 대신 실제 배치 데이터로 앵커 계산을 검증했고, 히트 테스트에서 두\n모드 탭과 확대 버튼이 최상위로 잡히는 것을 확인했습니다. 실제 손 조작 확인은 남아\n있습니다.\n\n## 후속 기획\n\n- 드래그 조작감을 실기기에서 확인하고 리프트 값과 드래그 시작 임계값을 조정합니다.\n- 보관함 세로 스크롤에서 카드 위 세로 스와이프가 스크롤로 넘어가는 판정이 아이템을\n  꺼내는 동작과 충돌하지 않는지 실사용에서 확인합니다.\n- 준비 씬에서 전투로 넘어가는 전환 연출을 설계합니다.\n",
+          "source_path": "wiki/content/pages/inventory-item-concept/v009.md",
+          "timeline_order": 29
+        },
         {
           "id": "inventory-item-concept",
           "title": "인벤토리와 아이템 개념",
