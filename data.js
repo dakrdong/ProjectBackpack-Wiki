@@ -1,7 +1,7 @@
 window.PACKBOUND_WIKI = {
-  "generated_at": "2026-08-14",
-  "page_count": 7,
-  "revision_count": 42,
+  "generated_at": "2026-08-15",
+  "page_count": 9,
+  "revision_count": 44,
   "pages": [
     {
       "id": "studio-automation-routing",
@@ -394,6 +394,123 @@ window.PACKBOUND_WIKI = {
           "body": "# 백팩 전투 능력치 데이터베이스\n\n## 기획 배경과 목표\n\nPackBound는 공격 버튼을 반복해서 누르는 게임이 아니라, 백팩에 넣은 아이템이 각자의\n주기와 조건에 따라 자동으로 공격하는 아케이드 RPG입니다. 플레이어의 전투 판단은 조작\n횟수보다 어떤 아이템을 선택하고 어디에 배치하며 어떤 시너지를 연결했는지에서 나와야\n합니다. 따라서 능력치 체계는 단순히 숫자를 많이 제공하는 대신 자동 공격, 투사체 변화와\n공간 퍼즐을 같은 문법으로 조합할 수 있어야 합니다.\n\n이 문서는 Backpack Hero, Backpack Battles, Backpack Brawl과 God of Weapons에서 반복해서\n사용되는 전투 수치와 배치 규칙을 조사해 PackBound에 맞는 데이터베이스로 정리합니다.\n경쟁작의 이름과 계산식을 그대로 복제하지 않고, 실시간 이동과 자동 공격에서 읽기 쉽고\n밸런스하기 쉬운 형태만 채택합니다.\n\n## 사용자 경험\n\n- 같은 무기도 주변 아이템, 활성 칸, 투사체 옵션과 상태 효과에 따라 다른 빌드가 됩니다.\n- 아이템 설명에서 수치, 조건, 발동 시점과 대상이 분명히 분리되어 결과를 예측할 수 있습니다.\n- 공격이 자동이어도 쿨타임, 사거리, 투사체 경로와 배치 시너지로 충분한 선택 차이가 생깁니다.\n- 빗나감이나 공용 자원 고갈처럼 공격이 이유 없이 멈춘 것처럼 보이는 요소는 초기 전투에서\n  강제하지 않습니다.\n- 개발 화면과 위키에서는 데이터가 존재하는 상태와 실제 플레이에 연결된 상태를 구분합니다.\n\n## 핵심 원칙과 설계 철학\n\n### 다섯 계층을 분리한다\n\n| 계층 | 책임 | 예시 |\n| --- | --- | --- |\n| 영구 능력치 | 장비와 성장으로 합산되는 수치 | 공격력, 쿨타임 감소, 관통 횟수 |\n| 전투 자원 | 전투 중 소비·회복되는 현재값 | 체력, 보호막, 마나, 스태미나 |\n| 상태 효과 | 시간과 중첩을 가지는 임시 변화 | 화상, 중독, 가속, 취약 |\n| 발동 조건 | 효과가 실행되는 시점 | 명중 시, 치명타 시, 피격 시 |\n| 공간 조건 | 백팩에서 대상을 찾는 방법 | 근처, 활성 칸, 연결망, 빈칸 |\n\n`Heat`, `Cold`, `Rage`처럼 전투 중 변하는 값은 영구 `StatId`가 아니라 가속, 둔화,\n강화 상태로 표현합니다. 화상·독·빙결도 숫자 능력치에 섞지 않고 상태 효과 카탈로그가\n관리합니다. 이 경계가 유지되어야 아이템 데이터가 하나의 거대한 예외 테이블이 되지 않습니다.\n\n### 데이터 정의와 플레이 완성을 다르게 표시한다\n\n현재 `ItemStats`는 능력치 ID, 합산·상한 계산과 백팩 공간 판정을 제공합니다. 아직 실제\n적 탐색, 자동 공격, 피해 처리와 HUD가 이 값을 소비하지 않으므로 전체 전투 기능이 완료된\n것은 아닙니다. 이 문서의 완료 여부는 다음 두 열로 나눕니다.\n\n| 표기 | 의미 |\n| --- | --- |\n| 데이터 완료 | ID, 단위, 기본값, 제한 또는 공간 평가 계약이 소스에 존재함 |\n| 부분 완료 | 일부 계산이나 판정은 있지만 개별 테스트 또는 런타임 연결이 부족함 |\n| 런타임 완료 | 실제 서버 전투와 플레이 화면이 사용하고 검증됨 |\n| 미개발 | 현재 저장소에 계약과 런타임이 없음 |\n| 보류 | 장르 사례는 있으나 현재 제품 경험에는 바로 도입하지 않음 |\n\n### 우선순위는 플레이 가능한 세로 조각을 기준으로 한다\n\n| 우선순위 | 기준 |\n| --- | --- |\n| P0 | 첫 자동 전투가 성립하려면 반드시 필요한 기반 |\n| P1 | 첫 빌드 다양성과 백팩 퍼즐을 만드는 핵심 확장 |\n| P2 | 콘텐츠 폭과 고급 조합을 늘리는 후속 기능 |\n| P3 | 복잡도나 불쾌감 위험이 있어 플레이테스트 후 결정할 실험 |\n\n## 레퍼런스 조사\n\n### Backpack Hero\n\nBackpack Hero는 아이템 모양과 별도의 효과 영역, 인접·대각선·행·열·빈칸·포켓·연결망을\n사용합니다. 아이템 사용, 파괴, 이동과 생성도 별도 효과로 취급하며, 마나석과 전도성\n아이템은 인접 연결망을 만듭니다. 이 구조는 PackBound의 `ActiveCells`와 후속 `Connected`,\n`Contained`, `EmptyCell` 조건의 직접적인 참고입니다.\n\n- [아이템과 효과 영역](https://backpack-hero.com/mods/JSON_Reference/Items/)\n- [무기와 인접·대각선·방향 조건](https://backpackhero.wiki.gg/wiki/Weapons)\n- [방어구와 빈칸·행 조건](https://backpackhero.wiki.gg/wiki/Armor)\n- [마나 연결망](https://backpackhero.wiki.gg/wiki/Manastone)\n- [상태 효과](https://backpackhero.wiki.gg/wiki/Status_Effects)\n\n### Backpack Battles\n\nBackpack Battles는 정확도, 쿨타임과 치명타를 공격의 기본 계약으로 사용하고, Empower,\nHeat, Luck, Mana, Regeneration, Spikes와 Vampirism을 누적 강화로 사용합니다. Blind, Cold,\nPoison은 반대 축의 약화이며 Block, Invulnerability, Reflect, Resist, Stun은 별도 전투\n규칙입니다. 별과 다이아몬드 칸은 아이템 주변의 특정 위치를 활성 대상으로 지정합니다.\n\n- [전투·강화·약화·별 칸 메커니즘](https://backpackbattles.wiki.gg/wiki/Game_Mechanics)\n- [강화 효과 목록](https://backpackbattles.wiki.gg/wiki/Buff)\n- [지속 전투 종료를 위한 Fatigue](https://backpackbattles.wiki.gg/wiki/Fatigue)\n\n### Backpack Brawl\n\nBackpack Brawl의 공격 아이템은 피해 범위, 쿨타임, 정확도, 스태미나 비용·초당 비용,\n치명타 확률과 치명타 피해를 가집니다. 상태 효과는 Empower, Haste, Lifesteal, Luck,\nMana, Regeneration, Thorns와 Poison, Bleed, Burn, Chill, Blind, Curse, Insanity, Stun으로\n확장됩니다. 별 칸에 연결된 아이템 종류와 개수를 발동 조건에 적극 사용합니다.\n\n- [능력치가 표시된 무기 사례](https://backpackbrawl.wiki.gg/wiki/Cataclysm)\n- [강화·약화 효과 목록](https://backpackbrawl.wiki.gg/wiki/Backpack_Brawl_Wiki/effects)\n- [근접 무기·펫·방어구·가방 타입](https://backpackbrawl.wiki.gg/wiki/Item_Types)\n\n### God of Weapons\n\nGod of Weapons는 실시간 이동과 자동 공격을 결합하므로 PackBound와 가장 가까운 전투\n참고입니다. 근접·투사체·마법 위력, 공격 속도, 사거리, 넉백, 회피, 흡혈, 자연 회복,\n부활, 방어, 상점 행운과 획득량을 사용합니다. 무기에는 공격 주기, 치명타, 사거리,\n관통·반사·폭발과 인접 아이템 시너지가 함께 존재합니다.\n\n- [캐릭터 능력치](https://godofweapons.wiki.gg/wiki/Stats)\n- [무기와 투사체 특성](https://godofweapons.wiki.gg/wiki/Weapons)\n\n## 영구 능력치 데이터베이스\n\n### 현재 정의된 핵심·증가 능력치\n\n아래 항목은 데이터와 계산기가 존재하지만 자동 공격·피해 런타임에는 아직 연결되지\n않았습니다. 따라서 `데이터 완료`와 `런타임 미개발`을 동시에 표시합니다.\n\n| ID | 표시명 | 우선순위 | 데이터 계약 | 런타임 적용 | 결정 |\n| --- | --- | --- | --- | --- | --- |\n| `AttackPower` | 공격력 | P0 | 완료 | 미개발 | 기본 피해량으로 채택 |\n| `Defense` | 방어력 | P0 | 완료 | 미개발 | 지속 피해 감소용으로 채택 |\n| `MaxHealth` | 최대 체력 | P0 | 완료 | 미개발 | 캐릭터 생존 기반으로 채택 |\n| `AttackCooldown` | 공격 쿨타임 | P0 | 완료 | 미개발 | 무기별 독립 자동 공격 타이머 |\n| `AttackRange` | 공격 사거리 | P0 | 완료 | 미개발 | 무기별 독립 대상 탐색 거리 |\n| `AttackPowerIncrease` | 공격력 증가율 | P0 | 완료 | 미개발 | 기본 공격력에 곱연산 |\n| `DefenseIncrease` | 방어력 증가율 | P0 | 완료 | 미개발 | 기본 방어력에 곱연산 |\n| `MaxHealthIncrease` | 최대 체력 증가율 | P0 | 완료 | 미개발 | 기본 최대 체력에 곱연산 |\n| `CooldownReduction` | 쿨타임 감소율 | P0 | 완료 | 미개발 | 최대 80%, 공격 속도와 중복 ID 금지 |\n| `AttackRangeIncrease` | 사거리 증가율 | P1 | 완료 | 미개발 | 기본 사거리에 곱연산 |\n\n### 현재 정의된 투사체 능력치\n\n| ID | 표시명 | 우선순위 | 데이터 계약 | 런타임 적용 | 결정 |\n| --- | --- | --- | --- | --- | --- |\n| `AdditionalProjectileCount` | 추가 투사체 수 | P1 | 완료 | 미개발 | 기본 1발에 정수 가산 |\n| `ProjectilePierceCount` | 관통 횟수 | P1 | 완료 | 미개발 | 첫 대상 이후 추가 대상 수 |\n| `ProjectileSplitCount` | 분열 수 | P1 | 완료 | 미개발 | 분열 시 생성되는 자식 수 |\n| `ProjectileRicochetCount` | 도탄 횟수 | P1 | 완료 | 미개발 | 적 또는 벽 도탄에 사용 |\n| `ProjectileSpeedIncrease` | 투사체 속도 증가 | P1 | 완료 | 미개발 | 이동 속도 배율 |\n| `ProjectileSizeIncrease` | 투사체 크기 증가 | P2 | 완료 | 미개발 | 시각 크기와 충돌 판정 계약 필요 |\n| `ProjectileDamageIncrease` | 투사체 피해 증가 | P1 | 완료 | 미개발 | 투사체 공격에만 적용 |\n| `ProjectileHomingStrength` | 투사체 유도력 | P2 | 완료 | 미개발 | 0~1 범위, 조향 알고리즘 필요 |\n\n### 현재 정의된 전투 보조 능력치\n\n| ID | 표시명 | 우선순위 | 데이터 계약 | 런타임 적용 | 결정 |\n| --- | --- | --- | --- | --- | --- |\n| `CriticalChance` | 치명타 확률 | P1 | 완료 | 미개발 | 0~100% 확률 |\n| `CriticalDamageMultiplier` | 치명타 피해 배율 | P1 | 완료 | 미개발 | 기본 1.5배 |\n| `DodgeChance` | 회피 확률 | P2 | 완료 | 미개발 | 최대 75%, 연속 회피 체감 검증 필요 |\n| `LifeSteal` | 생명력 흡수 | P2 | 완료 | 미개발 | 가한 피해 비율 회복으로 의미 고정 |\n| `MoveSpeedIncrease` | 이동 속도 증가 | P1 | 완료 | 미개발 | 캐릭터 이동 컨트롤러 연결 필요 |\n| `KnockbackPower` | 밀쳐내기 위력 | P1 | 완료 | 미개발 | 적 물리·경직 계약과 함께 구현 |\n\n### 추가 채택할 공격·투사체 능력치\n\n| 제안 ID | 표시명 | 우선순위 | 데이터 계약 | 런타임 적용 | 채택 결정 |\n| --- | --- | --- | --- | --- | --- |\n| `ArmorPenetration` | 방어 관통 | P1 | 미개발 | 미개발 | 채택, 방어 빌드 대응 축 |\n| `AreaSizeIncrease` | 효과 범위 증가 | P1 | 미개발 | 미개발 | 채택, 폭발·근접·장판 공통 배율 |\n| `ChainCount` | 연쇄 횟수 | P1 | 미개발 | 미개발 | 채택, 번개·연쇄 공격 공통값 |\n| `ExecuteThreshold` | 처형 기준 | P2 | 미개발 | 미개발 | 채택, 희귀 효과 전용 |\n| `StatusApplicationChance` | 상태 부여 확률 | P1 | 미개발 | 미개발 | 채택, 개별 효과 기본 확률 보정 |\n| `StatusPowerIncrease` | 상태 효과 증가 | P1 | 미개발 | 미개발 | 채택, 상태 피해·효과량 공통 보정 |\n| `StatusDurationIncrease` | 상태 지속시간 증가 | P1 | 미개발 | 미개발 | 채택, 실시간 상태용 |\n| `ProjectileExplosionRadius` | 투사체 폭발 범위 | P1 | 미개발 | 미개발 | 채택, 폭발 투사체 기본값 |\n| `ProjectileChainCount` | 투사체 연쇄 횟수 | P2 | 미개발 | 미개발 | `ChainCount`와 통합 가능성 검토 |\n| `PierceDamageRetention` | 관통 피해 유지율 | P1 | 미개발 | 미개발 | 채택, 관통 횟수 증가의 밸런스 장치 |\n| `RicochetDamageRetention` | 도탄 피해 유지율 | P1 | 미개발 | 미개발 | 채택, 도탄 후 피해 감쇠 |\n| `SplitDamageRetention` | 분열 피해 유지율 | P1 | 미개발 | 미개발 | 채택, 자식 투사체 피해 감쇠 |\n| `Accuracy` | 명중률 | P3 | 미개발 | 미개발 | 보류, 자동 공격 실패가 고장처럼 보일 위험 |\n\n### 추가 채택할 방어·회복 능력치\n\n| 제안 ID | 표시명 | 우선순위 | 데이터 계약 | 런타임 적용 | 채택 결정 |\n| --- | --- | --- | --- | --- | --- |\n| `HealthRegeneration` | 초당 체력 회복 | P1 | 미개발 | 미개발 | 채택, 지속 생존 빌드 |\n| `ThornsDamage` | 가시 피해 | P1 | 미개발 | 미개발 | 채택, 근접 피격 반격 기본값 |\n| `HealingIncrease` | 주는 회복 증가 | P2 | 미개발 | 미개발 | 채택, 회복 효과 소유자 기준 |\n| `HealingReceivedIncrease` | 받는 회복 증가 | P2 | 미개발 | 미개발 | 채택, 탱커·지원 효과 분리 |\n| `DamageReduction` | 최종 피해 감소 | P2 | 미개발 | 미개발 | 제한 채택, 방어력과 별도 상한 필요 |\n| `StatusResistance` | 상태 저항 | P1 | 미개발 | 미개발 | 채택, 부여 확률·지속시간 중 계산식 확정 필요 |\n| `CriticalResistance` | 치명타 저항 | P2 | 미개발 | 미개발 | 채택, 적 치명타 콘텐츠 이후 |\n| `ReviveCount` | 부활 횟수 | P3 | 미개발 | 미개발 | 보류, 희귀 유물과 전투 흐름 검증 후 도입 |\n\n### 선택적 자원·경제 능력치\n\n| 제안 ID | 표시명 | 우선순위 | 상태 | 채택 결정 |\n| --- | --- | --- | --- | --- |\n| `MaxStamina` | 최대 스태미나 | P3 | 보류 | 무기 과밀 제어가 필요할 때만 프로토타입 |\n| `StaminaRegeneration` | 스태미나 회복 | P3 | 보류 | 공격이 멈추는 체감 위험과 함께 검증 |\n| `AttackStaminaCost` | 공격 스태미나 비용 | P3 | 보류 | 모든 무기에 강제하지 않음 |\n| `MaxMana` | 최대 마나 | P2 | 미개발 | 마법·연결망 빌드가 생길 때 채택 |\n| `ManaRegeneration` | 마나 회복 | P2 | 미개발 | 연결망과 함께 구현 |\n| `ChargeCount` | 충전 수 | P2 | 미개발 | 제한 사용·폭발 아이템용 |\n| `UseCount` | 사용 횟수 | P2 | 미개발 | 소모품과 전투당 횟수 제한용 |\n| `LootLuck` | 전리품 행운 | P3 | 보류 | 전투 정확도 Luck과 이름을 공유하지 않음 |\n| `GoldGainIncrease` | 골드 획득 증가 | P3 | 보류 | 경제 밸런스 구축 후 도입 |\n| `ExperienceGainIncrease` | 경험치 획득 증가 | P3 | 보류 | 성장 곡선 구축 후 도입 |\n\n## 전투 자원 데이터베이스\n\n| 자원 | 우선순위 | 개발 상태 | 규칙 |\n| --- | --- | --- | --- |\n| 현재 체력 | P0 | 미개발 | 최대 체력과 분리된 서버 권위 현재값 |\n| 보호막 | P0 | 미개발 | 방어력 적용 전후 순서를 확정하고 먼저 소모되는 임시값 |\n| 무기 쿨타임 진행도 | P0 | 미개발 | 무기 인스턴스별 독립 타이머 |\n| 상태 효과 중첩·잔여시간 | P1 | 미개발 | 효과 ID별 중첩 정책과 만료 시각 |\n| 마나 | P2 | 미개발 | 마법·연결망 아이템 전용 선택 자원 |\n| 스태미나 | P3 | 보류 | 공용 자동 공격 제한이 필요할 때만 도입 |\n| 충전·사용 횟수 | P2 | 미개발 | 아이템 인스턴스 또는 전투 단위로 초기화 |\n\n`Defense`와 보호막은 통합하지 않습니다. 방어력은 지속적인 피해 감소이고 보호막은 전투\n중 생성·소모되는 현재값입니다. `DamageReduction`은 두 계산 이후 적용되는 제한적인 특수\n효과로 두어 같은 방어 개념이 중복 증폭되지 않게 합니다.\n\n## 상태 효과 데이터베이스\n\n### 강화 효과\n\n| ID | 표시명 | 우선순위 | 개발 상태 | 기본 의미 |\n| --- | --- | --- | --- | --- |\n| `Empower` | 강화 | P1 | 미개발 | 중첩당 공격력 증가 |\n| `Haste` | 가속 | P1 | 미개발 | 아이템 쿨타임 진행 속도 증가 |\n| `Barrier` | 보호막 | P0 | 미개발 | 임시 피해 흡수량 획득 |\n| `Regeneration` | 재생 | P1 | 미개발 | 일정 주기 체력 회복 |\n| `Thorns` | 가시 | P1 | 미개발 | 근접 피격 시 반사 피해 |\n| `Vampirism` | 흡혈 강화 | P2 | 미개발 | 제한 시간 생명력 흡수 증가 |\n| `Invulnerable` | 무적 | P2 | 미개발 | 짧은 시간 피해 무효화 |\n| `StatusResist` | 상태 방어 | P1 | 미개발 | 다음 해로운 효과 또는 중첩 차단 |\n| `ReflectDebuff` | 약화 반사 | P2 | 미개발 | 다음 해로운 효과를 시전자에게 반사 |\n\n### 약화 효과\n\n| ID | 표시명 | 우선순위 | 개발 상태 | 기본 의미 |\n| --- | --- | --- | --- | --- |\n| `Poison` | 중독 | P1 | 미개발 | 일정 주기의 중첩 피해 |\n| `Burn` | 화상 | P1 | 미개발 | 짧고 빠른 지속 피해, 재부여 시 지속 갱신 |\n| `Bleed` | 출혈 | P2 | 미개발 | 이동 또는 공격 행동에 반응하는 피해 |\n| `Chill` | 냉기 | P1 | 미개발 | 이동·공격 속도 감소 |\n| `Freeze` | 빙결 | P2 | 미개발 | 짧은 행동 불가 또는 냉기 임계 효과 |\n| `Weak` | 약화 | P1 | 미개발 | 주는 피해 감소 |\n| `Vulnerable` | 취약 | P1 | 미개발 | 받는 피해 증가 |\n| `Blind` | 실명 | P3 | 보류 | 정확도 채택 전에는 대상 탐색 방해로만 검토 |\n| `Stun` | 기절 | P2 | 미개발 | 이동·아이템 쿨타임을 짧게 정지 |\n| `Curse` | 저주 | P3 | 보류 | 일반 해제 규칙을 벗어나는 장기 약화 |\n\nPoison, Burn과 Bleed는 모두 지속 피해지만 같은 효과의 색상 변형으로 만들지 않습니다.\n중독은 안정적인 중첩 피해, 화상은 짧고 빠른 피해, 출혈은 행동에 반응하는 피해로 역할을\n나눕니다. Chill과 Freeze도 속도 감소와 행동 불가로 구분합니다.\n\n## 백팩 공간 조건 데이터베이스\n\n### 현재 구현된 조건\n\n| 관계 ID | 의미 | 우선순위 | 평가기 | 직접 테스트 | 런타임 연결 |\n| --- | --- | --- | --- | --- | --- |\n| `Nearby` | 상하좌우 변이 맞닿음 | P0 | 완료 | 완료 | 미개발 |\n| `Active` | 비인접 지정 활성 칸과 겹침 | P0 | 완료 | 완료 | 미개발 |\n| `Diagonal` | 변 접촉 없이 모서리만 맞닿음 | P1 | 완료 | 완료 | 미개발 |\n| `SameRow` | 하나 이상의 점유 칸이 같은 행 | P1 | 완료 | 미개발 | 미개발 |\n| `SameColumn` | 하나 이상의 점유 칸이 같은 열 | P1 | 완료 | 미개발 | 미개발 |\n| `Above` | 소스 경계보다 위에 위치 | P1 | 완료 | 미개발 | 미개발 |\n| `Below` | 소스 경계보다 아래에 위치 | P1 | 완료 | 미개발 | 미개발 |\n| `Left` | 소스 경계보다 왼쪽에 위치 | P1 | 완료 | 미개발 | 미개발 |\n| `Right` | 소스 경계보다 오른쪽에 위치 | P1 | 완료 | 미개발 | 미개발 |\n| `Anywhere` | 백팩 어디에 있어도 대상 | P1 | 완료 | 미개발 | 미개발 |\n\n`Nearby`는 다칸 아이템의 어느 점유 칸과든 변을 공유하면 성립합니다. `Active`는 아이템이\n작성한 원거리 활성 칸에 대상 점유 칸이 겹칠 때 성립하며, 활성 칸은 소스 본체와 겹치거나\n인접할 수 없습니다. 이 구분은 Backpack Hero의 효과 영역과 Backpack Battles·Brawl의 별\n칸을 하나의 PackBound 용어로 통합합니다.\n\n### 추가 채택할 조건\n\n| 제안 ID | 의미 | 우선순위 | 개발 상태 | 채택 결정 |\n| --- | --- | --- | --- | --- |\n| `Connected` | 같은 연결망으로 이어짐 | P1 | 미개발 | 채택, 마나·전기·기계 빌드 |\n| `Contained` | 지정 포켓이나 컨테이너 내부 | P1 | 미개발 | 채택, 소모품·탄약 묶음 |\n| `EmptyNearbyCell` | 근처 빈칸 수 | P1 | 미개발 | 채택, 공간을 비우는 선택 보상 |\n| `EmptyRowCell` | 같은 행의 빈칸 수 | P2 | 미개발 | 채택, 방향성 무기용 |\n| `Isolated` | 근처에 다른 아이템이 없음 | P1 | 미개발 | 채택, 큰 무기와 고립 빌드 |\n| `TopRow` | 최상단 행에 배치됨 | P1 | 미개발 | 채택, 헬멧·상단 장치 |\n| `BottomRow` | 최하단 행에 배치됨 | P1 | 미개발 | 채택, 신발·무거운 장비 |\n| `Edge` | 백팩 외곽에 접함 | P2 | 미개발 | 채택, 방어·벽면 장비 |\n| `Corner` | 백팩 모서리에 위치 | P2 | 미개발 | 채택, 제한적 고효율 효과 |\n| `Facing` | 아이템이 바라보는 방향 | P1 | 미개발 | 채택, 활·총·방패 방향성 |\n| `SameTypeCount` | 같은 태그 아이템 수 | P1 | 미개발 | 채택, 테마 집중 빌드 |\n| `DifferentTypeCount` | 서로 다른 태그 수 | P2 | 미개발 | 채택, 혼합 빌드 |\n| `FreeSlotCount` | 백팩 전체 빈칸 수 | P1 | 미개발 | 채택, 공간 효율과 성능의 교환 |\n| `OverlapEffectArea` | 여러 활성 영역이 겹침 | P2 | 미개발 | 검토, 효과 중복과 시각화 필요 |\n| `PocketCount` | 분리된 백팩 구역 수 | P3 | 보류 | 포켓 시스템 확정 후 결정 |\n\n## 발동 조건 데이터베이스\n\n현재 `BackpackRuleEvaluator`는 배치에 따른 수동 평가 결과만 반환합니다. 전투 사건을\n구독하고 효과를 실행하는 Trigger 시스템은 아직 없습니다.\n\n| Trigger ID | 표시명 | 우선순위 | 개발 상태 | 사용 예시 |\n| --- | --- | --- | --- | --- |\n| `OnCombatStart` | 전투 시작 시 | P0 | 미개발 | 보호막 획득, 첫 투사체 생성 |\n| `OnInterval` | 일정 시간마다 | P0 | 미개발 | 자동 회복, 장판 발생 |\n| `OnAttackAttempt` | 공격 시도 시 | P0 | 미개발 | 발사 전 비용·효과 처리 |\n| `OnHit` | 명중 시 | P0 | 미개발 | 중독 부여, 흡혈 |\n| `OnCriticalHit` | 치명타 시 | P1 | 미개발 | 분열, 추가 상태 부여 |\n| `OnMiss` | 빗나감 시 | P3 | 보류 | 정확도 시스템 채택 후 사용 |\n| `OnDamaged` | 피해를 받을 때 | P0 | 미개발 | 가시, 보호막 반응 |\n| `OnKill` | 적 처치 시 | P1 | 미개발 | 영구 강화, 아이템 생성 |\n| `OnHealthThreshold` | 체력 기준 통과 시 | P1 | 미개발 | 50% 이하 가속, 1회 회복 |\n| `OnProjectilePierce` | 투사체 관통 시 | P1 | 미개발 | 관통 피해 변화 |\n| `OnProjectileRicochet` | 투사체 도탄 시 | P1 | 미개발 | 도탄마다 강화 |\n| `OnProjectileSplit` | 투사체 분열 시 | P1 | 미개발 | 자식 투사체 옵션 적용 |\n| `OnAdjacentItemActivated` | 인접 아이템 발동 시 | P1 | 미개발 | 연계 공격, 쿨타임 전진 |\n| `OnConsumableConsumed` | 소모품 소진 시 | P2 | 미개발 | 빈 용기 생성, 주변 강화 |\n| `OnItemCreated` | 아이템 생성 시 | P2 | 미개발 | 생성물 수에 따른 효과 |\n| `OnItemDestroyed` | 아이템 파괴 시 | P2 | 미개발 | 폭발, 인접 효과 갱신 |\n| `OnItemMoved` | 아이템 이동 시 | P3 | 보류 | 전투 중 재배치가 생길 때 사용 |\n| `OnStatusApplied` | 상태 부여 시 | P1 | 미개발 | 상태 연쇄·반사 |\n| `OnStatusCleansed` | 상태 해제 시 | P1 | 미개발 | 정화 보상 |\n| `OnEmptyCellChanged` | 빈칸 수 변화 시 | P2 | 미개발 | 공간 기반 수치 재계산 |\n\nTrigger는 `Trigger + Condition + Effect + Target` 네 요소로 저작합니다. 상태 효과와\n투사체 사건은 Trigger를 발생시키지만 Trigger 자체가 능력치 값을 소유하지 않습니다.\n\n## 태그 데이터베이스\n\n현재 태그는 공간 조건에서 구체적인 아이템 이름 대신 확장 가능한 분류를 선택하기 위해\n사용됩니다.\n\n| 그룹 | 현재 데이터 완료 태그 | 후속 제안 |\n| --- | --- | --- |\n| 대분류 | Weapon, Armor, Ammo, Accessory, Consumable, Material, Treasure | Pet, Structure, Container |\n| 공격 방식 | Melee, Ranged, Projectile, Magic | Summon, Area, Channel |\n| 무기 | Sword, Bow, Gun, Wand, Staff, Dagger, Spear, Axe, Hammer | Crossbow, Launcher |\n| 탄약 | Arrow, Bullet, Bolt | Shell, Rocket |\n| 방어구 | Shield, Helmet, ChestArmor, LegArmor, Shoes, Gloves, Cloak | Belt |\n| 장신구 | Ring, Amulet, Relic, Charm | Totem |\n| 소모품 | Food, Potion, Healing, Stamina | Bomb, Scroll |\n\n모든 아이템은 대분류 하나와 적용 가능한 세부 태그를 함께 가집니다. 예를 들어 장궁은\n`Weapon`, `Ranged`, `Projectile`, `Bow`를 사용하고 화살 묶음은 `Ammo`, `Projectile`,\n`Arrow`를 사용합니다. `Luck`처럼 게임마다 뜻이 다른 개념은 태그나 능력치 이름으로\n포괄하지 않고 `LootLuck`, `Accuracy`처럼 용도를 명시합니다.\n\n## 현재 결과와 완료 현황\n\n| 영역 | 현재 결과 | 완료 수준 | 다음 완료 조건 |\n| --- | --- | --- | --- |\n| 능력치 타입·메타데이터 | 24개 StatId와 단위·기본값·상한 | 데이터 완료 | 신규 채택 ID 추가 |\n| 능력치 계산 | 기본값, 합산, 증가율, 쿨타임·확률 상한 | 계산 완료 | 서버 전투 소비자 연결 |\n| 아이템 태그 | 무기·방어구·탄약·장신구·소모품 분류 | 데이터 완료 | 실제 ItemCatalog 등록 |\n| 공간 관계 | 10개 관계와 태그 선택자·중첩·대상 | 평가기 완료 | 인벤토리 배치 이벤트 연결 |\n| 공간 테스트 | Nearby, Active, Diagonal과 잘못된 활성 칸 | 부분 완료 | 나머지 7개 관계 직접 테스트 |\n| 자동 공격 | 없음 | 미개발 | 무기별 타이머·대상 탐색·공격 사건 |\n| 피해 해결 | 없음 | 미개발 | 서버 권위 피해·방어·치명타 파이프라인 |\n| 투사체 런타임 | 없음 | 미개발 | 생성·이동·충돌·관통·도탄·분열 |\n| 상태 효과 | 없음 | 미개발 | 중첩·지속·주기·해제 정책 |\n| Trigger 시스템 | 없음 | 미개발 | 사건 버스와 조건·효과 실행기 |\n| HUD·툴팁 | 없음 | 미개발 | 최종 수치와 활성 배치 효과 표시 |\n\n## 구현 참고\n\n| 경로 | 책임 |\n| --- | --- |\n| `src/ReplicatedStorage/ItemStats/Definitions.luau` | 현재 24개 능력치의 표시명, 단위, 기본값과 제한 |\n| `src/ReplicatedStorage/ItemStats/Calculator.luau` | 능력치 블록 검증·합산과 최종 수치 계산 |\n| `src/ReplicatedStorage/ItemStats/Types.luau` | 능력치, 배치, 조건, 효과와 평가 결과 타입 |\n| `src/ReplicatedStorage/ItemStats/BackpackRuleEvaluator.luau` | 태그 선택과 공간 관계·중첩·적용 대상 평가 |\n| `src/ReplicatedStorage/ItemStats/ItemTags.luau` | 아이템 분류 태그 |\n| `tests/ItemStats.spec.luau` | 계산 상한과 Nearby·Active·Diagonal 회귀 검증 |\n\n현재 Calculator는 하나의 무기 기본 쿨타임·사거리와 소유자·백팩 보너스를 함께 계산하는\n용도입니다. 여러 무기의 기본 쿨타임과 사거리를 한 블록에 더하지 않습니다. 각 자동 공격\n무기는 독립 타이머와 대상 탐색을 가져야 합니다.\n\n## 개발 로드맵\n\n### P0: 자동 전투 세로 조각\n\n1. 캐릭터·아이템 능력치 블록을 서버에서 합산합니다.\n2. 무기별 쿨타임과 사거리로 가장 가까운 유효 적을 탐색합니다.\n3. 공격 시도, 명중과 피격 사건을 정의합니다.\n4. 공격력, 방어력, 체력, 보호막과 치명타를 서버 피해 파이프라인에 연결합니다.\n5. 현재 능력치와 활성 백팩 효과를 툴팁에서 확인할 수 있게 합니다.\n\n### P1: 첫 빌드 다양성\n\n1. 관통·도탄·분열과 피해 유지율을 구현합니다.\n2. 화상, 중독, 냉기, 약화, 취약과 가속·강화 상태를 구현합니다.\n3. Connected, Contained, EmptyCell, Isolated, TopRow와 BottomRow 조건을 추가합니다.\n4. 명중·치명타·처치·피격·상태 부여 Trigger를 연결합니다.\n5. 나머지 공간 관계와 상태 중첩 정책을 자동화 테스트로 고정합니다.\n\n### P2: 콘텐츠 확장\n\n폭발·연쇄·출혈·빙결·기절, 마나 연결망, 제한 사용 아이템, 치명타 저항과 고급 배치\n조건을 추가합니다. P0·P1의 전투 로그와 툴팁이 안정된 뒤 진행합니다.\n\n### P3: 플레이테스트 기반 실험\n\n정확도, 공용 스태미나, 부활, 저주와 경제 능력치는 즉시 도입하지 않습니다. 자동 공격이\n자주 빗나가거나 자원 부족으로 멈추면 플레이어에게 시스템 고장처럼 보일 수 있습니다.\n무기 수 증가를 제어할 다른 수단이 부족하다는 데이터가 확인될 때 별도 프로토타입합니다.\n\n## 검증과 완료 기준\n\n이번 문서는 현재 커밋된 `ItemStats` 소스와 테스트를 기준으로 완료 상태를 대조했습니다.\n능력치 계산 테스트는 핵심·증가 수치, 쿨타임·회피 상한, 추가 투사체, 알 수 없는 ID 거부를\n확인합니다. 공간 테스트는 근처, 활성, 대각선이 서로 중복되지 않고 소스 본체와 인접한\n활성 칸을 거부하는지 확인합니다. Rojo 빌드로 `ReplicatedStorage.ItemStats` 패키지가\n플레이스에 포함되는지도 검증합니다.\n\n앞으로 하나의 항목을 `런타임 완료`로 변경하려면 다음 조건을 모두 만족해야 합니다.\n\n- 데이터 계약과 유효 범위가 정의되어 있습니다.\n- 서버 권위 런타임에서 실제 효과가 적용됩니다.\n- 툴팁 또는 전투 피드백으로 플레이어가 결과를 확인할 수 있습니다.\n- 정상, 상한, 중첩과 해제 경계가 자동화 테스트로 검증됩니다.\n- 시각적 변경은 대표적인 Studio 플레이 캡처와 함께 위키에 기록됩니다.\n\n## 후속 기획\n\n- 다음 전투 구현 커밋에서는 P0 항목만 선택하고 P1 상태 효과를 동시에 끌어오지 않습니다.\n- 첫 무기 세트는 검, 활과 총 각 하나로 자동 공격·투사체·근접 경로를 검증합니다.\n- 보호막과 방어력 계산 순서는 실제 적 피해 범위를 정한 뒤 고정합니다.\n- 상태 저항은 부여 확률 감소와 지속시간 감소를 동시에 사용하지 않고 하나의 읽기 쉬운\n  규칙을 플레이테스트로 선택합니다.\n- 능력치·상태·Trigger·공간 조건의 완료 상태는 실제 구현 커밋마다 이 페이지의 다음\n  버전에서 갱신합니다.\n",
           "source_path": "wiki/content/pages/backpack-combat-stat-database/v001.md",
           "timeline_order": 11
+        }
+      ]
+    },
+    {
+      "id": "synergy-icon-system",
+      "title": "시너지 아이콘 시스템",
+      "summary": "25px 전후의 모바일 표시에서도 즉시 구분되도록 26종 시너지 아이콘을 단일 실루엣과 3색 팔레트로 전면 교체하고, 새 Roblox 자산 ID를 런타임에 연결했습니다.",
+      "status": "active",
+      "category": "gameplay",
+      "tags": [
+        "inventory",
+        "synergy",
+        "icon",
+        "ui",
+        "ux",
+        "mobile",
+        "readability",
+        "art-direction",
+        "roblox-studio"
+      ],
+      "created_at": "2026-08-15",
+      "updated_at": "2026-08-15",
+      "authors": [
+        "Codex"
+      ],
+      "version": 1,
+      "change_type": "created",
+      "change_summary": "메달형 장식과 복잡한 내부 묘사를 제거하고 26종을 각각 하나의 굵은 심볼로 다시 제작했으며, 주색·아이보리·짙은 자주색의 최대 3색 규칙과 투명 배경을 재생성 계약으로 고정했습니다.",
+      "supersedes": null,
+      "sources": [
+        "wiki/content/media/synergy-icon-system/v001/studio-synergy-icons-v2-iphone17pro.png",
+        "Assets/UI/Backpack/SynergyIcons/Source",
+        "Assets/UI/Backpack/SynergyIcons/Final",
+        "Assets/UI/Backpack/SynergyIcons/manifest.json",
+        "Assets/UI/Backpack/uploaded_asset_ids.json",
+        "tools/extract_synergy_icons.py",
+        "src/ReplicatedStorage/BackpackUI/SynergyCatalog.luau",
+        "tests/test_synergy_icons.py"
+      ],
+      "related": [
+        "inventory-item-concept",
+        "product-planning-change-log",
+        "development-wiki"
+      ],
+      "validation": [
+        "python3 tools/extract_synergy_icons.py: SynergyIconsV2 26종 재생성",
+        "python3 -m unittest -q tests.test_synergy_icons: 3 tests passed",
+        "bash tools/test_backpack_ui.sh: Backpack hex inventory tests passed",
+        "Roblox Studio MCP Play, iPhone 17 Pro 세로 400×776: TouchEnabled=true, 26개 고유 자산·262개 시너지 ImageLabel·25×25·빈 이미지 0개 확인",
+        "Roblox Studio MCP Play, Galaxy A06 세로 359×718: ItemMode 무기 카드 4열과 시너지 심볼의 잘림·겹침·텍스트 회귀 없음",
+        "Roblox Studio MCP runtime console: 오류·경고 없음",
+        "python3 tools/wiki.py build",
+        "python3 tools/wiki.py check",
+        "python3 -m unittest tests/test_wiki.py",
+        "python3 -m unittest tests.test_repository_policy",
+        "git diff --check"
+      ],
+      "source_path": "wiki/content/pages/synergy-icon-system/v001.md",
+      "body": "# 시너지 아이콘 시스템\n\n## 기획 배경과 목표\n\n시너지는 아이템의 조합 가능성을 빠르게 읽게 하는 표식입니다. 실제 모바일 카드와 필터에서\n아이콘은 약 25px로 보이므로, 큰 원본에서 아름다운 메달 장식이나 내부 묘사는 축소될수록 서로\n뭉쳐 같은 얼룩처럼 보였습니다. 플레이어가 모양을 해석하느라 멈추면 시너지가 탐색을 돕는\n정보가 아니라 추가 독해 비용이 됩니다.\n\n이번 버전은 **작게 보이는 순간을 원본 설계 기준으로 삼습니다.** 26종 모두를 하나의 굵은\n실루엣과 제한된 색으로 다시 만들고, 아이콘의 주제를 배경 메달이나 글자 없이 형태만으로\n구분하도록 전환했습니다. 기존 시너지 이름·분류·대표색과 게임 규칙은 유지하되, 표현 자산과\nRoblox 참조를 새 세대로 완전히 교체했습니다.\n\n## 플레이어 경험\n\n- 카드와 필터에서 검, 활, 방패, 잎, 톱니처럼 핵심 형태를 한눈에 구분할 수 있습니다.\n- 같은 계열 색을 유지하므로 기존 조합 학습은 보존하면서 모양 판독만 빨라집니다.\n- 장식용 원형 테두리와 세부 질감이 사라져 작은 화면에서도 심볼의 빈 공간과 방향이 남습니다.\n- 투명 배경이라 밝은 카드, 선택 상태와 필터 배경 어디에서도 사각 배경이 드러나지 않습니다.\n\n![iPhone 17 Pro 세로 화면의 시너지 아이콘 V2](./media/synergy-icon-system/v001/studio-synergy-icons-v2-iphone17pro.png \"400×776 Studio Play의 ItemMode 무기 필터. 왼쪽 필터 심볼과 카드의 작은 시너지 표식이 단순한 실루엣으로 유지됩니다\")\n\n## 핵심 원칙과 설계 철학\n\n### 작은 크기의 실루엣이 원본보다 우선한다\n\n최종 품질은 256px 원본의 세부 묘사가 아니라 실제 UI의 25px 전후 표시에서 판단합니다.\n아이콘 하나에는 주제를 설명하는 대표 물체나 동작 하나만 남기고, 작은 돌기·문양·광원·배경\n장식은 제거합니다. 축소했을 때 합쳐지는 간격은 처음부터 넓게 두고 외곽은 굵게 만듭니다.\n\n### 색은 정체성을 보조하고 형태를 대신하지 않는다\n\n각 시너지의 기존 대표색을 주색으로 보존하되, 최종 픽셀은 주색·따뜻한 아이보리\n`#FFF1C7`·짙은 자주색 `#24172F`의 최대 세 색만 사용합니다. 색상 수를 늘려 세부를 설명하지\n않으며, 명암 대비는 외곽과 핵심 면을 분리하는 데만 씁니다.\n\n### 원본·최종본·런타임 참조가 한 계약으로 움직인다\n\n각 심볼은 개별 투명 원본을 가지며 재생성 도구가 256×256 캔버스, 최대 216px 내용 영역,\n3색 팔레트를 일관되게 적용합니다. 매니페스트가 원본 파일·대표색·최종 파일·Roblox 자산 ID를\n묶고, 런타임 카탈로그는 같은 업로드 ID를 사용합니다.\n\n## 결정 사항과 범위\n\n- 구조/재질 6종, 전투 운용 6종, 기원/계보 7종, 무기 형태 7종 등 활성 시너지 26종을 모두\n  V2로 교체했습니다.\n- 최종 PNG는 256×256 투명 배경이며 보이는 내용은 216px 경계 안에 맞춥니다.\n- 모든 최종본은 투명색을 제외하고 최대 3개 RGB 색만 사용합니다.\n- 기존 네 장의 합본 원본 시트는 이중 원본이 되지 않도록 제거하고 26개 개별 원본을\n  재생성 권위로 삼았습니다.\n- 새 이미지 26개를 Roblox 자산으로 다시 등록하고 업로드 레지스트리, 매니페스트와\n  `SynergyCatalog`의 참조를 같은 ID 집합으로 맞췄습니다.\n- 시너지의 이름, 분류, 대표색, 아이템별 부여 규칙과 전투 효과는 변경하지 않았습니다.\n- PC UI와 ItemDB 항목 변경은 이번 버전의 범위가 아닙니다.\n\n## 현재 결과와 구현 참고\n\n`tools/extract_synergy_icons.py`는 각 개별 원본의 알파 경계를 찾고, 비율을 유지한 채 내용\n영역에 맞춘 다음 제한 팔레트의 가장 가까운 색으로 정규화합니다. `manifest.json`의 스키마를\n2로 올려 `SynergyIconsV2` 스타일과 각 자산의 대표색·업로드 ID를 명시했습니다.\n\n런타임은 `SynergyCatalog.luau`에서 새 26개 ID만 읽습니다. 이전 V1 자산 ID가 남지 않는지,\n원본과 최종본의 파일 수가 정확한지, 크기·알파·팔레트·매니페스트·런타임 ID가 모두 일치하는지\n전용 Python 테스트로 고정했습니다.\n\n## 검증\n\n재생성 도구 실행 후 시너지 자산 테스트 3개와 전체 Luau 백팩 테스트를 통과했습니다. Studio\nMCP Play에서는 iPhone 17 Pro 세로 400×776에서 `TouchEnabled=true`, 26개 고유 업로드 자산,\n262개 시너지 이미지 라벨, 25×25 표시, 빈 이미지 0개를 확인했습니다. Galaxy A06 세로\n359×718에서는 ItemMode 무기 카드가 4열로 재배치된 상태에서 필터와 카드 심볼의 잘림·겹침,\n텍스트 가독성 회귀가 없었습니다. 두 런타임의 콘솔은 비어 있었습니다.\n\nStudio MCP의 화면 캡처가 해당 세션에서 ScreenGui 레이어를 제외한 3D 장면만 반환해, 문서의\n최종 이미지는 같은 연결 세션의 실제 Studio 창을 제한적으로 캡처했습니다. 런타임 상태,\n장치 프리셋, GUI 크기와 콘솔 판정은 계속 Studio MCP를 권위로 사용했으며, 검증 뒤 Studio를\n기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 새 시너지를 추가할 때는 256px 원본보다 25px 축소 미리보기에서 기존 26종과 먼저 비교합니다.\n- 형태가 혼동되는 쌍이 발견되면 색을 추가하기보다 실루엣의 방향, 빈 공간과 대표 물체를 먼저\n  조정합니다.\n- 자산을 교체할 때는 원본·최종본·매니페스트·업로드 레지스트리·런타임 카탈로그의 동일성\n  검사를 완료 조건으로 유지합니다.\n",
+      "revisions": [
+        {
+          "id": "synergy-icon-system",
+          "title": "시너지 아이콘 시스템",
+          "summary": "25px 전후의 모바일 표시에서도 즉시 구분되도록 26종 시너지 아이콘을 단일 실루엣과 3색 팔레트로 전면 교체하고, 새 Roblox 자산 ID를 런타임에 연결했습니다.",
+          "status": "active",
+          "category": "gameplay",
+          "tags": [
+            "inventory",
+            "synergy",
+            "icon",
+            "ui",
+            "ux",
+            "mobile",
+            "readability",
+            "art-direction",
+            "roblox-studio"
+          ],
+          "created_at": "2026-08-15",
+          "updated_at": "2026-08-15",
+          "authors": [
+            "Codex"
+          ],
+          "version": 1,
+          "change_type": "created",
+          "change_summary": "메달형 장식과 복잡한 내부 묘사를 제거하고 26종을 각각 하나의 굵은 심볼로 다시 제작했으며, 주색·아이보리·짙은 자주색의 최대 3색 규칙과 투명 배경을 재생성 계약으로 고정했습니다.",
+          "supersedes": null,
+          "sources": [
+            "wiki/content/media/synergy-icon-system/v001/studio-synergy-icons-v2-iphone17pro.png",
+            "Assets/UI/Backpack/SynergyIcons/Source",
+            "Assets/UI/Backpack/SynergyIcons/Final",
+            "Assets/UI/Backpack/SynergyIcons/manifest.json",
+            "Assets/UI/Backpack/uploaded_asset_ids.json",
+            "tools/extract_synergy_icons.py",
+            "src/ReplicatedStorage/BackpackUI/SynergyCatalog.luau",
+            "tests/test_synergy_icons.py"
+          ],
+          "related": [
+            "inventory-item-concept",
+            "product-planning-change-log",
+            "development-wiki"
+          ],
+          "validation": [
+            "python3 tools/extract_synergy_icons.py: SynergyIconsV2 26종 재생성",
+            "python3 -m unittest -q tests.test_synergy_icons: 3 tests passed",
+            "bash tools/test_backpack_ui.sh: Backpack hex inventory tests passed",
+            "Roblox Studio MCP Play, iPhone 17 Pro 세로 400×776: TouchEnabled=true, 26개 고유 자산·262개 시너지 ImageLabel·25×25·빈 이미지 0개 확인",
+            "Roblox Studio MCP Play, Galaxy A06 세로 359×718: ItemMode 무기 카드 4열과 시너지 심볼의 잘림·겹침·텍스트 회귀 없음",
+            "Roblox Studio MCP runtime console: 오류·경고 없음",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "python3 -m unittest tests.test_repository_policy",
+            "git diff --check"
+          ],
+          "body": "# 시너지 아이콘 시스템\n\n## 기획 배경과 목표\n\n시너지는 아이템의 조합 가능성을 빠르게 읽게 하는 표식입니다. 실제 모바일 카드와 필터에서\n아이콘은 약 25px로 보이므로, 큰 원본에서 아름다운 메달 장식이나 내부 묘사는 축소될수록 서로\n뭉쳐 같은 얼룩처럼 보였습니다. 플레이어가 모양을 해석하느라 멈추면 시너지가 탐색을 돕는\n정보가 아니라 추가 독해 비용이 됩니다.\n\n이번 버전은 **작게 보이는 순간을 원본 설계 기준으로 삼습니다.** 26종 모두를 하나의 굵은\n실루엣과 제한된 색으로 다시 만들고, 아이콘의 주제를 배경 메달이나 글자 없이 형태만으로\n구분하도록 전환했습니다. 기존 시너지 이름·분류·대표색과 게임 규칙은 유지하되, 표현 자산과\nRoblox 참조를 새 세대로 완전히 교체했습니다.\n\n## 플레이어 경험\n\n- 카드와 필터에서 검, 활, 방패, 잎, 톱니처럼 핵심 형태를 한눈에 구분할 수 있습니다.\n- 같은 계열 색을 유지하므로 기존 조합 학습은 보존하면서 모양 판독만 빨라집니다.\n- 장식용 원형 테두리와 세부 질감이 사라져 작은 화면에서도 심볼의 빈 공간과 방향이 남습니다.\n- 투명 배경이라 밝은 카드, 선택 상태와 필터 배경 어디에서도 사각 배경이 드러나지 않습니다.\n\n![iPhone 17 Pro 세로 화면의 시너지 아이콘 V2](./media/synergy-icon-system/v001/studio-synergy-icons-v2-iphone17pro.png \"400×776 Studio Play의 ItemMode 무기 필터. 왼쪽 필터 심볼과 카드의 작은 시너지 표식이 단순한 실루엣으로 유지됩니다\")\n\n## 핵심 원칙과 설계 철학\n\n### 작은 크기의 실루엣이 원본보다 우선한다\n\n최종 품질은 256px 원본의 세부 묘사가 아니라 실제 UI의 25px 전후 표시에서 판단합니다.\n아이콘 하나에는 주제를 설명하는 대표 물체나 동작 하나만 남기고, 작은 돌기·문양·광원·배경\n장식은 제거합니다. 축소했을 때 합쳐지는 간격은 처음부터 넓게 두고 외곽은 굵게 만듭니다.\n\n### 색은 정체성을 보조하고 형태를 대신하지 않는다\n\n각 시너지의 기존 대표색을 주색으로 보존하되, 최종 픽셀은 주색·따뜻한 아이보리\n`#FFF1C7`·짙은 자주색 `#24172F`의 최대 세 색만 사용합니다. 색상 수를 늘려 세부를 설명하지\n않으며, 명암 대비는 외곽과 핵심 면을 분리하는 데만 씁니다.\n\n### 원본·최종본·런타임 참조가 한 계약으로 움직인다\n\n각 심볼은 개별 투명 원본을 가지며 재생성 도구가 256×256 캔버스, 최대 216px 내용 영역,\n3색 팔레트를 일관되게 적용합니다. 매니페스트가 원본 파일·대표색·최종 파일·Roblox 자산 ID를\n묶고, 런타임 카탈로그는 같은 업로드 ID를 사용합니다.\n\n## 결정 사항과 범위\n\n- 구조/재질 6종, 전투 운용 6종, 기원/계보 7종, 무기 형태 7종 등 활성 시너지 26종을 모두\n  V2로 교체했습니다.\n- 최종 PNG는 256×256 투명 배경이며 보이는 내용은 216px 경계 안에 맞춥니다.\n- 모든 최종본은 투명색을 제외하고 최대 3개 RGB 색만 사용합니다.\n- 기존 네 장의 합본 원본 시트는 이중 원본이 되지 않도록 제거하고 26개 개별 원본을\n  재생성 권위로 삼았습니다.\n- 새 이미지 26개를 Roblox 자산으로 다시 등록하고 업로드 레지스트리, 매니페스트와\n  `SynergyCatalog`의 참조를 같은 ID 집합으로 맞췄습니다.\n- 시너지의 이름, 분류, 대표색, 아이템별 부여 규칙과 전투 효과는 변경하지 않았습니다.\n- PC UI와 ItemDB 항목 변경은 이번 버전의 범위가 아닙니다.\n\n## 현재 결과와 구현 참고\n\n`tools/extract_synergy_icons.py`는 각 개별 원본의 알파 경계를 찾고, 비율을 유지한 채 내용\n영역에 맞춘 다음 제한 팔레트의 가장 가까운 색으로 정규화합니다. `manifest.json`의 스키마를\n2로 올려 `SynergyIconsV2` 스타일과 각 자산의 대표색·업로드 ID를 명시했습니다.\n\n런타임은 `SynergyCatalog.luau`에서 새 26개 ID만 읽습니다. 이전 V1 자산 ID가 남지 않는지,\n원본과 최종본의 파일 수가 정확한지, 크기·알파·팔레트·매니페스트·런타임 ID가 모두 일치하는지\n전용 Python 테스트로 고정했습니다.\n\n## 검증\n\n재생성 도구 실행 후 시너지 자산 테스트 3개와 전체 Luau 백팩 테스트를 통과했습니다. Studio\nMCP Play에서는 iPhone 17 Pro 세로 400×776에서 `TouchEnabled=true`, 26개 고유 업로드 자산,\n262개 시너지 이미지 라벨, 25×25 표시, 빈 이미지 0개를 확인했습니다. Galaxy A06 세로\n359×718에서는 ItemMode 무기 카드가 4열로 재배치된 상태에서 필터와 카드 심볼의 잘림·겹침,\n텍스트 가독성 회귀가 없었습니다. 두 런타임의 콘솔은 비어 있었습니다.\n\nStudio MCP의 화면 캡처가 해당 세션에서 ScreenGui 레이어를 제외한 3D 장면만 반환해, 문서의\n최종 이미지는 같은 연결 세션의 실제 Studio 창을 제한적으로 캡처했습니다. 런타임 상태,\n장치 프리셋, GUI 크기와 콘솔 판정은 계속 Studio MCP를 권위로 사용했으며, 검증 뒤 Studio를\n기본 뷰포트로 복원했습니다.\n\n## 후속 기획\n\n- 새 시너지를 추가할 때는 256px 원본보다 25px 축소 미리보기에서 기존 26종과 먼저 비교합니다.\n- 형태가 혼동되는 쌍이 발견되면 색을 추가하기보다 실루엣의 방향, 빈 공간과 대표 물체를 먼저\n  조정합니다.\n- 자산을 교체할 때는 원본·최종본·매니페스트·업로드 레지스트리·런타임 카탈로그의 동일성\n  검사를 완료 조건으로 유지합니다.\n",
+          "source_path": "wiki/content/pages/synergy-icon-system/v001.md",
+          "timeline_order": 33
         }
       ]
     },
@@ -1676,6 +1793,103 @@ window.PACKBOUND_WIKI = {
           "body": "# 2D 플레이어 캐릭터 렌더링 기반\n\n## 결과\n\n플레이 화면에 Roblox 3D 아바타와 그림자가 2D 캐릭터 밑으로 비치던 문제를\n소스 수준에서 차단했습니다. 에셋 ID가 비어 있을 때 표시되던 단색 둥근 사각형\n조합도 기본 출력에서 제거했습니다. 대신 기존 방향 원화를 게임용 5방향\n풀바디 아틀라스로 정리해 업로드 가능한 상태로 준비했습니다.\n\n현재 기본 시각 모드는 `FullBodyPrototype`입니다. 장비 레이어 시스템을 완성하기\n전에 실제 게임 화면의 크기, 방향 판독성, 카메라 조합을 고품질 완성형 캐릭터로\n검증하기 위한 단계입니다.\n\n## 렌더링 구조\n\n```text\nRoblox Character\n  ├─ 물리·이동·충돌: 기존 Humanoid와 BasePart 유지\n  ├─ 3D 시각 요소: Transparency=1, LocalTransparencyModifier=1\n  ├─ 그림자: CastShadow=false\n  ├─ 이름·체력 UI: 비표시\n  └─ HumanoidRootPart 위 BillboardGui\n       └─ FullBodyPrototype ImageLabel\n            └─ 이동 방향에 맞는 5방향 아틀라스 셀\n```\n\n## 3D 아바타 숨김\n\n`CharacterController`는 캐릭터의 모든 `BasePart`에 실제 `Transparency=1`과\n로컬 투명도 `LocalTransparencyModifier=1`을 함께 적용하고 그림자를 끕니다.\n카메라의 기본 TransparencyController가 로컬 값만 다시 쓸 수 있으므로 두 값을\n동시에 고정합니다. `Decal`과 `Texture`, Humanoid 이름표와 체력 표시도 숨깁니다.\n\n컨트롤러가 종료될 때는 원래 투명도, 로컬 투명도, 그림자 및 Humanoid 표시\n설정을 저장된 값으로 복원합니다.\n\n## 캐릭터 이미지 품질\n\n기존 5방향 쿼터뷰 원화를 각 방향별 `384 × 640` 셀로 정규화했습니다. 오른쪽\n아틀라스와 각 셀을 개별 반전한 왼쪽 아틀라스는 모두 `1920 × 640` RGBA PNG입니다.\n\n- `player_fullbody_5view_right.png`: 남, 남동, 동, 북동, 북 방향\n- `player_fullbody_5view_left.png`: 동일한 열 순서를 유지한 좌측 반전 방향\n\n아틀라스는 `tools/build_full_body_prototype_atlases.sh`로 재현할 수 있습니다.\n단순히 전체 시트를 뒤집지 않고 셀마다 뒤집은 뒤 같은 열 순서로 다시 결합해\n방향 인덱스가 깨지지 않도록 했습니다.\n\n## 빈 에셋 처리\n\n에셋 ID가 없는 슬롯은 더 이상 임시 색상 도형을 플레이 화면에 노출하지\n않습니다. 대신 `2D ASSET ID MISSING` 진단 문구만 보여 원인을 명확히 합니다.\n실제 이미지가 등록되면 이 문구는 자동으로 숨습니다.\n\n`AssetRegistry.FullBodyAtlasAssetIds.Right`와 `Left`에는 업로드된 좌우 아틀라스의\n실제 Roblox 에셋 ID가 등록되어 있습니다. 반면 장비별 레이어드 아틀라스 ID는\n아직 비어 있으므로 해당 모드로 전환하면 누락 경고가 표시됩니다.\n\n## 변경 파일\n\n- `Config.luau`: 풀바디 프로토타입을 기본 모드로 지정하고 단색 폴백을 끕니다.\n- `RigDefinition.luau`: 풀바디 루트 슬롯의 크기, 앵커, 깊이를 정의합니다.\n- `AssetRegistry.luau`: 좌우 5방향 아틀라스와 셀 좌표 레지스트리를 추가합니다.\n- `Appearance.luau`: 풀바디 모드와 레이어 장비 모드를 분기합니다.\n- `CutoutRig.luau`: 빈 이미지 폴백을 제거하고 누락 경고를 추가합니다.\n- `CharacterController.luau`: 3D 아바타, 표면 이미지, 그림자, 이름과 체력을\n  숨기고 종료 시 원상 복구합니다.\n- `Assets/Characters/Player/GameplayAtlases/`: 좌우 게임용 PNG를 보관합니다.\n- `tools/build_full_body_prototype_atlases.sh`: 원화에서 아틀라스를 재생성합니다.\n- `tools/test_character_assets.sh`: 크기와 RGBA 형식을 검사합니다.\n\n## 검증\n\n- 캐릭터 에셋 검사에서 좌우 아틀라스가 모두 `1920 × 640`, RGBA임을\n  확인했습니다.\n- `packbound.project.json`으로 Rojo 플레이스 빌드가 성공했습니다.\n- `src` 아래 모든 Luau 파일이 컴파일 검사를 통과했습니다.\n- 현재 Codex 작업에는 Studio MCP의 개별 도구가 노출되지 않아 이미지 업로드,\n  플레이 실행, 스크린 캡처를 통한 라이브 검증은 완료하지 못했습니다.\n  MCP 우선 규칙에 따라 Computer Use로 우회하지 않았습니다.\n\n## 결정 사항\n\n- 첫 시각 검증은 완성형 풀바디 캐릭터로 진행하고, 장비 교체는 이후\n  `LayeredEquipment` 모드로 확장합니다.\n- 에셋 ID 누락을 조악한 도형으로 감추지 않고 명시적인 개발 경고로 표시합니다.\n- 3D 본체는 물리와 이동의 기반으로 유지하되 렌더링과 그림자는 제거합니다.\n- 라이브 완료 판정은 실제 Studio MCP 업로드와 플레이 검증 이후로 미룹니다.\n\n## 후속 작업\n\n- Studio MCP로 플레이를 시작해 등록된 에셋의 로딩, 3D 본체·그림자 제거,\n  다섯 방향 전환,\n  캐릭터 크기와 발 위치를 스크린 캡처로 검증합니다.\n- 풀바디 시각 기준이 확정되면 머리, 상의, 하의, 신발을 동일한 피벗과 셀\n  규격을 사용하는 장비 레이어로 분리합니다.\n",
           "source_path": "wiki/content/pages/character-2d-rendering/v001.md",
           "timeline_order": 1
+        }
+      ]
+    },
+    {
+      "id": "product-planning-change-log",
+      "title": "제품 기획 변경 원장",
+      "summary": "제품·게임플레이·UX·콘텐츠·아트 방향의 유효 규칙과 변경 이유를 커밋 단위로 누적 보존하는 원장입니다.",
+      "status": "active",
+      "category": "planning",
+      "tags": [
+        "planning",
+        "decision-log",
+        "product",
+        "art-direction",
+        "ui",
+        "synergy",
+        "mobile"
+      ],
+      "created_at": "2026-08-15",
+      "updated_at": "2026-08-15",
+      "authors": [
+        "Codex"
+      ],
+      "version": 1,
+      "change_type": "created",
+      "change_summary": "시너지 아이콘을 실제 모바일 표시 크기에서 먼저 설계하고 단일 심볼·최대 3색으로 제한하는 아트 규칙을 첫 누적 기획 결정으로 기록했습니다.",
+      "supersedes": null,
+      "sources": [
+        "AGENTS.md",
+        "wiki/content/pages/synergy-icon-system/v001.md",
+        "wiki/content/media/synergy-icon-system/v001/studio-synergy-icons-v2-iphone17pro.png",
+        "Assets/UI/Backpack/SynergyIcons/manifest.json",
+        "tests/test_synergy_icons.py"
+      ],
+      "related": [
+        "synergy-icon-system",
+        "inventory-item-concept",
+        "project-overview"
+      ],
+      "validation": [
+        "synergy-icon-system@v001의 최종 Studio 모바일 증거와 동일 커밋으로 확인",
+        "python3 tools/wiki.py build",
+        "python3 tools/wiki.py check",
+        "python3 -m unittest tests/test_wiki.py",
+        "python3 -m unittest tests.test_repository_policy",
+        "git diff --check"
+      ],
+      "source_path": "wiki/content/pages/product-planning-change-log/v001.md",
+      "body": "# 제품 기획 변경 원장\n\n## 목적\n\n이 페이지는 구현 파일의 변경 목록이 아니라 ProjectBackpack의 제품 방향이 왜 바뀌었고 지금\n어떤 규칙이 유효한지를 누적 보존합니다. 각 결정은 안정적인 ID를 가지며, 이후 규칙이 바뀌면\n기존 항목을 고치지 않고 새 항목이 이전 ID를 명시적으로 대체합니다.\n\n## 현재 유효 규칙\n\n### PBP-ART-001 — 시너지 아이콘은 작은 표시 크기에서 먼저 설계한다\n\n시너지 아이콘은 실제 모바일 UI의 약 25px 표시에서 핵심 형태가 즉시 구분되어야 합니다.\n각 아이콘은 대표 심볼 하나, 투명 배경, 기존 시너지 대표색과 공통 대비색을 합친 최대 3색으로\n구성합니다. 메달형 배경, 축소 시 합쳐지는 세부 장식과 색상 그라데이션은 사용하지 않습니다.\n\n## 변경 원장\n\n### PBP-ART-001 — 시너지 아이콘 소형 가독성 규칙\n\n- 날짜: 2026-08-15\n- 도메인: 모바일 UI 아트 방향 / 인벤토리 시너지\n- 변경 유형: `changed`\n- 이전 규칙: V1은 큰 합본 원본에서 원형 메달과 내부 묘사를 함께 축소했으며, 실제 카드 표시\n  크기에 대한 명시적 색상 수·내용 경계 계약이 없었습니다.\n- 새 유효 규칙: 25px 전후 표시를 승인 기준으로 삼고, 아이콘마다 대표 심볼 하나·투명 배경·\n  최대 3색·216px 내용 경계를 적용합니다. 26개 개별 원본과 자동 정규화 결과를 자산 권위로\n  사용합니다.\n- 근거: 작은 카드와 필터에서 장식과 내부 세부가 합쳐져 서로 다른 시너지가 유사한 얼룩처럼\n  보였고, 조합 판단 속도를 떨어뜨렸습니다.\n- 의도한 플레이어 경험: 아이템을 훑는 짧은 순간에도 심볼의 방향과 대표 물체만으로 시너지를\n  구분하고, 기존 대표색을 통해 이미 학습한 계열 감각은 유지합니다.\n- 범위와 제외: 활성 시너지 26종의 이미지, 재생성 계약과 Roblox 자산 참조에 적용합니다.\n  시너지 이름·분류·색 의미·아이템 부여·전투 효과와 PC 레이아웃은 바꾸지 않습니다.\n- 영향 소스: `Assets/UI/Backpack/SynergyIcons`, `tools/extract_synergy_icons.py`,\n  `Assets/UI/Backpack/uploaded_asset_ids.json`, `SynergyCatalog.luau`\n- 관련 위키: `synergy-icon-system@v001`, `inventory-item-concept`\n- 검증과 증거: iPhone 17 Pro 세로 400×776 및 Galaxy A06 세로 359×718 Studio Play,\n  26개 고유 업로드 자산·262개 이미지 라벨·25×25 표시·빈 이미지 0개, 전용 자산 테스트 3개,\n  `wiki/content/media/synergy-icon-system/v001/studio-synergy-icons-v2-iphone17pro.png`\n",
+      "revisions": [
+        {
+          "id": "product-planning-change-log",
+          "title": "제품 기획 변경 원장",
+          "summary": "제품·게임플레이·UX·콘텐츠·아트 방향의 유효 규칙과 변경 이유를 커밋 단위로 누적 보존하는 원장입니다.",
+          "status": "active",
+          "category": "planning",
+          "tags": [
+            "planning",
+            "decision-log",
+            "product",
+            "art-direction",
+            "ui",
+            "synergy",
+            "mobile"
+          ],
+          "created_at": "2026-08-15",
+          "updated_at": "2026-08-15",
+          "authors": [
+            "Codex"
+          ],
+          "version": 1,
+          "change_type": "created",
+          "change_summary": "시너지 아이콘을 실제 모바일 표시 크기에서 먼저 설계하고 단일 심볼·최대 3색으로 제한하는 아트 규칙을 첫 누적 기획 결정으로 기록했습니다.",
+          "supersedes": null,
+          "sources": [
+            "AGENTS.md",
+            "wiki/content/pages/synergy-icon-system/v001.md",
+            "wiki/content/media/synergy-icon-system/v001/studio-synergy-icons-v2-iphone17pro.png",
+            "Assets/UI/Backpack/SynergyIcons/manifest.json",
+            "tests/test_synergy_icons.py"
+          ],
+          "related": [
+            "synergy-icon-system",
+            "inventory-item-concept",
+            "project-overview"
+          ],
+          "validation": [
+            "synergy-icon-system@v001의 최종 Studio 모바일 증거와 동일 커밋으로 확인",
+            "python3 tools/wiki.py build",
+            "python3 tools/wiki.py check",
+            "python3 -m unittest tests/test_wiki.py",
+            "python3 -m unittest tests.test_repository_policy",
+            "git diff --check"
+          ],
+          "body": "# 제품 기획 변경 원장\n\n## 목적\n\n이 페이지는 구현 파일의 변경 목록이 아니라 ProjectBackpack의 제품 방향이 왜 바뀌었고 지금\n어떤 규칙이 유효한지를 누적 보존합니다. 각 결정은 안정적인 ID를 가지며, 이후 규칙이 바뀌면\n기존 항목을 고치지 않고 새 항목이 이전 ID를 명시적으로 대체합니다.\n\n## 현재 유효 규칙\n\n### PBP-ART-001 — 시너지 아이콘은 작은 표시 크기에서 먼저 설계한다\n\n시너지 아이콘은 실제 모바일 UI의 약 25px 표시에서 핵심 형태가 즉시 구분되어야 합니다.\n각 아이콘은 대표 심볼 하나, 투명 배경, 기존 시너지 대표색과 공통 대비색을 합친 최대 3색으로\n구성합니다. 메달형 배경, 축소 시 합쳐지는 세부 장식과 색상 그라데이션은 사용하지 않습니다.\n\n## 변경 원장\n\n### PBP-ART-001 — 시너지 아이콘 소형 가독성 규칙\n\n- 날짜: 2026-08-15\n- 도메인: 모바일 UI 아트 방향 / 인벤토리 시너지\n- 변경 유형: `changed`\n- 이전 규칙: V1은 큰 합본 원본에서 원형 메달과 내부 묘사를 함께 축소했으며, 실제 카드 표시\n  크기에 대한 명시적 색상 수·내용 경계 계약이 없었습니다.\n- 새 유효 규칙: 25px 전후 표시를 승인 기준으로 삼고, 아이콘마다 대표 심볼 하나·투명 배경·\n  최대 3색·216px 내용 경계를 적용합니다. 26개 개별 원본과 자동 정규화 결과를 자산 권위로\n  사용합니다.\n- 근거: 작은 카드와 필터에서 장식과 내부 세부가 합쳐져 서로 다른 시너지가 유사한 얼룩처럼\n  보였고, 조합 판단 속도를 떨어뜨렸습니다.\n- 의도한 플레이어 경험: 아이템을 훑는 짧은 순간에도 심볼의 방향과 대표 물체만으로 시너지를\n  구분하고, 기존 대표색을 통해 이미 학습한 계열 감각은 유지합니다.\n- 범위와 제외: 활성 시너지 26종의 이미지, 재생성 계약과 Roblox 자산 참조에 적용합니다.\n  시너지 이름·분류·색 의미·아이템 부여·전투 효과와 PC 레이아웃은 바꾸지 않습니다.\n- 영향 소스: `Assets/UI/Backpack/SynergyIcons`, `tools/extract_synergy_icons.py`,\n  `Assets/UI/Backpack/uploaded_asset_ids.json`, `SynergyCatalog.luau`\n- 관련 위키: `synergy-icon-system@v001`, `inventory-item-concept`\n- 검증과 증거: iPhone 17 Pro 세로 400×776 및 Galaxy A06 세로 359×718 Studio Play,\n  26개 고유 업로드 자산·262개 이미지 라벨·25×25 표시·빈 이미지 0개, 전용 자산 테스트 3개,\n  `wiki/content/media/synergy-icon-system/v001/studio-synergy-icons-v2-iphone17pro.png`\n",
+          "source_path": "wiki/content/pages/product-planning-change-log/v001.md",
+          "timeline_order": 33
         }
       ]
     },

@@ -25,7 +25,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 161,
         "b": 208
       },
-      "icon_asset": "rbxassetid://116261100522305"
+      "icon_asset": "rbxassetid://114361115117408"
     },
     {
       "id": "NATURE",
@@ -37,7 +37,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 184,
         "b": 52
       },
-      "icon_asset": "rbxassetid://101466669334404"
+      "icon_asset": "rbxassetid://105029516582425"
     },
     {
       "id": "ELEMENTAL",
@@ -49,7 +49,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 198,
         "b": 220
       },
-      "icon_asset": "rbxassetid://82475981409061"
+      "icon_asset": "rbxassetid://104793619388086"
     },
     {
       "id": "MACHINE",
@@ -61,7 +61,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 145,
         "b": 18
       },
-      "icon_asset": "rbxassetid://89347318709058"
+      "icon_asset": "rbxassetid://115104679822295"
     },
     {
       "id": "ARCANE",
@@ -73,7 +73,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 83,
         "b": 211
       },
-      "icon_asset": "rbxassetid://140412909064690"
+      "icon_asset": "rbxassetid://91486940113217"
     },
     {
       "id": "ALCHEMY",
@@ -85,7 +85,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 197,
         "b": 23
       },
-      "icon_asset": "rbxassetid://112531657132863"
+      "icon_asset": "rbxassetid://109754418439605"
     },
     {
       "id": "MELEE",
@@ -97,7 +97,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 67,
         "b": 54
       },
-      "icon_asset": "rbxassetid://90144492641586"
+      "icon_asset": "rbxassetid://138793050557948"
     },
     {
       "id": "RANGED",
@@ -109,7 +109,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 162,
         "b": 24
       },
-      "icon_asset": "rbxassetid://129095629128556"
+      "icon_asset": "rbxassetid://137477230811991"
     },
     {
       "id": "THROWN",
@@ -121,7 +121,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 91,
         "b": 28
       },
-      "icon_asset": "rbxassetid://85241244037690"
+      "icon_asset": "rbxassetid://77708189379154"
     },
     {
       "id": "DEPLOYED",
@@ -133,7 +133,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 91,
         "b": 26
       },
-      "icon_asset": "rbxassetid://118773534374499"
+      "icon_asset": "rbxassetid://95453099870693"
     },
     {
       "id": "DEFENSE",
@@ -145,7 +145,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 112,
         "b": 210
       },
-      "icon_asset": "rbxassetid://124235856153986"
+      "icon_asset": "rbxassetid://118970460142669"
     },
     {
       "id": "SUPPORT",
@@ -157,7 +157,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 171,
         "b": 138
       },
-      "icon_asset": "rbxassetid://117123283259830"
+      "icon_asset": "rbxassetid://100706745363238"
     },
     {
       "id": "HUMAN",
@@ -169,7 +169,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 78,
         "b": 48
       },
-      "icon_asset": "rbxassetid://99949428808409"
+      "icon_asset": "rbxassetid://77467177575415"
     },
     {
       "id": "ELF",
@@ -181,7 +181,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 147,
         "b": 82
       },
-      "icon_asset": "rbxassetid://109342215520409"
+      "icon_asset": "rbxassetid://97298073538595"
     },
     {
       "id": "CYBORG",
@@ -193,7 +193,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 172,
         "b": 198
       },
-      "icon_asset": "rbxassetid://77655126214144"
+      "icon_asset": "rbxassetid://73389381952395"
     },
     {
       "id": "FAIRY",
@@ -205,7 +205,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 71,
         "b": 167
       },
-      "icon_asset": "rbxassetid://105285186059833"
+      "icon_asset": "rbxassetid://75427573625051"
     },
     {
       "id": "BEAST",
@@ -217,7 +217,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 147,
         "b": 18
       },
-      "icon_asset": "rbxassetid://120539036408244"
+      "icon_asset": "rbxassetid://118871270296527"
     },
     {
       "id": "SPIRIT",
@@ -229,7 +229,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 155,
         "b": 222
       },
-      "icon_asset": "rbxassetid://107778171719584"
+      "icon_asset": "rbxassetid://90610464884149"
     },
     {
       "id": "UNDEAD",
@@ -241,7 +241,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 161,
         "b": 37
       },
-      "icon_asset": "rbxassetid://79842668597702"
+      "icon_asset": "rbxassetid://81837229266730"
     },
     {
       "id": "SWORD",
@@ -253,7 +253,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 47,
         "b": 36
       },
-      "icon_asset": "rbxassetid://131406111503284"
+      "icon_asset": "rbxassetid://100856032636625"
     },
     {
       "id": "SPEAR",
@@ -265,7 +265,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 101,
         "b": 23
       },
-      "icon_asset": "rbxassetid://96385788445421"
+      "icon_asset": "rbxassetid://106469874534883"
     },
     {
       "id": "RECURVE_BOW",
@@ -277,7 +277,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 179,
         "b": 28
       },
-      "icon_asset": "rbxassetid://129773486523722"
+      "icon_asset": "rbxassetid://131560919785783"
     },
     {
       "id": "CROSSBOW",
@@ -289,7 +289,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 158,
         "b": 158
       },
-      "icon_asset": "rbxassetid://103738561693226"
+      "icon_asset": "rbxassetid://113970250608597"
     },
     {
       "id": "GUN",
@@ -301,7 +301,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 105,
         "b": 211
       },
-      "icon_asset": "rbxassetid://121981816668218"
+      "icon_asset": "rbxassetid://105029230813158"
     },
     {
       "id": "MACE",
@@ -313,7 +313,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 72,
         "b": 196
       },
-      "icon_asset": "rbxassetid://72871519446354"
+      "icon_asset": "rbxassetid://83062096503060"
     },
     {
       "id": "AXE",
@@ -325,7 +325,7 @@ window.PACKBOUND_ITEM_DB = {
         "g": 126,
         "b": 21
       },
-      "icon_asset": "rbxassetid://108749225257179"
+      "icon_asset": "rbxassetid://114871292694693"
     }
   ],
   "families": [
