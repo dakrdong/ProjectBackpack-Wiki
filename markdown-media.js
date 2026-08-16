@@ -65,7 +65,7 @@
     return (
       '<figure class="wiki-figure">' +
       `<button type="button" class="wiki-image-trigger" data-image-viewer-src="${safeSource}" data-image-viewer-alt="${safeAlt}" data-image-viewer-caption="${caption}" aria-label="이미지 크게 보기: ${safeAlt}">` +
-      `<img src="${safeSource}" alt="${safeAlt}" loading="lazy" decoding="async">` +
+      `<img src="${safeSource}" alt="${safeAlt}" loading="eager" decoding="async">` +
       "</button>" +
       `<figcaption>${caption}</figcaption>` +
       "</figure>"

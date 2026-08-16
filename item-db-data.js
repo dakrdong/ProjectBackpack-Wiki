@@ -1,6 +1,7 @@
 window.PACKBOUND_ITEM_DB = {
   "source": "docs/gameplay/inventory-item-art-catalog.md",
-  "count": 100,
+  "count": 90,
+  "active_count": 90,
   "common": {
     "native_facing": "NativeFacing = Up",
     "grid_topology": "HexAxialFlatTop",
@@ -328,26 +329,566 @@ window.PACKBOUND_ITEM_DB = {
       "icon_asset": "rbxassetid://114871292694693"
     }
   ],
+  "effect_catalog": {
+    "version": 1,
+    "sources": [
+      {
+        "id": "BACKPACK_BATTLES_MECHANICS",
+        "game": "Backpack Battles",
+        "title": "Game Mechanics · Star/Diamond item activations",
+        "url": "https://backpackbattles.wiki.gg/wiki/Game_Mechanics"
+      },
+      {
+        "id": "BACKPACK_BATTLES_PAN",
+        "game": "Backpack Battles",
+        "title": "Pan · Food마다 피해 증가",
+        "url": "https://backpackbattles.wiki.gg/wiki/Pan"
+      },
+      {
+        "id": "BACKPACK_BATTLES_FOOD",
+        "game": "Backpack Battles",
+        "title": "Food · 다른 종류 음식마다 발동 가속",
+        "url": "https://backpackbattles.wiki.gg/wiki/Food"
+      },
+      {
+        "id": "BACKPACK_BATTLES_POTION",
+        "game": "Backpack Battles",
+        "title": "Potion · 마개 방향 단일 별 연결",
+        "url": "https://backpackbattles.wiki.gg/wiki/Potion"
+      },
+      {
+        "id": "BACKPACK_BRAWL_ITEMS",
+        "game": "Backpack Brawl",
+        "title": "Items · 별 타일과 대상 아이템 상호작용",
+        "url": "https://backpackbrawl.wiki.gg/wiki/Category:Items"
+      },
+      {
+        "id": "BACKPACK_BRAWL_SPICE",
+        "game": "Backpack Brawl",
+        "title": "Spice · 다른 종류별 자원·회복·가속",
+        "url": "https://backpackbrawl.wiki.gg/wiki/Spice"
+      },
+      {
+        "id": "BACKPACK_BRAWL_SIEGE",
+        "game": "Backpack Brawl",
+        "title": "Portable Siege Engine · 별 대상 추가 공격",
+        "url": "https://backpackbrawl.wiki.gg/wiki/Portable_Siege_Engine"
+      },
+      {
+        "id": "BACKPACK_HERO_MODDING",
+        "game": "Backpack Hero",
+        "title": "공식 모딩 Item JSON · modifier와 전달 효과",
+        "url": "https://backpack-hero.com/mods/JSON_Reference/Items/"
+      },
+      {
+        "id": "BACKPACK_HERO_WEAPONS",
+        "game": "Backpack Hero",
+        "title": "Weapons · 인접·대각·방향·행 조건 사례",
+        "url": "https://backpackhero.wiki.gg/wiki/Weapons"
+      },
+      {
+        "id": "GOD_OF_WEAPONS_UNIQUE",
+        "game": "God of Weapons",
+        "title": "Unique · 인접 태그별 치명타·관통·생명력 흡수",
+        "url": "https://godofweapons.wiki.gg/wiki/Unique"
+      }
+    ],
+    "research_patterns": [
+      {
+        "id": "PER_MATCHING_ITEM_SCALING",
+        "display_name": "조건 아이템 수만큼 자기 강화",
+        "description": "효과 칸을 채운 조건 아이템 하나마다 원본 아이템의 공격력·방어력·회복량 등을 더합니다.",
+        "examples": [
+          "Pan의 Food마다 피해 증가",
+          "God of Weapons의 인접 Dagger마다 치명타 증가"
+        ],
+        "source_ids": [
+          "BACKPACK_BATTLES_PAN",
+          "GOD_OF_WEAPONS_UNIQUE"
+        ]
+      },
+      {
+        "id": "TARGET_AURA",
+        "display_name": "효과 칸 대상 강화",
+        "description": "효과 칸에 올라온 아이템 자체의 피해·방어·사거리 같은 수치를 올립니다.",
+        "examples": [
+          "Backpack Hero의 인접 무기 피해 증가",
+          "God of Weapons의 인접 무기 강화"
+        ],
+        "source_ids": [
+          "BACKPACK_HERO_WEAPONS",
+          "GOD_OF_WEAPONS_UNIQUE"
+        ]
+      },
+      {
+        "id": "ACTIVATION_SPEED",
+        "display_name": "발동 속도 증폭",
+        "description": "조건을 만족한 자기 또는 대상 아이템의 주기·쿨다운을 줄입니다.",
+        "examples": [
+          "Backpack Battles Food의 다른 종류 음식별 10% 가속",
+          "Backpack Brawl Spice의 다른 종류별 가속"
+        ],
+        "source_ids": [
+          "BACKPACK_BATTLES_FOOD",
+          "BACKPACK_BRAWL_SPICE"
+        ]
+      },
+      {
+        "id": "EVENT_RELAY",
+        "display_name": "발동 이벤트 전달",
+        "description": "한 아이템이 발동·사용·피격·파괴될 때 효과 칸의 다른 아이템을 추가 발동시킵니다.",
+        "examples": [
+          "Portable Siege Engine의 추가 공격",
+          "Backpack Hero Cleaver 계열의 인접 무기 사용"
+        ],
+        "source_ids": [
+          "BACKPACK_BRAWL_SIEGE",
+          "BACKPACK_HERO_WEAPONS"
+        ]
+      },
+      {
+        "id": "PERIODIC_RESOURCE",
+        "display_name": "주기적 자원·상태 생성",
+        "description": "조건 아이템 수나 종류 수에 따라 일정 주기로 회복·방어·버프·디버프를 만듭니다.",
+        "examples": [
+          "Spice의 타입별 자원과 회복",
+          "Food의 주기적 회복·버프"
+        ],
+        "source_ids": [
+          "BACKPACK_BRAWL_SPICE",
+          "BACKPACK_BATTLES_FOOD"
+        ]
+      },
+      {
+        "id": "DIRECTIONAL_LINK",
+        "display_name": "방향 지정 연결",
+        "description": "상·하·좌·우 또는 아이템이 바라보는 특정 방향의 칸만 조건으로 사용합니다.",
+        "examples": [
+          "Potion의 마개 위 단일 별",
+          "Backpack Hero의 right/above 지정 효과"
+        ],
+        "source_ids": [
+          "BACKPACK_BATTLES_POTION",
+          "BACKPACK_HERO_WEAPONS"
+        ]
+      },
+      {
+        "id": "ROW_COLUMN",
+        "display_name": "행·열·거리 연결",
+        "description": "인접 칸을 넘어 같은 행·열 또는 일정 거리의 아이템까지 연결합니다.",
+        "examples": [
+          "Backpack Hero의 같은 행·열 보석과 방향성 무기"
+        ],
+        "source_ids": [
+          "BACKPACK_HERO_WEAPONS"
+        ]
+      },
+      {
+        "id": "CHAIN_NETWORK",
+        "display_name": "연쇄·네트워크 전달",
+        "description": "전도체나 중계 아이템을 통해 효과 범위를 여러 아이템으로 확장합니다.",
+        "examples": [
+          "Backpack Hero 모딩의 add_modifiers 전달 구조"
+        ],
+        "source_ids": [
+          "BACKPACK_HERO_MODDING"
+        ]
+      },
+      {
+        "id": "EMPTY_SLOT_SCALING",
+        "display_name": "빈칸·공간 보상",
+        "description": "지정 방향이나 주변에 남은 빈칸 수만큼 수치를 올려 밀집 배치와 반대 선택지를 만듭니다.",
+        "examples": [
+          "Backpack Hero의 오른쪽 빈칸마다 피해 증가"
+        ],
+        "source_ids": [
+          "BACKPACK_HERO_WEAPONS"
+        ]
+      },
+      {
+        "id": "BATTLE_START",
+        "display_name": "전투 시작 배치 보상",
+        "description": "전투가 시작될 때 효과 칸 구성에 따라 최대 체력·방어·버프를 한 번 적용합니다.",
+        "examples": [
+          "Backpack Battles의 Start of battle 계열",
+          "Backpack Brawl의 Start of battle 별 효과"
+        ],
+        "source_ids": [
+          "BACKPACK_BATTLES_MECHANICS",
+          "BACKPACK_BRAWL_ITEMS"
+        ]
+      },
+      {
+        "id": "CONDITIONAL_DISABLE",
+        "display_name": "조건부 패널티·비활성화",
+        "description": "잘못된 타입이나 금지된 배치를 하면 아이템을 약화·비활성화해 퍼즐 제약을 만듭니다.",
+        "examples": [
+          "Backpack Hero의 인접 방어구가 있으면 무기 비활성"
+        ],
+        "source_ids": [
+          "BACKPACK_HERO_MODDING"
+        ]
+      },
+      {
+        "id": "CONSUME_TRANSFORM",
+        "display_name": "흡수·소모·변환",
+        "description": "효과 칸 아이템을 소모하거나 흡수해 영구 수치·새 아이템·다른 상태로 바꿉니다.",
+        "examples": [
+          "Backpack Battles Potion의 연결 복제",
+          "Backpack Hero create_effects의 교체·생성"
+        ],
+        "source_ids": [
+          "BACKPACK_BATTLES_POTION",
+          "BACKPACK_HERO_MODDING"
+        ]
+      }
+    ],
+    "types": [
+      {
+        "id": "STATIC_LINK",
+        "display_name": "상시 연결",
+        "description": "유효하게 배치된 다른 아이템이 효과 칸과 접촉하는 동안 능력치 변경을 유지합니다."
+      }
+    ],
+    "conditions": [
+      {
+        "id": "ANY_ITEM",
+        "display_name": "아무 아이템",
+        "description": "원본 자신을 제외한 모든 아이템이 조건을 만족합니다.",
+        "kind": "Always",
+        "values": []
+      },
+      {
+        "id": "SHARES_SYNERGY",
+        "display_name": "같은 시너지 보유",
+        "description": "원본 아이템과 하나 이상의 시너지 ID가 같은 아이템만 만족합니다.",
+        "kind": "SharesAnySynergy",
+        "values": []
+      },
+      {
+        "id": "TARGET_WEAPON",
+        "display_name": "무기",
+        "description": "Weapon 카테고리 아이템만 만족합니다.",
+        "kind": "TargetCategory",
+        "values": [
+          "Weapon"
+        ]
+      },
+      {
+        "id": "TARGET_ARMOR",
+        "display_name": "방어구",
+        "description": "Armor 카테고리 아이템만 만족합니다.",
+        "kind": "TargetCategory",
+        "values": [
+          "Armor"
+        ]
+      },
+      {
+        "id": "TARGET_UTILITY",
+        "display_name": "도구",
+        "description": "Utility 카테고리 아이템만 만족합니다.",
+        "kind": "TargetCategory",
+        "values": [
+          "Utility"
+        ]
+      },
+      {
+        "id": "TARGET_CONSUMABLE",
+        "display_name": "소모품",
+        "description": "Consumable 카테고리 아이템만 만족합니다.",
+        "kind": "TargetCategory",
+        "values": [
+          "Consumable"
+        ]
+      },
+      {
+        "id": "TARGET_MELEE",
+        "display_name": "근거리 시너지",
+        "description": "MELEE 시너지를 가진 아이템만 만족합니다.",
+        "kind": "TargetSynergy",
+        "values": [
+          "MELEE"
+        ]
+      },
+      {
+        "id": "TARGET_RANGED",
+        "display_name": "원거리 시너지",
+        "description": "RANGED 시너지를 가진 아이템만 만족합니다.",
+        "kind": "TargetSynergy",
+        "values": [
+          "RANGED"
+        ]
+      },
+      {
+        "id": "TARGET_THROWN",
+        "display_name": "투척 시너지",
+        "description": "THROWN 시너지를 가진 아이템만 만족합니다.",
+        "kind": "TargetSynergy",
+        "values": [
+          "THROWN"
+        ]
+      },
+      {
+        "id": "TARGET_DEPLOYED",
+        "display_name": "설치 시너지",
+        "description": "DEPLOYED 시너지를 가진 아이템만 만족합니다.",
+        "kind": "TargetSynergy",
+        "values": [
+          "DEPLOYED"
+        ]
+      },
+      {
+        "id": "TARGET_DEFENSE",
+        "display_name": "방어 시너지",
+        "description": "DEFENSE 시너지를 가진 아이템만 만족합니다.",
+        "kind": "TargetSynergy",
+        "values": [
+          "DEFENSE"
+        ]
+      },
+      {
+        "id": "TARGET_SUPPORT",
+        "display_name": "지원 시너지",
+        "description": "SUPPORT 시너지를 가진 아이템만 만족합니다.",
+        "kind": "TargetSynergy",
+        "values": [
+          "SUPPORT"
+        ]
+      },
+      {
+        "id": "SAME_CATEGORY",
+        "display_name": "같은 카테고리",
+        "description": "원본 아이템과 Category가 같은 아이템만 만족합니다.",
+        "kind": "SameCategory",
+        "values": []
+      },
+      {
+        "id": "DIFFERENT_CATEGORY",
+        "display_name": "다른 카테고리",
+        "description": "원본 아이템과 Category가 다른 아이템만 만족합니다.",
+        "kind": "DifferentCategory",
+        "values": []
+      }
+    ],
+    "abilities": [
+      {
+        "id": "SELF_ATTACK_FLAT_2",
+        "display_name": "이 아이템 공격력 +2",
+        "description": "효과를 소유한 아이템의 공격력을 2 올립니다.",
+        "target": "SourceItem",
+        "stat": "AttackPower",
+        "amount": 2
+      },
+      {
+        "id": "SELF_ATTACK_PCT_05",
+        "display_name": "이 아이템 공격력 +5%",
+        "description": "효과를 소유한 아이템의 공격력을 5% 올립니다.",
+        "target": "SourceItem",
+        "stat": "AttackPowerIncrease",
+        "amount": 0.05
+      },
+      {
+        "id": "SELF_DEFENSE_FLAT_2",
+        "display_name": "이 아이템 방어력 +2",
+        "description": "효과를 소유한 아이템의 방어력을 2 올립니다.",
+        "target": "SourceItem",
+        "stat": "Defense",
+        "amount": 2
+      },
+      {
+        "id": "SELF_DEFENSE_PCT_06",
+        "display_name": "이 아이템 방어력 +6%",
+        "description": "효과를 소유한 아이템의 방어력을 6% 올립니다.",
+        "target": "SourceItem",
+        "stat": "DefenseIncrease",
+        "amount": 0.06
+      },
+      {
+        "id": "SELF_HEALTH_PCT_05",
+        "display_name": "이 아이템 최대 체력 +5%",
+        "description": "효과를 소유한 아이템의 최대 체력을 5% 올립니다.",
+        "target": "SourceItem",
+        "stat": "MaxHealthIncrease",
+        "amount": 0.05
+      },
+      {
+        "id": "SELF_COOLDOWN_REDUCTION_04",
+        "display_name": "이 아이템 쿨타임 -4%",
+        "description": "효과를 소유한 아이템의 공격 쿨타임을 4% 줄입니다.",
+        "target": "SourceItem",
+        "stat": "CooldownReduction",
+        "amount": 0.04
+      },
+      {
+        "id": "SELF_RANGE_PCT_08",
+        "display_name": "이 아이템 사거리 +8%",
+        "description": "효과를 소유한 아이템의 공격 사거리를 8% 올립니다.",
+        "target": "SourceItem",
+        "stat": "AttackRangeIncrease",
+        "amount": 0.08
+      },
+      {
+        "id": "SELF_CRIT_03",
+        "display_name": "이 아이템 치명타 확률 +3%",
+        "description": "효과를 소유한 아이템의 치명타 확률을 3%p 올립니다.",
+        "target": "SourceItem",
+        "stat": "CriticalChance",
+        "amount": 0.03
+      },
+      {
+        "id": "SELF_DODGE_02",
+        "display_name": "이 아이템 회피 확률 +2%",
+        "description": "효과를 소유한 아이템의 회피 확률을 2%p 올립니다.",
+        "target": "SourceItem",
+        "stat": "DodgeChance",
+        "amount": 0.02
+      },
+      {
+        "id": "SELF_PROJECTILE_DAMAGE_06",
+        "display_name": "이 아이템 투사체 피해 +6%",
+        "description": "효과를 소유한 아이템의 투사체 피해를 6% 올립니다.",
+        "target": "SourceItem",
+        "stat": "ProjectileDamageIncrease",
+        "amount": 0.06
+      },
+      {
+        "id": "SELF_PROJECTILE_SPEED_08",
+        "display_name": "이 아이템 투사체 속도 +8%",
+        "description": "효과를 소유한 아이템의 투사체 속도를 8% 올립니다.",
+        "target": "SourceItem",
+        "stat": "ProjectileSpeedIncrease",
+        "amount": 0.08
+      },
+      {
+        "id": "SELF_PIERCE_1",
+        "display_name": "이 아이템 관통 +1",
+        "description": "효과를 소유한 아이템의 투사체 관통 횟수를 1 올립니다.",
+        "target": "SourceItem",
+        "stat": "ProjectilePierceCount",
+        "amount": 1
+      },
+      {
+        "id": "SELF_KNOCKBACK_2",
+        "display_name": "이 아이템 밀쳐내기 +2",
+        "description": "효과를 소유한 아이템의 밀쳐내기 위력을 2 올립니다.",
+        "target": "SourceItem",
+        "stat": "KnockbackPower",
+        "amount": 2
+      },
+      {
+        "id": "TARGET_ATTACK_PCT_04",
+        "display_name": "연결 아이템 공격력 +4%",
+        "description": "조건을 만족해 효과 칸에 연결된 아이템의 공격력을 4% 올립니다.",
+        "target": "MatchingItem",
+        "stat": "AttackPowerIncrease",
+        "amount": 0.04
+      },
+      {
+        "id": "TARGET_DEFENSE_PCT_05",
+        "display_name": "연결 아이템 방어력 +5%",
+        "description": "조건을 만족해 효과 칸에 연결된 아이템의 방어력을 5% 올립니다.",
+        "target": "MatchingItem",
+        "stat": "DefenseIncrease",
+        "amount": 0.05
+      },
+      {
+        "id": "TARGET_COOLDOWN_REDUCTION_03",
+        "display_name": "연결 아이템 쿨타임 -3%",
+        "description": "조건을 만족해 효과 칸에 연결된 아이템의 공격 쿨타임을 3% 줄입니다.",
+        "target": "MatchingItem",
+        "stat": "CooldownReduction",
+        "amount": 0.03
+      },
+      {
+        "id": "TARGET_RANGE_PCT_06",
+        "display_name": "연결 아이템 사거리 +6%",
+        "description": "조건을 만족해 효과 칸에 연결된 아이템의 공격 사거리를 6% 올립니다.",
+        "target": "MatchingItem",
+        "stat": "AttackRangeIncrease",
+        "amount": 0.06
+      },
+      {
+        "id": "OWNER_ATTACK_PCT_03",
+        "display_name": "플레이어 공격력 +3%",
+        "description": "플레이어가 사용하는 모든 공격의 공통 공격력 보너스를 3% 올립니다.",
+        "target": "Owner",
+        "stat": "AttackPowerIncrease",
+        "amount": 0.03
+      },
+      {
+        "id": "OWNER_DEFENSE_PCT_03",
+        "display_name": "플레이어 방어력 +3%",
+        "description": "플레이어의 공통 방어력 보너스를 3% 올립니다.",
+        "target": "Owner",
+        "stat": "DefenseIncrease",
+        "amount": 0.03
+      },
+      {
+        "id": "OWNER_HEALTH_PCT_03",
+        "display_name": "플레이어 최대 체력 +3%",
+        "description": "플레이어의 공통 최대 체력 보너스를 3% 올립니다.",
+        "target": "Owner",
+        "stat": "MaxHealthIncrease",
+        "amount": 0.03
+      },
+      {
+        "id": "OWNER_CRIT_02",
+        "display_name": "플레이어 치명타 확률 +2%",
+        "description": "플레이어의 공통 치명타 확률을 2%p 올립니다.",
+        "target": "Owner",
+        "stat": "CriticalChance",
+        "amount": 0.02
+      },
+      {
+        "id": "OWNER_DODGE_02",
+        "display_name": "플레이어 회피 확률 +2%",
+        "description": "플레이어의 공통 회피 확률을 2%p 올립니다.",
+        "target": "Owner",
+        "stat": "DodgeChance",
+        "amount": 0.02
+      },
+      {
+        "id": "OWNER_MOVE_SPEED_03",
+        "display_name": "플레이어 이동 속도 +3%",
+        "description": "플레이어의 공통 이동 속도를 3% 올립니다.",
+        "target": "Owner",
+        "stat": "MoveSpeedIncrease",
+        "amount": 0.03
+      },
+      {
+        "id": "OWNER_LIFESTEAL_02",
+        "display_name": "플레이어 생명력 흡수 +2%",
+        "description": "플레이어의 공통 생명력 흡수율을 2%p 올립니다.",
+        "target": "Owner",
+        "stat": "LifeSteal",
+        "amount": 0.02
+      }
+    ]
+  },
   "families": [
     {
       "id": "weapon",
       "label": "무기",
-      "count": 47
+      "count": 45,
+      "active_count": 45
     },
     {
       "id": "equipment",
       "label": "장비",
-      "count": 26
+      "count": 22,
+      "active_count": 22
     },
     {
       "id": "accessory",
       "label": "액세서리",
-      "count": 3
+      "count": 3,
+      "active_count": 3
     },
     {
       "id": "special",
       "label": "특수",
-      "count": 24
+      "count": 20,
+      "active_count": 20
     }
   ],
   "items": [
@@ -411,6 +952,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "ALCHEMY",
@@ -422,6 +964,27 @@ window.PACKBOUND_ITEM_DB = {
         "자연",
         "창"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://94071843108464",
       "image_layout": {
         "scale": 1.0,
@@ -530,6 +1093,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "BEAST",
@@ -541,6 +1105,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "도끼"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://76674430385097",
       "image_layout": {
         "scale": 0.95,
@@ -561,7 +1146,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "자동복병 접이쇠뇌",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "쇠뇌·임시 7칸",
+      "type_size": "쇠뇌·임시 3칸",
       "concept": "미리 설치하면 기계식 감지판이 움직임을 읽고 한 발씩 정확히 내보낸다.",
       "stats": [
         "AttackPower 42",
@@ -570,77 +1155,46 @@ window.PACKBOUND_ITEM_DB = {
         "ProjectilePierceCount 1"
       ],
       "bounds": {
-        "width": 3,
-        "height": 3
+        "width": 2,
+        "height": 2
       },
       "axial_bounds": {
-        "q": 3,
-        "r": 3,
-        "s": 3
+        "q": 2,
+        "r": 2,
+        "s": 2
       },
-      "pattern": "□■■/■■■/■■□",
-      "occupied_cells": 7,
+      "pattern": "■■/■□",
+      "occupied_cells": 3,
       "coordinates": [
         [
-          1,
+          0,
           0
         ],
         [
-          2,
+          1,
           0
         ],
         [
           0,
           1
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
         ]
       ],
       "authoring_coordinates": [
         [
-          1,
+          0,
           0
         ],
         [
-          2,
+          1,
           0
         ],
         [
           0,
           1
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "MACHINE",
@@ -652,12 +1206,33 @@ window.PACKBOUND_ITEM_DB = {
         "설치",
         "석궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://107159940086637",
       "image_layout": {
-        "scale": 0.95,
-        "offset_x": 0.0488,
-        "offset_y": -0.4062,
-        "rotation_degrees": 0.0,
+        "scale": 0.55,
+        "offset_x": 0.0113,
+        "offset_y": -0.0662,
+        "rotation_degrees": 14.0,
         "canvas_width": 3,
         "canvas_height": 4,
         "applied_to_game": true
@@ -720,6 +1295,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.1,
       "synergies": [
         "MACHINE",
@@ -731,6 +1307,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://118714962077274",
       "image_layout": {
         "scale": 1.0,
@@ -772,24 +1369,24 @@ window.PACKBOUND_ITEM_DB = {
       "occupied_cells": 5,
       "coordinates": [
         [
-          -2,
-          2
+          2,
+          0
         ],
         [
-          -1,
-          1
+          3,
+          0
         ],
         [
-          0,
+          4,
           0
         ],
         [
           1,
-          0
+          1
         ],
         [
-          2,
-          0
+          0,
+          2
         ]
       ],
       "authoring_coordinates": [
@@ -815,6 +1412,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "BEAST",
@@ -826,11 +1424,32 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://113937429511629",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.8,
+        "offset_x": 0.3354,
+        "offset_y": -0.2203,
         "rotation_degrees": 0.0,
         "canvas_width": 5,
         "canvas_height": 3,
@@ -918,6 +1537,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.2,
       "synergies": [
         "MACHINE",
@@ -929,6 +1549,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://96131983680702",
       "image_layout": {
         "scale": 1.05,
@@ -1021,6 +1662,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "NATURE",
@@ -1032,6 +1674,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "석궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://110928775993719",
       "image_layout": {
         "scale": 0.9,
@@ -1116,6 +1779,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 6.8,
       "synergies": [
         "MACHINE",
@@ -1127,6 +1791,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "검"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://118768221730267",
       "image_layout": {
         "scale": 0.7,
@@ -1202,6 +1887,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "FORGED",
@@ -1213,6 +1899,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "창"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://105902989589378",
       "image_layout": {
         "scale": 0.95,
@@ -1297,6 +2004,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "MACHINE",
@@ -1308,6 +2016,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "석궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://134030059511457",
       "image_layout": {
         "scale": 0.9,
@@ -1376,6 +2105,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.1,
       "synergies": [
         "ARCANE",
@@ -1387,6 +2117,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://82937167443934",
       "image_layout": {
         "scale": 1.0,
@@ -1487,6 +2238,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "ELF",
@@ -1498,6 +2250,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://111351719191374",
       "image_layout": {
         "scale": 1.0,
@@ -1582,6 +2355,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 6.7,
       "synergies": [
         "ARCANE",
@@ -1593,6 +2367,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://120557843858165",
       "image_layout": {
         "scale": 0.9,
@@ -1607,101 +2402,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Weapons/Bows/weapon_eclipse_crown_royal_bow.png?v=9ca325c7f86ffbcf",
       "image_url": "./item-media/Weapons/Bows/weapon_eclipse_crown_royal_bow.png?v=9ca325c7f86ffbcf",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Bows/weapon_eclipse_crown_royal_bow.png"
-    },
-    {
-      "id": "weapon.eclipse_orbit_sawblade",
-      "name": "일식궤도 톱날",
-      "family": "weapon",
-      "family_label": "무기",
-      "type_size": "환형 도끼·임시 5칸",
-      "concept": "검은 일식 원반을 감싸는 다섯 개의 초승 톱날이 회전하며 날아갔다가 되돌아오는 환형 투척 도끼다.",
-      "stats": [
-        "AttackPower 42",
-        "AttackCooldown 1.38",
-        "AttackRange 7",
-        "KnockbackPower 7"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 3
-      },
-      "axial_bounds": {
-        "q": 3,
-        "r": 3,
-        "s": 3
-      },
-      "pattern": "□■■/■□■/■□□",
-      "occupied_cells": 5,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          -1,
-          2
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ]
-      ],
-      "category": "Weapon",
-      "weight": 4.5,
-      "synergies": [
-        "ARCANE",
-        "THROWN",
-        "AXE"
-      ],
-      "synergy_labels": [
-        "마력",
-        "투척",
-        "도끼"
-      ],
-      "icon_asset": "rbxassetid://97258443723736",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 3,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Weapons/Axes/weapon_eclipse_orbit_sawblade.png",
-      "image": "./item-media/Weapons/Axes/weapon_eclipse_orbit_sawblade.png?v=fa17344c734f33ad",
-      "image_url": "./item-media/Weapons/Axes/weapon_eclipse_orbit_sawblade.png?v=fa17344c734f33ad",
-      "source_image": "Assets/Items/InventoryIcons/Weapons/Axes/weapon_eclipse_orbit_sawblade.png"
     },
     {
       "id": "weapon.embalming_skull_flail",
@@ -1756,6 +2456,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.8,
       "synergies": [
         "UNDEAD",
@@ -1767,6 +2468,27 @@ window.PACKBOUND_ITEM_DB = {
         "연금",
         "메이스"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://121938906987783",
       "image_layout": {
         "scale": 0.7,
@@ -1859,6 +2581,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "ALCHEMY",
@@ -1870,6 +2593,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "메이스"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://130812815121915",
       "image_layout": {
         "scale": 1.0,
@@ -1930,6 +2674,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.0,
       "synergies": [
         "FORGED",
@@ -1941,6 +2686,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "메이스"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://117874531842508",
       "image_layout": {
         "scale": 0.7,
@@ -2016,6 +2782,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "ELEMENTAL",
@@ -2027,6 +2794,27 @@ window.PACKBOUND_ITEM_DB = {
         "자연",
         "검"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://109190538994579",
       "image_layout": {
         "scale": 0.75,
@@ -2111,6 +2899,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.8,
       "synergies": [
         "ELEMENTAL",
@@ -2122,6 +2911,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://103492587054640",
       "image_layout": {
         "scale": 0.9,
@@ -2190,6 +3000,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.8,
       "synergies": [
         "ELEMENTAL",
@@ -2201,6 +3012,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://114904060372749",
       "image_layout": {
         "scale": 0.9,
@@ -2277,6 +3109,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 2.2,
       "synergies": [
         "FORGED",
@@ -2288,6 +3121,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://103811020626560",
       "image_layout": {
         "scale": 1.15,
@@ -2395,6 +3249,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.9,
       "synergies": [
         "NATURE",
@@ -2406,6 +3261,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "창"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://116165050905245",
       "image_layout": {
         "scale": 0.85,
@@ -2481,6 +3357,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 7.4,
       "synergies": [
         "FORGED",
@@ -2492,6 +3369,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "검"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://119457858672796",
       "image_layout": {
         "scale": 0.65,
@@ -2560,6 +3458,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "ELEMENTAL",
@@ -2571,6 +3470,27 @@ window.PACKBOUND_ITEM_DB = {
         "제련",
         "도끼"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://74817988443806",
       "image_layout": {
         "scale": 0.7,
@@ -2639,6 +3559,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "ARCANE",
@@ -2650,6 +3571,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://131577525220897",
       "image_layout": {
         "scale": 0.6,
@@ -2734,6 +3676,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "ARCANE",
@@ -2745,6 +3688,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://117922748547582",
       "image_layout": {
         "scale": 0.9,
@@ -2821,6 +3785,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "ALCHEMY",
@@ -2832,6 +3797,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "석궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://127185897127367",
       "image_layout": {
         "scale": 0.7,
@@ -2924,6 +3910,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.9,
       "synergies": [
         "ALCHEMY",
@@ -2935,6 +3922,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "도끼"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://89716788815771",
       "image_layout": {
         "scale": 0.85,
@@ -3003,6 +4011,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 2.8,
       "synergies": [
         "MACHINE",
@@ -3014,6 +4023,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://72363117083279",
       "image_layout": {
         "scale": 1.0,
@@ -3044,31 +4074,31 @@ window.PACKBOUND_ITEM_DB = {
       ],
       "bounds": {
         "width": 4,
-        "height": 2
+        "height": 3
       },
       "axial_bounds": {
         "q": 4,
-        "r": 2,
-        "s": 3
+        "r": 3,
+        "s": 2
       },
-      "pattern": "□□■■/■■□□",
+      "pattern": "□□■■/□■□□/■□□□",
       "occupied_cells": 4,
       "coordinates": [
         [
-          0,
+          2,
+          0
+        ],
+        [
+          3,
           0
         ],
         [
           1,
-          0
+          1
         ],
         [
-          2,
-          -1
-        ],
-        [
-          3,
-          -1
+          0,
+          2
         ]
       ],
       "authoring_coordinates": [
@@ -3081,15 +4111,16 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          0,
+          1,
           1
         ],
         [
-          1,
-          1
+          0,
+          2
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.8,
       "synergies": [
         "MACHINE",
@@ -3101,11 +4132,32 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://123037161546049",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.9,
+        "offset_x": -0.0503,
+        "offset_y": 0.1275,
         "rotation_degrees": 0.0,
         "canvas_width": 4,
         "canvas_height": 2,
@@ -3184,6 +4236,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.8,
       "synergies": [
         "FORGED",
@@ -3195,6 +4248,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://108749820111906",
       "image_layout": {
         "scale": 0.9,
@@ -3279,6 +4353,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.4,
       "synergies": [
         "MACHINE",
@@ -3290,6 +4365,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://94661497388322",
       "image_layout": {
         "scale": 0.95,
@@ -3331,24 +4427,24 @@ window.PACKBOUND_ITEM_DB = {
       "occupied_cells": 5,
       "coordinates": [
         [
-          -1,
-          1
-        ],
-        [
-          -1,
-          2
-        ],
-        [
-          0,
-          0
-        ],
-        [
           1,
           0
         ],
         [
           2,
           0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
         ]
       ],
       "authoring_coordinates": [
@@ -3374,6 +4470,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "FORGED",
@@ -3385,11 +4482,32 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "도끼"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://139649335839527",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.85,
+        "offset_x": -0.0165,
+        "offset_y": 0.0041,
         "rotation_degrees": 0.0,
         "canvas_width": 4,
         "canvas_height": 3,
@@ -3493,6 +4611,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "CYBORG",
@@ -3504,6 +4623,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "석궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://131419129275346",
       "image_layout": {
         "scale": 1.0,
@@ -3587,6 +4727,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "ARCANE",
@@ -3598,6 +4739,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "검"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://110874003632232",
       "image_layout": {
         "scale": 0.75,
@@ -3681,6 +4843,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.8,
       "synergies": [
         "ARCANE",
@@ -3692,6 +4855,27 @@ window.PACKBOUND_ITEM_DB = {
         "투척",
         "검"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://82766467172026",
       "image_layout": {
         "scale": 1.05,
@@ -3760,6 +4944,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "ALCHEMY",
@@ -3771,6 +4956,27 @@ window.PACKBOUND_ITEM_DB = {
         "투척",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://72138857883328",
       "image_layout": {
         "scale": 0.8,
@@ -3871,6 +5077,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 6.7,
       "synergies": [
         "ELEMENTAL",
@@ -3882,6 +5089,27 @@ window.PACKBOUND_ITEM_DB = {
         "정령",
         "곡궁"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://116483848017702",
       "image_layout": {
         "scale": 1.0,
@@ -3902,7 +5130,7 @@ window.PACKBOUND_ITEM_DB = {
       "name": "폭풍계단 사슬창",
       "family": "weapon",
       "family_label": "무기",
-      "type_size": "마디 창·임시 5칸",
+      "type_size": "마디 창·임시 4칸",
       "concept": "번개가 꺾이는 경로를 따라 다섯 창마디가 계단처럼 맞물려 찌를 때마다 전류가 끝으로 몰리는 변형 창이다.",
       "stats": [
         "AttackPower 42",
@@ -3918,28 +5146,24 @@ window.PACKBOUND_ITEM_DB = {
         "r": 4,
         "s": 2
       },
-      "pattern": "□□■/□■■/■□□/■□□",
-      "occupied_cells": 5,
+      "pattern": "□□■/□■□/■□□/■□□",
+      "occupied_cells": 4,
       "coordinates": [
         [
-          -1,
+          2,
+          0
+        ],
+        [
+          1,
           1
         ],
         [
-          -1,
+          0,
           2
         ],
         [
           0,
-          0
-        ],
-        [
-          1,
-          -1
-        ],
-        [
-          1,
-          0
+          3
         ]
       ],
       "authoring_coordinates": [
@@ -3952,10 +5176,6 @@ window.PACKBOUND_ITEM_DB = {
           1
         ],
         [
-          2,
-          1
-        ],
-        [
           0,
           2
         ],
@@ -3965,6 +5185,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "ELEMENTAL",
@@ -3976,11 +5197,32 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "창"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://93798442707217",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.85,
+        "offset_x": 0.0305,
+        "offset_y": -0.4221,
         "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 4,
@@ -4043,6 +5285,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 2.4,
       "synergies": [
         "FORGED",
@@ -4054,6 +5297,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "검"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://112980871413228",
       "image_layout": {
         "scale": 1.0,
@@ -4138,6 +5402,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.9,
       "synergies": [
         "ELEMENTAL",
@@ -4149,6 +5414,27 @@ window.PACKBOUND_ITEM_DB = {
         "원거리",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://130457034558553",
       "image_layout": {
         "scale": 0.8,
@@ -4217,6 +5503,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 2.9,
       "synergies": [
         "FORGED",
@@ -4228,6 +5515,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "메이스"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://85534264582702",
       "image_layout": {
         "scale": 0.9,
@@ -4296,6 +5604,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "FORGED",
@@ -4307,6 +5616,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "검"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://94420759639670",
       "image_layout": {
         "scale": 0.65,
@@ -4321,92 +5651,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Weapons/Swords/weapon_traffic_light_cleaver.png?v=e612ad9a0821dfee",
       "image_url": "./item-media/Weapons/Swords/weapon_traffic_light_cleaver.png?v=e612ad9a0821dfee",
       "source_image": "Assets/Items/InventoryIcons/Weapons/Swords/weapon_traffic_light_cleaver.png"
-    },
-    {
-      "id": "weapon.twinfang_hook_sword",
-      "name": "쌍송곳 갈고리검",
-      "family": "weapon",
-      "family_label": "무기",
-      "type_size": "갈고리 검·임시 4칸",
-      "concept": "위쪽 쌍송곳니와 왼쪽 아래로 굽은 갈고리 손잡이가 네 마디 실루엣을 이루는 야수식 포획 검이다.",
-      "stats": [
-        "AttackPower 34",
-        "AttackCooldown 1.24",
-        "AttackRange 7"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 3
-      },
-      "axial_bounds": {
-        "q": 3,
-        "r": 3,
-        "s": 2
-      },
-      "pattern": "□■■/■□□/■□□",
-      "occupied_cells": 4,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          -1,
-          2
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ]
-      ],
-      "category": "Weapon",
-      "weight": 3.8,
-      "synergies": [
-        "BEAST",
-        "MELEE",
-        "SWORD"
-      ],
-      "synergy_labels": [
-        "야수",
-        "근거리",
-        "검"
-      ],
-      "icon_asset": "rbxassetid://91321588816428",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 3,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Weapons/Swords/weapon_twinfang_hook_sword.png",
-      "image": "./item-media/Weapons/Swords/weapon_twinfang_hook_sword.png?v=d00e6477dd7050f9",
-      "image_url": "./item-media/Weapons/Swords/weapon_twinfang_hook_sword.png?v=d00e6477dd7050f9",
-      "source_image": "Assets/Items/InventoryIcons/Weapons/Swords/weapon_twinfang_hook_sword.png"
     },
     {
       "id": "weapon.void_coil_rune_pistol",
@@ -4469,6 +5713,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.1,
       "synergies": [
         "ARCANE",
@@ -4480,6 +5725,27 @@ window.PACKBOUND_ITEM_DB = {
         "기계",
         "총"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://105484881771335",
       "image_layout": {
         "scale": 1.0,
@@ -4571,6 +5837,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "ARCANE",
@@ -4582,6 +5849,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "창"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://85578910772179",
       "image_layout": {
         "scale": 0.9,
@@ -4641,6 +5929,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Weapon",
+      "enabled": true,
       "weight": 3.1,
       "synergies": [
         "FORGED",
@@ -4652,6 +5941,27 @@ window.PACKBOUND_ITEM_DB = {
         "근거리",
         "검"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://110623925023544",
       "image_layout": {
         "scale": 0.95,
@@ -4742,6 +6052,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 5.0,
       "synergies": [
         "FORGED",
@@ -4753,6 +6064,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://82993200424802",
       "image_layout": {
         "scale": 0.9,
@@ -4767,99 +6099,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Equipment/Shields/armor_bus_stop_shield.png?v=9345bc64d15f6ec4",
       "image_url": "./item-media/Equipment/Shields/armor_bus_stop_shield.png?v=9345bc64d15f6ec4",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Shields/armor_bus_stop_shield.png"
-    },
-    {
-      "id": "armor.carapace_ring_cuirass",
-      "name": "갑각고리 흉갑",
-      "family": "equipment",
-      "family_label": "장비",
-      "type_size": "환형 흉갑·임시 5칸",
-      "concept": "다섯 장의 딱정벌레 등딱지가 목과 가슴을 말발굽처럼 감싸고 중앙을 비워 움직임을 살린 야수 방어구다.",
-      "stats": [
-        "Defense 11",
-        "MaxHealth 21"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 3
-      },
-      "axial_bounds": {
-        "q": 3,
-        "r": 3,
-        "s": 3
-      },
-      "pattern": "□■■/■□■/■□□",
-      "occupied_cells": 5,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          -1,
-          2
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ]
-      ],
-      "category": "Armor",
-      "weight": 4.7,
-      "synergies": [
-        "NATURE",
-        "DEFENSE",
-        "BEAST"
-      ],
-      "synergy_labels": [
-        "자연",
-        "방어",
-        "야수"
-      ],
-      "icon_asset": "rbxassetid://77878953567693",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 3,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Equipment/Outfits/armor_carapace_ring_cuirass.png",
-      "image": "./item-media/Equipment/Outfits/armor_carapace_ring_cuirass.png?v=2d9f80deaa749bca",
-      "image_url": "./item-media/Equipment/Outfits/armor_carapace_ring_cuirass.png?v=2d9f80deaa749bca",
-      "source_image": "Assets/Items/InventoryIcons/Equipment/Outfits/armor_carapace_ring_cuirass.png"
     },
     {
       "id": "armor.cast_iron_folding_shield",
@@ -4920,6 +6159,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 3.9,
       "synergies": [
         "FORGED",
@@ -4929,6 +6169,27 @@ window.PACKBOUND_ITEM_DB = {
         "제련",
         "방어"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://130035372941931",
       "image_layout": {
         "scale": 0.8,
@@ -5011,6 +6272,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 5.5,
       "synergies": [
         "HUMAN",
@@ -5022,6 +6284,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "제련"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://107244939302520",
       "image_layout": {
         "scale": 0.85,
@@ -5096,6 +6379,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 2.0,
       "synergies": [
         "HUMAN",
@@ -5107,6 +6391,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "방어"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://87146137876065",
       "image_layout": {
         "scale": 1.0,
@@ -5180,6 +6485,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 3.0,
       "synergies": [
         "FORGED",
@@ -5191,6 +6497,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://132352408787061",
       "image_layout": {
         "scale": 1.0,
@@ -5290,6 +6617,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 5.5,
       "synergies": [
         "ARCANE",
@@ -5301,6 +6629,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "정령"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://108933600140634",
       "image_layout": {
         "scale": 1.05,
@@ -5315,91 +6664,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Equipment/Outfits/armor_eclipse_spirit_guard_cloak.png?v=aafb79c840251f9f",
       "image_url": "./item-media/Equipment/Outfits/armor_eclipse_spirit_guard_cloak.png?v=aafb79c840251f9f",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Outfits/armor_eclipse_spirit_guard_cloak.png"
-    },
-    {
-      "id": "armor.flask_shoulder_guard",
-      "name": "약병 견갑방패",
-      "family": "equipment",
-      "family_label": "장비",
-      "type_size": "견갑 방패·임시 4칸",
-      "concept": "세 방향으로 벌어진 견갑판과 왼쪽 아래 약병 탱크가 충격을 흡수하는 인간 연금술사의 휴대 방패다.",
-      "stats": [
-        "Defense 10",
-        "MaxHealth 18"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 3
-      },
-      "axial_bounds": {
-        "q": 3,
-        "r": 3,
-        "s": 2
-      },
-      "pattern": "□■■/■□□/■□□",
-      "occupied_cells": 4,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          -1,
-          2
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ]
-      ],
-      "category": "Armor",
-      "weight": 3.9,
-      "synergies": [
-        "ALCHEMY",
-        "DEFENSE",
-        "HUMAN"
-      ],
-      "synergy_labels": [
-        "연금",
-        "방어",
-        "인간"
-      ],
-      "icon_asset": "rbxassetid://76358704674504",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 3,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Equipment/Shields/armor_flask_shoulder_guard.png",
-      "image": "./item-media/Equipment/Shields/armor_flask_shoulder_guard.png?v=3d43e37f7cf2399c",
-      "image_url": "./item-media/Equipment/Shields/armor_flask_shoulder_guard.png?v=3d43e37f7cf2399c",
-      "source_image": "Assets/Items/InventoryIcons/Equipment/Shields/armor_flask_shoulder_guard.png"
     },
     {
       "id": "armor.fridge_door_poncho",
@@ -5477,6 +6741,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 6.0,
       "synergies": [
         "FORGED",
@@ -5488,6 +6753,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "기계"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://138663265686553",
       "image_layout": {
         "scale": 0.8,
@@ -5571,6 +6857,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 7.0,
       "synergies": [
         "ALCHEMY",
@@ -5582,6 +6869,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "언데드"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://88203484787106",
       "image_layout": {
         "scale": 1.0,
@@ -5656,6 +6964,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 2.8,
       "synergies": [
         "FORGED",
@@ -5667,6 +6976,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://73175042654598",
       "image_layout": {
         "scale": 1.0,
@@ -5734,6 +7064,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 2.6,
       "synergies": [
         "MACHINE",
@@ -5745,6 +7076,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://113295887405080",
       "image_layout": {
         "scale": 0.7,
@@ -5796,6 +7148,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 3.9,
       "synergies": [
         "ELEMENTAL",
@@ -5807,6 +7160,27 @@ window.PACKBOUND_ITEM_DB = {
         "요정",
         "방어"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://128950763679194",
       "image_layout": {
         "scale": 0.45,
@@ -5865,6 +7239,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 1.4,
       "synergies": [
         "HUMAN",
@@ -5874,6 +7249,27 @@ window.PACKBOUND_ITEM_DB = {
         "인간",
         "지원"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://100356036729312",
       "image_layout": {
         "scale": 0.9,
@@ -5973,6 +7369,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 6.3,
       "synergies": [
         "ALCHEMY",
@@ -5984,6 +7381,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "언데드"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://129394201061654",
       "image_layout": {
         "scale": 0.95,
@@ -5998,100 +7416,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Equipment/Shields/armor_moonshadow_skull_barrier.png?v=db1bba7acb36ab99",
       "image_url": "./item-media/Equipment/Shields/armor_moonshadow_skull_barrier.png?v=db1bba7acb36ab99",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Shields/armor_moonshadow_skull_barrier.png"
-    },
-    {
-      "id": "armor.moonvine_stair_cloak",
-      "name": "월덩굴 계단망토",
-      "family": "equipment",
-      "family_label": "장비",
-      "type_size": "비늘 망토·임시 5칸",
-      "concept": "달빛 잎비늘이 좌우로 번갈아 층을 이루며 길게 흘러내려 주문 충격을 흘리는 엘프식 망토다.",
-      "stats": [
-        "Defense 11",
-        "MaxHealth 21",
-        "DodgeChance 0.035"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 4
-      },
-      "axial_bounds": {
-        "q": 3,
-        "r": 4,
-        "s": 2
-      },
-      "pattern": "□□■/□■■/■□□/■□□",
-      "occupied_cells": 5,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          -1,
-          2
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          -1
-        ],
-        [
-          1,
-          0
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          2,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ]
-      ],
-      "category": "Armor",
-      "weight": 4.7,
-      "synergies": [
-        "ARCANE",
-        "DEFENSE",
-        "ELF"
-      ],
-      "synergy_labels": [
-        "마력",
-        "방어",
-        "엘프"
-      ],
-      "icon_asset": "rbxassetid://81079533082131",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 4,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Equipment/Outfits/armor_moonvine_stair_cloak.png",
-      "image": "./item-media/Equipment/Outfits/armor_moonvine_stair_cloak.png?v=904f0ac8bb7238a4",
-      "image_url": "./item-media/Equipment/Outfits/armor_moonvine_stair_cloak.png?v=904f0ac8bb7238a4",
-      "source_image": "Assets/Items/InventoryIcons/Equipment/Outfits/armor_moonvine_stair_cloak.png"
     },
     {
       "id": "armor.plastic_bag_vest",
@@ -6152,6 +7476,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 1.6,
       "synergies": [
         "HUMAN",
@@ -6163,6 +7488,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "지원"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://94955523360051",
       "image_layout": {
         "scale": 0.9,
@@ -6238,6 +7584,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 5.5,
       "synergies": [
         "ARCANE",
@@ -6249,6 +7596,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "요정"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://96905696458736",
       "image_layout": {
         "scale": 1.0,
@@ -6339,6 +7707,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 5.2,
       "synergies": [
         "FORGED",
@@ -6350,6 +7719,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://109413871543870",
       "image_layout": {
         "scale": 0.7,
@@ -6377,32 +7767,32 @@ window.PACKBOUND_ITEM_DB = {
         "MaxHealth 18"
       ],
       "bounds": {
-        "width": 4,
-        "height": 2
+        "width": 3,
+        "height": 4
       },
       "axial_bounds": {
-        "q": 4,
-        "r": 2,
-        "s": 3
+        "q": 3,
+        "r": 4,
+        "s": 2
       },
-      "pattern": "□□■■/■■□□",
+      "pattern": "□□■/□■□/□■□/■□□",
       "occupied_cells": 4,
       "coordinates": [
         [
-          0,
+          2,
           0
         ],
         [
           1,
-          0
+          1
         ],
         [
-          2,
-          -1
+          1,
+          2
         ],
         [
-          3,
-          -1
+          0,
+          3
         ]
       ],
       "authoring_coordinates": [
@@ -6411,19 +7801,20 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          3,
-          0
-        ],
-        [
-          0,
+          1,
           1
         ],
         [
           1,
-          1
+          2
+        ],
+        [
+          0,
+          3
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 3.9,
       "synergies": [
         "NATURE",
@@ -6435,12 +7826,33 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "야수"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://124975759452383",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
+        "scale": 0.9,
+        "offset_x": -0.3427,
+        "offset_y": 0.5373,
+        "rotation_degrees": -35.0,
         "canvas_width": 4,
         "canvas_height": 2,
         "applied_to_game": true
@@ -6449,100 +7861,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Equipment/Outfits/armor_serpent_scale_sash.png?v=eca8509af7ab2933",
       "image_url": "./item-media/Equipment/Outfits/armor_serpent_scale_sash.png?v=eca8509af7ab2933",
       "source_image": "Assets/Items/InventoryIcons/Equipment/Outfits/armor_serpent_scale_sash.png"
-    },
-    {
-      "id": "armor.startail_deflection_coat",
-      "name": "별꼬리 편향갑",
-      "family": "equipment",
-      "family_label": "장비",
-      "type_size": "편향 갑옷·임시 5칸",
-      "concept": "가슴의 별핵에서 오른쪽으로 긴 마력 꼬리가 흐르고 왼쪽 아래에는 균형추 망토가 달린 요정 방어복이다.",
-      "stats": [
-        "Defense 11",
-        "MaxHealth 21",
-        "DodgeChance 0.035"
-      ],
-      "bounds": {
-        "width": 4,
-        "height": 3
-      },
-      "axial_bounds": {
-        "q": 4,
-        "r": 3,
-        "s": 3
-      },
-      "pattern": "□■■■/■□□□/■□□□",
-      "occupied_cells": 5,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          -1,
-          2
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ]
-      ],
-      "category": "Armor",
-      "weight": 4.7,
-      "synergies": [
-        "FAIRY",
-        "DEFENSE",
-        "ARCANE"
-      ],
-      "synergy_labels": [
-        "요정",
-        "방어",
-        "마력"
-      ],
-      "icon_asset": "rbxassetid://122406268269381",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 4,
-        "canvas_height": 3,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Equipment/Outfits/armor_startail_deflection_coat.png",
-      "image": "./item-media/Equipment/Outfits/armor_startail_deflection_coat.png?v=30facf1ad5c6d085",
-      "image_url": "./item-media/Equipment/Outfits/armor_startail_deflection_coat.png?v=30facf1ad5c6d085",
-      "source_image": "Assets/Items/InventoryIcons/Equipment/Outfits/armor_startail_deflection_coat.png"
     },
     {
       "id": "armor.stormproof_boots",
@@ -6604,6 +7922,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 5.8,
       "synergies": [
         "FORGED",
@@ -6615,6 +7934,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://119165807541563",
       "image_layout": {
         "scale": 0.75,
@@ -6654,24 +7994,24 @@ window.PACKBOUND_ITEM_DB = {
       "occupied_cells": 5,
       "coordinates": [
         [
-          -2,
-          2
+          2,
+          0
         ],
         [
-          -1,
-          1
+          3,
+          0
         ],
         [
-          0,
+          4,
           0
         ],
         [
           1,
-          0
+          1
         ],
         [
-          2,
-          0
+          0,
+          2
         ]
       ],
       "authoring_coordinates": [
@@ -6697,6 +8037,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 4.7,
       "synergies": [
         "FORGED",
@@ -6708,11 +8049,32 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://95823652758772",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.8,
+        "offset_x": 0.2906,
+        "offset_y": -0.3461,
         "rotation_degrees": 0.0,
         "canvas_width": 5,
         "canvas_height": 3,
@@ -6747,16 +8109,16 @@ window.PACKBOUND_ITEM_DB = {
       "occupied_cells": 3,
       "coordinates": [
         [
-          -1,
-          1
+          1,
+          0
+        ],
+        [
+          2,
+          0
         ],
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
+          1
         ]
       ],
       "authoring_coordinates": [
@@ -6774,6 +8136,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 3.1,
       "synergies": [
         "FORGED",
@@ -6785,11 +8148,32 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://116078325218002",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.95,
+        "offset_x": 0.0203,
+        "offset_y": -0.3018,
         "rotation_degrees": 0.0,
         "canvas_width": 3,
         "canvas_height": 2,
@@ -6852,6 +8236,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 4.2,
       "synergies": [
         "MACHINE",
@@ -6863,6 +8248,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "사이보그"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://127277863872942",
       "image_layout": {
         "scale": 0.6,
@@ -6970,6 +8376,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Armor",
+      "enabled": true,
       "weight": 6.5,
       "synergies": [
         "MACHINE",
@@ -6981,6 +8388,27 @@ window.PACKBOUND_ITEM_DB = {
         "방어",
         "제련"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://116852925428122",
       "image_layout": {
         "scale": 0.8,
@@ -7030,6 +8458,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 0.4,
       "synergies": [
         "ELEMENTAL",
@@ -7041,6 +8470,27 @@ window.PACKBOUND_ITEM_DB = {
         "마력",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://109370567338260",
       "image_layout": {
         "scale": 1.0,
@@ -7098,6 +8548,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 0.8,
       "synergies": [
         "NATURE",
@@ -7109,6 +8560,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://93364144830830",
       "image_layout": {
         "scale": 1.0,
@@ -7183,6 +8655,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.2,
       "synergies": [
         "MACHINE",
@@ -7194,6 +8667,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://139125238701434",
       "image_layout": {
         "scale": 0.95,
@@ -7260,6 +8754,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.4,
       "synergies": [
         "NATURE",
@@ -7271,6 +8766,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "야수"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://87472144243694",
       "image_layout": {
         "scale": 0.85,
@@ -7345,6 +8861,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.4,
       "synergies": [
         "NATURE",
@@ -7356,6 +8873,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "야수"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://134076128364588",
       "image_layout": {
         "scale": 0.85,
@@ -7406,6 +8944,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Consumable",
+      "enabled": true,
       "weight": 1.9,
       "synergies": [
         "ELEMENTAL",
@@ -7417,6 +8956,27 @@ window.PACKBOUND_ITEM_DB = {
         "투척",
         "정령"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://102233752366312",
       "image_layout": {
         "scale": 0.5,
@@ -7475,6 +9035,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 1.8,
       "synergies": [
         "NATURE",
@@ -7486,6 +9047,27 @@ window.PACKBOUND_ITEM_DB = {
         "설치",
         "정령"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://102763850105010",
       "image_layout": {
         "scale": 0.75,
@@ -7560,6 +9142,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.5,
       "synergies": [
         "ARCANE",
@@ -7571,6 +9154,27 @@ window.PACKBOUND_ITEM_DB = {
         "설치",
         "언데드"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://111803395170968",
       "image_layout": {
         "scale": 0.6,
@@ -7585,99 +9189,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Special/special_cursed_block_doll.png?v=f58df122bbbd3795",
       "image_url": "./item-media/Special/special_cursed_block_doll.png?v=f58df122bbbd3795",
       "source_image": "Assets/Items/InventoryIcons/Special/special_cursed_block_doll.png"
-    },
-    {
-      "id": "special.dynamo_coil_ring_trap",
-      "name": "동력코일 환형덫",
-      "family": "special",
-      "family_label": "특수",
-      "type_size": "환형 덫·임시 5칸",
-      "concept": "다섯 코일 노드가 빈 중앙을 둘러싼 채 열린 아래쪽으로 적을 받아들여 순간적으로 전자기 장을 닫는 설치 덫이다.",
-      "stats": [
-        "DefenseIncrease 0.07",
-        "MaxHealth 14"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 3
-      },
-      "axial_bounds": {
-        "q": 3,
-        "r": 3,
-        "s": 3
-      },
-      "pattern": "□■■/■□■/■□□",
-      "occupied_cells": 5,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          -1,
-          2
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ]
-      ],
-      "category": "Utility",
-      "weight": 2.9,
-      "synergies": [
-        "MACHINE",
-        "DEPLOYED",
-        "FORGED"
-      ],
-      "synergy_labels": [
-        "기계",
-        "설치",
-        "제련"
-      ],
-      "icon_asset": "rbxassetid://133989603074235",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 3,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Special/special_dynamo_coil_ring_trap.png",
-      "image": "./item-media/Special/special_dynamo_coil_ring_trap.png?v=749670ee53b50a28",
-      "image_url": "./item-media/Special/special_dynamo_coil_ring_trap.png?v=749670ee53b50a28",
-      "source_image": "Assets/Items/InventoryIcons/Special/special_dynamo_coil_ring_trap.png"
     },
     {
       "id": "special.emergency_rubber_duck",
@@ -7714,6 +9225,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 0.4,
       "synergies": [
         "ALCHEMY",
@@ -7725,6 +9237,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "인간"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://124379821137838",
       "image_layout": {
         "scale": 1.0,
@@ -7791,6 +9324,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 1.9,
       "synergies": [
         "FAIRY",
@@ -7802,6 +9336,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "정령"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://114110700757532",
       "image_layout": {
         "scale": 1.0,
@@ -7876,6 +9431,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.9,
       "synergies": [
         "MACHINE",
@@ -7887,6 +9443,27 @@ window.PACKBOUND_ITEM_DB = {
         "설치",
         "사이보그"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://75424379457041",
       "image_layout": {
         "scale": 0.6,
@@ -7945,6 +9522,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.9,
       "synergies": [
         "SPIRIT",
@@ -7956,6 +9534,27 @@ window.PACKBOUND_ITEM_DB = {
         "설치",
         "원소"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://130839655589698",
       "image_layout": {
         "scale": 0.4,
@@ -7983,32 +9582,32 @@ window.PACKBOUND_ITEM_DB = {
         "AttackPowerIncrease 0.05"
       ],
       "bounds": {
-        "width": 4,
-        "height": 2
+        "width": 3,
+        "height": 4
       },
       "axial_bounds": {
-        "q": 4,
-        "r": 2,
-        "s": 3
+        "q": 3,
+        "r": 4,
+        "s": 2
       },
-      "pattern": "□□■■/■■□□",
+      "pattern": "□□■/□■□/□■□/■□□",
       "occupied_cells": 4,
       "coordinates": [
         [
-          0,
+          2,
           0
         ],
         [
           1,
-          0
+          1
         ],
         [
-          2,
-          -1
+          1,
+          2
         ],
         [
-          3,
-          -1
+          0,
+          3
         ]
       ],
       "authoring_coordinates": [
@@ -8017,19 +9616,20 @@ window.PACKBOUND_ITEM_DB = {
           0
         ],
         [
-          3,
-          0
-        ],
-        [
-          0,
+          1,
           1
         ],
         [
           1,
-          1
+          2
+        ],
+        [
+          0,
+          3
         ]
       ],
       "category": "Consumable",
+      "enabled": true,
       "weight": 2.4,
       "synergies": [
         "ELEMENTAL",
@@ -8041,12 +9641,33 @@ window.PACKBOUND_ITEM_DB = {
         "투척",
         "제련"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://111262873191921",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
+        "scale": 0.95,
+        "offset_x": -0.4696,
+        "offset_y": 0.4685,
+        "rotation_degrees": -37.0,
         "canvas_width": 4,
         "canvas_height": 2,
         "applied_to_game": true
@@ -8099,6 +9720,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 0.5,
       "synergies": [
         "FAIRY",
@@ -8110,6 +9732,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "마력"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://106390488113365",
       "image_layout": {
         "scale": 1.0,
@@ -8184,6 +9827,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 1.9,
       "synergies": [
         "ARCANE",
@@ -8193,6 +9837,27 @@ window.PACKBOUND_ITEM_DB = {
         "마력",
         "지원"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://115730732730870",
       "image_layout": {
         "scale": 0.95,
@@ -8267,6 +9932,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.9,
       "synergies": [
         "NATURE",
@@ -8278,6 +9944,27 @@ window.PACKBOUND_ITEM_DB = {
         "설치",
         "요정"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://90891393985956",
       "image_layout": {
         "scale": 0.6,
@@ -8328,6 +10015,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Consumable",
+      "enabled": true,
       "weight": 1.3,
       "synergies": [
         "ALCHEMY",
@@ -8337,6 +10025,27 @@ window.PACKBOUND_ITEM_DB = {
         "연금",
         "투척"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://92295569068369",
       "image_layout": {
         "scale": 0.85,
@@ -8351,99 +10060,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Special/special_panacea_spinning_thrower.png?v=1ad74c6a3066dc6e",
       "image_url": "./item-media/Special/special_panacea_spinning_thrower.png?v=1ad74c6a3066dc6e",
       "source_image": "Assets/Items/InventoryIcons/Special/special_panacea_spinning_thrower.png"
-    },
-    {
-      "id": "special.rescue_hook_winch_line",
-      "name": "구조갈고리 권양선",
-      "family": "special",
-      "family_label": "특수",
-      "type_size": "권양 장치·임시 5칸",
-      "concept": "오른쪽으로 펼쳐지는 세 칸 길이 권양봉과 왼쪽 아래로 처진 갈고리 줄을 하나의 태엽 릴이 제어하는 구조 도구다.",
-      "stats": [
-        "CooldownReduction 0.07",
-        "MaxHealth 14"
-      ],
-      "bounds": {
-        "width": 4,
-        "height": 3
-      },
-      "axial_bounds": {
-        "q": 4,
-        "r": 3,
-        "s": 3
-      },
-      "pattern": "□■■■/■□□□/■□□□",
-      "occupied_cells": 5,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          -1,
-          2
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ]
-      ],
-      "category": "Utility",
-      "weight": 2.9,
-      "synergies": [
-        "HUMAN",
-        "SUPPORT",
-        "MACHINE"
-      ],
-      "synergy_labels": [
-        "인간",
-        "지원",
-        "기계"
-      ],
-      "icon_asset": "rbxassetid://71474591372451",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 4,
-        "canvas_height": 3,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Special/special_rescue_hook_winch_line.png",
-      "image": "./item-media/Special/special_rescue_hook_winch_line.png?v=7c0592edf6e2ddb3",
-      "image_url": "./item-media/Special/special_rescue_hook_winch_line.png?v=7c0592edf6e2ddb3",
-      "source_image": "Assets/Items/InventoryIcons/Special/special_rescue_hook_winch_line.png"
     },
     {
       "id": "special.rescue_windup_radio",
@@ -8496,6 +10112,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 1.9,
       "synergies": [
         "HUMAN",
@@ -8507,6 +10124,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "기계"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://107539216248495",
       "image_layout": {
         "scale": 0.85,
@@ -8521,99 +10159,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Special/special_rescue_windup_radio.png?v=f9186452ba86f9b1",
       "image_url": "./item-media/Special/special_rescue_windup_radio.png?v=f9186452ba86f9b1",
       "source_image": "Assets/Items/InventoryIcons/Special/special_rescue_windup_radio.png"
-    },
-    {
-      "id": "special.servo_climber_rescue_line",
-      "name": "서보등반 구조사다리",
-      "family": "special",
-      "family_label": "특수",
-      "type_size": "구조 장치·임시 5칸",
-      "concept": "다섯 개의 서보 발판이 지형에 맞춰 지그재그로 펼쳐지고 부상자를 자동으로 끌어올리는 휴대 구조장치다.",
-      "stats": [
-        "CooldownReduction 0.07",
-        "MaxHealth 14"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 4
-      },
-      "axial_bounds": {
-        "q": 3,
-        "r": 4,
-        "s": 2
-      },
-      "pattern": "□□■/□■■/■□□/■□□",
-      "occupied_cells": 5,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          -1,
-          2
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          -1
-        ],
-        [
-          1,
-          0
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          2,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ]
-      ],
-      "category": "Utility",
-      "weight": 2.9,
-      "synergies": [
-        "MACHINE",
-        "SUPPORT",
-        "CYBORG"
-      ],
-      "synergy_labels": [
-        "기계",
-        "지원",
-        "사이보그"
-      ],
-      "icon_asset": "rbxassetid://137872711877783",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 4,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Special/special_servo_climber_rescue_line.png",
-      "image": "./item-media/Special/special_servo_climber_rescue_line.png?v=aae9a69eced39eda",
-      "image_url": "./item-media/Special/special_servo_climber_rescue_line.png?v=aae9a69eced39eda",
-      "source_image": "Assets/Items/InventoryIcons/Special/special_servo_climber_rescue_line.png"
     },
     {
       "id": "special.spare_arm_multitool",
@@ -8666,6 +10211,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.4,
       "synergies": [
         "MACHINE",
@@ -8677,6 +10223,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "사이보그"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://87309879898150",
       "image_layout": {
         "scale": 0.7,
@@ -8691,91 +10258,6 @@ window.PACKBOUND_ITEM_DB = {
       "image": "./item-media/Special/special_spare_arm_multitool.png?v=8e3895440503521f",
       "image_url": "./item-media/Special/special_spare_arm_multitool.png?v=8e3895440503521f",
       "source_image": "Assets/Items/InventoryIcons/Special/special_spare_arm_multitool.png"
-    },
-    {
-      "id": "special.spirit_lantern_mobile",
-      "name": "혼등 삼지 이동진",
-      "family": "special",
-      "family_label": "특수",
-      "type_size": "이동 진·임시 4칸",
-      "concept": "세 갈래 혼등이 위와 양옆을 지키고 왼쪽 아래의 닻추가 진을 고정하는 휴대 설치장치다.",
-      "stats": [
-        "DefenseIncrease 0.06",
-        "MaxHealth 12"
-      ],
-      "bounds": {
-        "width": 3,
-        "height": 3
-      },
-      "axial_bounds": {
-        "q": 3,
-        "r": 3,
-        "s": 2
-      },
-      "pattern": "□■■/■□□/■□□",
-      "occupied_cells": 4,
-      "coordinates": [
-        [
-          -1,
-          1
-        ],
-        [
-          -1,
-          2
-        ],
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ]
-      ],
-      "authoring_coordinates": [
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ]
-      ],
-      "category": "Utility",
-      "weight": 2.4,
-      "synergies": [
-        "SPIRIT",
-        "DEPLOYED",
-        "ARCANE"
-      ],
-      "synergy_labels": [
-        "정령",
-        "설치",
-        "마력"
-      ],
-      "icon_asset": "rbxassetid://82602278866867",
-      "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
-        "rotation_degrees": 0.0,
-        "canvas_width": 3,
-        "canvas_height": 3,
-        "applied_to_game": true
-      },
-      "media_path": "./item-media/Special/special_spirit_lantern_mobile.png",
-      "image": "./item-media/Special/special_spirit_lantern_mobile.png?v=731c8f60cf3676c6",
-      "image_url": "./item-media/Special/special_spirit_lantern_mobile.png?v=731c8f60cf3676c6",
-      "source_image": "Assets/Items/InventoryIcons/Special/special_spirit_lantern_mobile.png"
     },
     {
       "id": "special.sporebridge_chain_mine",
@@ -8801,24 +10283,24 @@ window.PACKBOUND_ITEM_DB = {
       "occupied_cells": 5,
       "coordinates": [
         [
-          -2,
-          2
+          2,
+          0
         ],
         [
-          -1,
-          1
+          3,
+          0
         ],
         [
-          0,
+          4,
           0
         ],
         [
           1,
-          0
+          1
         ],
         [
-          2,
-          0
+          0,
+          2
         ]
       ],
       "authoring_coordinates": [
@@ -8844,6 +10326,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.9,
       "synergies": [
         "NATURE",
@@ -8855,11 +10338,32 @@ window.PACKBOUND_ITEM_DB = {
         "설치",
         "요정"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://109699436142513",
       "image_layout": {
-        "scale": 1.0,
-        "offset_x": 0.0,
-        "offset_y": 0.0,
+        "scale": 0.8,
+        "offset_x": 0.2638,
+        "offset_y": -0.389,
         "rotation_degrees": 0.0,
         "canvas_width": 5,
         "canvas_height": 3,
@@ -8905,6 +10409,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Consumable",
+      "enabled": true,
       "weight": 1.3,
       "synergies": [
         "FAIRY",
@@ -8916,6 +10421,27 @@ window.PACKBOUND_ITEM_DB = {
         "투척",
         "마력"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://84686414343412",
       "image_layout": {
         "scale": 0.75,
@@ -8982,6 +10508,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 2.4,
       "synergies": [
         "NATURE",
@@ -8991,6 +10518,27 @@ window.PACKBOUND_ITEM_DB = {
         "자연",
         "설치"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://139284638137557",
       "image_layout": {
         "scale": 0.85,
@@ -9057,6 +10605,7 @@ window.PACKBOUND_ITEM_DB = {
         ]
       ],
       "category": "Utility",
+      "enabled": true,
       "weight": 4.5,
       "synergies": [
         "MACHINE",
@@ -9068,6 +10617,27 @@ window.PACKBOUND_ITEM_DB = {
         "지원",
         "원거리"
       ],
+      "effects": {
+        "A": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "B": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        },
+        "C": {
+          "cells": [],
+          "type_id": null,
+          "condition_ids": [],
+          "ability_ids": []
+        }
+      },
+      "effect_search_terms": [],
       "icon_asset": "rbxassetid://136776502214454",
       "image_layout": {
         "scale": 0.55,
@@ -9084,5 +10654,5 @@ window.PACKBOUND_ITEM_DB = {
       "source_image": "Assets/Items/InventoryIcons/Special/special_thunder_amp_guitar.png"
     }
   ],
-  "revision": "73ea9cd8f70f5d9a"
+  "revision": "0690a8caa23e928d"
 };

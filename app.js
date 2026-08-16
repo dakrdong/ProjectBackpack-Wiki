@@ -41,6 +41,8 @@
   const itemDbEditorStageHeight = itemDbEditorRadius * 2 + 1;
   const itemDbEditorOriginX = itemDbEditorRadius * itemDbHexColumnStep + itemDbHexCellWidth / 2;
   const itemDbEditorOriginY = itemDbEditorRadius + 0.5;
+  const itemDbEffectSlots = ["A", "B", "C"];
+  const itemDbEffectPadding = 5;
   const legacyLocalHostKey = `canUse${"Ro"}${"jo"}Control`;
   const localHostCheck = typeof localAccess?.isLocalHost === "function"
     ? localAccess.isLocalHost
@@ -760,6 +762,79 @@
     }).join("")}</div>`;
   }
 
+  function itemEffectCatalogMaps() {
+    const catalog = itemDb.effect_catalog || {};
+    return {
+      types: new Map((catalog.types || []).map((entry) => [entry.id, entry])),
+      conditions: new Map((catalog.conditions || []).map((entry) => [entry.id, entry])),
+      abilities: new Map((catalog.abilities || []).map((entry) => [entry.id, entry])),
+      sources: new Map((catalog.sources || []).map((entry) => [entry.id, entry])),
+    };
+  }
+
+  function renderItemEffects(item) {
+    const maps = itemEffectCatalogMaps();
+    const activeSlots = itemDbEffectSlots
+      .map((slot) => ({ slot, effect: item.effects?.[slot] }))
+      .filter(({ effect }) => effect?.cells?.length);
+    if (!activeSlots.length) return '<span class="itemdb-effect-empty">효과 칸 미배정</span>';
+    return `<div class="itemdb-effect-list">${activeSlots.map(({ slot, effect }) => {
+      const type = maps.types.get(effect.type_id);
+      const conditions = effect.condition_ids?.length
+        ? effect.condition_ids.map((id) => maps.conditions.get(id)?.display_name || id).join(" + ")
+        : "아무 아이템";
+      const abilities = (effect.ability_ids || [])
+        .map((id) => maps.abilities.get(id)?.display_name || id)
+        .join(" · ");
+      return `
+        <article data-slot="${slot}">
+          <span>${slot} · ${effect.cells.length}칸 · ${escapeHtml(type?.display_name || effect.type_id)}</span>
+          <strong>${escapeHtml(conditions)}</strong>
+          <small>${escapeHtml(abilities)}</small>
+        </article>
+      `;
+    }).join("")}</div>`;
+  }
+
+  function renderItemEffectCatalog() {
+    const catalog = itemDb.effect_catalog || {};
+    const maps = itemEffectCatalogMaps();
+    const targetLabels = { SourceItem: "이 아이템", MatchingItem: "연결 아이템", Owner: "플레이어" };
+    return `
+      <details class="itemdb-effect-catalog" open>
+        <summary>
+          <span><strong>효과 칸 능력 카탈로그</strong><small>4개 게임 조사 패턴과 현재 배정 가능한 규칙</small></span>
+          <em>${(catalog.research_patterns || []).length} 패턴 · ${(catalog.conditions || []).length} 조건 · ${(catalog.abilities || []).length} 능력</em>
+        </summary>
+        <div class="itemdb-effect-catalog-body">
+          <section>
+            <header><strong>리서치 패턴</strong><span>원작 수치를 복제하지 않고 구조만 분류합니다.</span></header>
+            <div class="itemdb-effect-pattern-grid">${(catalog.research_patterns || []).map((pattern) => `
+              <article>
+                <code>${escapeHtml(pattern.id)}</code>
+                <strong>${escapeHtml(pattern.display_name)}</strong>
+                <p>${escapeHtml(pattern.description)}</p>
+                <small>${pattern.examples.map(escapeHtml).join(" · ")}</small>
+                <span>${pattern.source_ids.map((id) => {
+                  const source = maps.sources.get(id);
+                  return source ? `<a href="${safeHref(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.game)}</a>` : escapeHtml(id);
+                }).join(" · ")}</span>
+              </article>
+            `).join("")}</div>
+          </section>
+          <section class="itemdb-effect-assignable">
+            <header><strong>에디터 배정 카탈로그</strong><span>A/B/C 슬롯은 종류 1개, 조건 0개 이상, 능력 1개 이상을 선택합니다.</span></header>
+            <div class="itemdb-effect-catalog-columns">
+              <div><h3>종류</h3>${(catalog.types || []).map((entry) => `<article><strong>${escapeHtml(entry.display_name)}</strong><code>${escapeHtml(entry.id)}</code><p>${escapeHtml(entry.description)}</p></article>`).join("")}</div>
+              <div><h3>조건</h3>${(catalog.conditions || []).map((entry) => `<article><strong>${escapeHtml(entry.display_name)}</strong><code>${escapeHtml(entry.id)}</code><p>${escapeHtml(entry.description)}</p></article>`).join("")}</div>
+              <div><h3>능력</h3>${(catalog.abilities || []).map((entry) => `<article><strong>${escapeHtml(entry.display_name)}</strong><code>${escapeHtml(entry.id)}</code><p>${escapeHtml(targetLabels[entry.target] || entry.target)} · ${escapeHtml(entry.stat)} · ${escapeHtml(entry.amount)}</p></article>`).join("")}</div>
+            </div>
+          </section>
+        </div>
+      </details>
+    `;
+  }
+
   function renderItemDbSynergyOptions(selectedSynergies) {
     const groups = new Map();
     (itemDb.synergy_catalog || []).forEach((entry) => {
@@ -782,21 +857,59 @@
 
   function renderItemRows(items) {
     return items.map((item) => `
-      <tr>
+      <tr data-itemdb-enabled="${item.enabled}">
         <td class="itemdb-image-cell">
           <button type="button" class="itemdb-image-trigger" data-image-viewer-src="${escapeHtml(item.image_url || item.image)}" data-image-viewer-alt="${escapeHtml(item.name)} 아이템 이미지" data-image-viewer-caption="${escapeHtml(item.name)}" aria-label="${escapeHtml(item.name)} 이미지 크게 보기">
             <img src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 아이템 이미지" loading="lazy" decoding="async" style="transform:rotate(${Number(item.image_layout?.rotation_degrees || 0)}deg)">
           </button>
         </td>
+        <td class="itemdb-enabled-cell">
+          ${canEditItemDb
+            ? `<button type="button" class="itemdb-enabled-toggle" data-itemdb-toggle="${escapeHtml(item.id)}" data-enabled="${item.enabled}" aria-pressed="${item.enabled}" aria-label="${escapeHtml(item.name)} 게임 베이크 ${item.enabled ? "끄기" : "켜기"}"><strong>${item.enabled ? "ON" : "OFF"}</strong><small>${item.enabled ? "베이크 포함" : "게임 제외"}</small></button>`
+            : `<span class="itemdb-enabled-badge" data-enabled="${item.enabled}">${item.enabled ? "ON" : "OFF"}</span>`}
+        </td>
         <td class="itemdb-identity"><strong>${escapeHtml(item.name)}</strong><code>${escapeHtml(item.id)}</code></td>
         <td><span class="itemdb-family-badge" data-family="${escapeHtml(item.family)}">${escapeHtml(item.family_label)}</span><small>${escapeHtml(item.type_size)}</small></td>
         <td>${renderFootprint(item)}</td>
         <td>${renderItemSynergies(item)}</td>
+        <td>${renderItemEffects(item)}</td>
         <td><div class="itemdb-stats">${item.stats.map((stat) => `<span>${escapeHtml(stat)}</span>`).join("")}</div></td>
         <td class="itemdb-concept">${escapeHtml(item.concept)}</td>
         ${canEditItemDb ? `<td class="itemdb-action-cell"><button type="button" data-itemdb-edit="${escapeHtml(item.id)}">Edit</button></td>` : ""}
       </tr>
     `).join("");
+  }
+
+  function refreshItemDbCounts() {
+    itemDb.active_count = itemDb.items.filter((item) => item.enabled).length;
+    (itemDb.families || []).forEach((family) => {
+      family.active_count = itemDb.items.filter((item) => item.family === family.id && item.enabled).length;
+    });
+  }
+
+  async function toggleItemDbEnabled(itemId, button) {
+    const item = itemDb.items.find((candidate) => candidate.id === itemId);
+    if (!item || !canEditItemDb || button.disabled) return;
+    const nextEnabled = !item.enabled;
+    button.disabled = true;
+    try {
+      const response = await fetch("/api/item-db/toggle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ item_id: item.id, enabled: nextEnabled }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `ON/OFF 저장에 실패했습니다. (${response.status})`);
+      const index = itemDb.items.findIndex((candidate) => candidate.id === item.id);
+      if (index >= 0) itemDb.items[index] = payload.item;
+      refreshItemDbCounts();
+      itemDbNotice = `${payload.item.name}을(를) ${payload.item.enabled ? "ON" : "OFF"}으로 저장했습니다. ${payload.item.enabled ? "다음 베이크에 포함됩니다." : "웹 DB에는 남지만 다음 베이크부터 게임에서 제외됩니다."}`;
+      renderItemDb();
+    } catch (error) {
+      button.disabled = false;
+      itemDbNotice = String(error.message || error);
+      renderItemDb();
+    }
   }
 
   function closeItemDbEditor() {
@@ -896,14 +1009,14 @@
     body.innerHTML = `
       <div class="itemdb-bake-summary">
         <div><span>DB 리비전</span><code>${escapeHtml(payload.revision)}</code></div>
-        <div><span>아이템</span><strong>${Number(payload.count)}개</strong></div>
+        <div><span>게임 포함 / 전체</span><strong>${Number(payload.count)} / ${Number(payload.total_count ?? payload.count)}개</strong></div>
       </div>
       <ol class="itemdb-bake-steps">
         <li>Studio가 실행 중이면 <strong>정지(Stop)</strong>해 Edit 모드로 돌아갑니다.</li>
         <li><strong>적용 스크립트 복사</strong>를 누르고 Studio 명령 창(Command Bar)에 붙여넣은 뒤 Enter를 누릅니다.</li>
         <li>출력 창에 <code>→ ${escapeHtml(payload.revision)}</code> 가 찍히면 저장하고 다시 Play 합니다.</li>
       </ol>
-      <p class="itemdb-bake-note">명령 창을 쓰기 어렵다면 <strong>모듈 소스 복사</strong>를 눌러 <code>${escapeHtml(container)}.GeneratedItemLayouts</code>를 열고 전체 선택 후 붙여넣어도 결과는 같습니다.</p>
+      <p class="itemdb-bake-note">OFF 아이템은 웹 DB에는 남지만 이 게임 모듈에서는 제외됩니다. 명령 창을 쓰기 어렵다면 <strong>모듈 소스 복사</strong>를 눌러 <code>${escapeHtml(container)}.GeneratedItemLayouts</code>를 열고 전체 선택 후 붙여넣어도 결과는 같습니다.</p>
       <div class="itemdb-bake-actions">
         <button type="button" class="primary" data-itemdb-bake-copy="script">적용 스크립트 복사</button>
         <button type="button" data-itemdb-bake-copy="module">모듈 소스 복사</button>
@@ -935,6 +1048,162 @@
 
   function editorCellKey(x, y) {
     return `${x},${y}`;
+  }
+
+  function currentEditorFootprint(state) {
+    return [...state.selected].map((key) => key.split(",").map(Number));
+  }
+
+  function effectPayloadFromState(state) {
+    return Object.fromEntries(itemDbEffectSlots.map((slot) => {
+      const effect = state.effects[slot];
+      return [slot, {
+        cells: [...effect.cells].map((key) => key.split(",").map(Number)),
+        type_id: effect.type_id,
+        condition_ids: [...effect.condition_ids],
+        ability_ids: [...effect.ability_ids],
+      }];
+    }));
+  }
+
+  function effectEditorBounds(footprint) {
+    if (!footprint.length) {
+      return {
+        minQ: -itemDbEffectPadding,
+        maxQ: itemDbEffectPadding,
+        minR: -itemDbEffectPadding,
+        maxR: itemDbEffectPadding,
+      };
+    }
+    const qs = footprint.map(([q]) => q);
+    const rs = footprint.map(([, r]) => r);
+    return {
+      minQ: Math.min(...qs) - itemDbEffectPadding,
+      maxQ: Math.max(...qs) + itemDbEffectPadding,
+      minR: Math.min(...rs) - itemDbEffectPadding,
+      maxR: Math.max(...rs) + itemDbEffectPadding,
+    };
+  }
+
+  function pruneEffectCellsToFootprint(state) {
+    const footprint = currentEditorFootprint(state);
+    if (!footprint.length) return;
+    const bounds = effectEditorBounds(footprint);
+    const footprintKeys = new Set(footprint.map(([q, r]) => editorCellKey(q, r)));
+    itemDbEffectSlots.forEach((slot) => {
+      [...state.effects[slot].cells].forEach((key) => {
+        const [q, r] = key.split(",").map(Number);
+        if (footprintKeys.has(key)
+          || q < bounds.minQ || q > bounds.maxQ || r < bounds.minR || r > bounds.maxR) {
+          state.effects[slot].cells.delete(key);
+        }
+      });
+    });
+  }
+
+  function effectGridMarkup(state) {
+    const footprint = currentEditorFootprint(state);
+    const footprintKeys = new Set(footprint.map(([q, r]) => editorCellKey(q, r)));
+    const bounds = effectEditorBounds(footprint);
+    const allCells = [];
+    for (let q = bounds.minQ; q <= bounds.maxQ; q += 1) {
+      for (let r = bounds.minR; r <= bounds.maxR; r += 1) allCells.push([q, r]);
+    }
+    const visualBounds = axialVisualBounds(allCells);
+    const cellHeight = 44;
+    const stageWidth = Math.ceil((visualBounds.maxX - visualBounds.minX) * cellHeight + 12);
+    const stageHeight = Math.ceil((visualBounds.maxY - visualBounds.minY) * cellHeight + 12);
+    const buttons = allCells.map(([q, r]) => {
+      const key = editorCellKey(q, r);
+      const center = axialCenter(q, r);
+      const left = (center.x - itemDbHexCellWidth / 2 - visualBounds.minX) * cellHeight + 6;
+      const top = (center.y - 0.5 - visualBounds.minY) * cellHeight + 6;
+      const labels = itemDbEffectSlots.filter((slot) => state.effects[slot].cells.has(key));
+      const isFootprint = footprintKeys.has(key);
+      return `<button type="button" data-itemdb-effect-cell="${key}" class="${isFootprint ? "footprint" : ""} ${labels.map((slot) => `effect-${slot.toLowerCase()}`).join(" ")}" aria-label="Q ${q}, R ${r}${isFootprint ? " 아이템 점유 칸" : ` 효과 ${labels.join(", ") || "없음"}`}" aria-pressed="${state.effects[state.effectSlot].cells.has(key)}" ${isFootprint ? "disabled" : ""} style="left:${left}px;top:${top}px;width:${itemDbHexCellWidth * cellHeight}px;height:${cellHeight}px"><span>${isFootprint ? "ITEM" : labels.join("")}</span></button>`;
+    }).join("");
+    return {
+      signature: `${bounds.minQ}:${bounds.maxQ}:${bounds.minR}:${bounds.maxR}`,
+      html: `<div class="itemdb-effect-grid" style="width:${stageWidth}px;height:${stageHeight}px">${buttons}</div>`,
+    };
+  }
+
+  function renderItemDbEffectGrid(state, forceCenter = false) {
+    const viewport = document.querySelector("[data-itemdb-effect-viewport]");
+    if (!viewport) return;
+    const markup = effectGridMarkup(state);
+    if (state.effectGridSignature !== markup.signature) {
+      state.effectGridSignature = markup.signature;
+      viewport.innerHTML = markup.html;
+      forceCenter = true;
+    }
+    if (forceCenter) {
+      requestAnimationFrame(() => {
+        viewport.scrollLeft = Math.max(0, (viewport.scrollWidth - viewport.clientWidth) / 2);
+        viewport.scrollTop = Math.max(0, (viewport.scrollHeight - viewport.clientHeight) / 2);
+      });
+    }
+  }
+
+  function updateItemDbEffectEditor(state) {
+    renderItemDbEffectGrid(state);
+    const current = state.effects[state.effectSlot];
+    const footprintKeys = new Set(currentEditorFootprint(state).map(([q, r]) => editorCellKey(q, r)));
+    document.querySelectorAll("[data-itemdb-effect-slot]").forEach((button) => {
+      const slot = button.dataset.itemdbEffectSlot;
+      const selected = slot === state.effectSlot;
+      button.classList.toggle("selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+      button.querySelector("small").textContent = `${state.effects[slot].cells.size}칸`;
+    });
+    document.querySelectorAll("[data-itemdb-effect-cell]").forEach((button) => {
+      const key = button.dataset.itemdbEffectCell;
+      const isFootprint = footprintKeys.has(key);
+      button.classList.toggle("footprint", isFootprint);
+      button.disabled = isFootprint;
+      if (isFootprint) {
+        button.querySelector("span").textContent = "ITEM";
+        button.setAttribute("aria-pressed", "false");
+        return;
+      }
+      const labels = itemDbEffectSlots.filter((slot) => state.effects[slot].cells.has(key));
+      const [q, r] = key.split(",");
+      itemDbEffectSlots.forEach((slot) => button.classList.toggle(`effect-${slot.toLowerCase()}`, labels.includes(slot)));
+      button.querySelector("span").textContent = labels.join("");
+      button.setAttribute("aria-label", `Q ${q}, R ${r} 효과 ${labels.join(", ") || "없음"}`);
+      button.setAttribute("aria-pressed", String(current.cells.has(key)));
+    });
+    const definition = document.querySelector("[data-itemdb-effect-definition]");
+    if (definition) {
+      const catalog = itemDb.effect_catalog || {};
+      const maps = itemEffectCatalogMaps();
+      const type = maps.types.get(current.type_id);
+      const ruleDisabled = current.cells.size === 0;
+      const conditionNames = current.condition_ids.map((id) => maps.conditions.get(id)?.display_name || id);
+      const abilityNames = current.ability_ids.map((id) => maps.abilities.get(id)?.display_name || id);
+      const preview = current.cells.size
+        ? `효과 칸에 ${conditionNames.length ? conditionNames.join(" + ") : "아무"} 아이템이 있으면 ${abilityNames.length ? abilityNames.join(" · ") : "능력 미선택"}`
+        : "칸을 선택하면 이 슬롯의 규칙을 배정할 수 있습니다.";
+      definition.innerHTML = `
+        <p class="itemdb-effect-rule-preview" data-ready="${Boolean(current.cells.size && type && current.ability_ids.length)}">${escapeHtml(preview)}</p>
+        <label class="itemdb-effect-type-field">
+          <span>효과 종류</span>
+          <select data-itemdb-effect-type ${ruleDisabled ? "disabled" : ""}>
+            <option value="">선택 안 함</option>
+            ${(catalog.types || []).map((entry) => `<option value="${escapeHtml(entry.id)}" ${entry.id === current.type_id ? "selected" : ""}>${escapeHtml(entry.display_name)} · ${escapeHtml(entry.id)}</option>`).join("")}
+          </select>
+          <small>${escapeHtml(type?.description || "효과가 언제 유지되는지 선택합니다.")}</small>
+        </label>
+        <div class="itemdb-effect-choice-group">
+          <span>적용 조건 <small>여러 개 선택 시 모두 만족</small></span>
+          <div>${(catalog.conditions || []).map((entry) => `<button type="button" data-itemdb-effect-condition="${escapeHtml(entry.id)}" aria-pressed="${current.condition_ids.includes(entry.id)}" class="${current.condition_ids.includes(entry.id) ? "selected" : ""}" ${ruleDisabled ? "disabled" : ""}><strong>${escapeHtml(entry.display_name)}</strong><small>${escapeHtml(entry.id)}</small></button>`).join("")}</div>
+        </div>
+        <div class="itemdb-effect-choice-group abilities">
+          <span>발현 능력 <small>한 개 이상 선택</small></span>
+          <div>${(catalog.abilities || []).map((entry) => `<button type="button" data-itemdb-effect-ability="${escapeHtml(entry.id)}" aria-pressed="${current.ability_ids.includes(entry.id)}" class="${current.ability_ids.includes(entry.id) ? "selected" : ""}" ${ruleDisabled ? "disabled" : ""}><strong>${escapeHtml(entry.display_name)}</strong><small>${escapeHtml(entry.id)}</small></button>`).join("")}</div>
+        </div>
+      `;
+    }
   }
 
   function clampEditorImage(state) {
@@ -976,6 +1245,12 @@
       [...state.synergies],
       (itemDb.synergy_catalog || []).map((entry) => entry.id),
     );
+    const effectValidation = itemDbTools.validateEffectZones(
+      effectPayloadFromState(state),
+      currentEditorFootprint(state),
+      itemDbEffectPadding,
+      itemDb.effect_catalog,
+    );
 
     stage.dataset.mode = state.mode;
     image.style.left = `${(state.imageX + itemDbEditorOriginX) / itemDbEditorStageWidth * 100}%`;
@@ -1001,14 +1276,16 @@
       button.setAttribute("aria-pressed", String(selected));
       button.disabled = state.synergies.size >= 3 && !selected;
     });
+    updateItemDbEffectEditor(state);
     dialog.querySelector("[data-itemdb-editor-save]").disabled = state.saving;
     const error = dialog.querySelector("[data-itemdb-editor-error]");
     if (!state.showErrors && !state.serverError) {
       error.hidden = true;
       return;
     }
-    error.textContent = state.serverError || [...validation.errors, ...synergyValidation.errors].join(" ");
-    error.hidden = !state.serverError && validation.valid && synergyValidation.valid;
+    error.textContent = state.serverError
+      || [...validation.errors, ...synergyValidation.errors, ...effectValidation.errors].join(" ");
+    error.hidden = !state.serverError && validation.valid && synergyValidation.valid && effectValidation.valid;
   }
 
   async function saveItemDbEditor() {
@@ -1021,8 +1298,14 @@
       [...state.synergies],
       (itemDb.synergy_catalog || []).map((entry) => entry.id),
     );
+    const effectValidation = itemDbTools.validateEffectZones(
+      effectPayloadFromState(state),
+      coordinates,
+      itemDbEffectPadding,
+      itemDb.effect_catalog,
+    );
     state.showErrors = true;
-    if (!validation.valid || !synergyValidation.valid) {
+    if (!validation.valid || !synergyValidation.valid || !effectValidation.valid) {
       updateItemDbEditor();
       return;
     }
@@ -1044,13 +1327,15 @@
           image_y: state.imageY,
           rotation_degrees: validation.rotation,
           synergies: synergyValidation.synergies,
+          effects: effectValidation.effects,
         }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `저장에 실패했습니다. (${response.status})`);
       const index = itemDb.items.findIndex((item) => item.id === state.item.id);
       if (index >= 0) itemDb.items[index] = payload.item;
-      itemDbNotice = `${payload.item.name}의 이미지 위치·${payload.item.image_layout.rotation_degrees}° 회전, ${payload.item.occupied_cells}칸 육각 점유 형태와 시너지 ${payload.item.synergies.length}개를 게임 데이터에 저장했습니다.`;
+      const effectCells = Object.values(payload.item.effects || {}).reduce((total, effect) => total + effect.cells.length, 0);
+      itemDbNotice = `${payload.item.name}의 이미지 위치·${payload.item.image_layout.rotation_degrees}° 회전, ${payload.item.occupied_cells}칸 점유 형태, 시너지 ${payload.item.synergies.length}개와 효과 영역 ${effectCells}칸을 저장했습니다.`;
       closeItemDbEditor();
       renderItemDb();
     } catch (error) {
@@ -1075,6 +1360,19 @@
       canvas_width: item.bounds.width,
       canvas_height: item.bounds.height,
     };
+    const centerDeltaQ = centeredCoordinates[0][0] - item.coordinates[0][0];
+    const centerDeltaR = centeredCoordinates[0][1] - item.coordinates[0][1];
+    const effects = Object.fromEntries(itemDbEffectSlots.map((slot) => {
+      const source = item.effects?.[slot] || {
+        cells: [], type_id: null, condition_ids: [], ability_ids: [],
+      };
+      return [slot, {
+        cells: new Set(source.cells.map(([q, r]) => editorCellKey(q + centerDeltaQ, r + centerDeltaR))),
+        type_id: source.type_id ?? null,
+        condition_ids: [...(source.condition_ids || [])],
+        ability_ids: [...(source.ability_ids || [])],
+      }];
+    }));
     itemDbEditorState = {
       item,
       scale: Number(layout.scale),
@@ -1085,6 +1383,9 @@
       rotation: itemDbTools.normalizeRotation(layout.rotation_degrees || 0),
       selected: new Set(centeredCoordinates.map(([q, r]) => editorCellKey(q, r))),
       synergies: new Set(item.synergies || []),
+      effects,
+      effectSlot: "A",
+      effectGridSignature: "",
       mode: "move",
       saving: false,
       showErrors: false,
@@ -1113,7 +1414,7 @@
       <div id="itemdb-editor-backdrop" class="itemdb-editor-backdrop">
         <section id="itemdb-editor-dialog" class="itemdb-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="itemdb-editor-title">
           <header>
-            <div><span>ITEM LAYOUT EDITOR</span><h2 id="itemdb-editor-title">${escapeHtml(item.name)}</h2><code>${escapeHtml(item.id)}</code><em class="itemdb-editor-apply-state">${layout.applied_to_game ? "게임 적용됨" : "저장 시 게임 적용"}</em></div>
+            <div><span>ITEM LAYOUT EDITOR</span><h2 id="itemdb-editor-title">${escapeHtml(item.name)}</h2><code>${escapeHtml(item.id)}</code><em class="itemdb-editor-apply-state" data-enabled="${item.enabled}">${item.enabled ? "ON · 베이크 포함" : "OFF · 게임 제외"}</em></div>
             <button type="button" class="itemdb-editor-close" data-itemdb-editor-close aria-label="편집기 닫기">×</button>
           </header>
           <div class="itemdb-editor-actionbar">
@@ -1154,6 +1455,18 @@
               <p>게임에 존재하는 시너지 중 0~3개를 선택하세요. 선택하지 않아도 저장할 수 있습니다.</p>
               <div class="itemdb-editor-synergy-families">${renderItemDbSynergyOptions(itemDbEditorState.synergies)}</div>
             </section>
+            <section class="itemdb-editor-effects" aria-labelledby="itemdb-editor-effect-title">
+              <div class="itemdb-editor-effect-heading">
+                <div><strong id="itemdb-editor-effect-title">Effect Areas</strong><p>아이템 점유 범위에서 상하좌우 5줄 더 넓은 칸을 직접 눌러 지정합니다. ITEM 칸은 다른 아이템이 들어갈 수 없어 선택되지 않습니다.</p></div>
+                <div class="itemdb-effect-slots" role="group" aria-label="편집할 효과 영역">
+                  ${itemDbEffectSlots.map((slot) => `<button type="button" data-itemdb-effect-slot="${slot}" aria-pressed="${slot === "A"}"><strong>${slot}</strong><small>${itemDbEditorState.effects[slot].cells.size}칸</small></button>`).join("")}
+                </div>
+              </div>
+              <div class="itemdb-effect-grid-viewport" data-itemdb-effect-viewport aria-label="효과 적용 칸 편집 영역"></div>
+              <div class="itemdb-effect-legend"><span data-slot="A">A</span><span data-slot="B">B</span><span data-slot="C">C</span><em>같은 칸에 여러 효과 영역을 겹쳐 지정할 수 있습니다.</em></div>
+              <div class="itemdb-effect-definition" data-itemdb-effect-definition></div>
+              <p class="itemdb-effect-future-note">선택한 종류·조건·능력은 안정적인 카탈로그 ID로 저장되고 ItemDB 리비전에 포함됩니다. 칸이 비어 있는 슬롯은 규칙도 자동으로 비웁니다.</p>
+            </section>
           </div>
         </section>
       </div>
@@ -1179,11 +1492,66 @@
       if (itemDbEditorState.mode !== "cells") return;
       const key = cell.dataset.itemdbEditorCell;
       if (itemDbEditorState.selected.has(key)) itemDbEditorState.selected.delete(key);
-      else itemDbEditorState.selected.add(key);
+      else {
+        itemDbEditorState.selected.add(key);
+        itemDbEffectSlots.forEach((slot) => itemDbEditorState.effects[slot].cells.delete(key));
+      }
+      pruneEffectCellsToFootprint(itemDbEditorState);
       itemDbEditorState.showErrors = false;
       itemDbEditorState.serverError = "";
       updateItemDbEditor();
     }));
+    dialog.querySelectorAll("[data-itemdb-effect-slot]").forEach((button) => {
+      button.addEventListener("click", () => {
+        itemDbEditorState.effectSlot = button.dataset.itemdbEffectSlot;
+        itemDbEditorState.showErrors = false;
+        itemDbEditorState.serverError = "";
+        updateItemDbEditor();
+      });
+    });
+    dialog.querySelector("[data-itemdb-effect-viewport]").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-itemdb-effect-cell]");
+      if (!button || button.disabled) return;
+      const cells = itemDbEditorState.effects[itemDbEditorState.effectSlot].cells;
+      const key = button.dataset.itemdbEffectCell;
+      const effect = itemDbEditorState.effects[itemDbEditorState.effectSlot];
+      if (cells.has(key)) {
+        cells.delete(key);
+        if (!cells.size) {
+          effect.type_id = null;
+          effect.condition_ids = [];
+          effect.ability_ids = [];
+        }
+      } else {
+        cells.add(key);
+        if (!effect.type_id) effect.type_id = itemDb.effect_catalog?.types?.[0]?.id || null;
+      }
+      itemDbEditorState.showErrors = false;
+      itemDbEditorState.serverError = "";
+      updateItemDbEditor();
+    });
+    const effectDefinition = dialog.querySelector("[data-itemdb-effect-definition]");
+    effectDefinition.addEventListener("change", (event) => {
+      if (!event.target.matches("[data-itemdb-effect-type]")) return;
+      itemDbEditorState.effects[itemDbEditorState.effectSlot].type_id = event.target.value || null;
+      itemDbEditorState.showErrors = false;
+      itemDbEditorState.serverError = "";
+      updateItemDbEditor();
+    });
+    effectDefinition.addEventListener("click", (event) => {
+      const conditionButton = event.target.closest("[data-itemdb-effect-condition]");
+      const abilityButton = event.target.closest("[data-itemdb-effect-ability]");
+      if (!conditionButton && !abilityButton) return;
+      const effect = itemDbEditorState.effects[itemDbEditorState.effectSlot];
+      const field = conditionButton ? "condition_ids" : "ability_ids";
+      const id = conditionButton?.dataset.itemdbEffectCondition || abilityButton.dataset.itemdbEffectAbility;
+      effect[field] = effect[field].includes(id)
+        ? effect[field].filter((entry) => entry !== id)
+        : [...effect[field], id];
+      itemDbEditorState.showErrors = false;
+      itemDbEditorState.serverError = "";
+      updateItemDbEditor();
+    });
     dialog.querySelectorAll("[data-itemdb-editor-synergy]").forEach((button) => button.addEventListener("click", () => {
       const synergyId = button.dataset.itemdbEditorSynergy;
       if (itemDbEditorState.synergies.has(synergyId)) itemDbEditorState.synergies.delete(synergyId);
@@ -1251,6 +1619,7 @@
     image.addEventListener("pointerup", finishDrag);
     image.addEventListener("pointercancel", finishDrag);
     dialog.querySelector("[data-itemdb-editor-save]").addEventListener("click", saveItemDbEditor);
+    renderItemDbEffectGrid(itemDbEditorState, true);
     updateItemDbEditor();
     scaleInput.focus();
   }
@@ -1273,13 +1642,16 @@
         <header><h2>${escapeHtml(family.label)}</h2><span>${family.items.length}개</span></header>
         <div class="itemdb-table-wrap">
           <table class="itemdb-table">
-            <thead><tr><th>이미지</th><th>아이템</th><th>분류·크기</th><th>점유 형태</th><th>시너지</th><th>능력치 초안</th><th>콘셉트</th>${canEditItemDb ? "<th>편집</th>" : ""}</tr></thead>
+            <thead><tr><th>이미지</th><th>게임</th><th>아이템</th><th>분류·크기</th><th>점유 형태</th><th>시너지</th><th>효과 칸 능력</th><th>능력치 초안</th><th>콘셉트</th>${canEditItemDb ? "<th>편집</th>" : ""}</tr></thead>
             <tbody>${renderItemRows(family.items)}</tbody>
           </table>
         </div>
       </section>
     `).join("");
     if (canEditItemDb) {
+      results.querySelectorAll("[data-itemdb-toggle]").forEach((button) => {
+        button.addEventListener("click", () => toggleItemDbEnabled(button.dataset.itemdbToggle, button));
+      });
       results.querySelectorAll("[data-itemdb-edit]").forEach((button) => {
         button.addEventListener("click", () => openItemDbEditor(button.dataset.itemdbEdit));
       });
@@ -1300,7 +1672,7 @@
           <div class="itemdb-hero-row">
             <div><h1>ItemDB</h1><p>게임 아이템의 이미지, 점유 형태, 시너지와 능력치 초안을 한 곳에서 비교합니다. 로컬 에디터의 저장값은 게임 데이터와 공개 DB에 함께 반영됩니다.</p></div>
             <div class="itemdb-hero-actions">
-              <span class="itemdb-total"><strong>${itemDb.count}</strong><small>ITEMS</small></span>
+              <span class="itemdb-total"><strong>${itemDb.active_count}</strong><small>GAME ON · ${itemDb.count} TOTAL</small></span>
               ${canEditItemDb ? '<button type="button" class="itemdb-bake-button" data-itemdb-bake>게임에 굽기</button>' : ""}
             </div>
           </div>
@@ -1313,11 +1685,12 @@
             <div><span>단일 원본</span><code>${escapeHtml(itemDb.source)}</code></div>
           </div>
         </header>
+        ${renderItemEffectCatalog()}
         <section class="itemdb-toolbar" aria-label="ItemDB 검색과 분류">
           <label><span class="visually-hidden">아이템 검색</span><input id="itemdb-search" type="search" value="${escapeHtml(itemDbQuery)}" placeholder="이름, ID, 시너지, 능력치, 콘셉트 검색…"></label>
           <div class="itemdb-family-filter" role="group" aria-label="아이템 대분류">
-            <button type="button" data-itemdb-family="all">전체 <span>${itemDb.count}</span></button>
-            ${itemDb.families.map((family) => `<button type="button" data-itemdb-family="${escapeHtml(family.id)}">${escapeHtml(family.label)} <span>${family.count}</span></button>`).join("")}
+            <button type="button" data-itemdb-family="all">전체 <span>${itemDb.active_count}/${itemDb.count}</span></button>
+            ${itemDb.families.map((family) => `<button type="button" data-itemdb-family="${escapeHtml(family.id)}">${escapeHtml(family.label)} <span>${family.active_count}/${family.count}</span></button>`).join("")}
           </div>
           <strong id="itemdb-result-count"></strong>
         </section>
