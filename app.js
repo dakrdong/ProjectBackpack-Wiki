@@ -6,6 +6,7 @@
   const itemDbTools = window.PACKBOUND_ITEM_DB_TOOLS;
   const combatDb = window.PACKBOUND_COMBAT_DB;
   const combatDbTools = window.PACKBOUND_COMBAT_DB_TOOLS;
+  const runeBoardDb = window.PACKBOUND_RUNE_BOARD_DB;
   const tagExplorer = window.PACKBOUND_TAG_EXPLORER;
   const localAccess = window.PACKBOUND_LOCAL_ACCESS;
   const markdownMedia = window.PACKBOUND_MARKDOWN_MEDIA;
@@ -43,6 +44,7 @@
   const itemDbEditorOriginY = itemDbEditorRadius + 0.5;
   const itemDbEffectSlots = ["A", "B", "C"];
   const itemDbEffectPadding = 5;
+  const itemDbEditorSpan = 5;
   const legacyLocalHostKey = `canUse${"Ro"}${"jo"}Control`;
   const localHostCheck = typeof localAccess?.isLocalHost === "function"
     ? localAccess.isLocalHost
@@ -56,10 +58,23 @@
   let selectedTag = null;
   let itemDbQuery = "";
   let itemDbFamily = "all";
+  let itemDbEnabledFilter = "all";
+  let itemDbCellFilter = { minimum: null, maximum: null };
+  let itemDbSelectedSynergies = new Set();
   let itemDbEditorState = null;
+  let itemDbScrollDockController = null;
   let itemDbBakeState = null;
   let itemDbNotice = "";
+  let itemDbEffectCatalogOpen = true;
   let structuredDbState = { databaseId: null, query: "", filters: {} };
+  let runeBoardExplorerState = {
+    itemId: "",
+    variant: 1,
+    selectedCell: 0,
+    regionFilter: null,
+    gradeFilter: null,
+    abilityFilter: "",
+  };
   let imageViewerReturnFocus = null;
   let dateRange = { from: "", to: "" };
   let filteredPages = wiki?.pages || [];
@@ -103,8 +118,8 @@
     main.innerHTML = '<div class="empty-state">위키 시간순 탐색 모듈을 불러오지 못했습니다.</div>';
     return;
   }
-  if (!combatDb || !combatDbTools) {
-    main.innerHTML = '<div class="empty-state">전투 DB 모듈을 불러오지 못했습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
+  if (!combatDb || !combatDbTools || !runeBoardDb) {
+    main.innerHTML = '<div class="empty-state">구조화 DB 모듈을 불러오지 못했습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
     return;
   }
 
@@ -362,7 +377,7 @@
         unit: "ITEMS",
         href: itemDbHref(),
       },
-      ...(combatDb.databases || []).map((database) => ({
+      ...[...(combatDb.databases || []), ...(runeBoardDb.databases || [])].map((database) => ({
         id: database.id,
         title: database.title,
         description: database.description,
@@ -731,25 +746,21 @@
   }
 
   function renderFootprint(item) {
+    const cellSize = 14;
+    const width = item.bounds?.width || 1;
+    const height = item.bounds?.height || 1;
     const occupied = new Set(item.coordinates.map(([x, y]) => `${x},${y}`));
     const cells = [];
-    const cellHeight = 12;
-    const bounds = axialVisualBounds(item.coordinates);
-    item.coordinates.forEach(([q, r]) => {
-      const center = axialCenter(q, r);
-      const left = (center.x - itemDbHexCellWidth / 2 - bounds.minX) * cellHeight;
-      const top = (center.y - 0.5 - bounds.minY) * cellHeight;
-      cells.push(`<i class="${occupied.has(`${q},${r}`) ? "occupied" : "empty"}" style="left:${left}px;top:${top}px"></i>`);
-    });
-    const visualWidth = (bounds.maxX - bounds.minX) * cellHeight;
-    const visualHeight = (bounds.maxY - bounds.minY) * cellHeight;
-    const spans = item.axial_bounds || {};
-    return `
-      <div class="itemdb-footprint">
-        <span class="itemdb-footprint-grid" style="width:${visualWidth + 10}px;height:${visualHeight + 10}px">${cells.join("")}</span>
-        <span><strong>Q${spans.q || "–"} · R${spans.r || "–"} · S${spans.s || "–"} · ${item.occupied_cells}칸</strong><code>${escapeHtml(item.pattern)}</code></span>
-      </div>
-    `;
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        cells.push(`<i class="${occupied.has(`${x},${y}`) ? "occupied" : "empty"}" style="left:${x * cellSize + 4}px;top:${y * cellSize + 4}px"></i>`);
+      }
+    }
+    const grid = `<span class="itemdb-footprint-grid" style="width:${width * cellSize + 8}px;height:${height * cellSize + 8}px">${cells.join("")}</span>`;
+    const preview = canEditItemDb
+      ? `<button type="button" class="itemdb-footprint-trigger" data-itemdb-edit="${escapeHtml(item.id)}" aria-label="${escapeHtml(item.name)} ${item.occupied_cells}칸 점유 형태 편집">${grid}</button>`
+      : grid;
+    return `<div class="itemdb-footprint">${preview}<strong>${item.occupied_cells}칸</strong></div>`;
   }
 
   function renderItemSynergies(item) {
@@ -801,7 +812,7 @@
     const maps = itemEffectCatalogMaps();
     const targetLabels = { SourceItem: "이 아이템", MatchingItem: "연결 아이템", Owner: "플레이어" };
     return `
-      <details class="itemdb-effect-catalog" open>
+      <details class="itemdb-effect-catalog" data-itemdb-effect-catalog${itemDbEffectCatalogOpen ? " open" : ""}>
         <summary>
           <span><strong>효과 칸 능력 카탈로그</strong><small>4개 게임 조사 패턴과 현재 배정 가능한 규칙</small></span>
           <em>${(catalog.research_patterns || []).length} 패턴 · ${(catalog.conditions || []).length} 조건 · ${(catalog.abilities || []).length} 능력</em>
@@ -857,7 +868,7 @@
 
   function renderItemRows(items) {
     return items.map((item) => `
-      <tr data-itemdb-enabled="${item.enabled}">
+      <tr data-itemdb-item-id="${escapeHtml(item.id)}" data-itemdb-enabled="${item.enabled}">
         <td class="itemdb-image-cell">
           <button type="button" class="itemdb-image-trigger" data-image-viewer-src="${escapeHtml(item.image_url || item.image)}" data-image-viewer-alt="${escapeHtml(item.name)} 아이템 이미지" data-image-viewer-caption="${escapeHtml(item.name)}" aria-label="${escapeHtml(item.name)} 이미지 크게 보기">
             <img src="${escapeHtml(item.image_url || item.image)}" alt="${escapeHtml(item.name)} 아이템 이미지" loading="lazy" decoding="async" style="transform:rotate(${Number(item.image_layout?.rotation_degrees || 0)}deg)">
@@ -871,13 +882,44 @@
         <td class="itemdb-identity"><strong>${escapeHtml(item.name)}</strong><code>${escapeHtml(item.id)}</code></td>
         <td><span class="itemdb-family-badge" data-family="${escapeHtml(item.family)}">${escapeHtml(item.family_label)}</span><small>${escapeHtml(item.type_size)}</small></td>
         <td>${renderFootprint(item)}</td>
-        <td>${renderItemSynergies(item)}</td>
-        <td>${renderItemEffects(item)}</td>
-        <td><div class="itemdb-stats">${item.stats.map((stat) => `<span>${escapeHtml(stat)}</span>`).join("")}</div></td>
+        <td><strong>${escapeHtml(item.role)}</strong><small>${escapeHtml(`${Number(item.weight_kg).toFixed(1)}Kg`)}</small></td>
         <td class="itemdb-concept">${escapeHtml(item.concept)}</td>
-        ${canEditItemDb ? `<td class="itemdb-action-cell"><button type="button" data-itemdb-edit="${escapeHtml(item.id)}">Edit</button></td>` : ""}
+        <td><small>${item.combat_art ? `${escapeHtml(item.combat_art.native_facing)} · ${escapeHtml(item.combat_art.attack_motion)} · ${escapeHtml(item.combat_art.pivot)}` : "장착 아이콘"}</small></td>
+        <td><button type="button" class="itemdb-rune-link" data-itemdb-rune-board="${escapeHtml(item.id)}"><strong>10</strong><span>룬 보드 후보</span></button></td>
       </tr>
     `).join("");
+  }
+
+  function findItemDbRow(itemId) {
+    return [...document.querySelectorAll("[data-itemdb-item-id]")]
+      .find((row) => row.dataset.itemdbItemId === itemId) || null;
+  }
+
+  function captureItemDbViewState(itemId) {
+    const row = findItemDbRow(itemId);
+    const table = row?.closest(".itemdb-table-wrap");
+    return {
+      itemId,
+      pageX: window.scrollX,
+      pageY: window.scrollY,
+      rowTop: row?.getBoundingClientRect().top ?? null,
+      tableScrollLeft: table?.scrollLeft ?? 0,
+    };
+  }
+
+  function restoreItemDbViewState(state) {
+    if (!state) return;
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(state.pageX, state.pageY);
+    const row = findItemDbRow(state.itemId);
+    const table = row?.closest(".itemdb-table-wrap");
+    if (table) table.scrollLeft = state.tableScrollLeft;
+    if (row && Number.isFinite(state.rowTop)) {
+      window.scrollBy(0, row.getBoundingClientRect().top - state.rowTop);
+    }
+    root.style.scrollBehavior = previousScrollBehavior;
   }
 
   function refreshItemDbCounts() {
@@ -890,6 +932,7 @@
   async function toggleItemDbEnabled(itemId, button) {
     const item = itemDb.items.find((candidate) => candidate.id === itemId);
     if (!item || !canEditItemDb || button.disabled) return;
+    const viewState = captureItemDbViewState(item.id);
     const nextEnabled = !item.enabled;
     button.disabled = true;
     try {
@@ -904,11 +947,11 @@
       if (index >= 0) itemDb.items[index] = payload.item;
       refreshItemDbCounts();
       itemDbNotice = `${payload.item.name}을(를) ${payload.item.enabled ? "ON" : "OFF"}으로 저장했습니다. ${payload.item.enabled ? "다음 베이크에 포함됩니다." : "웹 DB에는 남지만 다음 베이크부터 게임에서 제외됩니다."}`;
-      renderItemDb();
+      renderItemDb({ viewState });
     } catch (error) {
       button.disabled = false;
       itemDbNotice = String(error.message || error);
-      renderItemDb();
+      renderItemDb({ viewState });
     }
   }
 
@@ -1207,23 +1250,39 @@
   }
 
   function clampEditorImage(state) {
-    const width = state.canvasWidth * state.scale;
-    const height = state.canvasHeight * state.scale;
-    const radians = state.rotation * Math.PI / 180;
-    const rotatedWidth = Math.abs(width * Math.cos(radians)) + Math.abs(height * Math.sin(radians));
-    const rotatedHeight = Math.abs(width * Math.sin(radians)) + Math.abs(height * Math.cos(radians));
-    const centerX = state.imageX + width / 2;
-    const centerY = state.imageY + height / 2;
-    const clampedCenterX = Math.min(
-      itemDbEditorStageWidth - itemDbEditorOriginX - 0.5 + rotatedWidth / 2,
-      Math.max(-itemDbEditorOriginX + 0.5 - rotatedWidth / 2, centerX),
-    );
-    const clampedCenterY = Math.min(
-      itemDbEditorStageHeight - itemDbEditorOriginY - 0.5 + rotatedHeight / 2,
-      Math.max(-itemDbEditorOriginY + 0.5 - rotatedHeight / 2, centerY),
-    );
-    state.imageX = clampedCenterX - width / 2;
-    state.imageY = clampedCenterY - height / 2;
+    state.imageCenterX = Math.max(-itemDbEditorSpan, Math.min(itemDbEditorSpan * 2, state.imageCenterX));
+    state.imageCenterY = Math.max(-itemDbEditorSpan, Math.min(itemDbEditorSpan * 2, state.imageCenterY));
+  }
+
+  function squareEditorBounds(cells) {
+    const resolved = cells.length ? cells : [[0, 0]];
+    const xs = resolved.map(([x]) => x);
+    const ys = resolved.map(([, y]) => y);
+    const minX = Math.min(...xs);
+    const minY = Math.min(...ys);
+    const maxX = Math.max(...xs);
+    const maxY = Math.max(...ys);
+    return {
+      minX,
+      minY,
+      maxX,
+      maxY,
+      width: maxX - minX + 1,
+      height: maxY - minY + 1,
+      centerX: (minX + maxX + 1) / 2,
+      centerY: (minY + maxY + 1) / 2,
+    };
+  }
+
+  function editorImagePersistence(state) {
+    const footprint = [...state.selected].map((key) => key.split(",").map(Number));
+    const bounds = squareEditorBounds(footprint);
+    const footprintSpan = Math.max(bounds.width, bounds.height);
+    return {
+      scale: state.imageSize / footprintSpan,
+      offsetX: state.imageCenterX - bounds.centerX,
+      offsetY: state.imageCenterY - bounds.centerY,
+    };
   }
 
   function updateItemDbEditor() {
@@ -1236,27 +1295,18 @@
     const modeText = dialog.querySelector("[data-itemdb-editor-mode-text]");
     const count = dialog.querySelector("[data-itemdb-editor-count]");
     const position = dialog.querySelector("[data-itemdb-editor-position]");
+    const persistence = editorImagePersistence(state);
     const validation = itemDbTools.validateLayout(
       [...state.selected].map((key) => key.split(",").map(Number)),
-      state.scale,
+      persistence.scale,
       state.rotation,
-    );
-    const synergyValidation = itemDbTools.validateSynergies(
-      [...state.synergies],
-      (itemDb.synergy_catalog || []).map((entry) => entry.id),
-    );
-    const effectValidation = itemDbTools.validateEffectZones(
-      effectPayloadFromState(state),
-      currentEditorFootprint(state),
-      itemDbEffectPadding,
-      itemDb.effect_catalog,
     );
 
     stage.dataset.mode = state.mode;
-    image.style.left = `${(state.imageX + itemDbEditorOriginX) / itemDbEditorStageWidth * 100}%`;
-    image.style.top = `${(state.imageY + itemDbEditorOriginY) / itemDbEditorStageHeight * 100}%`;
-    image.style.width = `${state.canvasWidth * state.scale / itemDbEditorStageWidth * 100}%`;
-    image.style.height = `${state.canvasHeight * state.scale / itemDbEditorStageHeight * 100}%`;
+    image.style.left = `${(state.imageCenterX - state.imageSize / 2) / itemDbEditorSpan * 100}%`;
+    image.style.top = `${(state.imageCenterY - state.imageSize / 2) / itemDbEditorSpan * 100}%`;
+    image.style.width = `${state.imageSize / itemDbEditorSpan * 100}%`;
+    image.style.height = `${state.imageSize / itemDbEditorSpan * 100}%`;
     image.style.transform = `rotate(${state.rotation}deg)`;
     image.style.opacity = state.mode === "cells" ? "0.3" : "1";
     modeButton.textContent = state.mode === "cells" ? "이미지 이동하기" : "칸 설정하기";
@@ -1264,28 +1314,19 @@
       ? "이미지는 잠겼습니다. 바닥 칸을 눌러 점유 영역을 선택하세요."
       : "이미지를 드래그해 위치를 정한 뒤 칸 설정하기를 누르세요.";
     count.textContent = `${state.selected.size}칸 선택`;
-    position.textContent = `X ${state.imageX.toFixed(2)} · Y ${state.imageY.toFixed(2)} · 회전 ${state.rotation.toFixed(1)}°`;
+    position.textContent = `이미지 중심 X ${state.imageCenterX.toFixed(2)} · Y ${state.imageCenterY.toFixed(2)} · 회전 ${state.rotation}°`;
     dialog.querySelectorAll("[data-itemdb-editor-cell]").forEach((cell) => {
       cell.classList.toggle("selected", state.selected.has(cell.dataset.itemdbEditorCell));
       cell.setAttribute("aria-pressed", String(state.selected.has(cell.dataset.itemdbEditorCell)));
     });
-    dialog.querySelector("[data-itemdb-editor-synergy-count]").textContent = `${state.synergies.size} / 3`;
-    dialog.querySelectorAll("[data-itemdb-editor-synergy]").forEach((button) => {
-      const selected = state.synergies.has(button.dataset.itemdbEditorSynergy);
-      button.classList.toggle("selected", selected);
-      button.setAttribute("aria-pressed", String(selected));
-      button.disabled = state.synergies.size >= 3 && !selected;
-    });
-    updateItemDbEffectEditor(state);
     dialog.querySelector("[data-itemdb-editor-save]").disabled = state.saving;
     const error = dialog.querySelector("[data-itemdb-editor-error]");
     if (!state.showErrors && !state.serverError) {
       error.hidden = true;
       return;
     }
-    error.textContent = state.serverError
-      || [...validation.errors, ...synergyValidation.errors, ...effectValidation.errors].join(" ");
-    error.hidden = !state.serverError && validation.valid && synergyValidation.valid && effectValidation.valid;
+    error.textContent = state.serverError || validation.errors.join(" ");
+    error.hidden = !state.serverError && validation.valid;
   }
 
   async function saveItemDbEditor() {
@@ -1293,19 +1334,10 @@
     const dialog = document.getElementById("itemdb-editor-dialog");
     if (!state || !dialog || state.saving) return;
     const coordinates = [...state.selected].map((key) => key.split(",").map(Number));
-    const validation = itemDbTools.validateLayout(coordinates, state.scale, state.rotation);
-    const synergyValidation = itemDbTools.validateSynergies(
-      [...state.synergies],
-      (itemDb.synergy_catalog || []).map((entry) => entry.id),
-    );
-    const effectValidation = itemDbTools.validateEffectZones(
-      effectPayloadFromState(state),
-      coordinates,
-      itemDbEffectPadding,
-      itemDb.effect_catalog,
-    );
+    const persistence = editorImagePersistence(state);
+    const validation = itemDbTools.validateLayout(coordinates, persistence.scale, state.rotation);
     state.showErrors = true;
-    if (!validation.valid || !synergyValidation.valid || !effectValidation.valid) {
+    if (!validation.valid) {
       updateItemDbEditor();
       return;
     }
@@ -1323,21 +1355,19 @@
           item_id: state.item.id,
           coordinates: validation.cells,
           scale: validation.scale,
-          image_x: state.imageX,
-          image_y: state.imageY,
+          image_x: persistence.offsetX,
+          image_y: persistence.offsetY,
           rotation_degrees: validation.rotation,
-          synergies: synergyValidation.synergies,
-          effects: effectValidation.effects,
         }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `저장에 실패했습니다. (${response.status})`);
       const index = itemDb.items.findIndex((item) => item.id === state.item.id);
       if (index >= 0) itemDb.items[index] = payload.item;
-      const effectCells = Object.values(payload.item.effects || {}).reduce((total, effect) => total + effect.cells.length, 0);
-      itemDbNotice = `${payload.item.name}의 이미지 위치·${payload.item.image_layout.rotation_degrees}° 회전, ${payload.item.occupied_cells}칸 점유 형태, 시너지 ${payload.item.synergies.length}개와 효과 영역 ${effectCells}칸을 저장했습니다.`;
+      itemDbNotice = `${payload.item.name}의 ${payload.item.occupied_cells}칸 사각 점유 형태와 이미지 배치·${payload.item.image_layout.rotation_degrees}° 회전을 저장했습니다.`;
+      const viewState = state.viewState;
       closeItemDbEditor();
-      renderItemDb();
+      renderItemDb({ viewState });
     } catch (error) {
       state.saving = false;
       state.serverError = String(error.message || error);
@@ -1349,43 +1379,26 @@
   function openItemDbEditor(itemId) {
     const item = itemDb.items.find((candidate) => candidate.id === itemId);
     if (!item || !canEditItemDb) return;
+    const viewState = captureItemDbViewState(item.id);
     closeItemDbEditor();
-    const centeredCoordinates = centerAxialCells(item.coordinates);
-    const footprintBounds = axialVisualBounds(centeredCoordinates);
     const layout = item.image_layout || {
       scale: 1,
       offset_x: 0,
       offset_y: 0,
       rotation_degrees: 0,
-      canvas_width: item.bounds.width,
-      canvas_height: item.bounds.height,
     };
-    const centerDeltaQ = centeredCoordinates[0][0] - item.coordinates[0][0];
-    const centerDeltaR = centeredCoordinates[0][1] - item.coordinates[0][1];
-    const effects = Object.fromEntries(itemDbEffectSlots.map((slot) => {
-      const source = item.effects?.[slot] || {
-        cells: [], type_id: null, condition_ids: [], ability_ids: [],
-      };
-      return [slot, {
-        cells: new Set(source.cells.map(([q, r]) => editorCellKey(q + centerDeltaQ, r + centerDeltaR))),
-        type_id: source.type_id ?? null,
-        condition_ids: [...(source.condition_ids || [])],
-        ability_ids: [...(source.ability_ids || [])],
-      }];
-    }));
+    const initialBounds = squareEditorBounds(item.coordinates);
+    const initialSpan = Math.max(initialBounds.width, initialBounds.height);
     itemDbEditorState = {
       item,
       scale: Number(layout.scale),
-      canvasWidth: Number(layout.canvas_width),
-      canvasHeight: Number(layout.canvas_height),
-      imageX: footprintBounds.minX + Number(layout.offset_x),
-      imageY: footprintBounds.minY + Number(layout.offset_y),
+      imageBaseSize: initialSpan,
+      imageSize: initialSpan * Number(layout.scale),
+      imageCenterX: initialBounds.centerX + Number(layout.offset_x),
+      imageCenterY: initialBounds.centerY + Number(layout.offset_y),
       rotation: itemDbTools.normalizeRotation(layout.rotation_degrees || 0),
-      selected: new Set(centeredCoordinates.map(([q, r]) => editorCellKey(q, r))),
-      synergies: new Set(item.synergies || []),
-      effects,
-      effectSlot: "A",
-      effectGridSignature: "",
+      selected: new Set(item.coordinates.map(([x, y]) => editorCellKey(x, y))),
+      viewState,
       mode: "move",
       saving: false,
       showErrors: false,
@@ -1395,19 +1408,11 @@
     clampEditorImage(itemDbEditorState);
 
     const gridCells = [];
-    for (let q = -itemDbEditorRadius; q <= itemDbEditorRadius; q += 1) {
-      const minR = Math.max(-itemDbEditorRadius, -q - itemDbEditorRadius);
-      const maxR = Math.min(itemDbEditorRadius, -q + itemDbEditorRadius);
-      for (let r = minR; r <= maxR; r += 1) {
-        const key = editorCellKey(q, r);
-        const center = axialCenter(q, r);
-        const left = (center.x - itemDbHexCellWidth / 2 + itemDbEditorOriginX)
-          / itemDbEditorStageWidth * 100;
-        const top = (center.y - 0.5 + itemDbEditorOriginY) / itemDbEditorStageHeight * 100;
-        const width = itemDbHexCellWidth / itemDbEditorStageWidth * 100;
-        const height = 1 / itemDbEditorStageHeight * 100;
+    for (let y = 0; y < itemDbEditorSpan; y += 1) {
+      for (let x = 0; x < itemDbEditorSpan; x += 1) {
+        const key = editorCellKey(x, y);
         const selected = itemDbEditorState.selected.has(key);
-        gridCells.push(`<button type="button" data-itemdb-editor-cell="${key}" aria-label="Q ${q}, R ${r} 육각 칸" aria-pressed="${selected}" style="left:${left}%;top:${top}%;width:${width}%;height:${height}%"></button>`);
+        gridCells.push(`<button type="button" data-itemdb-editor-cell="${key}" aria-label="X ${x}, Y ${y} 사각 칸" aria-pressed="${selected}"></button>`);
       }
     }
     document.body.insertAdjacentHTML("beforeend", `
@@ -1435,38 +1440,21 @@
               <aside class="itemdb-editor-controls">
                 <label for="itemdb-editor-scale"><span>Image Scale</span><small>0.1–4.0 배율</small></label>
                 <input id="itemdb-editor-scale" type="number" min="0.1" max="4" step="0.05" value="${escapeHtml(layout.scale)}">
-                <label class="itemdb-editor-rotation-label" for="itemdb-editor-rotation"><span>Image Rotation</span><small>자유 각도 · ±60° 빠른 조절</small></label>
+                <label class="itemdb-editor-rotation-label" for="itemdb-editor-rotation"><span>Image Rotation</span><small>90° 단위 · 뒤집기 불가</small></label>
                 <div class="itemdb-editor-rotation">
-                  <button type="button" data-itemdb-editor-rotate="-60" aria-label="이미지를 왼쪽으로 60도 회전">−60°</button>
-                  <input id="itemdb-editor-rotation" type="number" min="-180" max="180" step="1" value="${escapeHtml(itemDbEditorState.rotation)}" aria-label="이미지 회전각">
-                  <button type="button" data-itemdb-editor-rotate="60" aria-label="이미지를 오른쪽으로 60도 회전">+60°</button>
+                  <button type="button" data-itemdb-editor-rotate="-90" aria-label="이미지를 왼쪽으로 90도 회전">−90°</button>
+                  <input id="itemdb-editor-rotation" type="number" min="0" max="270" step="90" value="${escapeHtml(itemDbEditorState.rotation)}" aria-label="이미지 회전각">
+                  <button type="button" data-itemdb-editor-rotate="90" aria-label="이미지를 오른쪽으로 90도 회전">+90°</button>
                 </div>
                 <p data-itemdb-editor-mode-text></p>
                 <button type="button" class="itemdb-editor-mode" data-itemdb-editor-mode>칸 설정하기</button>
                 <div class="itemdb-editor-rules">
                   <strong>저장 규칙</strong>
-                  <span>1칸 이상 선택</span><span>Q·R·S 각 축 최대 5칸</span><span>육각형 변으로 연결</span><span>시너지 0~3개</span>
+                  <span>1칸 이상 선택</span><span>최대 5×5 사각 범위</span><span>상하좌우 변으로 모두 연결</span><span>0°·90°·180°·270° 회전</span>
                 </div>
                 <p class="itemdb-editor-error" data-itemdb-editor-error role="alert" hidden></p>
               </aside>
             </div>
-            <section class="itemdb-editor-synergies" aria-labelledby="itemdb-editor-synergy-title">
-              <div class="itemdb-editor-synergy-heading"><strong id="itemdb-editor-synergy-title">Synergies</strong><span data-itemdb-editor-synergy-count></span></div>
-              <p>게임에 존재하는 시너지 중 0~3개를 선택하세요. 선택하지 않아도 저장할 수 있습니다.</p>
-              <div class="itemdb-editor-synergy-families">${renderItemDbSynergyOptions(itemDbEditorState.synergies)}</div>
-            </section>
-            <section class="itemdb-editor-effects" aria-labelledby="itemdb-editor-effect-title">
-              <div class="itemdb-editor-effect-heading">
-                <div><strong id="itemdb-editor-effect-title">Effect Areas</strong><p>아이템 점유 범위에서 상하좌우 5줄 더 넓은 칸을 직접 눌러 지정합니다. ITEM 칸은 다른 아이템이 들어갈 수 없어 선택되지 않습니다.</p></div>
-                <div class="itemdb-effect-slots" role="group" aria-label="편집할 효과 영역">
-                  ${itemDbEffectSlots.map((slot) => `<button type="button" data-itemdb-effect-slot="${slot}" aria-pressed="${slot === "A"}"><strong>${slot}</strong><small>${itemDbEditorState.effects[slot].cells.size}칸</small></button>`).join("")}
-                </div>
-              </div>
-              <div class="itemdb-effect-grid-viewport" data-itemdb-effect-viewport aria-label="효과 적용 칸 편집 영역"></div>
-              <div class="itemdb-effect-legend"><span data-slot="A">A</span><span data-slot="B">B</span><span data-slot="C">C</span><em>같은 칸에 여러 효과 영역을 겹쳐 지정할 수 있습니다.</em></div>
-              <div class="itemdb-effect-definition" data-itemdb-effect-definition></div>
-              <p class="itemdb-effect-future-note">선택한 종류·조건·능력은 안정적인 카탈로그 ID로 저장되고 ItemDB 리비전에 포함됩니다. 칸이 비어 있는 슬롯은 규칙도 자동으로 비웁니다.</p>
-            </section>
           </div>
         </section>
       </div>
@@ -1492,70 +1480,7 @@
       if (itemDbEditorState.mode !== "cells") return;
       const key = cell.dataset.itemdbEditorCell;
       if (itemDbEditorState.selected.has(key)) itemDbEditorState.selected.delete(key);
-      else {
-        itemDbEditorState.selected.add(key);
-        itemDbEffectSlots.forEach((slot) => itemDbEditorState.effects[slot].cells.delete(key));
-      }
-      pruneEffectCellsToFootprint(itemDbEditorState);
-      itemDbEditorState.showErrors = false;
-      itemDbEditorState.serverError = "";
-      updateItemDbEditor();
-    }));
-    dialog.querySelectorAll("[data-itemdb-effect-slot]").forEach((button) => {
-      button.addEventListener("click", () => {
-        itemDbEditorState.effectSlot = button.dataset.itemdbEffectSlot;
-        itemDbEditorState.showErrors = false;
-        itemDbEditorState.serverError = "";
-        updateItemDbEditor();
-      });
-    });
-    dialog.querySelector("[data-itemdb-effect-viewport]").addEventListener("click", (event) => {
-      const button = event.target.closest("[data-itemdb-effect-cell]");
-      if (!button || button.disabled) return;
-      const cells = itemDbEditorState.effects[itemDbEditorState.effectSlot].cells;
-      const key = button.dataset.itemdbEffectCell;
-      const effect = itemDbEditorState.effects[itemDbEditorState.effectSlot];
-      if (cells.has(key)) {
-        cells.delete(key);
-        if (!cells.size) {
-          effect.type_id = null;
-          effect.condition_ids = [];
-          effect.ability_ids = [];
-        }
-      } else {
-        cells.add(key);
-        if (!effect.type_id) effect.type_id = itemDb.effect_catalog?.types?.[0]?.id || null;
-      }
-      itemDbEditorState.showErrors = false;
-      itemDbEditorState.serverError = "";
-      updateItemDbEditor();
-    });
-    const effectDefinition = dialog.querySelector("[data-itemdb-effect-definition]");
-    effectDefinition.addEventListener("change", (event) => {
-      if (!event.target.matches("[data-itemdb-effect-type]")) return;
-      itemDbEditorState.effects[itemDbEditorState.effectSlot].type_id = event.target.value || null;
-      itemDbEditorState.showErrors = false;
-      itemDbEditorState.serverError = "";
-      updateItemDbEditor();
-    });
-    effectDefinition.addEventListener("click", (event) => {
-      const conditionButton = event.target.closest("[data-itemdb-effect-condition]");
-      const abilityButton = event.target.closest("[data-itemdb-effect-ability]");
-      if (!conditionButton && !abilityButton) return;
-      const effect = itemDbEditorState.effects[itemDbEditorState.effectSlot];
-      const field = conditionButton ? "condition_ids" : "ability_ids";
-      const id = conditionButton?.dataset.itemdbEffectCondition || abilityButton.dataset.itemdbEffectAbility;
-      effect[field] = effect[field].includes(id)
-        ? effect[field].filter((entry) => entry !== id)
-        : [...effect[field], id];
-      itemDbEditorState.showErrors = false;
-      itemDbEditorState.serverError = "";
-      updateItemDbEditor();
-    });
-    dialog.querySelectorAll("[data-itemdb-editor-synergy]").forEach((button) => button.addEventListener("click", () => {
-      const synergyId = button.dataset.itemdbEditorSynergy;
-      if (itemDbEditorState.synergies.has(synergyId)) itemDbEditorState.synergies.delete(synergyId);
-      else if (itemDbEditorState.synergies.size < 3) itemDbEditorState.synergies.add(synergyId);
+      else itemDbEditorState.selected.add(key);
       itemDbEditorState.showErrors = false;
       itemDbEditorState.serverError = "";
       updateItemDbEditor();
@@ -1563,12 +1488,8 @@
     scaleInput.addEventListener("input", () => {
       const nextScale = Number(scaleInput.value);
       if (!Number.isFinite(nextScale) || nextScale <= 0) return;
-      const centerX = itemDbEditorState.imageX + itemDbEditorState.canvasWidth * itemDbEditorState.scale / 2;
-      const centerY = itemDbEditorState.imageY
-        + itemDbEditorState.canvasHeight * itemDbEditorState.scale / 2;
       itemDbEditorState.scale = nextScale;
-      itemDbEditorState.imageX = centerX - itemDbEditorState.canvasWidth * nextScale / 2;
-      itemDbEditorState.imageY = centerY - itemDbEditorState.canvasHeight * nextScale / 2;
+      itemDbEditorState.imageSize = itemDbEditorState.imageBaseSize * nextScale;
       clampEditorImage(itemDbEditorState);
       itemDbEditorState.showErrors = false;
       itemDbEditorState.serverError = "";
@@ -1598,18 +1519,18 @@
         pointerId: event.pointerId,
         clientX: event.clientX,
         clientY: event.clientY,
-        imageX: itemDbEditorState.imageX,
-        imageY: itemDbEditorState.imageY,
+        imageCenterX: itemDbEditorState.imageCenterX,
+        imageCenterY: itemDbEditorState.imageCenterY,
       };
     });
     image.addEventListener("pointermove", (event) => {
       const drag = itemDbEditorState?.drag;
       if (!drag || drag.pointerId !== event.pointerId) return;
       const bounds = stage.getBoundingClientRect();
-      itemDbEditorState.imageX = drag.imageX
-        + (event.clientX - drag.clientX) / bounds.width * itemDbEditorStageWidth;
-      itemDbEditorState.imageY = drag.imageY
-        + (event.clientY - drag.clientY) / bounds.height * itemDbEditorStageHeight;
+      itemDbEditorState.imageCenterX = drag.imageCenterX
+        + (event.clientX - drag.clientX) / bounds.width * itemDbEditorSpan;
+      itemDbEditorState.imageCenterY = drag.imageCenterY
+        + (event.clientY - drag.clientY) / bounds.height * itemDbEditorSpan;
       clampEditorImage(itemDbEditorState);
       updateItemDbEditor();
     });
@@ -1619,21 +1540,247 @@
     image.addEventListener("pointerup", finishDrag);
     image.addEventListener("pointercancel", finishDrag);
     dialog.querySelector("[data-itemdb-editor-save]").addEventListener("click", saveItemDbEditor);
-    renderItemDbEffectGrid(itemDbEditorState, true);
     updateItemDbEditor();
     scaleInput.focus();
+  }
+
+  function itemDbCellLimits() {
+    const cellCounts = (itemDb?.items || [])
+      .map((item) => Number(item.occupied_cells))
+      .filter(Number.isFinite);
+    return {
+      minimum: cellCounts.length ? Math.min(...cellCounts) : 0,
+      maximum: cellCounts.length ? Math.max(...cellCounts) : 0,
+    };
+  }
+
+  function currentItemDbCellRange() {
+    const limits = itemDbCellLimits();
+    const minimum = Number.isFinite(itemDbCellFilter.minimum)
+      ? Math.max(limits.minimum, Math.min(itemDbCellFilter.minimum, limits.maximum))
+      : limits.minimum;
+    const maximum = Number.isFinite(itemDbCellFilter.maximum)
+      ? Math.max(limits.minimum, Math.min(itemDbCellFilter.maximum, limits.maximum))
+      : limits.maximum;
+    return minimum <= maximum
+      ? { minimum, maximum, limits }
+      : { minimum: maximum, maximum: minimum, limits };
+  }
+
+  function renderItemDbFilterFacets() {
+    const range = currentItemDbCellRange();
+    const synergyCounts = new Map((itemDb.synergy_catalog || []).map((entry) => [
+      entry.id,
+      itemDb.items.filter((item) => item.synergies?.includes(entry.id)).length,
+    ]));
+    return `
+      <div class="itemdb-facet-filters">
+        <section class="itemdb-cell-filter" aria-labelledby="itemdb-cell-filter-title">
+          <header>
+            <span><strong id="itemdb-cell-filter-title">점유 칸 수</strong><small data-itemdb-cell-filter-summary></small></span>
+            <button type="button" data-itemdb-cell-reset>전체</button>
+          </header>
+          <div>
+            <label><span>최소</span><input type="number" inputmode="numeric" step="1" min="${range.limits.minimum}" max="${range.limits.maximum}" value="${range.minimum}" data-itemdb-cell-min aria-label="최소 점유 칸 수"></label>
+            <i>~</i>
+            <label><span>최대</span><input type="number" inputmode="numeric" step="1" min="${range.limits.minimum}" max="${range.limits.maximum}" value="${range.maximum}" data-itemdb-cell-max aria-label="최대 점유 칸 수"></label>
+          </div>
+        </section>
+        <section class="itemdb-enabled-filter" aria-labelledby="itemdb-enabled-filter-title">
+          <header>
+            <span><strong id="itemdb-enabled-filter-title">게임 사용</strong><small>OFF 아이템 표시 여부</small></span>
+          </header>
+          <div role="group" aria-label="게임 사용 아이템 필터">
+            <button type="button" data-itemdb-enabled-filter="all" aria-pressed="${itemDbEnabledFilter === "all"}"><strong>전체 목록</strong><small>${itemDb.count}개</small></button>
+            <button type="button" data-itemdb-enabled-filter="on" aria-pressed="${itemDbEnabledFilter === "on"}"><strong>게임 ON만</strong><small>${itemDb.active_count}개</small></button>
+          </div>
+        </section>
+        <section class="itemdb-synergy-filter" aria-labelledby="itemdb-synergy-filter-title">
+          <header>
+            <span><strong id="itemdb-synergy-filter-title">시너지</strong><small>여러 개를 켜면 하나라도 일치하는 아이템 표시</small></span>
+            <em data-itemdb-synergy-filter-summary></em>
+            <button type="button" data-itemdb-synergy-clear>전체 해제</button>
+          </header>
+          <div class="itemdb-synergy-filter-grid">${(itemDb.synergy_catalog || []).map((entry) => {
+            const selected = itemDbSelectedSynergies.has(entry.id);
+            const color = entry.color || { r: 110, g: 140, b: 170 };
+            return `
+              <button type="button" data-itemdb-synergy="${escapeHtml(entry.id)}" aria-pressed="${selected}" aria-label="${escapeHtml(entry.label)} 시너지 필터 ${selected ? "끄기" : "켜기"}" title="${escapeHtml(entry.family_label)} · ${escapeHtml(entry.id)}" style="--synergy-rgb:${color.r},${color.g},${color.b}">
+                <img src="${escapeHtml(entry.icon_url)}" alt="" loading="lazy" decoding="async">
+                <span><strong>${escapeHtml(entry.label)}</strong><small>${synergyCounts.get(entry.id) || 0}개</small></span>
+              </button>
+            `;
+          }).join("")}</div>
+        </section>
+      </div>
+    `;
+  }
+
+  function syncItemDbFilterControls() {
+    const range = currentItemDbCellRange();
+    const minimumInput = document.querySelector("[data-itemdb-cell-min]");
+    const maximumInput = document.querySelector("[data-itemdb-cell-max]");
+    if (minimumInput) minimumInput.value = String(range.minimum);
+    if (maximumInput) maximumInput.value = String(range.maximum);
+    const cellSummary = document.querySelector("[data-itemdb-cell-filter-summary]");
+    if (cellSummary) cellSummary.textContent = `${range.minimum}~${range.maximum}칸`;
+    const cellReset = document.querySelector("[data-itemdb-cell-reset]");
+    if (cellReset) {
+      cellReset.disabled = range.minimum === range.limits.minimum
+        && range.maximum === range.limits.maximum;
+    }
+    document.querySelectorAll("[data-itemdb-enabled-filter]").forEach((button) => {
+      const selected = button.dataset.itemdbEnabledFilter === itemDbEnabledFilter;
+      button.classList.toggle("active", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+    document.querySelectorAll("[data-itemdb-synergy]").forEach((button) => {
+      const selected = itemDbSelectedSynergies.has(button.dataset.itemdbSynergy);
+      button.classList.toggle("active", selected);
+      button.setAttribute("aria-pressed", String(selected));
+      const label = button.querySelector("strong")?.textContent || button.dataset.itemdbSynergy;
+      button.setAttribute("aria-label", `${label} 시너지 필터 ${selected ? "끄기" : "켜기"}`);
+    });
+    const synergySummary = document.querySelector("[data-itemdb-synergy-filter-summary]");
+    if (synergySummary) {
+      synergySummary.textContent = itemDbSelectedSynergies.size
+        ? `${itemDbSelectedSynergies.size}개 ON · OR`
+        : "선택 없음 · 전체 표시";
+    }
+    const synergyClear = document.querySelector("[data-itemdb-synergy-clear]");
+    if (synergyClear) synergyClear.disabled = itemDbSelectedSynergies.size === 0;
+  }
+
+  function setItemDbCellFilter(bound, rawValue) {
+    if (rawValue === "") return;
+    const numericValue = Math.round(Number(rawValue));
+    if (!Number.isFinite(numericValue)) return;
+    const range = currentItemDbCellRange();
+    const clamped = Math.max(range.limits.minimum, Math.min(numericValue, range.limits.maximum));
+    if (bound === "minimum") {
+      itemDbCellFilter.minimum = clamped;
+      itemDbCellFilter.maximum = Math.max(clamped, range.maximum);
+    } else {
+      itemDbCellFilter.minimum = Math.min(range.minimum, clamped);
+      itemDbCellFilter.maximum = clamped;
+    }
+    renderItemDbResults();
+  }
+
+  function cleanupItemDbFloatingScroll() {
+    if (!itemDbScrollDockController) return;
+    itemDbScrollDockController.abort();
+    itemDbScrollDockController = null;
+    document.querySelector(".itemdb-scroll-dock")?.remove();
+  }
+
+  function setupItemDbFloatingScroll() {
+    cleanupItemDbFloatingScroll();
+    const wrappers = [...document.querySelectorAll(".itemdb-table-wrap")];
+    if (!wrappers.length) return;
+    const controller = new AbortController();
+    itemDbScrollDockController = controller;
+    const dock = document.createElement("div");
+    dock.className = "itemdb-scroll-dock";
+    dock.hidden = true;
+    dock.setAttribute("role", "scrollbar");
+    dock.setAttribute("aria-label", "현재 ItemDB 표 가로 스크롤");
+    dock.innerHTML = "<i aria-hidden=\"true\"></i>";
+    document.body.appendChild(dock);
+    const spacer = dock.firstElementChild;
+    let activeWrapper = null;
+    let syncing = false;
+    let scheduled = false;
+
+    const syncDockPosition = () => {
+      scheduled = false;
+      const viewportTop = 64;
+      const viewportBottom = window.innerHeight - 8;
+      const viewportCenter = (viewportTop + viewportBottom) / 2;
+      const visible = wrappers
+        .map((wrapper) => ({ wrapper, rect: wrapper.getBoundingClientRect() }))
+        .filter(({ wrapper, rect }) => (
+          wrapper.scrollWidth > wrapper.clientWidth + 1
+          && rect.bottom > viewportTop
+          && rect.top < viewportBottom
+        ));
+      if (!visible.length) {
+        activeWrapper = null;
+        dock.hidden = true;
+        return;
+      }
+      const selected = visible.find(({ rect }) => rect.top <= viewportCenter && rect.bottom >= viewportCenter)
+        || visible.sort((left, right) => (
+          Math.abs((left.rect.top + left.rect.bottom) / 2 - viewportCenter)
+          - Math.abs((right.rect.top + right.rect.bottom) / 2 - viewportCenter)
+        ))[0];
+      activeWrapper = selected.wrapper;
+      const nativeScrollbarVisible = selected.rect.bottom <= viewportBottom;
+      if (nativeScrollbarVisible) {
+        dock.hidden = true;
+        return;
+      }
+      const left = Math.max(12, selected.rect.left);
+      const width = Math.max(120, Math.min(selected.rect.width, window.innerWidth - left - 12));
+      dock.style.left = `${left}px`;
+      dock.style.width = `${width}px`;
+      spacer.style.width = `${activeWrapper.scrollWidth}px`;
+      syncing = true;
+      dock.scrollLeft = activeWrapper.scrollLeft;
+      syncing = false;
+      dock.setAttribute("aria-valuemin", "0");
+      dock.setAttribute("aria-valuemax", String(activeWrapper.scrollWidth - activeWrapper.clientWidth));
+      dock.setAttribute("aria-valuenow", String(Math.round(activeWrapper.scrollLeft)));
+      dock.hidden = false;
+    };
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(syncDockPosition);
+    };
+
+    dock.addEventListener("scroll", () => {
+      if (syncing || !activeWrapper) return;
+      syncing = true;
+      activeWrapper.scrollLeft = dock.scrollLeft;
+      dock.setAttribute("aria-valuenow", String(Math.round(dock.scrollLeft)));
+      syncing = false;
+    }, { signal: controller.signal, passive: true });
+    wrappers.forEach((wrapper) => {
+      wrapper.addEventListener("scroll", () => {
+        if (syncing || wrapper !== activeWrapper) return;
+        syncing = true;
+        dock.scrollLeft = wrapper.scrollLeft;
+        dock.setAttribute("aria-valuenow", String(Math.round(wrapper.scrollLeft)));
+        syncing = false;
+      }, { signal: controller.signal, passive: true });
+    });
+    window.addEventListener("scroll", schedule, { signal: controller.signal, passive: true });
+    window.addEventListener("resize", schedule, { signal: controller.signal, passive: true });
+    const observer = new ResizeObserver(schedule);
+    wrappers.forEach((wrapper) => observer.observe(wrapper));
+    controller.signal.addEventListener("abort", () => observer.disconnect(), { once: true });
+    syncDockPosition();
   }
 
   function renderItemDbResults() {
     const results = document.getElementById("itemdb-results");
     const resultCount = document.getElementById("itemdb-result-count");
     if (!results || !resultCount || !itemDb || !itemDbTools) return;
-    const filtered = itemDbTools.filterItems(itemDb.items, itemDbQuery, itemDbFamily);
+    const cellRange = currentItemDbCellRange();
+    const filtered = itemDbTools.filterItems(itemDb.items, itemDbQuery, itemDbFamily, {
+      minimumCells: cellRange.minimum,
+      maximumCells: cellRange.maximum,
+      synergies: [...itemDbSelectedSynergies],
+      enabledOnly: itemDbEnabledFilter === "on",
+    });
     resultCount.textContent = `${filtered.length}개 표시`;
     document.querySelectorAll("[data-itemdb-family]").forEach((button) => {
       button.classList.toggle("active", button.dataset.itemdbFamily === itemDbFamily);
     });
+    syncItemDbFilterControls();
     if (!filtered.length) {
+      cleanupItemDbFloatingScroll();
       results.innerHTML = '<div class="empty-state">조건에 맞는 아이템이 없습니다.</div>';
       return;
     }
@@ -1642,7 +1789,7 @@
         <header><h2>${escapeHtml(family.label)}</h2><span>${family.items.length}개</span></header>
         <div class="itemdb-table-wrap">
           <table class="itemdb-table">
-            <thead><tr><th>이미지</th><th>게임</th><th>아이템</th><th>분류·크기</th><th>점유 형태</th><th>시너지</th><th>효과 칸 능력</th><th>능력치 초안</th><th>콘셉트</th>${canEditItemDb ? "<th>편집</th>" : ""}</tr></thead>
+            <thead><tr><th>이미지</th><th>게임</th><th>아이템</th><th>부위·형태</th><th>사각 점유</th><th>역할·무게</th><th>콘셉트</th><th>전투 리소스 계약</th><th>룬 보드</th></tr></thead>
             <tbody>${renderItemRows(family.items)}</tbody>
           </table>
         </div>
@@ -1656,9 +1803,25 @@
         button.addEventListener("click", () => openItemDbEditor(button.dataset.itemdbEdit));
       });
     }
+    results.querySelectorAll("[data-itemdb-rune-board]").forEach((button) => {
+      button.addEventListener("click", () => {
+        runeBoardExplorerState = {
+          itemId: button.dataset.itemdbRuneBoard,
+          variant: 1,
+          selectedCell: 0,
+          regionFilter: null,
+          gradeFilter: null,
+          abilityFilter: "",
+        };
+        window.location.hash = databaseHref("rune-board-variants");
+      });
+    });
+    setupItemDbFloatingScroll();
   }
 
-  function renderItemDb() {
+  function renderItemDb({ viewState = null } = {}) {
+    const existingEffectCatalog = document.querySelector("[data-itemdb-effect-catalog]");
+    if (existingEffectCatalog) itemDbEffectCatalogOpen = existingEffectCatalog.open;
     document.title = "ItemDB · PackBound Wiki";
     renderNavigation("item-db", "database");
     if (!itemDb || !itemDbTools) {
@@ -1670,7 +1833,7 @@
         <header class="itemdb-hero">
           <div class="page-eyebrow">Generated catalog</div>
           <div class="itemdb-hero-row">
-            <div><h1>ItemDB</h1><p>게임 아이템의 이미지, 점유 형태, 시너지와 능력치 초안을 한 곳에서 비교합니다. 로컬 에디터의 저장값은 게임 데이터와 공개 DB에 함께 반영됩니다.</p></div>
+            <div><h1>ItemDB</h1><p>새 알파 장비 48종의 투명 이미지, 사각 점유 형태, 부위, 무게와 전투 리소스 계약을 한 곳에서 비교합니다. 폐기된 특수 아이템과 시너지는 포함하지 않습니다.</p></div>
             <div class="itemdb-hero-actions">
               <span class="itemdb-total"><strong>${itemDb.active_count}</strong><small>GAME ON · ${itemDb.count} TOTAL</small></span>
               ${canEditItemDb ? '<button type="button" class="itemdb-bake-button" data-itemdb-bake>게임에 굽기</button>' : ""}
@@ -1685,14 +1848,14 @@
             <div><span>단일 원본</span><code>${escapeHtml(itemDb.source)}</code></div>
           </div>
         </header>
-        ${renderItemEffectCatalog()}
         <section class="itemdb-toolbar" aria-label="ItemDB 검색과 분류">
-          <label><span class="visually-hidden">아이템 검색</span><input id="itemdb-search" type="search" value="${escapeHtml(itemDbQuery)}" placeholder="이름, ID, 시너지, 능력치, 콘셉트 검색…"></label>
+          <label><span class="visually-hidden">아이템 검색</span><input id="itemdb-search" type="search" value="${escapeHtml(itemDbQuery)}" placeholder="이름, ID, 부위, 형태, 역할, 콘셉트 검색…"></label>
           <div class="itemdb-family-filter" role="group" aria-label="아이템 대분류">
             <button type="button" data-itemdb-family="all">전체 <span>${itemDb.active_count}/${itemDb.count}</span></button>
             ${itemDb.families.map((family) => `<button type="button" data-itemdb-family="${escapeHtml(family.id)}">${escapeHtml(family.label)} <span>${family.active_count}/${family.count}</span></button>`).join("")}
           </div>
           <strong id="itemdb-result-count"></strong>
+          ${renderItemDbFilterFacets()}
         </section>
         ${itemDbNotice ? `<div class="itemdb-save-notice" role="status">${escapeHtml(itemDbNotice)}</div>` : ""}
         <div id="itemdb-results"></div>
@@ -1708,14 +1871,536 @@
         renderItemDbResults();
       });
     });
+    document.querySelector("[data-itemdb-cell-min]")?.addEventListener("input", (event) => {
+      setItemDbCellFilter("minimum", event.target.value);
+    });
+    document.querySelector("[data-itemdb-cell-max]")?.addEventListener("input", (event) => {
+      setItemDbCellFilter("maximum", event.target.value);
+    });
+    document.querySelectorAll("[data-itemdb-cell-min], [data-itemdb-cell-max]").forEach((input) => {
+      input.addEventListener("change", syncItemDbFilterControls);
+    });
+    document.querySelector("[data-itemdb-cell-reset]")?.addEventListener("click", () => {
+      itemDbCellFilter = { minimum: null, maximum: null };
+      renderItemDbResults();
+    });
+    document.querySelectorAll("[data-itemdb-enabled-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        itemDbEnabledFilter = button.dataset.itemdbEnabledFilter;
+        renderItemDbResults();
+      });
+    });
+    document.querySelectorAll("[data-itemdb-synergy]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const synergyId = button.dataset.itemdbSynergy;
+        if (itemDbSelectedSynergies.has(synergyId)) itemDbSelectedSynergies.delete(synergyId);
+        else itemDbSelectedSynergies.add(synergyId);
+        renderItemDbResults();
+      });
+    });
+    document.querySelector("[data-itemdb-synergy-clear]")?.addEventListener("click", () => {
+      itemDbSelectedSynergies.clear();
+      renderItemDbResults();
+    });
+    const effectCatalog = document.querySelector("[data-itemdb-effect-catalog]");
+    effectCatalog?.addEventListener("toggle", () => {
+      itemDbEffectCatalogOpen = effectCatalog.open;
+    });
     document.querySelector("[data-itemdb-bake]")?.addEventListener("click", openItemDbBake);
     renderItemDbResults();
     document.body.classList.remove("menu-open");
-    window.scrollTo(0, 0);
+    if (viewState) restoreItemDbViewState(viewState);
+    else window.scrollTo(0, 0);
+  }
+
+  function runeBoardCatalogItem(itemId) {
+    return (itemDb?.items || []).find((item) => item.id === itemId) || null;
+  }
+
+  function runeBoardGrade(grade) {
+    return runeBoardDb?.explorer?.contract?.grade_definitions?.find((entry) => entry.grade === grade)
+      || { grade, name: `G${grade}`, color: "#59616B" };
+  }
+
+  function decodeRuneBoardIndices(encoded) {
+    try {
+      const binary = window.atob(encoded || "");
+      return Uint8Array.from(binary, (character) => character.charCodeAt(0));
+    } catch (_error) {
+      return new Uint8Array();
+    }
+  }
+
+  function runeBoardPixelLayout(geometry) {
+    const cellWidth = 30;
+    const cellHeight = 26;
+    const xStep = cellWidth * 0.75;
+    const points = geometry.map((cell) => ({
+      ...cell,
+      pixelX: cell.q * xStep,
+      pixelY: (cell.r + cell.q / 2) * cellHeight,
+    }));
+    const minX = Math.min(...points.map((point) => point.pixelX));
+    const minY = Math.min(...points.map((point) => point.pixelY));
+    const maxX = Math.max(...points.map((point) => point.pixelX));
+    const maxY = Math.max(...points.map((point) => point.pixelY));
+    const padding = 22;
+    return {
+      width: Math.ceil(maxX - minX + cellWidth + padding * 2),
+      height: Math.ceil(maxY - minY + cellHeight + padding * 2),
+      cells: points.map((point) => ({
+        ...point,
+        left: Math.round(point.pixelX - minX + padding),
+        top: Math.round(point.pixelY - minY + padding),
+      })),
+    };
+  }
+
+  function runeBoardAbilityMeta(item, code) {
+    const explorer = runeBoardDb?.explorer;
+    const ability = item.ability_definitions?.[code];
+    const structural = explorer?.structural_rare_catalog?.[code];
+    return {
+      code,
+      label: ability?.name || structural?.label || (code === "NUMERIC_RARE" ? "수치형 레어 풀" : "고유 레어 풀"),
+    };
+  }
+
+  function renderRuneBoardRegionBoundaries(layout) {
+    const byCoordinate = new Map(layout.cells.map((cell) => [`${cell.q},${cell.r}`, cell]));
+    const directions = [
+      { dq: 0, dr: -1, corners: [0, 1] },
+      { dq: 1, dr: -1, corners: [1, 2] },
+      { dq: 1, dr: 0, corners: [2, 3] },
+      { dq: 0, dr: 1, corners: [3, 4] },
+      { dq: -1, dr: 1, corners: [4, 5] },
+      { dq: -1, dr: 0, corners: [5, 0] },
+    ];
+    const corners = [[7.5, 0], [22.5, 0], [30, 13], [22.5, 26], [7.5, 26], [0, 13]];
+    const lines = [];
+    layout.cells.forEach((cell) => {
+      directions.forEach(({ dq, dr, corners: edgeCorners }) => {
+        const neighbor = byCoordinate.get(`${cell.q + dq},${cell.r + dr}`);
+        if (neighbor?.region === cell.region) return;
+        if (neighbor && cell.index > neighbor.index) return;
+        const [from, to] = edgeCorners.map((index) => corners[index]);
+        const regionB = neighbor?.region ?? cell.region;
+        lines.push(`
+          <line class="rune-region-boundary" data-rune-region-a="${cell.region}" data-rune-region-b="${regionB}"
+            x1="${cell.left + from[0]}" y1="${cell.top + from[1]}" x2="${cell.left + to[0]}" y2="${cell.top + to[1]}"
+            style="--boundary-a:${escapeHtml(runeBoardGrade(cell.region).color)};--boundary-b:${escapeHtml(runeBoardGrade(regionB).color)}" />
+        `);
+      });
+    });
+    return `<svg class="rune-region-boundaries" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${lines.join("")}</svg>`;
+  }
+
+  function runeBoardFilterMatches(cell, grade, code) {
+    const regionMatches = runeBoardExplorerState.regionFilter == null
+      || cell.region === runeBoardExplorerState.regionFilter;
+    const gradeMatches = runeBoardExplorerState.gradeFilter == null
+      || grade === runeBoardExplorerState.gradeFilter;
+    const abilityMatches = !runeBoardExplorerState.abilityFilter
+      || code === runeBoardExplorerState.abilityFilter;
+    return regionMatches && gradeMatches && abilityMatches;
+  }
+
+  function renderRuneBoardFilters(item, variant) {
+    const explorer = runeBoardDb.explorer;
+    const abilityButtons = variant.codebook.map((code) => {
+      const meta = runeBoardAbilityMeta(item, code);
+      return `<button type="button" data-rune-filter-ability="${escapeHtml(code)}" aria-pressed="${runeBoardExplorerState.abilityFilter === code}" title="${escapeHtml(meta.label)}"><code>${escapeHtml(code)}</code><span>${escapeHtml(meta.label)}</span><em>${variant.ability_counts[code] || 0}</em></button>`;
+    }).join("");
+    const gradeButtons = explorer.contract.grade_definitions.map((entry) => `
+      <button type="button" data-rune-filter-grade="${entry.grade}" aria-pressed="${runeBoardExplorerState.gradeFilter === entry.grade}" style="--filter-color:${escapeHtml(entry.color)}"><i></i><span>G${entry.grade} ${escapeHtml(entry.name)}</span></button>
+    `).join("");
+    const regionButtons = explorer.contract.grade_definitions.map((entry) => `
+      <button type="button" data-rune-filter-region="${entry.grade}" aria-pressed="${runeBoardExplorerState.regionFilter === entry.grade}" style="--filter-color:${escapeHtml(entry.color)}"><i></i><span>G${entry.grade} 보드</span></button>
+    `).join("");
+    return `
+      <section class="rune-board-filters" aria-label="룬 보드 위치 필터">
+        <header><div><strong>보드 위치 찾기</strong><span>필터는 함께 적용되며, 조건 밖의 칸은 흐리게 표시됩니다.</span></div><button type="button" data-rune-filter-clear>전체 초기화</button></header>
+        <div class="rune-board-filter-group">
+          <strong>해금 보드</strong><div><button type="button" data-rune-filter-region="all" aria-pressed="${runeBoardExplorerState.regionFilter == null}">전체</button>${regionButtons}</div>
+        </div>
+        <div class="rune-board-filter-group">
+          <strong>능력 등급</strong><div><button type="button" data-rune-filter-grade="all" aria-pressed="${runeBoardExplorerState.gradeFilter == null}">전체</button>${gradeButtons}</div>
+        </div>
+        <div class="rune-board-filter-group abilities">
+          <strong>능력 코드</strong><div><button type="button" data-rune-filter-ability="all" aria-pressed="${!runeBoardExplorerState.abilityFilter}">전체</button>${abilityButtons}</div>
+        </div>
+        <p data-rune-filter-result>전체 ${explorer.geometry.length}칸 표시</p>
+      </section>
+    `;
+  }
+
+  function applyRuneBoardFilters(item, variant) {
+    const abilityIndices = decodeRuneBoardIndices(variant.ability_indices_base64);
+    const filtersActive = runeBoardExplorerState.regionFilter != null
+      || runeBoardExplorerState.gradeFilter != null
+      || Boolean(runeBoardExplorerState.abilityFilter);
+    let matches = 0;
+    document.querySelectorAll("[data-rune-board-cell]").forEach((button) => {
+      const index = Number(button.dataset.runeBoardCell);
+      const cell = runeBoardDb.explorer.geometry[index];
+      const grade = Number(variant.grade_codes[index] || 0);
+      const code = variant.codebook[abilityIndices[index]] || "UNKNOWN";
+      const matched = runeBoardFilterMatches(cell, grade, code);
+      if (matched) matches += 1;
+      button.classList.toggle("filter-match", filtersActive && matched);
+      button.classList.toggle("filtered-out", filtersActive && !matched);
+      button.dataset.filterMatch = String(matched);
+    });
+    document.querySelectorAll("[data-rune-filter-region]").forEach((button) => {
+      const value = button.dataset.runeFilterRegion;
+      const active = value === "all"
+        ? runeBoardExplorerState.regionFilter == null
+        : runeBoardExplorerState.regionFilter === Number(value);
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    document.querySelectorAll("[data-rune-filter-grade]").forEach((button) => {
+      const value = button.dataset.runeFilterGrade;
+      const active = value === "all"
+        ? runeBoardExplorerState.gradeFilter == null
+        : runeBoardExplorerState.gradeFilter === Number(value);
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    document.querySelectorAll("[data-rune-filter-ability]").forEach((button) => {
+      const value = button.dataset.runeFilterAbility;
+      const active = value === "all"
+        ? !runeBoardExplorerState.abilityFilter
+        : runeBoardExplorerState.abilityFilter === value;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    document.querySelectorAll(".rune-region-boundary").forEach((line) => {
+      const regionMatches = runeBoardExplorerState.regionFilter == null
+        || Number(line.dataset.runeRegionA) === runeBoardExplorerState.regionFilter
+        || Number(line.dataset.runeRegionB) === runeBoardExplorerState.regionFilter;
+      line.classList.toggle("filtered-out", !regionMatches);
+    });
+    document.querySelectorAll("[data-rune-ability-code]").forEach((card) => {
+      const active = !runeBoardExplorerState.abilityFilter
+        || card.dataset.runeAbilityCode === runeBoardExplorerState.abilityFilter;
+      card.classList.toggle("active", Boolean(runeBoardExplorerState.abilityFilter) && active);
+      card.classList.toggle("filtered-out", Boolean(runeBoardExplorerState.abilityFilter) && !active);
+    });
+    const result = document.querySelector("[data-rune-filter-result]");
+    if (result) result.textContent = filtersActive
+      ? `조건 일치 ${matches}칸 / ${runeBoardDb.explorer.geometry.length}칸`
+      : `전체 ${runeBoardDb.explorer.geometry.length}칸 표시`;
+  }
+
+  function runeBoardNode(item, variant, cellIndex) {
+    const explorer = runeBoardDb?.explorer;
+    const cell = explorer?.geometry?.[cellIndex];
+    if (!cell || !variant) return null;
+    const abilityIndices = decodeRuneBoardIndices(variant.ability_indices_base64);
+    const grade = Number(variant.grade_codes?.[cellIndex] || 0);
+    const code = variant.codebook?.[abilityIndices[cellIndex]] || "UNKNOWN";
+    const rareFlag = variant.rare_flags?.[cellIndex] || "N";
+    const ability = item.ability_definitions?.[code] || null;
+    const structural = explorer.structural_rare_catalog?.[code] || null;
+    const gradeInfo = runeBoardGrade(grade);
+    const value = ability?.grade_values?.[grade];
+    return { cell, grade, gradeInfo, code, rareFlag, ability, structural, value };
+  }
+
+  function runeBoardNodeLabel(node) {
+    if (!node) return "—";
+    if (node.ability) return node.ability.name;
+    if (node.structural) return node.structural.label;
+    if (node.code === "NUMERIC_RARE") return "수치형 레어 능력";
+    if (node.code === "SIGNATURE_RARE") return "고유 레어 능력";
+    return node.code;
+  }
+
+  function runeBoardNodeCode(node) {
+    if (!node) return "";
+    if (node.code === "NUMERIC_RARE") return "◆";
+    if (node.structural || node.code === "SIGNATURE_RARE") return "★";
+    return node.code;
+  }
+
+  function renderRuneBoardNodeDetail(item, variant, cellIndex) {
+    const node = runeBoardNode(item, variant, cellIndex);
+    if (!node) return '<div class="empty-state compact">노드를 선택하세요.</div>';
+    const rareLabel = node.rareFlag === "S" ? "고유 레어" : node.rareFlag === "G" ? "수치 레어" : "일반 노드";
+    const valueText = node.ability
+      ? (node.value == null ? "이 등급에서는 비활성" : `${node.value}${node.ability.unit || ""}`)
+      : node.structural?.unit || (node.code === "NUMERIC_RARE" ? "Seed 기반 수치형 레어 풀" : "전용 효과");
+    const condition = node.ability?.condition
+      || (node.structural ? `${node.structural.scope} · 상한 ${node.structural.cap}` : "아이템별 전용 레어 규칙 적용");
+    const hook = node.ability?.runtime_hook || (node.structural ? `StructuralRare:${node.code}` : "NumericRare:ResolveFromItemPool");
+    return `
+      <div class="rune-node-detail-heading">
+        <span class="rune-node-grade" style="--grade-color:${escapeHtml(node.gradeInfo.color)}">G${node.grade} · ${escapeHtml(node.gradeInfo.name)}</span>
+        <span class="rune-node-rare" data-rare="${escapeHtml(node.rareFlag)}">${escapeHtml(rareLabel)}</span>
+      </div>
+      <h3>${escapeHtml(runeBoardNodeLabel(node))}</h3>
+      <code>${escapeHtml(node.code)}</code>
+      <dl>
+        <div><dt>적용 수치</dt><dd>${escapeHtml(valueText)}</dd></div>
+        <div><dt>조건·상한</dt><dd>${escapeHtml(condition)}</dd></div>
+        <div><dt>런타임 훅</dt><dd><code>${escapeHtml(hook)}</code></dd></div>
+        <div><dt>보드 위치</dt><dd>영역 ${node.cell.region} · #${node.cell.index} · (${node.cell.q}, ${node.cell.r})${node.cell.is_start ? " · 시작점" : ""}</dd></div>
+      </dl>
+    `;
+  }
+
+  function renderRuneBoardCanvas(item, variant) {
+    const explorer = runeBoardDb.explorer;
+    const layout = runeBoardPixelLayout(explorer.geometry || []);
+    const abilityIndices = decodeRuneBoardIndices(variant.ability_indices_base64);
+    return `
+      <div class="rune-board-canvas" style="width:${layout.width}px;height:${layout.height}px" aria-label="${escapeHtml(item.item_name)} 룬 보드 후보 ${variant.variant}">
+        ${layout.cells.map((cell) => {
+          const grade = Number(variant.grade_codes[cell.index] || 0);
+          const gradeInfo = runeBoardGrade(grade);
+          const code = variant.codebook[abilityIndices[cell.index]] || "UNKNOWN";
+          const rareFlag = variant.rare_flags[cell.index] || "N";
+          const node = runeBoardNode(item, variant, cell.index);
+          const selected = runeBoardExplorerState.selectedCell === cell.index;
+          const textColor = grade === 1 ? "#18202b" : "#ffffff";
+          return `
+            <button type="button" class="rune-board-node ${rareFlag !== "N" ? "rare" : ""} ${cell.is_start ? "start" : ""} ${selected ? "selected" : ""}"
+              data-rune-board-cell="${cell.index}" data-rune-region="${cell.region}" data-rune-grade="${grade}" data-rune-ability="${escapeHtml(code)}" aria-pressed="${selected}"
+              aria-label="${escapeHtml(`G${cell.region} 해금 보드 · ${cell.index}번, G${grade} ${runeBoardNodeLabel(node)}${rareFlag !== "N" ? `, ${rareFlag === "S" ? "고유" : "수치"} 레어` : ""}`)}"
+              title="${escapeHtml(`G${grade} · ${runeBoardNodeLabel(node)}`)}"
+              style="left:${cell.left}px;top:${cell.top}px;--node-color:${escapeHtml(gradeInfo.color)};--node-text:${textColor}">
+              <span>${escapeHtml(runeBoardNodeCode(node))}</span>${cell.is_start ? '<i aria-hidden="true"></i>' : ""}
+            </button>
+          `;
+        }).join("")}
+        ${renderRuneBoardRegionBoundaries(layout)}
+      </div>
+    `;
+  }
+
+  function renderRuneBoardAbilityLegend(item, variant) {
+    const explorer = runeBoardDb.explorer;
+    return variant.codebook.map((code) => {
+      const ability = item.ability_definitions?.[code];
+      const structural = explorer.structural_rare_catalog?.[code];
+      const label = ability?.name || structural?.label || (code === "NUMERIC_RARE" ? "수치형 레어 풀" : "고유 레어 풀");
+      const detail = ability
+        ? ability.grade_values.map((value, grade) => value == null ? null : `G${grade} ${value}${ability.unit || ""}`).filter(Boolean).join(" · ")
+        : structural ? `${structural.scope} · ${structural.unit} · 상한 ${structural.cap}` : "Seed가 선택한 아이템별 전용 능력";
+      return `
+        <article data-rune-ability-code="${escapeHtml(code)}">
+          <header><code>${escapeHtml(code)}</code><strong>${escapeHtml(label)}</strong><span>${variant.ability_counts[code] || 0}칸</span></header>
+          <p>${escapeHtml(detail)}</p>
+          ${ability ? `<small>${escapeHtml(ability.condition)}</small>` : ""}
+        </article>
+      `;
+    }).join("");
+  }
+
+  function renderRuneBoardEffects(item) {
+    const effects = item.skills?.length ? item.skills : item.passives || [];
+    if (!effects.length) {
+      return '<div class="rune-effect-empty"><strong>장신구 전용 규칙</strong><p>별도 패시브는 없으며, 다른 장비보다 고유·수치 레어 노드가 각각 2배 배치됩니다.</p></div>';
+    }
+    return effects.map((effect) => {
+      const trigger = item.skills?.length ? `기본 공격 ${effect.required_basic_attacks}회` : "장착 중 패시브 등록";
+      return `
+        <article>
+          <span>${escapeHtml(effect.unlock_grade)} 개방 · ${escapeHtml(trigger)}</span>
+          <strong>${escapeHtml(effect.name)}</strong>
+          <p>${escapeHtml(effect.detail)}</p>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function renderRuneBoardExplorer({ preserveScroll = false } = {}) {
+    const explorer = runeBoardDb?.explorer;
+    const database = (runeBoardDb.databases || []).find((entry) => entry.id === "rune-board-variants");
+    if (!explorer || !database || !explorer.items?.length) {
+      main.innerHTML = '<div class="empty-state">룬 보드 시각화 데이터가 없습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
+      return;
+    }
+    const previousScrollY = window.scrollY;
+    if (!explorer.items.some((item) => item.item_id === runeBoardExplorerState.itemId)) {
+      runeBoardExplorerState.itemId = explorer.items[0].item_id;
+    }
+    const item = explorer.items.find((entry) => entry.item_id === runeBoardExplorerState.itemId);
+    if (!item.variants.some((variant) => variant.variant === runeBoardExplorerState.variant)) {
+      runeBoardExplorerState.variant = 1;
+    }
+    const variant = item.variants.find((entry) => entry.variant === runeBoardExplorerState.variant) || item.variants[0];
+    if (!Number.isInteger(runeBoardExplorerState.regionFilter) || runeBoardExplorerState.regionFilter < 0 || runeBoardExplorerState.regionFilter > 6) {
+      runeBoardExplorerState.regionFilter = null;
+    }
+    if (!Number.isInteger(runeBoardExplorerState.gradeFilter) || runeBoardExplorerState.gradeFilter < 0 || runeBoardExplorerState.gradeFilter > 6) {
+      runeBoardExplorerState.gradeFilter = null;
+    }
+    if (!variant.codebook.includes(runeBoardExplorerState.abilityFilter)) {
+      runeBoardExplorerState.abilityFilter = "";
+    }
+    if (!Number.isInteger(runeBoardExplorerState.selectedCell) || runeBoardExplorerState.selectedCell < 0 || runeBoardExplorerState.selectedCell >= explorer.geometry.length) {
+      runeBoardExplorerState.selectedCell = 0;
+    }
+    const catalogItem = runeBoardCatalogItem(item.item_id);
+    const image = catalogItem?.image_url || catalogItem?.image || "";
+    const familyLabels = { Weapon: "무기", Armor: "방어구", Accessory: "장신구" };
+    const slotLabels = {
+      Weapon: "무기", Head: "머리", Earring: "귀걸이", Necklace: "목걸이", Top: "상의",
+      Bottom: "하의", Gloves: "글러브", Shoes: "신발", Belt: "벨트", Ring: "반지",
+    };
+    const slotLabel = catalogItem?.slot === "Weapon"
+      ? (catalogItem?.form || "무기")
+      : (slotLabels[catalogItem?.slot || item.slot] || catalogItem?.slot || item.slot);
+    const cellLabel = catalogItem?.occupied_cells ? `${catalogItem.occupied_cells}칸` : item.slot;
+    document.title = `${item.item_name} 룬 보드 · PackBound Wiki`;
+    renderNavigation("rune-board-variants", "database");
+    main.innerHTML = `
+      <div class="rune-db-layout">
+        <header class="rune-db-hero">
+          <div class="page-eyebrow">Interactive rune board database</div>
+          <div class="rune-db-hero-row">
+            <div><h1>아이템 룬 보드 DB</h1><p>신규 장비 이미지와 아이템별 고정 Seed 후보 10개를 함께 비교하고, 427개 노드를 직접 선택해 등급·능력·레어 여부·구현 훅을 확인합니다.</p></div>
+            <span><strong>480</strong><small>48 ITEMS × 10 BOARDS</small></span>
+          </div>
+          <div class="rune-db-contract">
+            <div><span>보드 크기</span><strong>${explorer.contract.total_cells}칸</strong></div>
+            <div><span>영역</span><strong>${explorer.contract.regions} × ${explorer.contract.cells_per_region}칸</strong></div>
+            <div><span>후보 선택</span><strong>생성 시 균등 무작위 1개</strong></div>
+            <div><span>DB 리비전</span><code>${escapeHtml(runeBoardDb.revision)}</code></div>
+          </div>
+        </header>
+
+        <section class="rune-item-panel">
+          <div class="rune-item-image">
+            ${image ? `<button type="button" data-image-viewer-src="${escapeHtml(image)}" data-image-viewer-alt="${escapeHtml(item.item_name)} 아이템 이미지" data-image-viewer-caption="${escapeHtml(item.item_name)}"><img src="${escapeHtml(image)}" alt="${escapeHtml(item.item_name)} 아이템 이미지"></button>` : ""}
+          </div>
+          <div class="rune-item-copy">
+            <div class="rune-item-badges"><span>${escapeHtml(familyLabels[item.board_kind] || item.board_kind)}</span><span>${escapeHtml(slotLabel)}</span><span>${escapeHtml(cellLabel)}</span></div>
+            <h2>${escapeHtml(item.item_name)}</h2>
+            <code>${escapeHtml(item.item_id)}</code>
+            <p>${escapeHtml(item.role)}</p>
+            ${item.target_priority && item.target_priority !== "—" ? `<small><strong>자동 표적:</strong> ${escapeHtml(item.target_priority)}</small>` : ""}
+          </div>
+          <div class="rune-item-selector">
+            <label><span>아이템 선택</span><select id="rune-board-item-select">
+              ${explorer.items.map((entry) => `<option value="${escapeHtml(entry.item_id)}" ${entry.item_id === item.item_id ? "selected" : ""}>${escapeHtml(`${familyLabels[entry.board_kind] || entry.board_kind} · ${entry.item_name}`)}</option>`).join("")}
+            </select></label>
+            <div class="rune-variant-selector" role="group" aria-label="룬 보드 후보 선택">
+              ${item.variants.map((entry) => `<button type="button" data-rune-board-variant="${entry.variant}" class="${entry.variant === variant.variant ? "active" : ""}" aria-pressed="${entry.variant === variant.variant}">${String(entry.variant).padStart(2, "0")}</button>`).join("")}
+            </div>
+            <div class="rune-variant-meta"><span>Seed <code>${escapeHtml(variant.seed)}</code></span><span>Hash <code>${escapeHtml(variant.board_hash)}</code></span></div>
+          </div>
+        </section>
+
+        <section class="rune-board-section">
+          <header>
+            <div><span class="page-eyebrow">Board candidate ${String(variant.variant).padStart(2, "0")}</span><h2>427칸 배치도</h2></div>
+            <nav aria-label="룬 보드 연관 데이터"><a href="${databaseHref("rune-board-abilities")}">능력 수치 DB</a><a href="${databaseHref("item-skill-passive")}">스킬·패시브 DB</a></nav>
+          </header>
+          <div class="rune-grade-legend">
+            ${explorer.contract.grade_definitions.map((entry) => `<span><i style="--grade-color:${escapeHtml(entry.color)}"></i>G${entry.grade} ${escapeHtml(entry.name)}</span>`).join("")}
+            <span class="rare"><i></i>황금 테두리 레어</span><span class="start"><i></i>영역 시작점</span>
+          </div>
+          ${renderRuneBoardFilters(item, variant)}
+          <div class="rune-board-workspace">
+            <div class="rune-board-viewport" tabindex="0" aria-label="스크롤 가능한 427칸 룬 보드">${renderRuneBoardCanvas(item, variant)}</div>
+            <aside>
+              <section class="rune-node-detail" id="rune-board-node-detail">${renderRuneBoardNodeDetail(item, variant, runeBoardExplorerState.selectedCell)}</section>
+              <section class="rune-board-distribution">
+                <h3>후보 분포</h3>
+                <div>${Object.entries(variant.grade_counts).map(([grade, count]) => `<span style="--grade-color:${escapeHtml(runeBoardGrade(Number(grade)).color)}"><i></i><strong>G${grade}</strong><em>${count}</em></span>`).join("")}</div>
+                <p>고유 레어 ${variant.rare_counts.signature}칸 · 수치 레어 ${variant.rare_counts.numeric}칸</p>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="rune-ability-section">
+          <header><div><span class="page-eyebrow">Ability allocation</span><h2>능력 코드와 배치 수</h2></div><span>${variant.codebook.length}개 코드</span></header>
+          <div class="rune-ability-grid">${renderRuneBoardAbilityLegend(item, variant)}</div>
+        </section>
+
+        <section class="rune-effect-section">
+          <header><div><span class="page-eyebrow">Item identity effects</span><h2>${item.skills?.length ? "무기 스킬" : item.passives?.length ? "방어구 패시브" : "장신구 규칙"}</h2></div><span>${item.skills?.length || item.passives?.length || 0}개</span></header>
+          <div class="rune-effect-grid">${renderRuneBoardEffects(item)}</div>
+        </section>
+      </div>
+    `;
+    document.getElementById("rune-board-item-select")?.addEventListener("change", (event) => {
+      runeBoardExplorerState = {
+        itemId: event.target.value,
+        variant: 1,
+        selectedCell: 0,
+        regionFilter: null,
+        gradeFilter: null,
+        abilityFilter: "",
+      };
+      renderRuneBoardExplorer({ preserveScroll: true });
+    });
+    document.querySelectorAll("[data-rune-board-variant]").forEach((button) => {
+      button.addEventListener("click", () => {
+        runeBoardExplorerState.variant = Number(button.dataset.runeBoardVariant);
+        runeBoardExplorerState.selectedCell = 0;
+        renderRuneBoardExplorer({ preserveScroll: true });
+      });
+    });
+    document.querySelectorAll("[data-rune-board-cell]").forEach((button) => {
+      button.addEventListener("click", () => {
+        runeBoardExplorerState.selectedCell = Number(button.dataset.runeBoardCell);
+        document.querySelectorAll("[data-rune-board-cell]").forEach((cellButton) => {
+          const selected = cellButton === button;
+          cellButton.classList.toggle("selected", selected);
+          cellButton.setAttribute("aria-pressed", String(selected));
+        });
+        const detail = document.getElementById("rune-board-node-detail");
+        if (detail) detail.innerHTML = renderRuneBoardNodeDetail(item, variant, runeBoardExplorerState.selectedCell);
+      });
+    });
+    document.querySelectorAll("[data-rune-filter-region]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.dataset.runeFilterRegion;
+        const next = value === "all" ? null : Number(value);
+        runeBoardExplorerState.regionFilter = runeBoardExplorerState.regionFilter === next ? null : next;
+        applyRuneBoardFilters(item, variant);
+      });
+    });
+    document.querySelectorAll("[data-rune-filter-grade]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.dataset.runeFilterGrade;
+        const next = value === "all" ? null : Number(value);
+        runeBoardExplorerState.gradeFilter = runeBoardExplorerState.gradeFilter === next ? null : next;
+        applyRuneBoardFilters(item, variant);
+      });
+    });
+    document.querySelectorAll("[data-rune-filter-ability]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.dataset.runeFilterAbility;
+        const next = value === "all" ? "" : value;
+        runeBoardExplorerState.abilityFilter = runeBoardExplorerState.abilityFilter === next ? "" : next;
+        applyRuneBoardFilters(item, variant);
+      });
+    });
+    document.querySelector("[data-rune-filter-clear]")?.addEventListener("click", () => {
+      runeBoardExplorerState.regionFilter = null;
+      runeBoardExplorerState.gradeFilter = null;
+      runeBoardExplorerState.abilityFilter = "";
+      applyRuneBoardFilters(item, variant);
+    });
+    applyRuneBoardFilters(item, variant);
+    document.body.classList.remove("menu-open");
+    if (preserveScroll) window.scrollTo(0, previousScrollY);
+    else window.scrollTo(0, 0);
   }
 
   function renderStructuredDbCell(row, column) {
     const value = row[column.key] || "—";
+    if (column.kind === "item") {
+      const catalogItem = runeBoardCatalogItem(row.item_id);
+      const image = catalogItem?.image_url || catalogItem?.image || "";
+      return `<span class="structured-db-item">${image ? `<img src="${escapeHtml(image)}" alt="" loading="lazy" decoding="async">` : ""}<span><strong>${escapeHtml(value)}</strong><code>${escapeHtml(row.item_id || "")}</code></span></span>`;
+    }
     if (column.kind === "code") return `<code>${escapeHtml(value)}</code>`;
     if (column.kind === "strong") return `<strong>${escapeHtml(value)}</strong>`;
     if (column.kind === "priority") return `<span class="structured-db-priority" data-priority="${escapeHtml(value)}">${escapeHtml(value)}</span>`;
@@ -1746,7 +2431,14 @@
   }
 
   function renderStructuredDatabase(databaseId) {
-    const database = combatDbTools.findDatabase(combatDb, databaseId);
+    if (databaseId === "rune-board-variants" && runeBoardDb?.explorer) {
+      renderRuneBoardExplorer();
+      return;
+    }
+    const structuredCatalog = {
+      databases: [...(combatDb.databases || []), ...(runeBoardDb.databases || [])],
+    };
+    const database = combatDbTools.findDatabase(structuredCatalog, databaseId);
     if (!database) {
       renderNavigation(databaseId, "database");
       main.innerHTML = '<div class="empty-state">요청한 데이터베이스가 없습니다.</div>';
@@ -1769,10 +2461,10 @@
             <span class="structured-db-total"><strong>${database.count}</strong><small>${escapeHtml(database.unit)}</small></span>
           </div>
           <div class="structured-db-source">
-            <div><span>기획 원본</span><strong>${escapeHtml(combatDb.source_title)}</strong></div>
-            <div><span>원본 버전</span><strong>v${String(combatDb.source_version).padStart(3, "0")}</strong></div>
-            <div><span>원본 변경</span><strong>${escapeHtml(formatDate(combatDb.source_updated_at, true))}</strong></div>
-            <a href="${pageHref(combatDb.source_page_id)}">기획 문서 읽기 <span aria-hidden="true">→</span></a>
+            <div><span>기획 원본</span><strong>${escapeHtml(database.source_title || combatDb.source_title)}</strong></div>
+            <div><span>원본 버전</span><strong>v${String(database.source_version || combatDb.source_version).padStart(3, "0")}</strong></div>
+            <div><span>원본 변경</span><strong>${escapeHtml(formatDate(database.source_updated_at || combatDb.source_updated_at, true))}</strong></div>
+            <a href="${pageHref(database.source_page_id || combatDb.source_page_id)}">기획 문서 읽기 <span aria-hidden="true">→</span></a>
           </div>
         </header>
         <section class="structured-db-toolbar" aria-label="${escapeHtml(database.title)} 검색과 필터">
@@ -1807,6 +2499,7 @@
 
   function renderPage() {
     const route = readRoute();
+    if (!(route.kind === "database" && route.slug === "item-db")) cleanupItemDbFloatingScroll();
     if (!(route.kind === "database" && route.slug === "item-db") && itemDbEditorState) closeItemDbEditor();
     if (route.kind === "tree") {
       document.title = "전체 위키 트리 · PackBound Wiki";

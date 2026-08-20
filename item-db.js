@@ -5,15 +5,26 @@
     return String(value || "").trim().toLocaleLowerCase("ko-KR");
   }
 
-  function filterItems(items, query = "", family = "all") {
+  function filterItems(items, query = "", family = "all", options = {}) {
     const normalizedQuery = normalize(query);
+    const minimumCells = Number.isFinite(options.minimumCells) ? options.minimumCells : null;
+    const maximumCells = Number.isFinite(options.maximumCells) ? options.maximumCells : null;
+    const selectedSynergies = new Set(options.synergies || []);
     return (items || []).filter((item) => {
       if (family !== "all" && item.family !== family) return false;
+      if (options.enabledOnly && !item.enabled) return false;
+      if (minimumCells !== null && item.occupied_cells < minimumCells) return false;
+      if (maximumCells !== null && item.occupied_cells > maximumCells) return false;
+      if (selectedSynergies.size > 0
+        && !(item.synergies || []).some((synergy) => selectedSynergies.has(synergy))) return false;
       if (!normalizedQuery) return true;
       const haystack = [
         item.id,
         item.name,
         item.family_label,
+        item.slot,
+        item.form,
+        item.role,
         item.type_size,
         item.concept,
         item.pattern,
@@ -41,21 +52,19 @@
       .filter((family) => family.items.length > 0);
   }
 
-  function hexNeighbors(q, r) {
+  function squareNeighbors(x, y) {
     return [
-      [q + 1, r],
-      [q, r + 1],
-      [q - 1, r + 1],
-      [q - 1, r],
-      [q, r - 1],
-      [q + 1, r - 1],
+      [x + 1, y],
+      [x - 1, y],
+      [x, y + 1],
+      [x, y - 1],
     ];
   }
 
   function normalizeRotation(value) {
     const numeric = Number(value);
     if (!Number.isFinite(numeric)) return Number.NaN;
-    return ((numeric + 180) % 360 + 360) % 360 - 180;
+    return ((numeric % 360) + 360) % 360;
   }
 
   function validateSynergies(synergies, availableIds = []) {
@@ -190,47 +199,43 @@
       errors.push("점유 칸을 한 칸 이상 선택해 주세요.");
     } else {
       cells.forEach((cell) => {
-        const q = Array.isArray(cell) ? cell[0] : cell?.q;
-        const r = Array.isArray(cell) ? cell[1] : cell?.r;
-        const editorRadius = Math.floor(maxSpan / 2);
-        if (!Number.isInteger(q) || !Number.isInteger(r)
-          || Math.max(Math.abs(q), Math.abs(r), Math.abs(-q - r)) > editorRadius) {
-          errors.push("점유 칸 좌표가 편집 범위를 벗어났습니다.");
+        const x = Array.isArray(cell) ? cell[0] : cell?.x;
+        const y = Array.isArray(cell) ? cell[1] : cell?.y;
+        if (!Number.isInteger(x) || !Number.isInteger(y)) {
+          errors.push("점유 칸 좌표는 정수 X/Y 값이어야 합니다.");
           return;
         }
-        const key = `${q},${r}`;
+        const key = `${x},${y}`;
         if (seen.has(key)) {
           errors.push("점유 칸이 중복되었습니다.");
           return;
         }
         seen.add(key);
-        normalized.push([q, r]);
+        normalized.push([x, y]);
       });
     }
 
     let bounds = null;
     if (normalized.length) {
-      const qs = normalized.map((cell) => cell[0]);
-      const rs = normalized.map((cell) => cell[1]);
-      const ss = normalized.map(([q, r]) => -q - r);
+      const xs = normalized.map((cell) => cell[0]);
+      const ys = normalized.map((cell) => cell[1]);
       bounds = {
-        minQ: Math.min(...qs),
-        minR: Math.min(...rs),
-        maxQ: Math.max(...qs),
-        maxR: Math.max(...rs),
-        qSpan: Math.max(...qs) - Math.min(...qs) + 1,
-        rSpan: Math.max(...rs) - Math.min(...rs) + 1,
-        sSpan: Math.max(...ss) - Math.min(...ss) + 1,
+        minX: Math.min(...xs),
+        minY: Math.min(...ys),
+        maxX: Math.max(...xs),
+        maxY: Math.max(...ys),
+        width: Math.max(...xs) - Math.min(...xs) + 1,
+        height: Math.max(...ys) - Math.min(...ys) + 1,
       };
-      if (Math.max(bounds.qSpan, bounds.rSpan, bounds.sSpan) > maxSpan) {
-        errors.push(`아이템 점유 범위는 Q·R·S 각 축에서 ${maxSpan}칸을 초과할 수 없습니다.`);
+      if (bounds.width > maxSpan || bounds.height > maxSpan) {
+        errors.push(`아이템 점유 범위는 ${maxSpan}×${maxSpan}칸을 초과할 수 없습니다.`);
       }
 
       const visited = new Set([`${normalized[0][0]},${normalized[0][1]}`]);
       const queue = [normalized[0]];
       while (queue.length) {
         const [x, y] = queue.shift();
-        hexNeighbors(x, y).forEach(([neighborX, neighborY]) => {
+        squareNeighbors(x, y).forEach(([neighborX, neighborY]) => {
           const key = `${neighborX},${neighborY}`;
           if (seen.has(key) && !visited.has(key)) {
             visited.add(key);
@@ -239,7 +244,7 @@
         });
       }
       if (visited.size !== normalized.length) {
-        errors.push("점유 칸은 육각형의 여섯 변 중 하나를 맞대어 모두 연결되어야 합니다.");
+        errors.push("점유 칸은 사각형의 상하좌우 변을 맞대어 모두 연결되어야 합니다.");
       }
     }
 
@@ -249,10 +254,16 @@
     }
     const rotation = normalizeRotation(rotationDegrees);
     if (!Number.isFinite(rotation)) errors.push("이미지 회전각은 숫자여야 합니다.");
+    else if (![0, 90, 180, 270].includes(rotation)) {
+      errors.push("이미지 회전은 0°·90°·180°·270°만 사용할 수 있습니다.");
+    }
+    const normalizedCells = bounds
+      ? normalized.map(([x, y]) => [x - bounds.minX, y - bounds.minY])
+      : normalized;
     return {
       valid: errors.length === 0,
       errors: [...new Set(errors)],
-      cells: normalized.sort((left, right) => left[1] - right[1] || left[0] - right[0]),
+      cells: normalizedCells.sort((left, right) => left[1] - right[1] || left[0] - right[0]),
       bounds,
       scale: numericScale,
       rotation,
@@ -262,7 +273,7 @@
   const api = {
     filterItems,
     groupByFamily,
-    hexNeighbors,
+    squareNeighbors,
     normalize,
     normalizeRotation,
     validateLayout,
