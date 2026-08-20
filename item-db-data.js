@@ -107,7 +107,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "ImpactRoot",
           "Tip"
-        ]
+        ],
+        "pivot_uv": [
+          0.5,
+          0.88
+        ],
+        "socket_uv": {
+          "ImpactRoot": [
+            0.5,
+            0.28
+          ],
+          "Tip": [
+            0.82,
+            0.31
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -168,8 +182,32 @@ window.PACKBOUND_ITEM_DB = {
         "pivot": "Grip",
         "sockets": [
           "Nock",
-          "ProjectileOrigin"
-        ]
+          "ProjectileOrigin",
+          "LimbTop",
+          "LimbBottom"
+        ],
+        "pivot_uv": [
+          0.58,
+          0.5
+        ],
+        "socket_uv": {
+          "Nock": [
+            0.4,
+            0.5
+          ],
+          "ProjectileOrigin": [
+            0.6,
+            0.5
+          ],
+          "LimbTop": [
+            0.4,
+            0.04
+          ],
+          "LimbBottom": [
+            0.4,
+            0.95
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -231,7 +269,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "Tip",
           "ImpactRoot"
-        ]
+        ],
+        "pivot_uv": [
+          0.5,
+          0.9
+        ],
+        "socket_uv": {
+          "Tip": [
+            0.5,
+            0.05
+          ],
+          "ImpactRoot": [
+            0.5,
+            0.32
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -293,7 +345,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "ImpactRoot",
           "Tip"
-        ]
+        ],
+        "pivot_uv": [
+          0.5,
+          0.88
+        ],
+        "socket_uv": {
+          "ImpactRoot": [
+            0.5,
+            0.2
+          ],
+          "Tip": [
+            0.5,
+            0.06
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -350,8 +416,32 @@ window.PACKBOUND_ITEM_DB = {
         "pivot": "Grip",
         "sockets": [
           "Nock",
-          "ProjectileOrigin"
-        ]
+          "ProjectileOrigin",
+          "LimbTop",
+          "LimbBottom"
+        ],
+        "pivot_uv": [
+          0.6,
+          0.5
+        ],
+        "socket_uv": {
+          "Nock": [
+            0.28,
+            0.5
+          ],
+          "ProjectileOrigin": [
+            0.62,
+            0.5
+          ],
+          "LimbTop": [
+            0.28,
+            0.05
+          ],
+          "LimbBottom": [
+            0.28,
+            0.95
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -412,7 +502,17 @@ window.PACKBOUND_ITEM_DB = {
         "pivot": "Grip",
         "sockets": [
           "Muzzle"
-        ]
+        ],
+        "pivot_uv": [
+          0.33,
+          0.58
+        ],
+        "socket_uv": {
+          "Muzzle": [
+            0.96,
+            0.5
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -474,7 +574,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "ImpactRoot",
           "Tip"
-        ]
+        ],
+        "pivot_uv": [
+          0.5,
+          0.88
+        ],
+        "socket_uv": {
+          "ImpactRoot": [
+            0.5,
+            0.2
+          ],
+          "Tip": [
+            0.5,
+            0.05
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -532,7 +646,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "Tip",
           "ImpactRoot"
-        ]
+        ],
+        "pivot_uv": [
+          0.5,
+          0.9
+        ],
+        "socket_uv": {
+          "Tip": [
+            0.5,
+            0.05
+          ],
+          "ImpactRoot": [
+            0.5,
+            0.35
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -593,7 +721,17 @@ window.PACKBOUND_ITEM_DB = {
         "pivot": "Grip",
         "sockets": [
           "Muzzle"
-        ]
+        ],
+        "pivot_uv": [
+          0.28,
+          0.48
+        ],
+        "socket_uv": {
+          "Muzzle": [
+            0.96,
+            0.28
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -659,7 +797,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "ProjectileOrigin",
           "Muzzle"
-        ]
+        ],
+        "pivot_uv": [
+          0.35,
+          0.65
+        ],
+        "socket_uv": {
+          "ProjectileOrigin": [
+            0.72,
+            0.5
+          ],
+          "Muzzle": [
+            0.94,
+            0.48
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -733,7 +885,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "ProjectileOrigin",
           "Muzzle"
-        ]
+        ],
+        "pivot_uv": [
+          0.35,
+          0.6
+        ],
+        "socket_uv": {
+          "ProjectileOrigin": [
+            0.7,
+            0.5
+          ],
+          "Muzzle": [
+            0.96,
+            0.5
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -799,7 +965,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "Tip",
           "ImpactRoot"
-        ]
+        ],
+        "pivot_uv": [
+          0.5,
+          0.88
+        ],
+        "socket_uv": {
+          "Tip": [
+            0.5,
+            0.04
+          ],
+          "ImpactRoot": [
+            0.5,
+            0.18
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -865,7 +1045,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "Tip",
           "ProjectileOrigin"
-        ]
+        ],
+        "pivot_uv": [
+          0.52,
+          0.55
+        ],
+        "socket_uv": {
+          "Tip": [
+            0.36,
+            0.05
+          ],
+          "ProjectileOrigin": [
+            0.52,
+            0.55
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -935,7 +1129,21 @@ window.PACKBOUND_ITEM_DB = {
         "sockets": [
           "ImpactRoot",
           "Tip"
-        ]
+        ],
+        "pivot_uv": [
+          0.24,
+          0.88
+        ],
+        "socket_uv": {
+          "ImpactRoot": [
+            0.45,
+            0.25
+          ],
+          "Tip": [
+            0.78,
+            0.3
+          ]
+        }
       },
       "stats": [],
       "synergies": [],
@@ -2812,5 +3020,5 @@ window.PACKBOUND_ITEM_DB = {
     "conditions": [],
     "abilities": []
   },
-  "revision": "d6328b1d857becb6"
+  "revision": "af58727fe90523ed"
 };
