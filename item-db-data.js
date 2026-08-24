@@ -2656,8 +2656,8 @@ window.PACKBOUND_ITEM_DB = {
       "icon_asset": "rbxassetid://74749515981574",
       "image_layout": {
         "scale": 0.9,
-        "offset_x": 0.1034,
-        "offset_y": 0.0415,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
         "rotation_degrees": 0,
         "canvas_width": 1024,
         "canvas_height": 1024
@@ -2906,8 +2906,8 @@ window.PACKBOUND_ITEM_DB = {
       "icon_asset": "rbxassetid://78850600227421",
       "image_layout": {
         "scale": 0.95,
-        "offset_x": 0.1085,
-        "offset_y": 0.1157,
+        "offset_x": 0.0249,
+        "offset_y": -0.0078,
         "rotation_degrees": 0,
         "canvas_width": 1024,
         "canvas_height": 1024
@@ -3020,5 +3020,5 @@ window.PACKBOUND_ITEM_DB = {
     "conditions": [],
     "abilities": []
   },
-  "revision": "af58727fe90523ed"
+  "revision": "8fb41028ba82d814"
 };
