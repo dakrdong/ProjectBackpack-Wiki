@@ -6,6 +6,8 @@
   const itemDbTools = window.PACKBOUND_ITEM_DB_TOOLS;
   const monsterDb = window.PACKBOUND_MONSTER_DB;
   const monsterDbTools = window.PACKBOUND_MONSTER_DB_TOOLS;
+  const animationDb = window.PACKBOUND_ANIMATION_DB;
+  const animationDbTools = window.PACKBOUND_ANIMATION_DB_TOOLS;
   const combatDb = window.PACKBOUND_COMBAT_DB;
   const combatDbTools = window.PACKBOUND_COMBAT_DB_TOOLS;
   const runeBoardDb = window.PACKBOUND_RUNE_BOARD_DB;
@@ -55,7 +57,7 @@
     && Boolean(localHostCheck(window.location.hostname));
   const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
   const canEditItemDb = hasLocalAccess;
-  const canEditMonsterDb = hasLocalAccess;
+  let canEditMonsterDb = false;
   let searchMode = "pages";
   let tagSort = "recent";
   let selectedTag = null;
@@ -73,6 +75,14 @@
   let monsterDbEditorState = null;
   let monsterDbBakeState = null;
   let monsterDbNotice = "";
+  let animationDbState = {
+    query: "",
+    entityType: "all",
+    action: "all",
+    status: "all",
+    compare: [],
+    variants: {},
+  };
   let structuredDbState = { databaseId: null, query: "", filters: {} };
   let runeBoardExplorerState = {
     itemId: "",
@@ -87,6 +97,28 @@
   let filteredPages = wiki?.pages || [];
   let tagIndex = [];
   let tagByName = new Map();
+
+  async function refreshMonsterDbApiAccess() {
+    if (!hasLocalAccess) return;
+    try {
+      const response = await fetch("/api/monster-db/status", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      const payload = await response.json().catch(() => ({}));
+      canEditMonsterDb = response.ok && payload.editable === true && payload.api_version === 1;
+      if (!canEditMonsterDb) {
+        monsterDbNotice = response.status === 404
+          ? "실행 중인 로컬 위키 서버가 MonsterDB 저장 API보다 오래되었습니다. 서버를 재시작해 주세요."
+          : payload.error || `MonsterDB 저장 API를 확인하지 못했습니다. (${response.status})`;
+      }
+    } catch (error) {
+      canEditMonsterDb = false;
+      monsterDbNotice = `MonsterDB 저장 API에 연결하지 못했습니다. (${String(error.message || error)})`;
+    }
+    const route = readRoute();
+    if (route.kind === "database" && route.slug === "monster-db") renderMonsterDb();
+  }
   const categoryLabels = {
     project: "프로젝트",
     architecture: "아키텍처",
@@ -125,7 +157,7 @@
     main.innerHTML = '<div class="empty-state">위키 시간순 탐색 모듈을 불러오지 못했습니다.</div>';
     return;
   }
-  if (!combatDb || !combatDbTools || !runeBoardDb || !monsterDb || !monsterDbTools) {
+  if (!combatDb || !combatDbTools || !runeBoardDb || !monsterDb || !monsterDbTools || !animationDb || !animationDbTools) {
     main.innerHTML = '<div class="empty-state">구조화 DB 모듈을 불러오지 못했습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
     return;
   }
@@ -391,6 +423,14 @@
         count: monsterDb?.count || 0,
         unit: "MONSTERS",
         href: databaseHref("monster-db"),
+      },
+      {
+        id: "animation-db",
+        title: "애니메이션 데이터베이스",
+        description: "GIF · 프레임 · 방향 · 상태",
+        count: animationDb?.count || 0,
+        unit: "ANIMS",
+        href: databaseHref("animation-db"),
       },
       ...[...(combatDb.databases || []), ...(runeBoardDb.databases || [])].map((database) => ({
         id: database.id,
@@ -2417,6 +2457,8 @@
 
   function monsterDbFieldMarkup(spec, monster) {
     const value = monsterDbTools.getPath(monster, spec.path);
+    const attackKinds = spec.attack_kinds?.length ? spec.attack_kinds.join(",") : "";
+    const applies = monsterDbTools.fieldApplies(spec, monster.attack.kind);
     const describedBy = spec.help ? `monsterdb-help-${spec.path.replaceAll(".", "-")}` : "";
     const common = `data-monsterdb-field="${escapeHtml(spec.path)}" ${spec.readonly ? "disabled" : ""} ${describedBy ? `aria-describedby="${describedBy}"` : ""}`;
     let control = "";
@@ -2434,8 +2476,8 @@
       control = `<input type="${inputType}" value="${escapeHtml(monsterDbTools.serializeField(spec, value))}" ${numeric} ${common}>`;
     }
     return `
-      <div class="monsterdb-field" data-kind="${escapeHtml(spec.kind)}">
-        <label><span>${escapeHtml(spec.label)}</span>${spec.unit ? `<em>${escapeHtml(spec.unit)}</em>` : ""}</label>
+      <div class="monsterdb-field" data-kind="${escapeHtml(spec.kind)}" ${attackKinds ? `data-attack-kinds="${escapeHtml(attackKinds)}"` : ""} ${applies ? "" : "hidden"}>
+        <label><span>${escapeHtml(monsterDbTools.fieldLabel(spec, monster.attack.kind))}</span>${spec.unit ? `<em>${escapeHtml(spec.unit)}</em>` : ""}</label>
         ${control}
         ${spec.help ? `<small id="${describedBy}">${escapeHtml(spec.help)}</small>` : ""}
       </div>
@@ -2449,13 +2491,30 @@
     });
   }
 
+  function updateMonsterDbConditionalFields(root) {
+    const kind = root.querySelector('[data-monsterdb-field="attack.kind"]')?.value;
+    root.querySelectorAll(".monsterdb-field[data-attack-kinds]").forEach((field) => {
+      field.hidden = !String(field.dataset.attackKinds || "").split(",").includes(kind);
+    });
+    root.querySelectorAll("[data-monsterdb-group]").forEach((group) => {
+      group.hidden = !group.querySelector(".monsterdb-field:not([hidden])");
+    });
+    const specs = monsterDb.groups.flatMap((group) => group.fields);
+    root.querySelectorAll(".monsterdb-field[data-kind]").forEach((field) => {
+      const input = field.querySelector("[data-monsterdb-field]");
+      const label = field.querySelector("label > span");
+      const spec = specs.find((entry) => entry.path === input?.dataset.monsterdbField);
+      if (label && spec) label.textContent = monsterDbTools.fieldLabel(spec, kind);
+    });
+  }
+
   function openMonsterDbEditor(monsterId) {
     if (!canEditMonsterDb || monsterDbEditorState) return;
     const monster = monsterDb.monsters.find((entry) => entry.id === monsterId);
     if (!monster) return;
     monsterDbEditorState = { monster, saving: false, error: "" };
     const groups = monsterDb.groups.map((group, index) => `
-      <details class="monsterdb-editor-group" ${index < 6 ? "open" : ""}>
+      <details class="monsterdb-editor-group" data-monsterdb-group ${index < 6 ? "open" : ""}>
         <summary><span>${escapeHtml(group.name)}</span><em>${group.fields.length}개 변수</em></summary>
         <div class="monsterdb-field-grid">${group.fields.map((spec) => monsterDbFieldMarkup(spec, monster)).join("")}</div>
       </details>
@@ -2481,7 +2540,9 @@
     backdrop.querySelectorAll("[data-monsterdb-close]").forEach((button) => button.addEventListener("click", closeMonsterDbEditor));
     backdrop.querySelector("[data-monsterdb-save]").addEventListener("click", saveMonsterDbEditor);
     backdrop.querySelectorAll(".monsterdb-switch input").forEach((input) => input.addEventListener("change", () => updateMonsterDbSwitchLabels(backdrop)));
+    backdrop.querySelector('[data-monsterdb-field="attack.kind"]')?.addEventListener("change", () => updateMonsterDbConditionalFields(backdrop));
     updateMonsterDbSwitchLabels(backdrop);
+    updateMonsterDbConditionalFields(backdrop);
   }
 
   async function saveMonsterDbEditor() {
@@ -2492,8 +2553,16 @@
     const button = dialog.querySelector("[data-monsterdb-save]");
     const draft = monsterDbTools.editableMonster(state.monster);
     try {
+      const kindSpec = monsterDb.groups.flatMap((group) => group.fields).find((spec) => spec.path === "attack.kind");
+      const kindInput = dialog.querySelector('[data-monsterdb-field="attack.kind"]');
+      const attackKind = monsterDbTools.parseField(kindSpec, kindInput.value, kindInput.checked);
+      monsterDbTools.setPath(draft, "attack.kind", attackKind);
       monsterDb.groups.forEach((group) => group.fields.forEach((spec) => {
-        if (spec.readonly) return;
+        if (spec.readonly || spec.path === "attack.kind") return;
+        if (!monsterDbTools.fieldApplies(spec, attackKind)) {
+          if (spec.attack_kinds?.length) monsterDbTools.deletePath(draft, spec.path);
+          return;
+        }
         const input = dialog.querySelector(`[data-monsterdb-field="${spec.path}"]`);
         const value = monsterDbTools.parseField(spec, input.value, input.checked);
         monsterDbTools.setPath(draft, spec.path, value);
@@ -2514,7 +2583,12 @@
         body: JSON.stringify({ monster_id: state.monster.id, monster: draft }),
       });
       const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || `저장에 실패했습니다. (${response.status})`);
+      if (!response.ok) {
+        const message = response.status === 404 && hasLocalAccess
+          ? "실행 중인 로컬 위키 서버가 MonsterDB 저장 API보다 오래되었습니다. 서버를 재시작해 주세요."
+          : payload.error || `저장에 실패했습니다. (${response.status})`;
+        throw new Error(message);
+      }
       const index = monsterDb.monsters.findIndex((entry) => entry.id === payload.monster.id);
       if (index >= 0) monsterDb.monsters[index] = payload.monster;
       monsterDb.revision = payload.revision;
@@ -2628,7 +2702,7 @@
             <span><small>이동속도</small><strong>${monster.movement.chase_speed}</strong></span>
             <span><small>공격범위</small><strong>${monster.attack.maximum_range}</strong></span>
             <span><small>탐색거리</small><strong>${monster.detection.search_range}</strong></span>
-            <span><small>장판예고</small><strong>${monster.attack.telegraph_duration_seconds}s</strong></span>
+            <span><small>${monster.attack.kind === "FanVolleyProjectile" ? "첫 발사 예고" : "장판예고"}</small><strong>${monster.attack.telegraph_duration_seconds}s</strong></span>
             <span><small>공격간격</small><strong>${monster.attack.attack_interval_seconds}s</strong></span>
             <span><small>동시 스폰</small><strong>${monster.spawn.maximum_alive}</strong></span>
           </div>
@@ -2661,6 +2735,158 @@
     });
     document.querySelector("[data-monsterdb-bake]")?.addEventListener("click", openMonsterDbBake);
     renderMonsterDbCards(monsterDbTools.filterMonsters(monsterDb.monsters, monsterDbQuery));
+    document.body.classList.remove("menu-open");
+    window.scrollTo(0, 0);
+  }
+
+  function animationMetric(value, suffix = "") {
+    return value == null ? "—" : `${Number.isInteger(value) ? value : Number(value).toFixed(2).replace(/0+$/, "").replace(/\.$/, "")}${suffix}`;
+  }
+
+  function animationSelectedVariant(record) {
+    return animationDbTools.selectedVariant(record, animationDbState.variants[record.id]);
+  }
+
+  function renderAnimationCompare() {
+    const root = document.getElementById("animationdb-compare");
+    if (!root) return;
+    const records = animationDbState.compare
+      .map((recordId) => animationDbTools.findRecord(animationDb.records, recordId))
+      .filter(Boolean);
+    root.hidden = records.length === 0;
+    if (!records.length) {
+      root.innerHTML = "";
+      return;
+    }
+    root.innerHTML = `
+      <header><div><span class="page-eyebrow">Side-by-side curation</span><h2>선택 비교</h2></div><button type="button" data-animation-compare-clear>비교 비우기</button></header>
+      <div class="animationdb-compare-grid">
+        ${records.map((record) => {
+          const variant = animationSelectedVariant(record);
+          return `
+            <article>
+              <button type="button" class="animationdb-compare-preview" data-image-viewer-src="${escapeHtml(variant?.preview_url || "")}" data-image-viewer-alt="${escapeHtml(`${record.title} ${variant?.label || ""}`)}" data-image-viewer-caption="${escapeHtml(`${record.title} · ${record.candidate} · ${variant?.label || ""}`)}">
+                <img src="${escapeHtml(variant?.preview_url || "")}" alt="${escapeHtml(`${record.title} ${variant?.label || ""} 미리보기`)}">
+              </button>
+              <div><span class="animationdb-status" data-status="${escapeHtml(record.status)}">${escapeHtml(record.status_label)}</span><h3>${escapeHtml(record.title)}</h3><code>${escapeHtml(record.candidate)}</code><strong>${escapeHtml(variant?.label || "")}</strong></div>
+              <button type="button" class="animationdb-remove-compare" data-animation-compare="${escapeHtml(record.id)}" aria-label="${escapeHtml(record.title)} 비교에서 제거">제거</button>
+            </article>
+          `;
+        }).join("")}
+        ${records.length === 1 ? '<div class="animationdb-compare-empty"><span>+</span><p>다른 카드에서 비교를 눌러 나란히 확인하세요.</p></div>' : ""}
+      </div>
+    `;
+  }
+
+  function renderAnimationDbResults() {
+    const root = document.getElementById("animationdb-results");
+    const count = document.getElementById("animationdb-result-count");
+    if (!root || !count) return;
+    const records = animationDbTools.filterAnimations(animationDb.records, animationDbState);
+    count.textContent = `${records.length} / ${animationDb.count}개 표시`;
+    if (!records.length) {
+      root.innerHTML = '<div class="empty-state">조건에 맞는 애니메이션이 없습니다.</div>';
+      renderAnimationCompare();
+      bindAnimationDbActions();
+      return;
+    }
+    root.innerHTML = records.map((record) => {
+      const variant = animationSelectedVariant(record);
+      const comparing = animationDbState.compare.includes(record.id);
+      return `
+        <article class="animationdb-card ${comparing ? "selected" : ""}" data-animation-record="${escapeHtml(record.id)}">
+          <div class="animationdb-card-preview">
+            <button type="button" data-image-viewer-src="${escapeHtml(variant?.preview_url || "")}" data-image-viewer-alt="${escapeHtml(`${record.title} ${variant?.label || ""}`)}" data-image-viewer-caption="${escapeHtml(`${record.title} · ${record.candidate} · ${variant?.label || ""}`)}">
+              <img src="${escapeHtml(variant?.preview_url || "")}" alt="${escapeHtml(`${record.title} ${variant?.label || ""} 애니메이션`)}" loading="lazy" decoding="async">
+              <span>확대 보기</span>
+            </button>
+            <span class="animationdb-status" data-status="${escapeHtml(record.status)}">${escapeHtml(record.status_label)}</span>
+          </div>
+          <div class="animationdb-card-body">
+            <header><div><span>${record.entity_type === "player" ? "PLAYER" : "MONSTER"}</span><h2>${escapeHtml(record.title)}</h2><code>${escapeHtml(record.candidate)}</code></div><button type="button" class="animationdb-compare-toggle" data-animation-compare="${escapeHtml(record.id)}" aria-pressed="${comparing}">${comparing ? "비교 중" : "비교"}</button></header>
+            <div class="animationdb-metrics">
+              <span><small>프레임</small><strong>${animationMetric(record.frame_count)}</strong></span>
+              <span><small>재생 속도</small><strong>${animationMetric(record.fps, " FPS")}</strong></span>
+              <span><small>길이</small><strong>${animationMetric(record.duration_seconds, "s")}</strong></span>
+              <span><small>재생</small><strong>${record.loop === true ? "LOOP" : record.loop === false ? "1회" : "—"}</strong></span>
+            </div>
+            <div class="animationdb-direction-row"><span>방향</span><strong>${record.directions.map((direction) => escapeHtml(direction)).join(" · ") || "—"}</strong></div>
+            <div class="animationdb-variants" role="group" aria-label="${escapeHtml(record.title)} 미리보기 선택">
+              ${record.variants.map((entry) => `<button type="button" data-animation-variant="${escapeHtml(entry.id)}" data-animation-variant-record="${escapeHtml(record.id)}" class="${entry.id === variant?.id ? "active" : ""}" aria-pressed="${entry.id === variant?.id}">${escapeHtml(entry.label)}</button>`).join("")}
+            </div>
+            <footer><span>REV ${escapeHtml(animationDb.revision.slice(0, 8))}</span>${variant?.contact_sheet_url ? `<button type="button" data-image-viewer-src="${escapeHtml(variant.contact_sheet_url)}" data-image-viewer-alt="${escapeHtml(`${record.title} 콘택트 시트`)}" data-image-viewer-caption="${escapeHtml(`${record.title} · 전체 프레임 콘택트 시트`)}">전체 프레임 보기</button>` : ""}</footer>
+          </div>
+        </article>
+      `;
+    }).join("");
+    renderAnimationCompare();
+    bindAnimationDbActions();
+  }
+
+  function bindAnimationDbActions() {
+    document.querySelectorAll("[data-animation-variant-record]").forEach((button) => {
+      button.addEventListener("click", () => {
+        animationDbState.variants[button.dataset.animationVariantRecord] = button.dataset.animationVariant;
+        renderAnimationDbResults();
+      });
+    });
+    document.querySelectorAll("[data-animation-compare]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const recordId = button.dataset.animationCompare;
+        animationDbState.compare = animationDbState.compare.includes(recordId)
+          ? animationDbState.compare.filter((value) => value !== recordId)
+          : [...animationDbState.compare.slice(-1), recordId];
+        renderAnimationDbResults();
+      });
+    });
+    document.querySelector("[data-animation-compare-clear]")?.addEventListener("click", () => {
+      animationDbState.compare = [];
+      renderAnimationDbResults();
+    });
+  }
+
+  function renderAnimationDb() {
+    document.title = "AnimationDB · PackBound Wiki";
+    renderNavigation("animation-db", "database");
+    const entityLabels = { player: "플레이어", monster: "몬스터" };
+    const actionOptions = animationDbTools.filterOptions(animationDb.records, "action");
+    const statusOptions = animationDbTools.filterOptions(animationDb.records, "status");
+    const actionLabels = new Map(animationDb.records.map((record) => [record.action, record.action_label]));
+    const statusLabelsByValue = new Map(animationDb.records.map((record) => [record.status, record.status_label]));
+    main.innerHTML = `
+      <div class="animationdb-layout">
+        <header class="animationdb-hero">
+          <div class="page-eyebrow">Sprite curation registry</div>
+          <div class="animationdb-hero-row">
+            <div><h1>AnimationDB</h1><p>지금까지 제작한 캐릭터와 몬스터 모션을 GIF로 바로 재생하고, 방향·프레임·상태를 비교해 현재 적용본과 제작 후보를 빠르게 구분합니다.</p></div>
+            <span><strong>${animationDb.count}</strong><small>${animationDb.character_count} CHARACTERS · ${animationDb.live_count} GAME ON</small></span>
+          </div>
+          <div class="animationdb-contract"><div><span>자동 수집 경로</span><code>${escapeHtml(animationDb.source)}</code></div><div><span>DB 리비전</span><code>${escapeHtml(animationDb.revision)}</code></div><div><span>큐레이션</span><strong>GIF · 방향 · 2-UP 비교</strong></div></div>
+        </header>
+        <section class="animationdb-toolbar" aria-label="애니메이션 검색과 필터">
+          <label class="animationdb-search"><span>검색</span><input id="animationdb-search" type="search" value="${escapeHtml(animationDbState.query)}" placeholder="캐릭터, 모션, 후보명 검색…"></label>
+          <label><span>대상</span><select id="animationdb-entity"><option value="all">전체</option>${["player", "monster"].map((value) => `<option value="${value}" ${animationDbState.entityType === value ? "selected" : ""}>${entityLabels[value]}</option>`).join("")}</select></label>
+          <label><span>모션</span><select id="animationdb-action"><option value="all">전체</option>${actionOptions.map((value) => `<option value="${escapeHtml(value)}" ${animationDbState.action === value ? "selected" : ""}>${escapeHtml(actionLabels.get(value) || value)}</option>`).join("")}</select></label>
+          <label><span>상태</span><select id="animationdb-status"><option value="all">전체</option>${statusOptions.map((value) => `<option value="${escapeHtml(value)}" ${animationDbState.status === value ? "selected" : ""}>${escapeHtml(statusLabelsByValue.get(value) || value)}</option>`).join("")}</select></label>
+          <strong id="animationdb-result-count"></strong>
+        </section>
+        <section id="animationdb-compare" class="animationdb-compare" aria-live="polite" hidden></section>
+        <section id="animationdb-results" class="animationdb-grid" aria-label="애니메이션 목록"></section>
+      </div>
+    `;
+    document.getElementById("animationdb-search").addEventListener("input", (event) => {
+      animationDbState.query = event.target.value;
+      renderAnimationDbResults();
+    });
+    [
+      ["animationdb-entity", "entityType"],
+      ["animationdb-action", "action"],
+      ["animationdb-status", "status"],
+    ].forEach(([elementId, stateKey]) => document.getElementById(elementId).addEventListener("change", (event) => {
+      animationDbState[stateKey] = event.target.value;
+      renderAnimationDbResults();
+    }));
+    renderAnimationDbResults();
     document.body.classList.remove("menu-open");
     window.scrollTo(0, 0);
   }
@@ -2770,6 +2996,7 @@
 
   function renderPage() {
     const route = readRoute();
+    document.body.classList.toggle("animationdb-open", route.kind === "database" && route.slug === "animation-db");
     if (!(route.kind === "database" && route.slug === "item-db")) cleanupItemDbFloatingScroll();
     if (!(route.kind === "database" && route.slug === "item-db") && itemDbEditorState) closeItemDbEditor();
     if (!(route.kind === "database" && route.slug === "monster-db") && monsterDbEditorState) closeMonsterDbEditor();
@@ -2785,6 +3012,7 @@
     if (route.kind === "database") {
       if (route.slug === "item-db") renderItemDb();
       else if (route.slug === "monster-db") renderMonsterDb();
+      else if (route.slug === "animation-db") renderAnimationDb();
       else renderStructuredDatabase(route.slug);
       return;
     }
@@ -3107,4 +3335,5 @@
 
   if (!location.hash && defaultPage) location.replace(pageHref(defaultPage));
   else renderPage();
+  void refreshMonsterDbApiAccess();
 })();

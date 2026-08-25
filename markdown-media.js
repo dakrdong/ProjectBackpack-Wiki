@@ -35,8 +35,10 @@
       const safePath = safeImageSource(path);
       return safePath ? `${safePath}${query ? `?${query}` : ""}` : null;
     }
-    if (!path.startsWith("./item-media/")) return null;
-    const segments = path.slice("./item-media/".length).split("/");
+    const generatedRoot = ["item-media", "animation-media"]
+      .find((rootName) => path.startsWith(`./${rootName}/`));
+    if (!generatedRoot) return null;
+    const segments = path.slice(`./${generatedRoot}/`.length).split("/");
     if (segments.length < 2 || segments.some((segment) => !SAFE_SEGMENT.test(segment))) return null;
     if (!SAFE_EXTENSION.test(segments.at(-1))) return null;
     return `${path}${query ? `?${query}` : ""}`;

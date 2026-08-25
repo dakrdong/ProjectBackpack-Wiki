@@ -16,6 +16,32 @@
     return value;
   }
 
+  function deletePath(value, path) {
+    const keys = String(path).split(".");
+    const parents = [];
+    let current = value;
+    for (const key of keys.slice(0, -1)) {
+      if (!current || typeof current !== "object" || Array.isArray(current) || !(key in current)) return value;
+      parents.push([current, key]);
+      current = current[key];
+    }
+    if (current && typeof current === "object" && !Array.isArray(current)) delete current[keys[keys.length - 1]];
+    for (const [parent, key] of parents.reverse()) {
+      const child = parent[key];
+      if (child && typeof child === "object" && !Array.isArray(child) && !Object.keys(child).length) delete parent[key];
+      else break;
+    }
+    return value;
+  }
+
+  function fieldApplies(spec, attackKind) {
+    return !spec.attack_kinds?.length || spec.attack_kinds.includes(attackKind);
+  }
+
+  function fieldLabel(spec, attackKind) {
+    return spec.labels_by_attack_kind?.[attackKind] || spec.label;
+  }
+
   function editableMonster(monster) {
     const copy = JSON.parse(JSON.stringify(monster));
     delete copy.concept_art_url;
@@ -74,7 +100,7 @@
     return (monsters || []).filter((monster) => JSON.stringify(monster).toLocaleLowerCase("ko-KR").includes(normalized));
   }
 
-  const api = { editableMonster, filterMonsters, getPath, parseField, serializeField, setPath };
+  const api = { deletePath, editableMonster, fieldApplies, fieldLabel, filterMonsters, getPath, parseField, serializeField, setPath };
   root.PACKBOUND_MONSTER_DB_TOOLS = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);
