@@ -4,6 +4,8 @@
   const wiki = window.PACKBOUND_WIKI;
   const itemDb = window.PACKBOUND_ITEM_DB;
   const itemDbTools = window.PACKBOUND_ITEM_DB_TOOLS;
+  const monsterDb = window.PACKBOUND_MONSTER_DB;
+  const monsterDbTools = window.PACKBOUND_MONSTER_DB_TOOLS;
   const combatDb = window.PACKBOUND_COMBAT_DB;
   const combatDbTools = window.PACKBOUND_COMBAT_DB_TOOLS;
   const runeBoardDb = window.PACKBOUND_RUNE_BOARD_DB;
@@ -53,6 +55,7 @@
     && Boolean(localHostCheck(window.location.hostname));
   const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
   const canEditItemDb = hasLocalAccess;
+  const canEditMonsterDb = hasLocalAccess;
   let searchMode = "pages";
   let tagSort = "recent";
   let selectedTag = null;
@@ -66,6 +69,10 @@
   let itemDbBakeState = null;
   let itemDbNotice = "";
   let itemDbEffectCatalogOpen = true;
+  let monsterDbQuery = "";
+  let monsterDbEditorState = null;
+  let monsterDbBakeState = null;
+  let monsterDbNotice = "";
   let structuredDbState = { databaseId: null, query: "", filters: {} };
   let runeBoardExplorerState = {
     itemId: "",
@@ -118,7 +125,7 @@
     main.innerHTML = '<div class="empty-state">위키 시간순 탐색 모듈을 불러오지 못했습니다.</div>';
     return;
   }
-  if (!combatDb || !combatDbTools || !runeBoardDb) {
+  if (!combatDb || !combatDbTools || !runeBoardDb || !monsterDb || !monsterDbTools) {
     main.innerHTML = '<div class="empty-state">구조화 DB 모듈을 불러오지 못했습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
     return;
   }
@@ -376,6 +383,14 @@
         count: itemDb?.count || 0,
         unit: "ITEMS",
         href: itemDbHref(),
+      },
+      {
+        id: "monster-db",
+        title: "몬스터 데이터베이스",
+        description: "AI · 능력치 · 공격 · 스폰",
+        count: monsterDb?.count || 0,
+        unit: "MONSTERS",
+        href: databaseHref("monster-db"),
       },
       ...[...(combatDb.databases || []), ...(runeBoardDb.databases || [])].map((database) => ({
         id: database.id,
@@ -2394,6 +2409,262 @@
     else window.scrollTo(0, 0);
   }
 
+  function closeMonsterDbEditor() {
+    document.getElementById("monsterdb-editor-backdrop")?.remove();
+    if (!monsterDbBakeState) document.body.classList.remove("itemdb-editor-open");
+    monsterDbEditorState = null;
+  }
+
+  function monsterDbFieldMarkup(spec, monster) {
+    const value = monsterDbTools.getPath(monster, spec.path);
+    const describedBy = spec.help ? `monsterdb-help-${spec.path.replaceAll(".", "-")}` : "";
+    const common = `data-monsterdb-field="${escapeHtml(spec.path)}" ${spec.readonly ? "disabled" : ""} ${describedBy ? `aria-describedby="${describedBy}"` : ""}`;
+    let control = "";
+    if (spec.kind === "boolean") {
+      control = `<label class="monsterdb-switch"><input type="checkbox" ${common} ${value ? "checked" : ""}><span></span><strong>${value ? "사용" : "미사용"}</strong></label>`;
+    } else if (spec.kind === "select") {
+      control = `<select ${common}>${spec.options.map((option) => `<option value="${escapeHtml(option)}" ${option === value ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select>`;
+    } else if (spec.kind === "textarea" || spec.kind === "vector3-list") {
+      control = `<textarea ${common} rows="${spec.kind === "vector3-list" ? 4 : 3}">${escapeHtml(monsterDbTools.serializeField(spec, value))}</textarea>`;
+    } else {
+      const inputType = spec.kind === "number" || spec.kind === "integer" ? "number" : spec.kind === "color" ? "color" : "text";
+      const numeric = inputType === "number"
+        ? `min="${spec.minimum ?? ""}" max="${spec.maximum ?? ""}" step="${spec.step ?? "any"}"`
+        : "";
+      control = `<input type="${inputType}" value="${escapeHtml(monsterDbTools.serializeField(spec, value))}" ${numeric} ${common}>`;
+    }
+    return `
+      <div class="monsterdb-field" data-kind="${escapeHtml(spec.kind)}">
+        <label><span>${escapeHtml(spec.label)}</span>${spec.unit ? `<em>${escapeHtml(spec.unit)}</em>` : ""}</label>
+        ${control}
+        ${spec.help ? `<small id="${describedBy}">${escapeHtml(spec.help)}</small>` : ""}
+      </div>
+    `;
+  }
+
+  function updateMonsterDbSwitchLabels(root = document) {
+    root.querySelectorAll(".monsterdb-switch input").forEach((input) => {
+      const label = input.closest(".monsterdb-switch")?.querySelector("strong");
+      if (label) label.textContent = input.checked ? "사용" : "미사용";
+    });
+  }
+
+  function openMonsterDbEditor(monsterId) {
+    if (!canEditMonsterDb || monsterDbEditorState) return;
+    const monster = monsterDb.monsters.find((entry) => entry.id === monsterId);
+    if (!monster) return;
+    monsterDbEditorState = { monster, saving: false, error: "" };
+    const groups = monsterDb.groups.map((group, index) => `
+      <details class="monsterdb-editor-group" ${index < 6 ? "open" : ""}>
+        <summary><span>${escapeHtml(group.name)}</span><em>${group.fields.length}개 변수</em></summary>
+        <div class="monsterdb-field-grid">${group.fields.map((spec) => monsterDbFieldMarkup(spec, monster)).join("")}</div>
+      </details>
+    `).join("");
+    document.body.insertAdjacentHTML("beforeend", `
+      <div id="monsterdb-editor-backdrop" class="itemdb-editor-backdrop">
+        <section class="itemdb-editor-dialog monsterdb-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="monsterdb-editor-title">
+          <header>
+            <div><span>MONSTER DATABASE</span><h2 id="monsterdb-editor-title">${escapeHtml(monster.identity.display_name)}</h2><code>${escapeHtml(monster.id)} · ${escapeHtml(monsterDb.revision)}</code></div>
+            <button type="button" class="itemdb-editor-close" data-monsterdb-close aria-label="몬스터 편집기 닫기">×</button>
+          </header>
+          <div class="monsterdb-editor-toolbar"><p>저장하면 원본 JSON, 웹 DB, Roblox 런타임 모듈이 함께 갱신됩니다.</p><div><button type="button" data-monsterdb-close>취소</button><button type="button" class="primary" data-monsterdb-save>저장</button></div></div>
+          <div class="monsterdb-editor-error" data-monsterdb-error hidden></div>
+          <div class="monsterdb-editor-scroll">${groups}</div>
+        </section>
+      </div>
+    `);
+    document.body.classList.add("itemdb-editor-open");
+    const backdrop = document.getElementById("monsterdb-editor-backdrop");
+    backdrop.addEventListener("click", (event) => {
+      if (event.target === backdrop) closeMonsterDbEditor();
+    });
+    backdrop.querySelectorAll("[data-monsterdb-close]").forEach((button) => button.addEventListener("click", closeMonsterDbEditor));
+    backdrop.querySelector("[data-monsterdb-save]").addEventListener("click", saveMonsterDbEditor);
+    backdrop.querySelectorAll(".monsterdb-switch input").forEach((input) => input.addEventListener("change", () => updateMonsterDbSwitchLabels(backdrop)));
+    updateMonsterDbSwitchLabels(backdrop);
+  }
+
+  async function saveMonsterDbEditor() {
+    const state = monsterDbEditorState;
+    const dialog = document.getElementById("monsterdb-editor-backdrop");
+    if (!state || !dialog || state.saving) return;
+    const errorBox = dialog.querySelector("[data-monsterdb-error]");
+    const button = dialog.querySelector("[data-monsterdb-save]");
+    const draft = monsterDbTools.editableMonster(state.monster);
+    try {
+      monsterDb.groups.forEach((group) => group.fields.forEach((spec) => {
+        if (spec.readonly) return;
+        const input = dialog.querySelector(`[data-monsterdb-field="${spec.path}"]`);
+        const value = monsterDbTools.parseField(spec, input.value, input.checked);
+        monsterDbTools.setPath(draft, spec.path, value);
+      }));
+    } catch (error) {
+      errorBox.textContent = String(error.message || error);
+      errorBox.hidden = false;
+      return;
+    }
+    state.saving = true;
+    button.disabled = true;
+    button.textContent = "저장 중…";
+    errorBox.hidden = true;
+    try {
+      const response = await fetch("/api/monster-db/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ monster_id: state.monster.id, monster: draft }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `저장에 실패했습니다. (${response.status})`);
+      const index = monsterDb.monsters.findIndex((entry) => entry.id === payload.monster.id);
+      if (index >= 0) monsterDb.monsters[index] = payload.monster;
+      monsterDb.revision = payload.revision;
+      monsterDb.active_count = monsterDb.monsters.filter((entry) => entry.enabled).length;
+      monsterDbNotice = `${payload.monster.identity.display_name}의 모든 런타임 변수를 저장했습니다. 게임 적용 전 리비전은 ${payload.revision}입니다.`;
+      closeMonsterDbEditor();
+      renderMonsterDb();
+    } catch (error) {
+      state.saving = false;
+      button.disabled = false;
+      button.textContent = "저장";
+      errorBox.textContent = String(error.message || error);
+      errorBox.hidden = false;
+    }
+  }
+
+  function closeMonsterDbBake() {
+    document.getElementById("monsterdb-bake-backdrop")?.remove();
+    if (!monsterDbEditorState) document.body.classList.remove("itemdb-editor-open");
+    monsterDbBakeState = null;
+  }
+
+  async function openMonsterDbBake() {
+    if (!canEditMonsterDb || monsterDbBakeState) return;
+    monsterDbBakeState = { loading: true, payload: null, error: "", status: "" };
+    renderMonsterDbBake();
+    try {
+      const response = await fetch("/api/monster-db/bake");
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `굽기에 실패했습니다. (${response.status})`);
+      if (monsterDbBakeState) monsterDbBakeState.payload = payload;
+    } catch (error) {
+      if (monsterDbBakeState) monsterDbBakeState.error = String(error.message || error);
+    }
+    if (!monsterDbBakeState) return;
+    monsterDbBakeState.loading = false;
+    renderMonsterDbBake();
+  }
+
+  function renderMonsterDbBake() {
+    const state = monsterDbBakeState;
+    if (!state) return;
+    let backdrop = document.getElementById("monsterdb-bake-backdrop");
+    if (!backdrop) {
+      document.body.insertAdjacentHTML("beforeend", `
+        <div id="monsterdb-bake-backdrop" class="itemdb-editor-backdrop">
+          <section class="itemdb-editor-dialog monsterdb-bake-dialog" role="dialog" aria-modal="true" aria-labelledby="monsterdb-bake-title">
+            <header><div><span>MONSTERDB → GAME</span><h2 id="monsterdb-bake-title">게임에 굽기</h2><code>ReplicatedStorage.Monsters.GeneratedMonsterDefinitions</code></div><button type="button" class="itemdb-editor-close" data-monsterdb-bake-close aria-label="굽기 창 닫기">×</button></header>
+            <div class="monsterdb-bake-body"></div>
+          </section>
+        </div>
+      `);
+      document.body.classList.add("itemdb-editor-open");
+      backdrop = document.getElementById("monsterdb-bake-backdrop");
+      backdrop.addEventListener("click", (event) => {
+        if (event.target === backdrop) closeMonsterDbBake();
+      });
+      backdrop.querySelector("[data-monsterdb-bake-close]").addEventListener("click", closeMonsterDbBake);
+    }
+    const body = backdrop.querySelector(".monsterdb-bake-body");
+    if (state.loading) {
+      body.innerHTML = '<div class="loading">MonsterDB 적용 스크립트를 만드는 중…</div>';
+      return;
+    }
+    if (state.error) {
+      body.innerHTML = `<div class="monsterdb-editor-error">${escapeHtml(state.error)}</div>`;
+      return;
+    }
+    const payload = state.payload;
+    body.innerHTML = `
+      <div class="monsterdb-bake-summary"><span><strong>${escapeHtml(payload.revision)}</strong><small>DB 리비전</small></span><span><strong>${payload.count}</strong><small>활성 몬스터</small></span></div>
+      <ol><li>Roblox Studio 실행을 멈춥니다.</li><li>아래 적용 스크립트를 복사해 명령 창에서 실행합니다.</li><li>출력 창의 MonsterDB 리비전을 확인하고 place를 저장합니다.</li></ol>
+      <div class="monsterdb-bake-actions"><button type="button" data-monsterdb-bake-copy="script">적용 스크립트 복사</button><button type="button" data-monsterdb-bake-copy="module">모듈 소스 복사</button><button type="button" data-monsterdb-bake-download>파일 내려받기</button></div>
+      ${state.status ? `<p class="monsterdb-bake-status" role="status">${escapeHtml(state.status)}</p>` : ""}
+    `;
+    body.querySelectorAll("[data-monsterdb-bake-copy]").forEach((button) => button.addEventListener("click", async () => {
+      const script = button.dataset.monsterdbBakeCopy === "script";
+      try {
+        await copyPlainText(script ? payload.script : payload.module_source);
+        state.status = script ? "적용 스크립트를 복사했습니다." : "GeneratedMonsterDefinitions 모듈 소스를 복사했습니다.";
+      } catch (error) {
+        state.status = `복사에 실패했습니다. (${String(error.message || error)})`;
+      }
+      renderMonsterDbBake();
+    }));
+    body.querySelector("[data-monsterdb-bake-download]").addEventListener("click", () => {
+      downloadPlainText(payload.filename, payload.script);
+      state.status = `${payload.filename} 파일을 내려받았습니다.`;
+      renderMonsterDbBake();
+    });
+  }
+
+  function renderMonsterDbCards(monsters) {
+    const root = document.getElementById("monsterdb-results");
+    const count = document.getElementById("monsterdb-result-count");
+    if (!root || !count) return;
+    count.textContent = `${monsters.length} / ${monsterDb.count}개 표시`;
+    if (!monsters.length) {
+      root.innerHTML = '<div class="empty-state">조건에 맞는 몬스터가 없습니다.</div>';
+      return;
+    }
+    root.innerHTML = monsters.map((monster) => `
+      <article class="monsterdb-card" data-enabled="${monster.enabled}">
+        <div class="monsterdb-card-art"><img src="${escapeHtml(monster.concept_art_url)}" alt="${escapeHtml(monster.identity.display_name)} 콘셉트" loading="lazy" decoding="async"><span>${escapeHtml(monster.identity.element)}</span></div>
+        <div class="monsterdb-card-body">
+          <header><div><span>${escapeHtml(monster.identity.tier)} · LV.${monster.identity.level}</span><h2>${escapeHtml(monster.identity.display_name)}</h2><code>${escapeHtml(monster.id)}</code></div><em>${monster.enabled ? "GAME ON" : "OFF"}</em></header>
+          <p>${escapeHtml(monster.identity.description)}</p>
+          <div class="monsterdb-stat-grid">
+            <span><small>체력</small><strong>${monster.stats.max_health}</strong></span>
+            <span><small>공격력</small><strong>${monster.stats.attack_power}</strong></span>
+            <span><small>이동속도</small><strong>${monster.movement.chase_speed}</strong></span>
+            <span><small>공격범위</small><strong>${monster.attack.maximum_range}</strong></span>
+            <span><small>탐색거리</small><strong>${monster.detection.search_range}</strong></span>
+            <span><small>장판예고</small><strong>${monster.attack.telegraph_duration_seconds}s</strong></span>
+            <span><small>공격간격</small><strong>${monster.attack.attack_interval_seconds}s</strong></span>
+            <span><small>동시 스폰</small><strong>${monster.spawn.maximum_alive}</strong></span>
+          </div>
+          <div class="monsterdb-tags">${monster.identity.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
+          ${canEditMonsterDb ? `<button type="button" class="monsterdb-edit-button" data-monsterdb-edit="${escapeHtml(monster.id)}">모든 속성 편집</button>` : ""}
+        </div>
+      </article>
+    `).join("");
+    root.querySelectorAll("[data-monsterdb-edit]").forEach((button) => button.addEventListener("click", () => openMonsterDbEditor(button.dataset.monsterdbEdit)));
+  }
+
+  function renderMonsterDb() {
+    document.title = "MonsterDB · PackBound Wiki";
+    renderNavigation("monster-db", "database");
+    main.innerHTML = `
+      <div class="monsterdb-layout">
+        <header class="monsterdb-hero">
+          <div class="page-eyebrow">Runtime enemy registry</div>
+          <div class="monsterdb-hero-row"><div><h1>MonsterDB</h1><p>몬스터의 서버 AI, 체력·공격력, 이동과 탐색, 공격 타이밍, 스폰, 충돌, 애니메이션 자산을 한 곳에서 변경합니다.</p></div><div class="monsterdb-hero-actions"><span><strong>${monsterDb.active_count}</strong><small>GAME ON · ${monsterDb.count} TOTAL</small></span>${canEditMonsterDb ? '<button type="button" data-monsterdb-bake>게임에 굽기</button>' : ""}</div></div>
+          <div class="monsterdb-contract"><div><span>DB 리비전</span><code>${escapeHtml(monsterDb.revision)}</code></div><div><span>단일 원본</span><code>${escapeHtml(monsterDb.source)}</code></div><div><span>편집 변수</span><strong>${monsterDb.groups.reduce((total, group) => total + group.fields.length, 0)}개</strong></div><div><span>판정 권한</span><strong>SERVER</strong></div></div>
+        </header>
+        <section class="monsterdb-toolbar"><label><span class="visually-hidden">몬스터 검색</span><input id="monsterdb-search" type="search" value="${escapeHtml(monsterDbQuery)}" placeholder="이름, ID, 속성, 태그 검색…"></label><strong id="monsterdb-result-count"></strong></section>
+        ${monsterDbNotice ? `<div class="itemdb-save-notice" role="status">${escapeHtml(monsterDbNotice)}</div>` : ""}
+        <div id="monsterdb-results"></div>
+      </div>
+    `;
+    document.getElementById("monsterdb-search").addEventListener("input", (event) => {
+      monsterDbQuery = event.target.value;
+      renderMonsterDbCards(monsterDbTools.filterMonsters(monsterDb.monsters, monsterDbQuery));
+    });
+    document.querySelector("[data-monsterdb-bake]")?.addEventListener("click", openMonsterDbBake);
+    renderMonsterDbCards(monsterDbTools.filterMonsters(monsterDb.monsters, monsterDbQuery));
+    document.body.classList.remove("menu-open");
+    window.scrollTo(0, 0);
+  }
+
   function renderStructuredDbCell(row, column) {
     const value = row[column.key] || "—";
     if (column.kind === "item") {
@@ -2501,6 +2772,8 @@
     const route = readRoute();
     if (!(route.kind === "database" && route.slug === "item-db")) cleanupItemDbFloatingScroll();
     if (!(route.kind === "database" && route.slug === "item-db") && itemDbEditorState) closeItemDbEditor();
+    if (!(route.kind === "database" && route.slug === "monster-db") && monsterDbEditorState) closeMonsterDbEditor();
+    if (!(route.kind === "database" && route.slug === "monster-db") && monsterDbBakeState) closeMonsterDbBake();
     if (route.kind === "tree") {
       document.title = "전체 위키 트리 · PackBound Wiki";
       renderNavigation("", "tree");
@@ -2511,6 +2784,7 @@
     }
     if (route.kind === "database") {
       if (route.slug === "item-db") renderItemDb();
+      else if (route.slug === "monster-db") renderMonsterDb();
       else renderStructuredDatabase(route.slug);
       return;
     }
