@@ -1,6 +1,6 @@
 window.PACKBOUND_MONSTER_DB = {
   "schema_version": 1,
-  "revision": "3301ba2ecb125dd7",
+  "revision": "179d414284af7c01",
   "source": "docs/gameplay/monster-definitions.json",
   "count": 6,
   "active_count": 6,
@@ -1417,7 +1417,7 @@ window.PACKBOUND_MONSTER_DB = {
         {
           "group": "표현·충돌",
           "path": "presentation.concept_art_path",
-          "label": "콘셉트 이미지 경로",
+          "label": "대표 이미지 경로",
           "kind": "string",
           "unit": "",
           "help": "",
@@ -3530,7 +3530,7 @@ window.PACKBOUND_MONSTER_DB = {
         "regen_delay_seconds": 8
       },
       "presentation": {
-        "concept_art_path": "Assets/Monsters/Concepts/grass_vine_monster_concept_v1.png",
+        "concept_art_path": "Assets/Monsters/Representatives/grass_vine_monster_representative_v1.png",
         "display_width_studs": 8,
         "display_height_studs": 8,
         "billboard_pixels_per_stud": 24,
@@ -3586,7 +3586,7 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/grass_vine_monster.png"
+      "concept_art_url": "./monster-media/grass_vine_monster.png?v=f2260ed76c13"
     },
     {
       "id": "whirl_dash_spirit",
@@ -3748,7 +3748,7 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/whirl_dash_spirit.png"
+      "concept_art_url": "./monster-media/whirl_dash_spirit.png?v=dd0314752d5f"
     },
     {
       "id": "fanburst_artillery",
@@ -3944,7 +3944,7 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/fanburst_artillery.png"
+      "concept_art_url": "./monster-media/fanburst_artillery.png?v=315af1d579d5"
     },
     {
       "id": "stampfoot_leaper",
@@ -4154,7 +4154,7 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/stampfoot_leaper.png"
+      "concept_art_url": "./monster-media/stampfoot_leaper.png?v=068fe62c7b4e"
     },
     {
       "id": "walking_nest",
@@ -4328,7 +4328,7 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/walking_nest.png"
+      "concept_art_url": "./monster-media/walking_nest.png?v=6355a91a3423"
     },
     {
       "id": "nest_hatchling_lizard",
@@ -4511,7 +4511,7 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/nest_hatchling_lizard.png"
+      "concept_art_url": "./monster-media/nest_hatchling_lizard.png?v=8a5e2241df4f"
     }
   ]
 };

@@ -6,6 +6,8 @@
   const itemDbTools = window.PACKBOUND_ITEM_DB_TOOLS;
   const monsterDb = window.PACKBOUND_MONSTER_DB;
   const monsterDbTools = window.PACKBOUND_MONSTER_DB_TOOLS;
+  const waveDb = window.PACKBOUND_WAVE_DB;
+  const waveDbTools = window.PACKBOUND_WAVE_DB_TOOLS;
   const animationDb = window.PACKBOUND_ANIMATION_DB;
   const animationDbTools = window.PACKBOUND_ANIMATION_DB_TOOLS;
   const combatDb = window.PACKBOUND_COMBAT_DB;
@@ -58,6 +60,7 @@
   const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
   const canEditItemDb = hasLocalAccess;
   let canEditMonsterDb = false;
+  let canEditWaveDb = false;
   let canOpenAnimationCuration = false;
   let searchMode = "pages";
   let tagSort = "recent";
@@ -76,6 +79,21 @@
   let monsterDbEditorState = null;
   let monsterDbBakeState = null;
   let monsterDbNotice = "";
+  let waveDbNotice = "";
+  let waveDbBakeState = null;
+  let waveDbState = {
+    selectedStageId: waveDb?.stages?.[0]?.id || "",
+    document: {
+      schema_version: waveDb?.schema_version || 3,
+      fields: waveDbTools?.deepClone(waveDb?.fields || []) || [],
+      stages: waveDbTools?.deepClone(waveDb?.stages || []) || [],
+    },
+    activeWaves: {},
+    activeLayers: {},
+    selectedMonsters: {},
+    dirty: false,
+    saving: false,
+  };
   let animationDbState = {
     query: "",
     entityType: "all",
@@ -125,6 +143,28 @@
     }
     const route = readRoute();
     if (route.kind === "database" && route.slug === "monster-db") renderMonsterDb();
+  }
+
+  async function refreshWaveDbApiAccess() {
+    if (!hasLocalAccess) return;
+    try {
+      const response = await fetch("/api/wave-db/status", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      const payload = await response.json().catch(() => ({}));
+      canEditWaveDb = response.ok && payload.editable === true && payload.api_version === 1;
+      if (!canEditWaveDb) {
+        waveDbNotice = response.status === 404
+          ? "실행 중인 로컬 위키 서버가 WaveDB 저장 API보다 오래되었습니다. 서버를 재시작해 주세요."
+          : payload.error || `WaveDB 저장 API를 확인하지 못했습니다. (${response.status})`;
+      }
+    } catch (error) {
+      canEditWaveDb = false;
+      waveDbNotice = `WaveDB 저장 API에 연결하지 못했습니다. (${String(error.message || error)})`;
+    }
+    const route = readRoute();
+    if (route.kind === "database" && route.slug === "wave-db") renderWaveDb({ preserveScroll: true });
   }
 
   async function refreshAnimationCurationApiAccess() {
@@ -454,6 +494,14 @@
         count: monsterDb?.count || 0,
         unit: "MONSTERS",
         href: databaseHref("monster-db"),
+      },
+      {
+        id: "wave-db",
+        title: "스테이지·웨이브 DB",
+        description: "필드 · 웨이브 · 스폰 타임라인",
+        count: waveDb?.stage_count || 0,
+        unit: "STAGES",
+        href: databaseHref("wave-db"),
       },
       {
         id: "animation-db",
@@ -2727,7 +2775,7 @@
     }
     root.innerHTML = monsters.map((monster) => `
       <article class="monsterdb-card" data-enabled="${monster.enabled}">
-        <div class="monsterdb-card-art"><img src="${escapeHtml(monster.concept_art_url)}" alt="${escapeHtml(monster.identity.display_name)} 콘셉트" loading="lazy" decoding="async"><span>${escapeHtml(monster.identity.element)}</span></div>
+        <div class="monsterdb-card-art"><img src="${escapeHtml(monster.concept_art_url)}" alt="${escapeHtml(monster.identity.display_name)} 대표 이미지" loading="lazy" decoding="async"><span>${escapeHtml(monster.identity.element)}</span></div>
         <div class="monsterdb-card-body">
           <header><div><span>${escapeHtml(monster.identity.tier)} · LV.${monster.identity.level}</span><h2>${escapeHtml(monster.identity.display_name)}</h2><code>${escapeHtml(monster.id)}</code></div><em>${monster.enabled ? "GAME ON" : "OFF"}</em></header>
           <p>${escapeHtml(monster.identity.description)}</p>
@@ -2774,7 +2822,493 @@
     window.scrollTo(0, 0);
   }
 
- function animationCurationUrl(value) {
+  function selectedWaveDbStage() {
+    const stages = waveDbState.document.stages || [];
+    const selected = stages.find((stage) => stage.id === waveDbState.selectedStageId) || stages[0] || null;
+    if (selected) waveDbState.selectedStageId = selected.id;
+    return selected;
+  }
+
+  function setWaveDbDirty() {
+    waveDbState.dirty = true;
+    waveDbNotice = "저장하지 않은 변경사항이 있습니다.";
+    const saveButton = document.querySelector("[data-wavedb-save]");
+    if (saveButton) saveButton.disabled = false;
+    const notice = document.querySelector("[data-wavedb-notice]");
+    if (notice) notice.textContent = waveDbNotice;
+  }
+
+  function waveDbWaveKey(stage, wave) {
+    return `${stage.id}/${wave.id}`;
+  }
+
+  function selectedWaveDbWave(stage) {
+    const selected = stage.waves.find((wave) => wave.id === waveDbState.activeWaves[stage.id]) || stage.waves[0] || null;
+    if (selected) waveDbState.activeWaves[stage.id] = selected.id;
+    return selected;
+  }
+
+  function activeWaveDbLayer(stage, wave) {
+    const key = waveDbWaveKey(stage, wave);
+    const layers = waveDbTools.sortedLayers(wave.layers);
+    const selected = layers.find((layer) => layer.id === waveDbState.activeLayers[key]) || layers[0] || null;
+    if (selected) waveDbState.activeLayers[key] = selected.id;
+    return selected;
+  }
+
+  function selectedWaveDbMonster(stage, wave) {
+    const key = waveDbWaveKey(stage, wave);
+    const enabled = (monsterDb?.monsters || []).filter((monster) => monster.enabled);
+    const selected = waveDbState.selectedMonsters[key];
+    if (selected === "__erase__" || enabled.some((monster) => monster.id === selected)) return selected;
+    waveDbState.selectedMonsters[key] = enabled[0]?.id || "__erase__";
+    return waveDbState.selectedMonsters[key];
+  }
+
+  function renderWaveDbGrid(field, layer, waveIndex, disabled) {
+    const blocked = waveDbTools.blockedCellSet(field);
+    const columns = waveDbTools.gridColumns(field);
+    const rows = waveDbTools.gridRows(field);
+    const cells = [];
+    for (let row = 0; row < rows; row += 1) {
+      for (let column = 0; column < columns; column += 1) {
+        const isBlocked = blocked.has(waveDbTools.cellKey(column, row));
+        const placement = waveDbTools.placementAt(layer, column, row);
+        const monster = placement ? waveDbTools.monsterById(monsterDb?.monsters || [], placement.monster_id) : null;
+        const world = waveDbTools.worldPosition(field, column, row).map((value) => Number(value.toFixed(2)));
+        const label = isBlocked
+          ? `${column + 1}열 ${row + 1}행, 이동 불가`
+          : placement
+            ? `${column + 1}열 ${row + 1}행, ${monster?.identity?.display_name || placement.monster_id} 배치, 월드 좌표 ${world.join(", ")}`
+            : `${column + 1}열 ${row + 1}행, 빈 셀, 월드 좌표 ${world.join(", ")}`;
+        cells.push(`
+          <button type="button" role="gridcell" class="wavedb-grid-cell${isBlocked ? " blocked" : ""}${placement ? " occupied" : ""}"
+            data-wavedb-cell data-column="${column}" data-row="${row}" data-element="${escapeHtml(monster?.identity?.element || "none")}"
+            aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}" ${isBlocked || disabled ? "disabled" : ""}>
+            ${placement && monster?.concept_art_url ? `<img class="wavedb-grid-monster" src="${escapeHtml(monster.concept_art_url)}" alt="" loading="lazy" decoding="async" draggable="false">` : ""}
+          </button>
+        `);
+      }
+    }
+    return `
+      <div class="wavedb-field-grid-wrap">
+        <div class="wavedb-field-grid" role="grid" aria-label="${escapeHtml(field.display_name)} 몬스터 배치 격자"
+          style="--wavedb-grid-columns:${columns};--wavedb-grid-rows:${rows};background-image:url('${escapeHtml(field.map_image_url || "")}')">
+          ${cells.join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderWaveDbStageTimelineToolbar(stage, wave, disabled) {
+    return `
+      <section class="wavedb-stage-timeline-toolbar">
+        <div class="wavedb-wave-selector">
+          <header><span>WAVE HIERARCHY</span><strong>웨이브 선택</strong></header>
+          <div role="tablist" aria-label="웨이브 목록">
+            ${stage.waves.map((entry, index) => `<button type="button" role="tab" class="${entry.id === wave.id ? "active" : ""}" data-wavedb-wave-select="${escapeHtml(entry.id)}" aria-selected="${entry.id === wave.id}"><span>${String(index + 1).padStart(2, "0")}</span><strong>${escapeHtml(entry.display_name)}</strong><small>${entry.layers.length}개 시간</small></button>`).join("")}
+            ${canEditWaveDb ? '<button type="button" class="wavedb-wave-add-compact" data-wavedb-add-wave>＋ 웨이브</button>' : ""}
+          </div>
+        </div>
+        <div class="wavedb-layer-create-block">
+          <header><span>ADD TIME LAYER</span><strong>시간 레이어 추가</strong></header>
+          <div class="wavedb-layer-create" aria-label="시간 레이어 추가">
+            <label><span>분</span><input type="number" min="0" max="59" step="1" value="0" inputmode="numeric" data-wavedb-layer-minutes${disabled}></label>
+            <b>:</b>
+            <label><span>초</span><input type="number" min="0" max="59" step="1" value="0" inputmode="numeric" data-wavedb-layer-seconds${disabled}></label>
+            ${canEditWaveDb ? '<button type="button" data-wavedb-add-layer aria-label="입력한 시간 레이어 추가">＋</button>' : ""}
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderWaveDbLayerRail(wave, layer) {
+    const layers = waveDbTools.sortedLayers(wave.layers);
+    return `
+      <aside class="wavedb-layer-rail">
+        <header><span>TIME LAYERS</span><strong>시간 레이어</strong><small>${escapeHtml(wave.display_name)}</small></header>
+        <div role="tablist" aria-label="${escapeHtml(wave.display_name)} 시간 레이어 목록">
+          ${layers.map((entry, index) => `<button type="button" role="tab" class="wavedb-layer-tab${entry.id === layer.id ? " active" : ""}" data-wavedb-layer-select="${escapeHtml(entry.id)}" aria-selected="${entry.id === layer.id}"><span>${String(index + 1).padStart(2, "0")}</span><strong>${waveDbTools.formatTime(entry.at_seconds)}</strong><small>${entry.placements.length}마리</small></button>`).join("")}
+        </div>
+        ${canEditWaveDb ? `<button type="button" class="wavedb-layer-remove" data-wavedb-remove-layer ${layers.length === 1 ? "disabled" : ""}>현재 시간 삭제</button>` : ""}
+      </aside>
+    `;
+  }
+
+  function renderWaveDbMonsterPanel(stage, wave, disabled) {
+    const selectedId = selectedWaveDbMonster(stage, wave);
+    const monsters = (monsterDb?.monsters || []).filter((monster) => monster.enabled);
+    return `
+      <aside class="wavedb-monster-panel">
+        <header><span>MONSTER PALETTE</span><strong>몬스터 목록</strong><small>선택 후 필드 셀을 누르세요.</small></header>
+        <div role="listbox" aria-label="배치할 몬스터">
+          ${monsters.map((monster) => `<button type="button" role="option" class="${monster.id === selectedId ? "active" : ""}" data-wavedb-monster-tool="${escapeHtml(monster.id)}" data-element="${escapeHtml(monster.identity.element)}" aria-selected="${monster.id === selectedId}"${disabled}>${monster.concept_art_url ? `<img src="${escapeHtml(monster.concept_art_url)}" alt="" loading="lazy" decoding="async">` : ""}<span><strong>${escapeHtml(monster.identity.display_name)}</strong><small>${escapeHtml(monster.identity.element)} · ${escapeHtml(monster.identity.tier)}</small></span><i></i></button>`).join("")}
+          <button type="button" role="option" class="wavedb-monster-eraser${selectedId === "__erase__" ? " active" : ""}" data-wavedb-monster-tool="__erase__" aria-selected="${selectedId === "__erase__"}"${disabled}><span class="wavedb-eraser">×</span><span><strong>배치 지우개</strong><small>선택한 셀 비우기</small></span><i></i></button>
+        </div>
+      </aside>
+    `;
+  }
+
+  function renderWaveDbPlacementList(layer, field) {
+    return `
+      <div class="wavedb-placement-list">
+        <header><strong>${waveDbTools.formatTime(layer.at_seconds)} 배치 목록</strong><span>${layer.placements.length}마리</span></header>
+        ${layer.placements.length ? `<ol>${layer.placements.map((placement) => {
+          const monster = waveDbTools.monsterById(monsterDb?.monsters || [], placement.monster_id);
+          const world = waveDbTools.worldPosition(field, placement.cell[0], placement.cell[1]).map((value) => Number(value.toFixed(2)));
+          return `<li data-element="${escapeHtml(monster?.identity?.element || "none")}"><span></span><div><strong>${escapeHtml(monster?.identity?.display_name || placement.monster_id)}</strong><small>셀 ${placement.cell[0] + 1}, ${placement.cell[1] + 1} · 월드 ${world.join(", ")}</small></div>${canEditWaveDb ? `<button type="button" data-wavedb-remove-placement="${escapeHtml(placement.id)}" aria-label="${escapeHtml(monster?.identity?.display_name || placement.monster_id)} 배치 삭제">×</button>` : ""}</li>`;
+        }).join("")}</ol>` : '<p class="wavedb-placement-empty">아직 배치된 몬스터가 없습니다.</p>'}
+      </div>
+    `;
+  }
+
+  function renderWaveDbWave(stage, wave, waveIndex, field, disabled) {
+    const isFinal = waveIndex === stage.waves.length - 1;
+    const includesBoss = waveDbTools.hasBoss(wave, monsterDb?.monsters || []);
+    const spawnCount = (wave.layers || []).reduce((total, layer) => total + layer.placements.length, 0);
+    const layer = activeWaveDbLayer(stage, wave);
+    if (!layer) return '<div class="empty-state">이 웨이브에 시간 레이어가 없습니다.</div>';
+    return `
+      <article class="wavedb-wave" data-wave-index="${waveIndex}">
+        <header class="wavedb-wave-header">
+          <div class="wavedb-wave-order"><span>${String(waveIndex + 1).padStart(2, "0")}</span><i></i></div>
+          <div class="wavedb-wave-title"><label><span class="visually-hidden">웨이브 이름</span><input type="text" maxlength="80" value="${escapeHtml(wave.display_name)}" data-wavedb-wave-field="display_name"${disabled}></label><code>${escapeHtml(wave.id)}</code></div>
+          <label class="wavedb-delay"><span>시작 대기</span><div class="wavedb-number-unit"><input type="number" min="0" max="120" step="0.05" value="${wave.start_delay_seconds}" data-wavedb-wave-field="start_delay_seconds" inputmode="decimal"${disabled}><small>초</small></div></label>
+          <div class="wavedb-wave-badges"><span>${wave.layers.length} TIMES · ${spawnCount} SPAWNS</span>${isFinal ? `<strong data-boss="${includesBoss}">${includesBoss ? "BOSS 포함" : "BOSS 없음 · 허용"}</strong>` : ""}</div>
+          ${canEditWaveDb ? `<div class="wavedb-wave-actions"><button type="button" data-wavedb-move-wave="-1" aria-label="웨이브 위로 이동" ${waveIndex === 0 ? "disabled" : ""}>↑</button><button type="button" data-wavedb-move-wave="1" aria-label="웨이브 아래로 이동" ${isFinal ? "disabled" : ""}>↓</button><button type="button" class="danger" data-wavedb-remove-wave aria-label="웨이브 삭제" ${stage.waves.length === 1 ? "disabled" : ""}>삭제</button></div>` : ""}
+        </header>
+        <div class="wavedb-wave-rule"><span>웨이브 시작</span><i>→</i><strong>시간 레이어 순서대로 소환</strong><i>→</i><span>모든 소환 완료 + 생존 몬스터 0</span><i>→</i><strong>${isFinal ? "스테이지 클리어" : "다음 웨이브"}</strong></div>
+        <div class="wavedb-encounter-workspace">
+          ${renderWaveDbLayerRail(wave, layer)}
+          <section class="wavedb-map-panel">
+            <div class="wavedb-layer-current"><span>ACTIVE LAYER</span><strong>${waveDbTools.formatTime(layer.at_seconds)}</strong><small>이 시간에 동시에 등장할 몬스터를 필드에 배치합니다.</small></div>
+            ${renderWaveDbGrid(field, layer, waveIndex, Boolean(disabled))}
+            ${renderWaveDbPlacementList(layer, field)}
+          </section>
+          ${renderWaveDbMonsterPanel(stage, wave, disabled)}
+        </div>
+      </article>
+    `;
+  }
+
+  function updateWaveDbDocumentFromInputs(root, stage) {
+    root.querySelectorAll("[data-wavedb-stage-field]").forEach((input) => {
+      const field = input.dataset.wavedbStageField;
+      stage[field] = input.type === "checkbox" ? input.checked : input.value;
+    });
+    root.querySelectorAll("[data-wave-index]").forEach((waveRoot) => {
+      if (!waveRoot.classList.contains("wavedb-wave")) return;
+      const wave = stage.waves[Number(waveRoot.dataset.waveIndex)];
+      waveRoot.querySelectorAll("[data-wavedb-wave-field]").forEach((input) => {
+        const field = input.dataset.wavedbWaveField;
+        wave[field] = input.type === "number" ? Number(input.value) : input.value;
+      });
+    });
+  }
+
+  function waveDbSourceDocument() {
+    const document = waveDbTools.deepClone(waveDbState.document);
+    document.fields.forEach((field) => delete field.map_image_url);
+    return document;
+  }
+
+  async function saveWaveDb() {
+    if (!canEditWaveDb || waveDbState.saving) return;
+    const root = document.querySelector(".wavedb-layout");
+    const stage = selectedWaveDbStage();
+    if (!root || !stage) return;
+    updateWaveDbDocumentFromInputs(root, stage);
+    waveDbState.saving = true;
+    renderWaveDb({ preserveScroll: true });
+    try {
+      const response = await fetch("/api/wave-db/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ document: waveDbSourceDocument() }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `저장에 실패했습니다. (${response.status})`);
+      Object.keys(waveDb).forEach((key) => delete waveDb[key]);
+      Object.assign(waveDb, payload.catalog);
+      waveDbState.document = {
+        schema_version: waveDb.schema_version,
+        fields: waveDbTools.deepClone(waveDb.fields),
+        stages: waveDbTools.deepClone(waveDb.stages),
+      };
+      waveDbState.dirty = false;
+      waveDbNotice = `스테이지·웨이브 설정을 저장했습니다. 게임 적용 전 리비전은 ${payload.revision}입니다.`;
+    } catch (error) {
+      waveDbNotice = String(error.message || error);
+    }
+    waveDbState.saving = false;
+    renderWaveDb({ preserveScroll: true });
+  }
+
+  function bindWaveDbEditor(root, stage) {
+    root.querySelectorAll("[data-wavedb-stage-select]").forEach((button) => button.addEventListener("click", () => {
+      updateWaveDbDocumentFromInputs(root, stage);
+      waveDbState.selectedStageId = button.dataset.wavedbStageSelect;
+      renderWaveDb({ preserveScroll: true });
+    }));
+    root.querySelectorAll("[data-wavedb-wave-select]").forEach((button) => button.addEventListener("click", () => {
+      updateWaveDbDocumentFromInputs(root, stage);
+      waveDbState.activeWaves[stage.id] = button.dataset.wavedbWaveSelect;
+      renderWaveDb({ preserveScroll: true });
+    }));
+    root.querySelectorAll("[data-wavedb-stage-field], [data-wavedb-wave-field]").forEach((input) => input.addEventListener("input", () => {
+      updateWaveDbDocumentFromInputs(root, stage);
+      setWaveDbDirty();
+    }));
+    root.querySelector('[data-wavedb-stage-field="field_id"]')?.addEventListener("change", () => {
+      updateWaveDbDocumentFromInputs(root, stage);
+      setWaveDbDirty();
+      renderWaveDb({ preserveScroll: true });
+    });
+    root.querySelector("[data-wavedb-add-stage]")?.addEventListener("click", () => {
+      updateWaveDbDocumentFromInputs(root, stage);
+      const fieldId = waveDbState.document.fields.find((field) => field.enabled)?.id;
+      if (!fieldId) return;
+      const next = waveDbTools.newStage(waveDbState.document.stages, fieldId);
+      waveDbState.document.stages.push(next);
+      waveDbState.selectedStageId = next.id;
+      setWaveDbDirty();
+      renderWaveDb({ preserveScroll: true });
+    });
+    root.querySelector("[data-wavedb-remove-stage]")?.addEventListener("click", () => {
+      if (waveDbState.document.stages.length === 1) return;
+      const index = waveDbState.document.stages.findIndex((entry) => entry.id === stage.id);
+      waveDbState.document.stages.splice(index, 1);
+      waveDbState.selectedStageId = waveDbState.document.stages[Math.max(0, index - 1)].id;
+      setWaveDbDirty();
+      renderWaveDb({ preserveScroll: true });
+    });
+    root.querySelector("[data-wavedb-add-wave]")?.addEventListener("click", () => {
+      updateWaveDbDocumentFromInputs(root, stage);
+      const next = waveDbTools.newWave(stage.waves);
+      stage.waves.push(next);
+      waveDbState.activeWaves[stage.id] = next.id;
+      setWaveDbDirty();
+      renderWaveDb({ preserveScroll: true });
+    });
+    root.querySelector("[data-wavedb-add-layer]")?.addEventListener("click", () => {
+      const wave = selectedWaveDbWave(stage);
+      if (!wave) return;
+      const key = waveDbWaveKey(stage, wave);
+      try {
+        const minutes = Number(root.querySelector("[data-wavedb-layer-minutes]").value);
+        const seconds = Number(root.querySelector("[data-wavedb-layer-seconds]").value);
+        const atSeconds = waveDbTools.parseTime(minutes, seconds);
+        if (wave.layers.some((layer) => layer.at_seconds === atSeconds)) throw new Error(`${waveDbTools.formatTime(atSeconds)} 레이어가 이미 있습니다.`);
+        const layer = waveDbTools.newLayer(wave.layers, atSeconds);
+        wave.layers.push(layer);
+        wave.layers.sort((left, right) => left.at_seconds - right.at_seconds || left.id.localeCompare(right.id));
+        waveDbState.activeLayers[key] = layer.id;
+        setWaveDbDirty();
+        renderWaveDb({ preserveScroll: true });
+      } catch (error) {
+        waveDbNotice = String(error.message || error);
+        renderWaveDb({ preserveScroll: true });
+      }
+    });
+    root.querySelectorAll(".wavedb-wave").forEach((waveRoot) => {
+      const waveIndex = Number(waveRoot.dataset.waveIndex);
+      const wave = stage.waves[waveIndex];
+      const key = waveDbWaveKey(stage, wave);
+      waveRoot.querySelectorAll("[data-wavedb-layer-select]").forEach((button) => button.addEventListener("click", () => {
+        waveDbState.activeLayers[key] = button.dataset.wavedbLayerSelect;
+        renderWaveDb({ preserveScroll: true });
+      }));
+      waveRoot.querySelector("[data-wavedb-remove-layer]")?.addEventListener("click", () => {
+        if (wave.layers.length === 1) return;
+        const layer = activeWaveDbLayer(stage, wave);
+        const index = wave.layers.findIndex((entry) => entry.id === layer?.id);
+        if (index < 0) return;
+        wave.layers.splice(index, 1);
+        waveDbState.activeLayers[key] = waveDbTools.sortedLayers(wave.layers)[Math.max(0, index - 1)]?.id || "";
+        setWaveDbDirty();
+        renderWaveDb({ preserveScroll: true });
+      });
+      waveRoot.querySelectorAll("[data-wavedb-monster-tool]").forEach((button) => button.addEventListener("click", () => {
+        waveDbState.selectedMonsters[key] = button.dataset.wavedbMonsterTool;
+        renderWaveDb({ preserveScroll: true });
+      }));
+      waveRoot.querySelectorAll("[data-wavedb-cell]").forEach((button) => button.addEventListener("click", () => {
+        const layer = activeWaveDbLayer(stage, wave);
+        if (!layer) return;
+        const column = Number(button.dataset.column);
+        const row = Number(button.dataset.row);
+        const existing = waveDbTools.placementAt(layer, column, row);
+        if (existing) layer.placements.splice(layer.placements.indexOf(existing), 1);
+        const monsterId = selectedWaveDbMonster(stage, wave);
+        if (monsterId !== "__erase__") layer.placements.push(waveDbTools.newPlacement(layer.placements, monsterId, column, row));
+        setWaveDbDirty();
+        renderWaveDb({ preserveScroll: true });
+      }));
+      waveRoot.querySelectorAll("[data-wavedb-remove-placement]").forEach((button) => button.addEventListener("click", () => {
+        const layer = activeWaveDbLayer(stage, wave);
+        if (!layer) return;
+        const index = layer.placements.findIndex((placement) => placement.id === button.dataset.wavedbRemovePlacement);
+        if (index < 0) return;
+        layer.placements.splice(index, 1);
+        setWaveDbDirty();
+        renderWaveDb({ preserveScroll: true });
+      }));
+      waveRoot.querySelector("[data-wavedb-remove-wave]")?.addEventListener("click", () => {
+        if (stage.waves.length === 1) return;
+        updateWaveDbDocumentFromInputs(root, stage);
+        stage.waves.splice(waveIndex, 1);
+        waveDbState.activeWaves[stage.id] = stage.waves[Math.max(0, waveIndex - 1)]?.id || "";
+        setWaveDbDirty();
+        renderWaveDb({ preserveScroll: true });
+      });
+      waveRoot.querySelectorAll("[data-wavedb-move-wave]").forEach((button) => button.addEventListener("click", () => {
+        updateWaveDbDocumentFromInputs(root, stage);
+        const target = waveIndex + Number(button.dataset.wavedbMoveWave);
+        if (target < 0 || target >= stage.waves.length) return;
+        [stage.waves[waveIndex], stage.waves[target]] = [stage.waves[target], stage.waves[waveIndex]];
+        setWaveDbDirty();
+        renderWaveDb({ preserveScroll: true });
+      }));
+    });
+    root.querySelector("[data-wavedb-save]")?.addEventListener("click", saveWaveDb);
+    root.querySelector("[data-wavedb-bake]")?.addEventListener("click", openWaveDbBake);
+  }
+
+  function closeWaveDbBake() {
+    document.getElementById("wavedb-bake-backdrop")?.remove();
+    if (!monsterDbEditorState && !monsterDbBakeState) document.body.classList.remove("itemdb-editor-open");
+    waveDbBakeState = null;
+  }
+
+  async function openWaveDbBake() {
+    if (!canEditWaveDb || waveDbBakeState) return;
+    waveDbBakeState = { loading: true, payload: null, error: "", status: "" };
+    renderWaveDbBake();
+    try {
+      const response = await fetch("/api/wave-db/bake");
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `굽기에 실패했습니다. (${response.status})`);
+      if (waveDbBakeState) waveDbBakeState.payload = payload;
+    } catch (error) {
+      if (waveDbBakeState) waveDbBakeState.error = String(error.message || error);
+    }
+    if (!waveDbBakeState) return;
+    waveDbBakeState.loading = false;
+    renderWaveDbBake();
+  }
+
+  function renderWaveDbBake() {
+    const state = waveDbBakeState;
+    if (!state) return;
+    let backdrop = document.getElementById("wavedb-bake-backdrop");
+    if (!backdrop) {
+      document.body.insertAdjacentHTML("beforeend", `
+        <div id="wavedb-bake-backdrop" class="itemdb-editor-backdrop">
+          <section class="itemdb-editor-dialog monsterdb-bake-dialog" role="dialog" aria-modal="true" aria-labelledby="wavedb-bake-title">
+            <header><div><span>WAVEDB → GAME</span><h2 id="wavedb-bake-title">게임에 굽기</h2><code>ReplicatedStorage.Waves.GeneratedStageWaves</code></div><button type="button" class="itemdb-editor-close" data-wavedb-bake-close aria-label="굽기 창 닫기">×</button></header>
+            <div class="monsterdb-bake-body"></div>
+          </section>
+        </div>
+      `);
+      document.body.classList.add("itemdb-editor-open");
+      backdrop = document.getElementById("wavedb-bake-backdrop");
+      backdrop.addEventListener("click", (event) => {
+        if (event.target === backdrop) closeWaveDbBake();
+      });
+      backdrop.querySelector("[data-wavedb-bake-close]").addEventListener("click", closeWaveDbBake);
+    }
+    const body = backdrop.querySelector(".monsterdb-bake-body");
+    if (state.loading) {
+      body.innerHTML = '<div class="loading">WaveDB 적용 스크립트를 만드는 중…</div>';
+      return;
+    }
+    if (state.error) {
+      body.innerHTML = `<div class="monsterdb-editor-error">${escapeHtml(state.error)}</div>`;
+      return;
+    }
+    const payload = state.payload;
+    body.innerHTML = `
+      <div class="monsterdb-bake-summary"><span><strong>${escapeHtml(payload.revision)}</strong><small>DB 리비전</small></span><span><strong>${payload.count}</strong><small>활성 스테이지</small></span><span><strong>${payload.wave_count}</strong><small>웨이브</small></span></div>
+      <ol><li>Roblox Studio 실행을 멈춥니다.</li><li>아래 적용 스크립트를 복사해 명령 창에서 실행합니다.</li><li>출력 창의 WaveDB 리비전을 확인하고 place를 저장합니다.</li></ol>
+      <div class="monsterdb-bake-actions"><button type="button" data-wavedb-bake-copy="script">적용 스크립트 복사</button><button type="button" data-wavedb-bake-copy="module">모듈 소스 복사</button><button type="button" data-wavedb-bake-download>파일 내려받기</button></div>
+      ${state.status ? `<p class="monsterdb-bake-status" role="status">${escapeHtml(state.status)}</p>` : ""}
+    `;
+    body.querySelectorAll("[data-wavedb-bake-copy]").forEach((button) => button.addEventListener("click", async () => {
+      const script = button.dataset.wavedbBakeCopy === "script";
+      try {
+        await copyPlainText(script ? payload.script : payload.module_source);
+        state.status = script ? "적용 스크립트를 복사했습니다." : "GeneratedStageWaves 모듈 소스를 복사했습니다.";
+      } catch (error) {
+        state.status = `복사에 실패했습니다. (${String(error.message || error)})`;
+      }
+      renderWaveDbBake();
+    }));
+    body.querySelector("[data-wavedb-bake-download]").addEventListener("click", () => {
+      downloadPlainText(payload.filename, payload.script);
+      state.status = `${payload.filename} 파일을 내려받았습니다.`;
+      renderWaveDbBake();
+    });
+  }
+
+  function renderWaveDb({ preserveScroll = false } = {}) {
+    const previousScroll = preserveScroll
+      ? { x: window.scrollX, y: window.scrollY }
+      : { x: 0, y: 0 };
+    document.title = "WaveDB · PackBound Wiki";
+    renderNavigation("wave-db", "database");
+    const stage = selectedWaveDbStage();
+    if (!stage) {
+      main.innerHTML = '<div class="empty-state">표시할 스테이지가 없습니다.</div>';
+      return;
+    }
+    const fields = waveDbState.document.fields || [];
+    const selectedField = fields.find((field) => field.id === stage.field_id) || fields[0];
+    const selectedWave = selectedWaveDbWave(stage);
+    const selectedWaveIndex = stage.waves.indexOf(selectedWave);
+    const disabled = canEditWaveDb ? "" : " disabled";
+    const totalWaves = waveDbTools.totalWaves(waveDbState.document.stages);
+    const totalLayers = waveDbTools.totalLayers(waveDbState.document.stages);
+    const totalSpawns = waveDbTools.totalSpawns(waveDbState.document.stages);
+    main.innerHTML = `
+      <div class="wavedb-layout">
+        <header class="wavedb-hero">
+          <div><div class="page-eyebrow">Visual encounter timeline</div><h1>Stage &amp; Wave DB</h1><p>스테이지 필드 위에 시간 레이어를 만들고, 격자 셀을 눌러 원하는 몬스터의 출현 위치를 배치합니다.</p></div>
+          <div class="wavedb-hero-stats"><span><strong>${waveDbState.document.stages.length}</strong><small>STAGES</small></span><span><strong>${totalWaves}</strong><small>WAVES</small></span><span><strong>${totalLayers}</strong><small>TIME LAYERS</small></span><span><strong>${totalSpawns}</strong><small>SPAWNS</small></span></div>
+          <div class="wavedb-contract"><span><i>1</i> 예약 스폰 완료</span><b>→</b><span><i>2</i> 생존 몬스터 0</span><b>→</b><span><i>3</i> 자동 다음 웨이브</span><b>→</b><span><i>4</i> 최종 클리어</span></div>
+        </header>
+        <div class="wavedb-workspace">
+          <aside class="wavedb-stage-list">
+            <header><div><span>STAGE INDEX</span><strong>스테이지</strong></div>${canEditWaveDb ? '<button type="button" data-wavedb-add-stage aria-label="스테이지 추가">＋</button>' : ""}</header>
+            <div>${waveDbState.document.stages.map((entry, index) => `<button type="button" class="${entry.id === stage.id ? "active" : ""}" data-wavedb-stage-select="${escapeHtml(entry.id)}"><span>${String(index + 1).padStart(2, "0")}</span><span><strong>${escapeHtml(entry.display_name)}</strong><small>${entry.waves.length} 웨이브 · ${escapeHtml(entry.field_id)}</small></span><em>${entry.enabled ? "ON" : "OFF"}</em></button>`).join("")}</div>
+          </aside>
+          <section class="wavedb-editor">
+            <header class="wavedb-stage-header">
+              <div><span>STAGE SETTINGS</span><h2>${escapeHtml(stage.display_name)}</h2><code>${escapeHtml(stage.id)}</code></div>
+              <div class="wavedb-stage-actions">${canEditWaveDb ? `<button type="button" class="danger" data-wavedb-remove-stage ${waveDbState.document.stages.length === 1 ? "disabled" : ""}>스테이지 삭제</button><button type="button" data-wavedb-bake>게임에 굽기</button><button type="button" class="primary" data-wavedb-save ${!waveDbState.dirty || waveDbState.saving ? "disabled" : ""}>${waveDbState.saving ? "저장 중…" : "전체 저장"}</button>` : ""}</div>
+            </header>
+            ${waveDbNotice ? `<div class="wavedb-notice" data-wavedb-notice role="status">${escapeHtml(waveDbNotice)}</div>` : '<div class="wavedb-notice quiet" data-wavedb-notice>변경하면 전체 스테이지 구성이 함께 검증·저장됩니다.</div>'}
+            ${renderWaveDbStageTimelineToolbar(stage, selectedWave, disabled)}
+            <section class="wavedb-stage-fields">
+              <label><span>스테이지 이름</span><input type="text" maxlength="80" value="${escapeHtml(stage.display_name)}" data-wavedb-stage-field="display_name"${disabled}></label>
+              <label class="wide"><span>설명</span><textarea maxlength="240" rows="2" data-wavedb-stage-field="description"${disabled}>${escapeHtml(stage.description)}</textarea></label>
+              <label><span>사용 필드</span><select data-wavedb-stage-field="field_id"${disabled}>${fields.filter((field) => field.enabled || field.id === stage.field_id).map((field) => `<option value="${escapeHtml(field.id)}" ${field.id === stage.field_id ? "selected" : ""}>${escapeHtml(field.display_name)} · v${field.runtime_field_version}</option>`).join("")}</select></label>
+              <label class="wavedb-enabled"><span>게임 활성화</span><input type="checkbox" data-wavedb-stage-field="enabled" ${stage.enabled ? "checked" : ""}${disabled}><strong>${stage.enabled ? "GAME ON" : "OFF"}</strong></label>
+              <article class="wavedb-field-link"><span>연결된 FieldDB</span><strong>${escapeHtml(selectedField?.display_name || stage.field_id)}</strong><code>${escapeHtml(selectedField?.id || stage.field_id)}</code><dl><div><dt>월드 모델</dt><dd>${escapeHtml(selectedField?.runtime_model_name || "-")}</dd></div><div><dt>필드 버전</dt><dd>v${selectedField?.runtime_field_version || "-"}</dd></div><div><dt>배치 격자</dt><dd>${waveDbTools.gridColumns(selectedField)} × ${waveDbTools.gridRows(selectedField)}</dd></div><div><dt>플레이어 시작점</dt><dd>${(selectedField?.player_spawn || []).join(", ")}</dd></div></dl></article>
+            </section>
+            <div class="wavedb-wave-list">
+              ${renderWaveDbWave(stage, selectedWave, selectedWaveIndex, selectedField, disabled)}
+            </div>
+          </section>
+        </div>
+      </div>
+    `;
+    bindWaveDbEditor(document.querySelector(".wavedb-layout"), stage);
+    document.body.classList.remove("menu-open");
+    window.scrollTo(previousScroll.x, previousScroll.y);
+  }
+
+  function animationCurationUrl(value) {
     try {
       const url = new URL(String(value));
       if (url.protocol !== "http:" || !["127.0.0.1", "localhost"].includes(url.hostname)) return "";
@@ -3118,10 +3652,12 @@
   function renderPage() {
     const route = readRoute();
     document.body.classList.toggle("animationdb-open", route.kind === "database" && route.slug === "animation-db");
+    document.body.classList.toggle("wavedb-open", route.kind === "database" && route.slug === "wave-db");
     if (!(route.kind === "database" && route.slug === "item-db")) cleanupItemDbFloatingScroll();
     if (!(route.kind === "database" && route.slug === "item-db") && itemDbEditorState) closeItemDbEditor();
     if (!(route.kind === "database" && route.slug === "monster-db") && monsterDbEditorState) closeMonsterDbEditor();
     if (!(route.kind === "database" && route.slug === "monster-db") && monsterDbBakeState) closeMonsterDbBake();
+    if (!(route.kind === "database" && route.slug === "wave-db") && waveDbBakeState) closeWaveDbBake();
     if (route.kind === "tree") {
       document.title = "전체 위키 트리 · PackBound Wiki";
       renderNavigation("", "tree");
@@ -3133,6 +3669,7 @@
     if (route.kind === "database") {
       if (route.slug === "item-db") renderItemDb();
       else if (route.slug === "monster-db") renderMonsterDb();
+      else if (route.slug === "wave-db") renderWaveDb();
       else if (route.slug === "animation-db") renderAnimationDb();
       else renderStructuredDatabase(route.slug);
       return;
@@ -3458,5 +3995,6 @@
   if (!location.hash && defaultPage) location.replace(pageHref(defaultPage));
   else renderPage();
   void refreshMonsterDbApiAccess();
+  void refreshWaveDbApiAccess();
   void refreshAnimationCurationApiAccess();
 })();
