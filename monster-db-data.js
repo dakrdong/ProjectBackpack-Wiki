@@ -1,9 +1,9 @@
 window.PACKBOUND_MONSTER_DB = {
   "schema_version": 1,
-  "revision": "cd000c3522a49db1",
+  "revision": "3301ba2ecb125dd7",
   "source": "docs/gameplay/monster-definitions.json",
-  "count": 3,
-  "active_count": 3,
+  "count": 6,
+  "active_count": 6,
   "groups": [
     {
       "name": "기본 정보",
@@ -506,7 +506,9 @@ window.PACKBOUND_MONSTER_DB = {
           "options": [
             "TargetedGroundEruption",
             "TelegraphedLinearDash",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -569,7 +571,8 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 30,
           "step": 0.05,
           "labels_by_attack_kind": {
-            "FanVolleyProjectile": "첫 발사 전 예고 시간"
+            "FanVolleyProjectile": "첫 발사 전 예고 시간",
+            "TelegraphedLeapSlam": "착지 예고 시간"
           }
         },
         {
@@ -714,20 +717,50 @@ window.PACKBOUND_MONSTER_DB = {
           "attack_kinds": [
             "TargetedGroundEruption"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "name": "공격 패턴 · 지면 분출·접촉",
+      "fields": [
         {
-          "group": "공격 패턴 · 지면 분출",
+          "group": "공격 패턴 · 지면 분출·접촉",
           "path": "attack.hit_radius",
-          "label": "공격 장판 반경",
+          "label": "실제 피해 판정 반경",
           "kind": "number",
           "unit": "stud",
           "help": "",
           "readonly": false,
           "minimum": 0.25,
           "maximum": 200,
-          "step": 0.25,
+          "step": 0.05,
           "attack_kinds": [
-            "TargetedGroundEruption"
+            "TargetedGroundEruption",
+            "ContactMelee"
+          ],
+          "labels_by_attack_kind": {
+            "TargetedGroundEruption": "공격 장판 반경",
+            "ContactMelee": "접촉 피해 반경"
+          }
+        }
+      ]
+    },
+    {
+      "name": "공격 패턴 · 접촉",
+      "fields": [
+        {
+          "group": "공격 패턴 · 접촉",
+          "path": "attack.damage_frame_zero_based",
+          "label": "피해 프레임 (0부터 시작)",
+          "kind": "integer",
+          "unit": "",
+          "help": "Attack 아틀라스에서 서버가 실제 피해를 판정하는 프레임입니다.",
+          "readonly": false,
+          "minimum": 0,
+          "maximum": 63,
+          "step": 1,
+          "attack_kinds": [
+            "ContactMelee"
           ]
         }
       ]
@@ -1019,6 +1052,128 @@ window.PACKBOUND_MONSTER_DB = {
       ]
     },
     {
+      "name": "공격 패턴 · 도약 찍기",
+      "fields": [
+        {
+          "group": "공격 패턴 · 도약 찍기",
+          "path": "attack.leap_height_studs",
+          "label": "도약 높이",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.5,
+          "maximum": 100,
+          "step": 0.25,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "공격 패턴 · 도약 찍기",
+          "path": "attack.leap_duration_seconds",
+          "label": "공중 이동 시간",
+          "kind": "number",
+          "unit": "초",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.05,
+          "maximum": 10,
+          "step": 0.05,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "공격 패턴 · 도약 찍기",
+          "path": "attack.landing_radius_studs",
+          "label": "착지 피해 반경",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.25,
+          "maximum": 100,
+          "step": 0.25,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "공격 패턴 · 도약 찍기",
+          "path": "attack.ground_probe_height_studs",
+          "label": "착지 지면 탐색 높이",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 200,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "공격 패턴 · 도약 찍기",
+          "path": "attack.ground_probe_depth_studs",
+          "label": "착지 지면 탐색 깊이",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 500,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "공격 패턴 · 도약 찍기",
+          "path": "attack.maximum_landing_slope_degrees",
+          "label": "최대 착지 경사",
+          "kind": "number",
+          "unit": "도",
+          "help": "",
+          "readonly": false,
+          "minimum": 0,
+          "maximum": 60,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "공격 패턴 · 도약 찍기",
+          "path": "attack.arc_collision_samples",
+          "label": "궤적 충돌 표본 수",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 4,
+          "maximum": 64,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "공격 패턴 · 도약 찍기",
+          "path": "attack.cancel_when_arc_blocked",
+          "label": "궤적 막힘 시 취소",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        }
+      ]
+    },
+    {
       "name": "스폰",
       "fields": [
         {
@@ -1097,6 +1252,108 @@ window.PACKBOUND_MONSTER_DB = {
           "kind": "vector3-list",
           "unit": "",
           "help": "한 줄에 X, Y, Z를 입력합니다.",
+          "readonly": false
+        }
+      ]
+    },
+    {
+      "name": "사망·소환",
+      "fields": [
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.enabled",
+          "label": "사망 시 자식 소환",
+          "kind": "boolean",
+          "unit": "",
+          "help": "실제 체력 0 사망일 때만 지정한 자식을 한 번 소환합니다.",
+          "readonly": false
+        },
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.child_monster_id",
+          "label": "자식 몬스터 ID",
+          "kind": "optional-id",
+          "unit": "",
+          "help": "기능을 사용하지 않을 때는 비워 둘 수 있습니다.",
+          "readonly": false
+        },
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.count",
+          "label": "자식 수",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 64,
+          "step": 1
+        },
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.trigger_frame_zero_based",
+          "label": "부화 프레임 (0부터 시작)",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 0,
+          "maximum": 63,
+          "step": 1
+        },
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.spawn_radius_studs",
+          "label": "부화 배치 반경",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 100,
+          "step": 0.05
+        },
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.activation_delay_seconds",
+          "label": "자식 활성화 지연",
+          "kind": "number",
+          "unit": "초",
+          "help": "",
+          "readonly": false,
+          "minimum": 0,
+          "maximum": 30,
+          "step": 0.05
+        },
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.target_policy",
+          "label": "자식의 첫 표적",
+          "kind": "select",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "options": [
+            "KillerThenNearest",
+            "Nearest"
+          ]
+        },
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.child_should_respawn",
+          "label": "자식 재생성 예약",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
+          "readonly": false
+        },
+        {
+          "group": "사망·소환",
+          "path": "death_spawn.inherit_home",
+          "label": "부모 귀환 지점 상속",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
           "readonly": false
         }
       ]
@@ -1436,6 +1693,168 @@ window.PACKBOUND_MONSTER_DB = {
       ]
     },
     {
+      "name": "표현·충돌 · 도약 찍기",
+      "fields": [
+        {
+          "group": "표현·충돌 · 도약 찍기",
+          "path": "presentation.impact_width_studs",
+          "label": "착지 충격파 표시 너비",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 100,
+          "step": 0.1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "표현·충돌 · 도약 찍기",
+          "path": "presentation.impact_height_studs",
+          "label": "착지 충격파 표시 높이",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 100,
+          "step": 0.1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "표현·충돌 · 도약 찍기",
+          "path": "presentation.impact_offset_y",
+          "label": "착지 충격파 Y 오프셋",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": -50,
+          "maximum": 50,
+          "step": 0.1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "애니메이션 · Spawn",
+      "fields": [
+        {
+          "group": "애니메이션 · Spawn",
+          "path": "presentation.animations.Spawn.asset_id",
+          "label": "Roblox 아틀라스 ID",
+          "kind": "asset-id",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Spawn"
+        },
+        {
+          "group": "애니메이션 · Spawn",
+          "path": "presentation.animations.Spawn.frame_count",
+          "label": "프레임 수",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 64,
+          "step": 1,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Spawn"
+        },
+        {
+          "group": "애니메이션 · Spawn",
+          "path": "presentation.animations.Spawn.fps",
+          "label": "기본 FPS",
+          "kind": "number",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 60,
+          "step": 0.1,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Spawn"
+        },
+        {
+          "group": "애니메이션 · Spawn",
+          "path": "presentation.animations.Spawn.loop",
+          "label": "반복 재생",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Spawn"
+        },
+        {
+          "group": "애니메이션 · Spawn",
+          "path": "presentation.animations.Spawn.direction",
+          "label": "방향 계약",
+          "kind": "select",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "options": [
+            "East",
+            "Omni"
+          ],
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Spawn"
+        },
+        {
+          "group": "애니메이션 · Spawn",
+          "path": "presentation.animations.Spawn.cell_width",
+          "label": "셀 너비",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Spawn"
+        },
+        {
+          "group": "애니메이션 · Spawn",
+          "path": "presentation.animations.Spawn.cell_height",
+          "label": "셀 높이",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Spawn"
+        }
+      ]
+    },
+    {
       "name": "애니메이션 · Idle",
       "fields": [
         {
@@ -1448,7 +1867,9 @@ window.PACKBOUND_MONSTER_DB = {
           "readonly": false,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1464,7 +1885,9 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1480,7 +1903,9 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 0.1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1493,7 +1918,9 @@ window.PACKBOUND_MONSTER_DB = {
           "readonly": false,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1510,7 +1937,9 @@ window.PACKBOUND_MONSTER_DB = {
           ],
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1526,7 +1955,9 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1542,7 +1973,9 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         }
       ]
@@ -1560,7 +1993,9 @@ window.PACKBOUND_MONSTER_DB = {
           "readonly": false,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1576,7 +2011,9 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1592,7 +2029,9 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 0.1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1605,7 +2044,9 @@ window.PACKBOUND_MONSTER_DB = {
           "readonly": false,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1622,7 +2063,9 @@ window.PACKBOUND_MONSTER_DB = {
           ],
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1638,7 +2081,9 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         },
         {
@@ -1654,7 +2099,9 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee",
+            "TelegraphedLeapSlam"
           ]
         }
       ]
@@ -1672,7 +2119,8 @@ window.PACKBOUND_MONSTER_DB = {
           "readonly": false,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee"
           ]
         },
         {
@@ -1688,7 +2136,8 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee"
           ]
         },
         {
@@ -1704,7 +2153,8 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 0.1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee"
           ]
         },
         {
@@ -1717,7 +2167,8 @@ window.PACKBOUND_MONSTER_DB = {
           "readonly": false,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee"
           ]
         },
         {
@@ -1734,7 +2185,8 @@ window.PACKBOUND_MONSTER_DB = {
           ],
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee"
           ]
         },
         {
@@ -1750,7 +2202,8 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee"
           ]
         },
         {
@@ -1766,7 +2219,8 @@ window.PACKBOUND_MONSTER_DB = {
           "step": 1,
           "attack_kinds": [
             "TargetedGroundEruption",
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "ContactMelee"
           ]
         }
       ]
@@ -2192,6 +2646,321 @@ window.PACKBOUND_MONSTER_DB = {
       ]
     },
     {
+      "name": "애니메이션 · AttackAnticipation",
+      "fields": [
+        {
+          "group": "애니메이션 · AttackAnticipation",
+          "path": "presentation.animations.AttackAnticipation.asset_id",
+          "label": "Roblox 아틀라스 ID",
+          "kind": "asset-id",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAnticipation",
+          "path": "presentation.animations.AttackAnticipation.frame_count",
+          "label": "프레임 수",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 64,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAnticipation",
+          "path": "presentation.animations.AttackAnticipation.fps",
+          "label": "기본 FPS",
+          "kind": "number",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 60,
+          "step": 0.1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAnticipation",
+          "path": "presentation.animations.AttackAnticipation.loop",
+          "label": "반복 재생",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAnticipation",
+          "path": "presentation.animations.AttackAnticipation.direction",
+          "label": "방향 계약",
+          "kind": "select",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "options": [
+            "East",
+            "Omni"
+          ],
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAnticipation",
+          "path": "presentation.animations.AttackAnticipation.cell_width",
+          "label": "셀 너비",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAnticipation",
+          "path": "presentation.animations.AttackAnticipation.cell_height",
+          "label": "셀 높이",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "애니메이션 · AttackAirborne",
+      "fields": [
+        {
+          "group": "애니메이션 · AttackAirborne",
+          "path": "presentation.animations.AttackAirborne.asset_id",
+          "label": "Roblox 아틀라스 ID",
+          "kind": "asset-id",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAirborne",
+          "path": "presentation.animations.AttackAirborne.frame_count",
+          "label": "프레임 수",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 64,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAirborne",
+          "path": "presentation.animations.AttackAirborne.fps",
+          "label": "기본 FPS",
+          "kind": "number",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 60,
+          "step": 0.1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAirborne",
+          "path": "presentation.animations.AttackAirborne.loop",
+          "label": "반복 재생",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAirborne",
+          "path": "presentation.animations.AttackAirborne.direction",
+          "label": "방향 계약",
+          "kind": "select",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "options": [
+            "East",
+            "Omni"
+          ],
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAirborne",
+          "path": "presentation.animations.AttackAirborne.cell_width",
+          "label": "셀 너비",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackAirborne",
+          "path": "presentation.animations.AttackAirborne.cell_height",
+          "label": "셀 높이",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "애니메이션 · AttackLand",
+      "fields": [
+        {
+          "group": "애니메이션 · AttackLand",
+          "path": "presentation.animations.AttackLand.asset_id",
+          "label": "Roblox 아틀라스 ID",
+          "kind": "asset-id",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackLand",
+          "path": "presentation.animations.AttackLand.frame_count",
+          "label": "프레임 수",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 64,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackLand",
+          "path": "presentation.animations.AttackLand.fps",
+          "label": "기본 FPS",
+          "kind": "number",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 60,
+          "step": 0.1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackLand",
+          "path": "presentation.animations.AttackLand.loop",
+          "label": "반복 재생",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackLand",
+          "path": "presentation.animations.AttackLand.direction",
+          "label": "방향 계약",
+          "kind": "select",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "options": [
+            "East",
+            "Omni"
+          ],
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackLand",
+          "path": "presentation.animations.AttackLand.cell_width",
+          "label": "셀 너비",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · AttackLand",
+          "path": "presentation.animations.AttackLand.cell_height",
+          "label": "셀 높이",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        }
+      ]
+    },
+    {
       "name": "애니메이션 · Hit",
       "fields": [
         {
@@ -2203,7 +2972,9 @@ window.PACKBOUND_MONSTER_DB = {
           "help": "",
           "readonly": false,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2218,7 +2989,9 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 64,
           "step": 1,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2233,7 +3006,9 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 60,
           "step": 0.1,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2245,7 +3020,9 @@ window.PACKBOUND_MONSTER_DB = {
           "help": "",
           "readonly": false,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2261,7 +3038,9 @@ window.PACKBOUND_MONSTER_DB = {
             "Omni"
           ],
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2276,7 +3055,9 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 4096,
           "step": 1,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2291,7 +3072,9 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 4096,
           "step": 1,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         }
       ]
@@ -2308,7 +3091,9 @@ window.PACKBOUND_MONSTER_DB = {
           "help": "",
           "readonly": false,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2323,7 +3108,9 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 64,
           "step": 1,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2338,7 +3125,9 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 60,
           "step": 0.1,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2350,7 +3139,9 @@ window.PACKBOUND_MONSTER_DB = {
           "help": "",
           "readonly": false,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2366,7 +3157,9 @@ window.PACKBOUND_MONSTER_DB = {
             "Omni"
           ],
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2381,7 +3174,9 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 4096,
           "step": 1,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         },
         {
@@ -2396,7 +3191,9 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 4096,
           "step": 1,
           "attack_kinds": [
-            "FanVolleyProjectile"
+            "FanVolleyProjectile",
+            "TelegraphedLeapSlam",
+            "ContactMelee"
           ]
         }
       ]
@@ -2505,6 +3302,111 @@ window.PACKBOUND_MONSTER_DB = {
           ]
         }
       ]
+    },
+    {
+      "name": "애니메이션 · ImpactFX",
+      "fields": [
+        {
+          "group": "애니메이션 · ImpactFX",
+          "path": "presentation.animations.ImpactFX.asset_id",
+          "label": "Roblox 아틀라스 ID",
+          "kind": "asset-id",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · ImpactFX",
+          "path": "presentation.animations.ImpactFX.frame_count",
+          "label": "프레임 수",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 64,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · ImpactFX",
+          "path": "presentation.animations.ImpactFX.fps",
+          "label": "기본 FPS",
+          "kind": "number",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 60,
+          "step": 0.1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · ImpactFX",
+          "path": "presentation.animations.ImpactFX.loop",
+          "label": "반복 재생",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · ImpactFX",
+          "path": "presentation.animations.ImpactFX.direction",
+          "label": "방향 계약",
+          "kind": "select",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "options": [
+            "East",
+            "Omni"
+          ],
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · ImpactFX",
+          "path": "presentation.animations.ImpactFX.cell_width",
+          "label": "셀 너비",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        },
+        {
+          "group": "애니메이션 · ImpactFX",
+          "path": "presentation.animations.ImpactFX.cell_height",
+          "label": "셀 높이",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "TelegraphedLeapSlam"
+          ]
+        }
+      ]
     }
   ],
   "monsters": [
@@ -2609,6 +3511,17 @@ window.PACKBOUND_MONSTER_DB = {
             -26
           ]
         ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
       },
       "lifecycle": {
         "corpse_seconds": 1.5,
@@ -2772,6 +3685,17 @@ window.PACKBOUND_MONSTER_DB = {
           ]
         ]
       },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
       "lifecycle": {
         "corpse_seconds": 1.5,
         "despawn_distance": 135,
@@ -2928,6 +3852,17 @@ window.PACKBOUND_MONSTER_DB = {
           ]
         ]
       },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
       "lifecycle": {
         "corpse_seconds": 1.25,
         "despawn_distance": 135,
@@ -3010,6 +3945,573 @@ window.PACKBOUND_MONSTER_DB = {
         }
       },
       "concept_art_url": "./monster-media/fanburst_artillery.png"
+    },
+    {
+      "id": "stampfoot_leaper",
+      "enabled": true,
+      "size_scale": 1,
+      "identity": {
+        "display_name": "도장발 쿵귀",
+        "description": "한 발로 통통 추적하다 몸을 움츠리고 높이 도약해 예고한 바닥을 찍는 고대 도장 정령",
+        "element": "Earth",
+        "species": "Construct",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Leaper",
+          "Slam",
+          "SingleFoot"
+        ]
+      },
+      "stats": {
+        "max_health": 165,
+        "attack_power": 24,
+        "defense": 6,
+        "knockback_resistance": 0.55
+      },
+      "detection": {
+        "search_range": 42,
+        "lose_target_range": 58,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 4.5,
+        "chase_speed": 6.5,
+        "use_pathfinding": true,
+        "repath_interval_seconds": 0.6,
+        "waypoint_spacing": 4,
+        "agent_radius": 1.8,
+        "agent_height": 3.8,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 80,
+        "return_home_distance": 5,
+        "stuck_timeout_seconds": 2.5,
+        "path_retry_limit": 2
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.08,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 6,
+        "forget_target_seconds": 2.5,
+        "return_home_enabled": true
+      },
+      "attack": {
+        "kind": "TelegraphedLeapSlam",
+        "minimum_range": 2.5,
+        "maximum_range": 13,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0.75,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 4.2,
+        "cooldown_seconds": 1.1,
+        "recovery_seconds": 0.55,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": true,
+        "knockback_force": 18,
+        "vertical_knockback_force": 24,
+        "maximum_targets": 0,
+        "leap_height_studs": 14,
+        "leap_duration_seconds": 0.7,
+        "landing_radius_studs": 5.75,
+        "ground_probe_height_studs": 32,
+        "ground_probe_depth_studs": 96,
+        "maximum_landing_slope_degrees": 35,
+        "arc_collision_samples": 12,
+        "cancel_when_arc_blocked": true
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 3,
+        "respawn_seconds": 8,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 1.1,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Concepts/stampfoot_leaper_anchor_v1.png",
+        "display_width_studs": 6.2,
+        "display_height_studs": 6.2,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 512,
+        "billboard_offset_y": 3,
+        "show_health_bar": true,
+        "show_nameplate": true,
+        "health_bar_height_pixels": 7,
+        "collision_radius": 1.65,
+        "collision_height": 3.5,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "impact_width_studs": 12,
+        "impact_height_studs": 6,
+        "impact_offset_y": 1.2,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://104835741415212",
+            "frame_count": 8,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://100769989791111",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "AttackAnticipation": {
+            "asset_id": "rbxassetid://133480601703283",
+            "frame_count": 8,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "AttackAirborne": {
+            "asset_id": "rbxassetid://110312104598785",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "AttackLand": {
+            "asset_id": "rbxassetid://83859948452133",
+            "frame_count": 8,
+            "fps": 16,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://116295221788321",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://92093220183664",
+            "frame_count": 12,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "ImpactFX": {
+            "asset_id": "rbxassetid://98935374521489",
+            "frame_count": 8,
+            "fps": 16,
+            "loop": false,
+            "direction": "Omni",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/stampfoot_leaper.png"
+    },
+    {
+      "id": "walking_nest",
+      "enabled": true,
+      "size_scale": 1,
+      "identity": {
+        "display_name": "걸어다니는 둥지",
+        "description": "단단한 둥지 몸통으로 천천히 접근해 밀어붙이고, 쓰러지면 네 알에서 새끼 도마뱀을 부화시키는 자연 몬스터",
+        "element": "Nature",
+        "species": "PlantBeast",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Nest",
+          "ContactMelee",
+          "DeathSpawner"
+        ]
+      },
+      "stats": {
+        "max_health": 180,
+        "attack_power": 18,
+        "defense": 5,
+        "knockback_resistance": 0.55
+      },
+      "detection": {
+        "search_range": 42,
+        "lose_target_range": 58,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 5.5,
+        "chase_speed": 7,
+        "use_pathfinding": true,
+        "repath_interval_seconds": 0.55,
+        "waypoint_spacing": 4,
+        "agent_radius": 2.2,
+        "agent_height": 4,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 78,
+        "return_home_distance": 5,
+        "stuck_timeout_seconds": 2.5,
+        "path_retry_limit": 2
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.08,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 6,
+        "forget_target_seconds": 2.5,
+        "return_home_enabled": true
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 3.5,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 3.2,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 2.6,
+        "cooldown_seconds": 0.7,
+        "recovery_seconds": 0.45,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 18,
+        "vertical_knockback_force": 3,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 4
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 4,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": true,
+        "child_monster_id": "nest_hatchling_lizard",
+        "count": 4,
+        "trigger_frame_zero_based": 3,
+        "spawn_radius_studs": 2.25,
+        "activation_delay_seconds": 0.4,
+        "target_policy": "KillerThenNearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.75,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Concepts/walking_nest_anchor_v1.png",
+        "display_width_studs": 7.6,
+        "display_height_studs": 7.6,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 512,
+        "billboard_offset_y": 3.4,
+        "show_health_bar": true,
+        "show_nameplate": true,
+        "health_bar_height_pixels": 7,
+        "collision_radius": 2.2,
+        "collision_height": 4,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://111560361831998",
+            "frame_count": 8,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://114123521815146",
+            "frame_count": 10,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://80655184836352",
+            "frame_count": 8,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://138633791203164",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://137880382301724",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/walking_nest.png"
+    },
+    {
+      "id": "nest_hatchling_lizard",
+      "enabled": true,
+      "size_scale": 1,
+      "identity": {
+        "display_name": "새끼 도마뱀",
+        "description": "둥지의 알에서 깨어나 부화 동작 직후 빠르게 추적하고 물어뜯는 자연 속성 하수인",
+        "element": "Nature",
+        "species": "Beast",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Minion",
+          "Hatchling",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 28,
+        "attack_power": 8,
+        "defense": 0,
+        "knockback_resistance": 0.05
+      },
+      "detection": {
+        "search_range": 50,
+        "lose_target_range": 68,
+        "target_refresh_seconds": 0.1,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 14
+      },
+      "movement": {
+        "walk_speed": 10,
+        "chase_speed": 14,
+        "use_pathfinding": true,
+        "repath_interval_seconds": 0.25,
+        "waypoint_spacing": 3,
+        "agent_radius": 0.9,
+        "agent_height": 1.8,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 3,
+        "stuck_timeout_seconds": 1.25,
+        "path_retry_limit": 2
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.05,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 1.5,
+        "return_home_enabled": true
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.6,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 2.1,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.15,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 8,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 32,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.8,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Concepts/nest_hatchling_lizard_anchor_v1.png",
+        "display_width_studs": 4.2,
+        "display_height_studs": 4.2,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 512,
+        "billboard_offset_y": 2,
+        "show_health_bar": true,
+        "show_nameplate": true,
+        "health_bar_height_pixels": 6,
+        "collision_radius": 0.9,
+        "collision_height": 1.8,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Spawn": {
+            "asset_id": "rbxassetid://96217941858190",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Idle": {
+            "asset_id": "rbxassetid://128441182955604",
+            "frame_count": 8,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://123109097147753",
+            "frame_count": 8,
+            "fps": 12,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://128587449683305",
+            "frame_count": 8,
+            "fps": 16,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://96482591788405",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://123999701446684",
+            "frame_count": 8,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/nest_hatchling_lizard.png"
     }
   ]
 };

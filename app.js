@@ -58,6 +58,7 @@
   const canShowExactTimestamps = Boolean(localAccess?.shouldShowExactTimestamps(window.location.hostname));
   const canEditItemDb = hasLocalAccess;
   let canEditMonsterDb = false;
+  let canOpenAnimationCuration = false;
   let searchMode = "pages";
   let tagSort = "recent";
   let selectedTag = null;
@@ -82,6 +83,12 @@
     status: "all",
     compare: [],
     variants: {},
+  };
+  let animationDbCurationNotice = "";
+  let animationDbWorkspaceState = {
+    activeId: "",
+    loadingId: "",
+    url: "",
   };
   let structuredDbState = { databaseId: null, query: "", filters: {} };
   let runeBoardExplorerState = {
@@ -118,6 +125,30 @@
     }
     const route = readRoute();
     if (route.kind === "database" && route.slug === "monster-db") renderMonsterDb();
+  }
+
+  async function refreshAnimationCurationApiAccess() {
+    if (!hasLocalAccess) return;
+    try {
+      const response = await fetch("/api/animation-db/curation/status", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      const payload = await response.json().catch(() => ({}));
+      canOpenAnimationCuration = response.ok
+        && payload.available === true
+        && payload.api_version === 1;
+      if (!canOpenAnimationCuration) {
+        animationDbCurationNotice = response.status === 404
+          ? "실행 중인 로컬 위키 서버가 AnimationDB 큐레이션 API보다 오래되었습니다. 서버를 재시작해 주세요."
+          : payload.error || `AnimationDB 큐레이션 API를 확인하지 못했습니다. (${response.status})`;
+      }
+    } catch (error) {
+      canOpenAnimationCuration = false;
+      animationDbCurationNotice = `AnimationDB 큐레이션 API에 연결하지 못했습니다. (${String(error.message || error)})`;
+    }
+    const route = readRoute();
+    if (route.kind === "database" && route.slug === "animation-db") renderAnimationDb();
   }
   const categoryLabels = {
     project: "프로젝트",
@@ -427,7 +458,7 @@
       {
         id: "animation-db",
         title: "애니메이션 데이터베이스",
-        description: "GIF · 프레임 · 방향 · 상태",
+        description: "큐레이션 · GIF · 프레임 · 상태",
         count: animationDb?.count || 0,
         unit: "ANIMS",
         href: databaseHref("animation-db"),
@@ -2458,7 +2489,9 @@
   function monsterDbFieldMarkup(spec, monster) {
     const value = monsterDbTools.getPath(monster, spec.path);
     const attackKinds = spec.attack_kinds?.length ? spec.attack_kinds.join(",") : "";
-    const applies = monsterDbTools.fieldApplies(spec, monster.attack.kind);
+    const requiresAnimation = spec.requires_animation_clip || "";
+    const hasRequiredAnimation = !requiresAnimation || Boolean(monster.presentation.animations?.[requiresAnimation]);
+    const applies = monsterDbTools.fieldApplies(spec, monster.attack.kind, monster);
     const describedBy = spec.help ? `monsterdb-help-${spec.path.replaceAll(".", "-")}` : "";
     const common = `data-monsterdb-field="${escapeHtml(spec.path)}" ${spec.readonly ? "disabled" : ""} ${describedBy ? `aria-describedby="${describedBy}"` : ""}`;
     let control = "";
@@ -2476,7 +2509,7 @@
       control = `<input type="${inputType}" value="${escapeHtml(monsterDbTools.serializeField(spec, value))}" ${numeric} ${common}>`;
     }
     return `
-      <div class="monsterdb-field" data-kind="${escapeHtml(spec.kind)}" ${attackKinds ? `data-attack-kinds="${escapeHtml(attackKinds)}"` : ""} ${applies ? "" : "hidden"}>
+      <div class="monsterdb-field" data-kind="${escapeHtml(spec.kind)}" ${attackKinds ? `data-attack-kinds="${escapeHtml(attackKinds)}"` : ""} ${requiresAnimation ? `data-requires-animation="${escapeHtml(requiresAnimation)}" data-animation-present="${hasRequiredAnimation}"` : ""} ${applies ? "" : "hidden"}>
         <label><span>${escapeHtml(monsterDbTools.fieldLabel(spec, monster.attack.kind))}</span>${spec.unit ? `<em>${escapeHtml(spec.unit)}</em>` : ""}</label>
         ${control}
         ${spec.help ? `<small id="${describedBy}">${escapeHtml(spec.help)}</small>` : ""}
@@ -2494,7 +2527,9 @@
   function updateMonsterDbConditionalFields(root) {
     const kind = root.querySelector('[data-monsterdb-field="attack.kind"]')?.value;
     root.querySelectorAll(".monsterdb-field[data-attack-kinds]").forEach((field) => {
-      field.hidden = !String(field.dataset.attackKinds || "").split(",").includes(kind);
+      const attackMatches = String(field.dataset.attackKinds || "").split(",").includes(kind);
+      const animationMatches = !field.dataset.requiresAnimation || field.dataset.animationPresent === "true";
+      field.hidden = !attackMatches || !animationMatches;
     });
     root.querySelectorAll("[data-monsterdb-group]").forEach((group) => {
       group.hidden = !group.querySelector(".monsterdb-field:not([hidden])");
@@ -2559,7 +2594,7 @@
       monsterDbTools.setPath(draft, "attack.kind", attackKind);
       monsterDb.groups.forEach((group) => group.fields.forEach((spec) => {
         if (spec.readonly || spec.path === "attack.kind") return;
-        if (!monsterDbTools.fieldApplies(spec, attackKind)) {
+        if (!monsterDbTools.fieldApplies(spec, attackKind, draft)) {
           if (spec.attack_kinds?.length) monsterDbTools.deletePath(draft, spec.path);
           return;
         }
@@ -2702,7 +2737,7 @@
             <span><small>이동속도</small><strong>${monster.movement.chase_speed}</strong></span>
             <span><small>공격범위</small><strong>${monster.attack.maximum_range}</strong></span>
             <span><small>탐색거리</small><strong>${monster.detection.search_range}</strong></span>
-            <span><small>${monster.attack.kind === "FanVolleyProjectile" ? "첫 발사 예고" : "장판예고"}</small><strong>${monster.attack.telegraph_duration_seconds}s</strong></span>
+            <span><small>${monster.attack.kind === "FanVolleyProjectile" ? "첫 발사 예고" : monster.attack.kind === "TelegraphedLeapSlam" ? "착지 예고" : "장판예고"}</small><strong>${monster.attack.telegraph_duration_seconds}s</strong></span>
             <span><small>공격간격</small><strong>${monster.attack.attack_interval_seconds}s</strong></span>
             <span><small>동시 스폰</small><strong>${monster.spawn.maximum_alive}</strong></span>
           </div>
@@ -2737,6 +2772,90 @@
     renderMonsterDbCards(monsterDbTools.filterMonsters(monsterDb.monsters, monsterDbQuery));
     document.body.classList.remove("menu-open");
     window.scrollTo(0, 0);
+  }
+
+ function animationCurationUrl(value) {
+    try {
+      const url = new URL(String(value));
+      if (url.protocol !== "http:" || !["127.0.0.1", "localhost"].includes(url.hostname)) return "";
+      return url.href;
+    } catch (_error) {
+      return "";
+    }
+  }
+
+  async function openAnimationWorkspace(workspaceId) {
+    if (!canOpenAnimationCuration || animationDbWorkspaceState.loadingId) return;
+    animationDbWorkspaceState.loadingId = workspaceId;
+    animationDbCurationNotice = "";
+    renderAnimationDbWorkspaces();
+    try {
+      const response = await fetch("/api/animation-db/curation/open", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ workspace_id: workspaceId }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `큐레이션 화면을 열지 못했습니다. (${response.status})`);
+      const url = animationCurationUrl(payload.url);
+      if (!url) throw new Error("큐레이션 서버가 안전한 로컬 주소를 반환하지 않았습니다.");
+      animationDbWorkspaceState.activeId = workspaceId;
+      animationDbWorkspaceState.url = url;
+    } catch (error) {
+      animationDbCurationNotice = String(error.message || error);
+    } finally {
+      animationDbWorkspaceState.loadingId = "";
+      renderAnimationDbWorkspaces();
+      document.getElementById("animationdb-curation-frame")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  function renderAnimationDbWorkspaces() {
+    const root = document.getElementById("animationdb-workspaces");
+    if (!root) return;
+    const workspaces = animationDb.workspaces || [];
+    const activeWorkspace = animationDbTools.findWorkspace(workspaces, animationDbWorkspaceState.activeId);
+    const entityLabels = { player: "PLAYER", monster: "MONSTER", effect: "EFFECT" };
+    root.innerHTML = `
+      <header class="animationdb-workspace-heading">
+        <div><span class="page-eyebrow">Production workspace</span><h2>큐레이션 작업공간</h2><p>제작 중인 스프라이트 시트의 프레임 선택·순서·정렬을 원본 큐레이터에서 다룹니다.</p></div>
+        <span class="animationdb-workspace-mode" data-editable="${canOpenAnimationCuration}">${canOpenAnimationCuration ? "로컬 편집 가능" : "읽기 전용 미리보기"}</span>
+      </header>
+      ${animationDbCurationNotice ? `<div class="itemdb-save-notice" role="status">${escapeHtml(animationDbCurationNotice)}</div>` : ""}
+      ${workspaces.length ? `<div class="animationdb-workspace-list">${workspaces.map((workspace) => {
+        const loading = animationDbWorkspaceState.loadingId === workspace.id;
+        const active = activeWorkspace?.id === workspace.id;
+        return `
+          <article class="animationdb-workspace-card ${active ? "active" : ""}">
+            <div class="animationdb-workspace-preview">${workspace.preview_url ? `<img src="${escapeHtml(workspace.preview_url)}" alt="${escapeHtml(workspace.title)} 전체 프레임" loading="lazy" decoding="async">` : '<span>NO PREVIEW</span>'}</div>
+            <div class="animationdb-workspace-body">
+              <div class="animationdb-workspace-meta"><span>${escapeHtml(entityLabels[workspace.entity_type] || workspace.entity_type)}</span><em data-status="${escapeHtml(workspace.status)}">${escapeHtml(workspace.status_label)}</em></div>
+              <h3>${escapeHtml(workspace.title)}</h3>
+              <code title="${escapeHtml(workspace.source_root)}">${escapeHtml(workspace.source_root)}</code>
+              <div class="animationdb-workspace-metrics"><span><strong>${workspace.state_count}</strong><small>모션</small></span><span><strong>${workspace.frame_count}</strong><small>프레임</small></span></div>
+              <div class="animationdb-workspace-states">${workspace.states.map((state) => `<span>${escapeHtml(state.name)} · ${state.frames}F</span>`).join("")}</div>
+              ${canOpenAnimationCuration
+                ? `<button type="button" data-animation-workspace-open="${escapeHtml(workspace.id)}" ${loading ? "disabled" : ""}>${loading ? "큐레이터 시작 중…" : active ? "큐레이터 다시 열기" : "큐레이션 열기"}</button>`
+                : '<p class="animationdb-workspace-readonly">로컬 위키에서 원본 프레임을 편집할 수 있습니다.</p>'}
+            </div>
+          </article>
+        `;
+      }).join("")}</div>` : '<div class="empty-state">연결할 스프라이트 제작 작업공간이 없습니다.</div>'}
+      ${activeWorkspace && animationDbWorkspaceState.url ? `
+        <section id="animationdb-curation-frame" class="animationdb-curation-frame">
+          <header><div><span class="page-eyebrow">Live sprite-gen curator</span><h3>${escapeHtml(activeWorkspace.title)} · 큐레이션</h3><p>선택과 정렬은 이 작업공간의 <code>curation.json</code>에 저장됩니다.</p></div><div><a href="${escapeHtml(animationDbWorkspaceState.url)}" target="_blank" rel="noopener">새 탭으로 열기</a><button type="button" data-animation-workspace-close>닫기</button></div></header>
+          <iframe src="${escapeHtml(animationDbWorkspaceState.url)}" title="${escapeHtml(activeWorkspace.title)} 스프라이트 큐레이션" loading="eager" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups"></iframe>
+        </section>
+      ` : ""}
+    `;
+    root.querySelectorAll("[data-animation-workspace-open]").forEach((button) => {
+      button.addEventListener("click", () => void openAnimationWorkspace(button.dataset.animationWorkspaceOpen));
+    });
+    root.querySelector("[data-animation-workspace-close]")?.addEventListener("click", () => {
+      animationDbWorkspaceState.activeId = "";
+      animationDbWorkspaceState.url = "";
+      renderAnimationDbWorkspaces();
+    });
   }
 
   function animationMetric(value, suffix = "") {
@@ -2861,8 +2980,9 @@
             <div><h1>AnimationDB</h1><p>지금까지 제작한 캐릭터와 몬스터 모션을 GIF로 바로 재생하고, 방향·프레임·상태를 비교해 현재 적용본과 제작 후보를 빠르게 구분합니다.</p></div>
             <span><strong>${animationDb.count}</strong><small>${animationDb.character_count} CHARACTERS · ${animationDb.live_count} GAME ON</small></span>
           </div>
-          <div class="animationdb-contract"><div><span>자동 수집 경로</span><code>${escapeHtml(animationDb.source)}</code></div><div><span>DB 리비전</span><code>${escapeHtml(animationDb.revision)}</code></div><div><span>큐레이션</span><strong>GIF · 방향 · 2-UP 비교</strong></div></div>
+          <div class="animationdb-contract"><div><span>자동 수집 경로</span><code>${escapeHtml(animationDb.source)}</code></div><div><span>DB 리비전</span><code>${escapeHtml(animationDb.revision)}</code></div><div><span>큐레이션</span><strong>${animationDb.workspace_count || 0} WORKSPACES · GIF 비교</strong></div></div>
         </header>
+        <section id="animationdb-workspaces" class="animationdb-workspaces" aria-label="애니메이션 큐레이션 작업공간"></section>
         <section class="animationdb-toolbar" aria-label="애니메이션 검색과 필터">
           <label class="animationdb-search"><span>검색</span><input id="animationdb-search" type="search" value="${escapeHtml(animationDbState.query)}" placeholder="캐릭터, 모션, 후보명 검색…"></label>
           <label><span>대상</span><select id="animationdb-entity"><option value="all">전체</option>${["player", "monster"].map((value) => `<option value="${value}" ${animationDbState.entityType === value ? "selected" : ""}>${entityLabels[value]}</option>`).join("")}</select></label>
@@ -2886,6 +3006,7 @@
       animationDbState[stateKey] = event.target.value;
       renderAnimationDbResults();
     }));
+    renderAnimationDbWorkspaces();
     renderAnimationDbResults();
     document.body.classList.remove("menu-open");
     window.scrollTo(0, 0);
@@ -3327,6 +3448,7 @@
     }
     if (event.key === "Escape") {
       closeItemDbBake();
+      closeWaveDbBake();
       closeSearch();
       document.body.classList.remove("menu-open");
     }
@@ -3336,4 +3458,5 @@
   if (!location.hash && defaultPage) location.replace(pageHref(defaultPage));
   else renderPage();
   void refreshMonsterDbApiAccess();
+  void refreshAnimationCurationApiAccess();
 })();

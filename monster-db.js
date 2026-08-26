@@ -34,8 +34,11 @@
     return value;
   }
 
-  function fieldApplies(spec, attackKind) {
-    return !spec.attack_kinds?.length || spec.attack_kinds.includes(attackKind);
+  function fieldApplies(spec, attackKind, monster = null) {
+    const attackMatches = !spec.attack_kinds?.length || spec.attack_kinds.includes(attackKind);
+    if (!attackMatches) return false;
+    if (!spec.requires_animation_clip) return true;
+    return Boolean(monster?.presentation?.animations?.[spec.requires_animation_clip]);
   }
 
   function fieldLabel(spec, attackKind) {
@@ -83,6 +86,12 @@
       });
     }
     const value = String(raw).trim();
+    if (spec.kind === "optional-id") {
+      if (value && !/^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$/.test(value)) {
+        throw new Error(`${spec.label}: 비워 두거나 snake_case ID를 입력해 주세요.`);
+      }
+      return value;
+    }
     if (!value) throw new Error(`${spec.label}: 값을 입력해 주세요.`);
     if (spec.kind === "asset-id" && !/^rbxassetid:\/\/\d+$/.test(value)) {
       throw new Error(`${spec.label}: rbxassetid://숫자 형식이어야 합니다.`);

@@ -24,11 +24,15 @@
     return (records || []).find((record) => record.id === recordId) || null;
   }
 
+  function findWorkspace(workspaces, workspaceId) {
+    return (workspaces || []).find((workspace) => workspace.id === workspaceId) || null;
+  }
+
   function selectedVariant(record, variantId) {
     return record?.variants?.find((variant) => variant.id === variantId) || record?.variants?.[0] || null;
   }
 
-  const api = { filterAnimations, filterOptions, findRecord, selectedVariant };
+  const api = { filterAnimations, filterOptions, findRecord, findWorkspace, selectedVariant };
   root.PACKBOUND_ANIMATION_DB_TOOLS = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

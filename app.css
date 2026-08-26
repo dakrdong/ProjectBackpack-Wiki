@@ -1439,6 +1439,41 @@ body.itemdb-editor-open { overflow: hidden; }
 .animationdb-contract span, .animationdb-contract strong, .animationdb-contract code { display: block; }
 .animationdb-contract span { color: var(--faint); font-size: 7px; letter-spacing: 0.07em; }
 .animationdb-contract strong, .animationdb-contract code { margin-top: 5px; overflow: hidden; color: var(--text); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.animationdb-workspaces { display: grid; gap: 14px; padding: 18px; border: 1px solid rgba(64, 174, 255, 0.3); border-radius: 14px; background: linear-gradient(145deg, rgba(25, 64, 96, 0.16), rgba(10, 19, 32, 0.94)); }
+.animationdb-workspace-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.animationdb-workspace-heading h2 { margin: 5px 0 3px; font-size: 22px; }
+.animationdb-workspace-heading p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+.animationdb-workspace-mode { display: inline-flex; flex: 0 0 auto; align-items: center; min-height: 30px; padding: 0 10px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); font-size: 7px; font-weight: 900; }
+.animationdb-workspace-mode[data-editable="true"] { border-color: rgba(100, 223, 137, 0.42); background: rgba(38, 134, 75, 0.18); color: #94f2af; }
+.animationdb-workspace-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.animationdb-workspace-card { display: grid; grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1.2fr); min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 11px; background: rgba(7, 15, 25, 0.72); }
+.animationdb-workspace-card.active { border-color: #4aaeff; box-shadow: 0 0 0 2px rgba(64, 174, 255, 0.12); }
+.animationdb-workspace-preview { display: grid; min-height: 220px; place-items: center; padding: 10px; background-color: #08111d; background-image: linear-gradient(45deg, rgba(78, 101, 126, 0.13) 25%, transparent 25%), linear-gradient(-45deg, rgba(78, 101, 126, 0.13) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(78, 101, 126, 0.13) 75%), linear-gradient(-45deg, transparent 75%, rgba(78, 101, 126, 0.13) 75%); background-position: 0 0, 8px 8px, 8px -8px, -8px 0; background-size: 16px 16px; color: var(--faint); font-size: 8px; }
+.animationdb-workspace-preview img { width: 100%; height: 100%; max-height: 240px; object-fit: contain; }
+.animationdb-workspace-body { display: flex; min-width: 0; flex-direction: column; padding: 15px; }
+.animationdb-workspace-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #81c9ff; font-size: 7px; font-weight: 900; letter-spacing: 0.08em; }
+.animationdb-workspace-meta em { padding: 5px 7px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); font-style: normal; letter-spacing: 0; }
+.animationdb-workspace-meta em[data-status="curated"] { border-color: rgba(100, 223, 137, 0.38); color: #94f2af; }
+.animationdb-workspace-body h3 { margin: 8px 0 4px; font-size: 16px; }
+.animationdb-workspace-body > code { overflow: hidden; color: var(--faint); font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.animationdb-workspace-metrics { display: flex; gap: 6px; margin-top: 12px; }
+.animationdb-workspace-metrics span { display: flex; align-items: baseline; gap: 5px; padding: 6px 8px; border: 1px solid var(--line-soft); border-radius: 6px; background: rgba(4, 10, 18, 0.36); }
+.animationdb-workspace-metrics strong { color: #8fd1ff; font-size: 13px; }
+.animationdb-workspace-metrics small { color: var(--faint); font-size: 7px; }
+.animationdb-workspace-states { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.animationdb-workspace-states span { padding: 4px 6px; border-radius: 5px; background: rgba(64, 174, 255, 0.08); color: var(--muted); font: 700 6px ui-monospace, SFMono-Regular, Menlo, monospace; }
+.animationdb-workspace-body > button { width: 100%; min-height: 44px; margin-top: auto; padding: 0 12px; border: 1px solid rgba(64, 174, 255, 0.45); border-radius: 8px; background: rgba(64, 174, 255, 0.13); color: #9ed8ff; cursor: pointer; font-size: 8px; font-weight: 900; }
+.animationdb-workspace-body > button:disabled { cursor: wait; opacity: 0.65; }
+.animationdb-workspace-readonly { margin: auto 0 0; padding-top: 12px; color: var(--faint); font-size: 7px; line-height: 1.5; }
+.animationdb-curation-frame { overflow: hidden; border: 1px solid rgba(100, 223, 137, 0.36); border-radius: 12px; background: #07101b; scroll-margin-top: 18px; }
+.animationdb-curation-frame > header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.animationdb-curation-frame h3 { margin: 5px 0 2px; font-size: 17px; }
+.animationdb-curation-frame p { margin: 0; color: var(--faint); font-size: 8px; }
+.animationdb-curation-frame p code { color: var(--muted); }
+.animationdb-curation-frame > header > div:last-child { display: flex; flex: 0 0 auto; gap: 7px; }
+.animationdb-curation-frame a, .animationdb-curation-frame button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 7px; background: rgba(7, 15, 25, 0.7); color: var(--muted); cursor: pointer; font-size: 8px; font-weight: 900; text-decoration: none; }
+.animationdb-curation-frame a { border-color: rgba(64, 174, 255, 0.4); color: #8fd1ff; }
+.animationdb-curation-frame iframe { display: block; width: 100%; min-height: 780px; border: 0; background: #0b111a; }
 .animationdb-toolbar { display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(135px, 0.62fr)) auto; align-items: end; gap: 9px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 11px; background: rgba(14, 25, 41, 0.9); }
 .animationdb-toolbar label { display: grid; gap: 5px; min-width: 0; }
 .animationdb-toolbar label > span { color: var(--faint); font-size: 7px; font-weight: 800; letter-spacing: 0.06em; }
@@ -1495,6 +1530,7 @@ body.itemdb-editor-open { overflow: hidden; }
 .animationdb-compare-empty p { max-width: 220px; margin: 6px 0 0; font-size: 8px; line-height: 1.5; }
 
 @media (max-width: 1180px) {
+  .animationdb-workspace-list { grid-template-columns: 1fr; }
   .animationdb-grid { grid-template-columns: 1fr; }
   .animationdb-toolbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .animationdb-search { grid-column: span 2; }
@@ -1506,6 +1542,8 @@ body.itemdb-editor-open { overflow: hidden; }
   .animationdb-hero-row { flex-direction: column; }
   .animationdb-hero-row > span { width: 100%; text-align: left; }
   .animationdb-contract { grid-template-columns: 1fr; }
+  .animationdb-workspace-card { grid-template-columns: minmax(170px, 0.72fr) minmax(0, 1.28fr); }
+  .animationdb-curation-frame > header { align-items: flex-start; flex-direction: column; }
   .animationdb-card { grid-template-columns: minmax(180px, 0.85fr) minmax(0, 1.15fr); }
   .animationdb-compare-grid { grid-template-columns: 1fr; }
 }
@@ -1516,6 +1554,16 @@ body.itemdb-editor-open { overflow: hidden; }
   .animationdb-hero { padding: 19px; border-radius: 12px; }
   .animationdb-hero h1 { font-size: 38px; }
   .animationdb-contract { margin-top: 20px; }
+  .animationdb-workspaces { padding: 13px; }
+  .animationdb-workspace-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .animationdb-workspace-card { grid-template-columns: 1fr; }
+  .animationdb-workspace-preview { min-height: 210px; }
+  .animationdb-workspace-preview img { max-height: 230px; }
+  .animationdb-workspace-body { padding: 15px; }
+  .animationdb-workspace-body h3 { font-size: 18px; }
+  .animationdb-workspace-states span { font-size: 7px; }
+  .animationdb-curation-frame > header > div:last-child { display: grid; width: 100%; grid-template-columns: 1fr 1fr; }
+  .animationdb-curation-frame iframe { min-height: 78dvh; }
   .animationdb-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; }
   .animationdb-search { grid-column: 1 / -1; }
   .animationdb-toolbar > strong { grid-column: 1 / -1; min-height: 30px; padding: 7px 0 0; }

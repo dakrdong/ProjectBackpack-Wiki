@@ -1,18 +1,14 @@
 window.PACKBOUND_ANIMATION_DB = {
-  "schema_version": 1,
-  "revision": "cb9bb5cecc61c72e",
+  "schema_version": 2,
+  "revision": "58019183d8317f75",
   "source": "Assets/**/SpriteProduction/Candidates",
-  "count": 30,
+  "count": 9,
   "live_count": 3,
-  "character_count": 4,
+  "character_count": 2,
   "actions": [
-    "Animation",
     "Attack",
     "Dash",
     "Idle",
-    "IdleHover",
-    "MorphSpin",
-    "OrbDash",
     "Run",
     "VineEruption",
     "Walk"
@@ -327,750 +323,6 @@ window.PACKBOUND_ANIMATION_DB = {
       ]
     },
     {
-      "id": "fanburstartillery-animation-16571d77",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 16.67,
-      "duration_seconds": 0.72,
-      "directions": [
-        "East"
-      ],
-      "loop": null,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003",
-      "variants": [
-        {
-          "id": "east-east",
-          "label": "East",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-16571d77/east-east-41ae44077f.gif",
-          "contact_sheet_url": "./animation-media/fanburstartillery-animation-16571d77/east-contact-0665694eec.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/QA/Attack/Master/preview.gif"
-        },
-        {
-          "id": "east-east",
-          "label": "East",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-16571d77/east-east-2906b77e8c.gif",
-          "contact_sheet_url": "./animation-media/fanburstartillery-animation-16571d77/east-contact-b423f38cec.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/QA/Death/Master/preview.gif"
-        },
-        {
-          "id": "east-east",
-          "label": "East",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-16571d77/east-east-f3f02cba88.gif",
-          "contact_sheet_url": "./animation-media/fanburstartillery-animation-16571d77/east-contact-11141ce124.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/QA/Hit/Master/preview.gif"
-        },
-        {
-          "id": "east-east",
-          "label": "East",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-16571d77/east-east-62b934a6f1.gif",
-          "contact_sheet_url": "./animation-media/fanburstartillery-animation-16571d77/east-contact-aa7290cf17.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/QA/Idle/Master/preview.gif"
-        },
-        {
-          "id": "east-east",
-          "label": "East",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-16571d77/east-east-223e1e3432.gif",
-          "contact_sheet_url": "./animation-media/fanburstartillery-animation-16571d77/east-contact-98bdc31647.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/QA/Projectile/Master/preview.gif"
-        },
-        {
-          "id": "east-east",
-          "label": "East",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-16571d77/east-east-5513139be7.gif",
-          "contact_sheet_url": "./animation-media/fanburstartillery-animation-16571d77/east-contact-53ca943bbf.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/QA/Walk/Master/preview.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-13757b99",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 12.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-13757b99/east-b8d7d10412.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-6493fcf4",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 12.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-6493fcf4/east-f97fa64d68.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-0e580e77",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 12.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2-t130",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-0e580e77/east-3a8e465229.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2-t130/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-f904868d",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 12.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2-t160",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-f904868d/east-c073077ee8.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2-t160/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-3ea3d3cd",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 12.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2-t190",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-3ea3d3cd/east-d460a5bbab.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2-t190/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-88d3b065",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 12.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2-t220",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-88d3b065/east-9353bbf178.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r2-t220/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-ae2adfc6",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 12.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r3",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-ae2adfc6/east-5a541d3689.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Death-r3/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-e4436ddd",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 6,
-      "fps": 15.0,
-      "duration_seconds": 0.36,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Hit",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-e4436ddd/east-f1bbea1483.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Hit/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-a16b90c1",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 6,
-      "fps": 15.0,
-      "duration_seconds": 0.36,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Hit-r2",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-a16b90c1/east-f30ba43609.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Hit-r2/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-animation-3a92be8d",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Animation",
-      "action_label": "Animation",
-      "title": "FanburstArtillery · Animation",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 6,
-      "fps": 18.0,
-      "duration_seconds": 0.3,
-      "directions": [
-        "East"
-      ],
-      "loop": true,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Projectile",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-animation-3a92be8d/east-4ebbd9e798.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Projectile/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-attack-50af87a0",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Attack",
-      "action_label": "공격",
-      "title": "FanburstArtillery · 공격",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 15.0,
-      "duration_seconds": 0.72,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Attack",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-attack-50af87a0/east-832894ed13.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Attack/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-attack-889a8f0a",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Attack",
-      "action_label": "공격",
-      "title": "FanburstArtillery · 공격",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 12,
-      "fps": 15.0,
-      "duration_seconds": 0.72,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Attack-r2",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-attack-889a8f0a/east-0e46aafd10.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Attack-r2/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-idle-b9dcfa5c",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Idle",
-      "action_label": "대기",
-      "title": "FanburstArtillery · 대기",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 8,
-      "fps": 8.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": true,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Idle",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-idle-b9dcfa5c/east-4f3b7d041f.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Idle/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-idle-831c4774",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Idle",
-      "action_label": "대기",
-      "title": "FanburstArtillery · 대기",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 8,
-      "fps": 8.0,
-      "duration_seconds": 0.96,
-      "directions": [
-        "East"
-      ],
-      "loop": true,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Idle-r2",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-idle-831c4774/east-58369f54d2.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Idle-r2/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-walk-5a855dd9",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Walk",
-      "action_label": "걷기",
-      "title": "FanburstArtillery · 걷기",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 8,
-      "fps": 10.0,
-      "duration_seconds": 0.8,
-      "directions": [
-        "East"
-      ],
-      "loop": true,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Walk",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-walk-5a855dd9/east-c3db951e34.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Walk/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "fanburstartillery-walk-ea9ff179",
-      "entity_type": "monster",
-      "character": "FanburstArtillery",
-      "character_label": "FanburstArtillery",
-      "action": "Walk",
-      "action_label": "걷기",
-      "title": "FanburstArtillery · 걷기",
-      "candidate": "v003",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 8,
-      "fps": 10.0,
-      "duration_seconds": 0.8,
-      "directions": [
-        "East"
-      ],
-      "loop": true,
-      "created_at": null,
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Walk-r2",
-      "variants": [
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/fanburstartillery-walk-ea9ff179/east-3f4f709aa8.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/FanburstArtillery/v003/Processed/Walk-r2/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "whirldashspirit-idlehover-1b0bed93",
-      "entity_type": "monster",
-      "character": "WhirlDashSpirit",
-      "character_label": "회오리 돌진령",
-      "action": "IdleHover",
-      "action_label": "공중 대기",
-      "title": "회오리 돌진령 · 공중 대기",
-      "candidate": "v002",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 8,
-      "fps": 8.0,
-      "duration_seconds": 1.0,
-      "directions": [
-        "East"
-      ],
-      "loop": true,
-      "created_at": "2026-08-25",
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/IdleHover",
-      "variants": [
-        {
-          "id": "east-east",
-          "label": "East",
-          "direction": "East",
-          "preview_url": "./animation-media/whirldashspirit-idlehover-1b0bed93/east-east-7c17478bbe.gif",
-          "contact_sheet_url": "./animation-media/whirldashspirit-idlehover-1b0bed93/east-contact-1738651c25.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/QA/IdleHover/Master/preview.gif"
-        },
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/whirldashspirit-idlehover-1b0bed93/east-818e75fec4.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/Processed/IdleHover/animation.gif"
-        },
-        {
-          "id": "east-r2",
-          "label": "완성 루프 r2",
-          "direction": "East",
-          "preview_url": "./animation-media/whirldashspirit-idlehover-1b0bed93/east-r2-46e348596a.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/Processed/IdleHover-r2/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "whirldashspirit-morphspin-50141ebf",
-      "entity_type": "monster",
-      "character": "WhirlDashSpirit",
-      "character_label": "회오리 돌진령",
-      "action": "MorphSpin",
-      "action_label": "회전 변신",
-      "title": "회오리 돌진령 · 회전 변신",
-      "candidate": "v002",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 10,
-      "fps": 15.0,
-      "duration_seconds": 0.667,
-      "directions": [
-        "East"
-      ],
-      "loop": false,
-      "created_at": "2026-08-25",
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/MorphSpin",
-      "variants": [
-        {
-          "id": "east-east",
-          "label": "East",
-          "direction": "East",
-          "preview_url": "./animation-media/whirldashspirit-morphspin-50141ebf/east-east-e31c755be7.gif",
-          "contact_sheet_url": "./animation-media/whirldashspirit-morphspin-50141ebf/east-contact-f689c29ff9.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/QA/MorphSpin/Master/preview.gif"
-        },
-        {
-          "id": "east",
-          "label": "완성 루프",
-          "direction": "East",
-          "preview_url": "./animation-media/whirldashspirit-morphspin-50141ebf/east-67460677a2.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/Processed/MorphSpin/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "whirldashspirit-orbdash-a6f1eea9",
-      "entity_type": "monster",
-      "character": "WhirlDashSpirit",
-      "character_label": "회오리 돌진령",
-      "action": "OrbDash",
-      "action_label": "구체 대시",
-      "title": "회오리 돌진령 · 구체 대시",
-      "candidate": "v002",
-      "status": "pending",
-      "status_label": "검토 중",
-      "frame_count": 6,
-      "fps": 18.0,
-      "duration_seconds": 0.333,
-      "directions": [
-        "Omni"
-      ],
-      "loop": true,
-      "created_at": "2026-08-25",
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/OrbDash",
-      "variants": [
-        {
-          "id": "omni-omni",
-          "label": "Omni",
-          "direction": "Omni",
-          "preview_url": "./animation-media/whirldashspirit-orbdash-a6f1eea9/omni-omni-df4fd64fa5.gif",
-          "contact_sheet_url": "./animation-media/whirldashspirit-orbdash-a6f1eea9/omni-contact-762ac7c93e.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/QA/OrbDash/Master/preview.gif"
-        },
-        {
-          "id": "omni",
-          "label": "완성 루프",
-          "direction": "Omni",
-          "preview_url": "./animation-media/whirldashspirit-orbdash-a6f1eea9/omni-93045ecce3.gif",
-          "contact_sheet_url": null,
-          "source": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v002/Processed/OrbDash/Source/animation.gif"
-        }
-      ]
-    },
-    {
-      "id": "whirldashspirit-orbdash-5161f7b4",
-      "entity_type": "monster",
-      "character": "WhirlDashSpirit",
-      "character_label": "회오리 돌진령",
-      "action": "OrbDash",
-      "action_label": "구체 대시",
-      "title": "회오리 돌진령 · 구체 대시",
-      "candidate": "v001",
-      "status": "candidate",
-      "status_label": "제작 후보",
-      "frame_count": 6,
-      "fps": 18.0,
-      "duration_seconds": 0.333,
-      "directions": [
-        "Omni"
-      ],
-      "loop": true,
-      "created_at": "2026-08-25",
-      "runtime_asset_id": null,
-      "source_root": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v001/OrbDash/Omni",
-      "variants": [
-        {
-          "id": "omni-omni",
-          "label": "Omni",
-          "direction": "Omni",
-          "preview_url": "./animation-media/whirldashspirit-orbdash-5161f7b4/omni-omni-65b2ff4f18.gif",
-          "contact_sheet_url": "./animation-media/whirldashspirit-orbdash-5161f7b4/omni-contact-7157e0489c.png",
-          "source": "Assets/Monsters/SpriteProduction/Candidates/WhirlDashSpirit/v001/OrbDash/Omni/QA/Master/preview.gif"
-        }
-      ]
-    },
-    {
       "id": "rookiemale-idle-3a99bfa6",
       "entity_type": "player",
       "character": "RookieMale",
@@ -1110,6 +362,217 @@ window.PACKBOUND_ANIMATION_DB = {
           "source": "Assets/Characters/Player/SpriteProduction/Candidates/v2/RookieMale/Idle/horizontal-two-way-gpt-image-v1/QA/WestMaster/preview.gif"
         }
       ]
+    }
+  ],
+  "workspace_source": "Assets/**/SpriteProduction/**/sprite-request.json",
+  "workspace_count": 4,
+  "workspaces": [
+    {
+      "id": "underworld-chain-executioner-slash-fx-0b7f8c17",
+      "entity_type": "effect",
+      "character": "underworld_chain_executioner_slash_fx",
+      "character_label": "황천 사슬 집행자 · 참격 효과",
+      "title": "황천 사슬 집행자 · 참격 효과",
+      "description": "One cohesive crescent-shaped spectral sickle slash with a pale-teal core, turquoise body, restrained antique-gold leading edge, and a thick dark indigo-violet contour. No character, weapon, or detached particles.",
+      "source_root": "Assets/Monsters/SpriteProduction/UnderworldChainExecutioner/SlashFX/Run",
+      "status": "composed",
+      "status_label": "시트 제작됨",
+      "state_count": 1,
+      "frame_count": 8,
+      "states": [
+        {
+          "name": "slash_fx",
+          "frames": 8,
+          "fps": 16.0,
+          "loop": false
+        }
+      ],
+      "directions": [],
+      "preview_url": "./animation-media/workspaces/underworld-chain-executioner-slash-fx-0b7f8c17/workspace-preview-0d7f9d72af.png",
+      "curation_available": true
+    },
+    {
+      "id": "nest-hatchling-lizard-da8c69df",
+      "entity_type": "monster",
+      "character": "nest_hatchling_lizard",
+      "character_label": "둥지 새끼 도마뱀",
+      "title": "둥지 새끼 도마뱀",
+      "description": "A tiny newly hatched orange-and-teal lizard with four legs, one long tail, a broken eggshell cap and shell collar, always visibly facing screen-right.",
+      "source_root": "Assets/Monsters/SpriteProduction/WalkingNestFamily/NestHatchlingLizard",
+      "status": "composed",
+      "status_label": "시트 제작됨",
+      "state_count": 7,
+      "frame_count": 46,
+      "states": [
+        {
+          "name": "spawn",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "idle",
+          "frames": 8,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "walk",
+          "frames": 8,
+          "fps": 12.0,
+          "loop": true
+        },
+        {
+          "name": "attack",
+          "frames": 8,
+          "fps": 16.0,
+          "loop": false
+        },
+        {
+          "name": "hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "death_a",
+          "frames": 5,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "death_b",
+          "frames": 5,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [],
+      "preview_url": "./animation-media/workspaces/nest-hatchling-lizard-da8c69df/workspace-preview-c3eb60fe78.png",
+      "curation_available": true
+    },
+    {
+      "id": "underworld-chain-executioner-2c0d486e",
+      "entity_type": "monster",
+      "character": "underworld_chain_executioner",
+      "character_label": "황천 사슬 집행자",
+      "title": "황천 사슬 집행자",
+      "description": "A compact floating underworld warden with a cracked bronze funerary mask, exactly two amber eye slits, exactly two armored arms and hands, exactly one crescent sickle, exactly one continuous chain held by both hands and attached to the sickle, charcoal armor, small crimson cloth accents, and one teal spectral-smoke lower body with no legs or feet. Always visibly faces screen-right.",
+      "source_root": "Assets/Monsters/SpriteProduction/UnderworldChainExecutioner/Character",
+      "status": "curated",
+      "status_label": "큐레이션 적용",
+      "state_count": 7,
+      "frame_count": 48,
+      "states": [
+        {
+          "name": "east_idle",
+          "frames": 8,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "east_float",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "east_attack_windup",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "east_attack_sweep",
+          "frames": 6,
+          "fps": 16.0,
+          "loop": false
+        },
+        {
+          "name": "east_attack_reverse",
+          "frames": 6,
+          "fps": 16.0,
+          "loop": false
+        },
+        {
+          "name": "east_hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "east_death",
+          "frames": 8,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "east",
+        "west"
+      ],
+      "preview_url": "./animation-media/workspaces/underworld-chain-executioner-2c0d486e/workspace-preview-59a1864599.png",
+      "curation_available": true
+    },
+    {
+      "id": "walking-nest-b35c81eb",
+      "entity_type": "monster",
+      "character": "walking_nest",
+      "character_label": "걸어다니는 둥지",
+      "title": "걸어다니는 둥지",
+      "description": "A walking nest monster carrying four glowing orange eggs in a woven twig basket body, supported by four short root legs, always visibly facing screen-right.",
+      "source_root": "Assets/Monsters/SpriteProduction/WalkingNestFamily/WalkingNest",
+      "status": "composed",
+      "status_label": "시트 제작됨",
+      "state_count": 7,
+      "frame_count": 44,
+      "states": [
+        {
+          "name": "idle",
+          "frames": 8,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "walk_a",
+          "frames": 5,
+          "fps": 10.0,
+          "loop": false
+        },
+        {
+          "name": "walk_b",
+          "frames": 5,
+          "fps": 10.0,
+          "loop": false
+        },
+        {
+          "name": "attack",
+          "frames": 8,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "death_a",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "death_b",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [],
+      "preview_url": "./animation-media/workspaces/walking-nest-b35c81eb/workspace-preview-bb30e80f57.png",
+      "curation_available": true
     }
   ]
 };
