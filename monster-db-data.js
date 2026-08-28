@@ -1,6 +1,6 @@
 window.PACKBOUND_MONSTER_DB = {
   "schema_version": 1,
-  "revision": "179d414284af7c01",
+  "revision": "178428c17ef95ca7",
   "source": "docs/gameplay/monster-definitions.json",
   "count": 6,
   "active_count": 6,
@@ -3720,8 +3720,8 @@ window.PACKBOUND_MONSTER_DB = {
         "hover_height_studs": 1.35,
         "animations": {
           "IdleHover": {
-            "asset_id": "rbxassetid://80031662012390",
-            "frame_count": 8,
+            "asset_id": "rbxassetid://135442746353452",
+            "frame_count": 7,
             "fps": 8,
             "loop": true,
             "direction": "East",

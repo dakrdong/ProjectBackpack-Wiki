@@ -1,9 +1,9 @@
 window.PACKBOUND_COMBAT_DB = {
   "source_page_id": "backpack-combat-stat-database",
-  "source_title": "백팩 전투 능력치 데이터베이스",
-  "source": "wiki/content/pages/backpack-combat-stat-database/v001.md",
-  "source_version": 1,
-  "source_updated_at": "2026-08-06",
+  "source_title": "백팩 전투 능력치 데이터베이스의 무기 스킬 런타임 전환",
+  "source": "wiki/content/pages/backpack-combat-stat-database/v002.md",
+  "source_version": 2,
+  "source_updated_at": "2026-08-27",
   "database_count": 6,
   "record_count": 178,
   "databases": [

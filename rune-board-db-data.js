@@ -1,5 +1,5 @@
 window.PACKBOUND_RUNE_BOARD_DB = {
-  "revision": "6e735afdab3d7550",
+  "revision": "2403ec8390d21d42",
   "explorer": {
     "contract": {
       "selection": "아이템 생성 시 DefinitionId의 고정 후보 10개 중 하나를 균등 무작위 선택하고 VariantId와 Seed를 인스턴스에 영구 저장",
@@ -3919,7 +3919,15 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "기어 난무",
             "required_basic_attacks": 9,
             "detail": "가장 가까운 적을 0.18초 간격으로 3회 베고 회당 기본 피해 85%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetSequence",
+              "DamageMultiplier": 0.85,
+              "PulseCount": 3,
+              "PulseInterval": 0.18,
+              "TargetPolicy": "Nearest",
+              "VFXStyle": "GearSlash"
+            }
           },
           {
             "tier": 3,
@@ -3927,7 +3935,20 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "과회전 참격",
             "required_basic_attacks": 18,
             "detail": "반경 5 Stud를 2회 휩쓸고 적을 2 Stud 밀치며 4초간 공격속도 20%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 1.0,
+              "PulseCount": 2,
+              "PulseInterval": 0.22,
+              "Radius": 5,
+              "KnockbackStuds": 2,
+              "AttackSpeedPercent": 20,
+              "BuffSeconds": 4,
+              "TargetPolicy": "Nearest",
+              "OriginMode": "Player",
+              "VFXStyle": "OverdriveSweep"
+            }
           },
           {
             "tier": 5,
@@ -3935,7 +3956,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "톱날 폭풍",
             "required_basic_attacks": 34,
             "detail": "반경 9 Stud에 0.5초 간격 8회, 회당 기본 피해 70%의 회전 톱날장",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.7,
+              "PulseCount": 8,
+              "PulseInterval": 0.5,
+              "Radius": 9,
+              "TargetPolicy": "Nearest",
+              "OriginMode": "Player",
+              "VFXStyle": "Sawstorm"
+            }
           }
         ],
         "passives": [],
@@ -4754,7 +4785,13 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "반격의 칼끝",
             "required_basic_attacks": 10,
             "detail": "가장 가까운 적에게 기본 피해 220% 단일 참격",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetSequence",
+              "DamageMultiplier": 2.2,
+              "TargetPolicy": "RecentAttacker",
+              "VFXStyle": "CounterSlash"
+            }
           },
           {
             "tier": 3,
@@ -4762,7 +4799,18 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "수호 원무",
             "required_basic_attacks": 18,
             "detail": "반경 6 Stud 피해 150%, 3 Stud 밀치기, 4초간 방어력 25%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 1.5,
+              "Radius": 6,
+              "KnockbackStuds": 3,
+              "DamageReductionPercent": 25,
+              "BuffSeconds": 4,
+              "TargetPolicy": "RecentAttacker",
+              "OriginMode": "Player",
+              "VFXStyle": "GuardianDance"
+            }
           },
           {
             "tier": 5,
@@ -4770,7 +4818,19 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "성채 검진",
             "required_basic_attacks": 36,
             "detail": "반경 10 Stud에 1초 간격 6회 검격, 회당 95%, 지속 중 피해감소 15%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.95,
+              "PulseCount": 6,
+              "PulseInterval": 1.0,
+              "Radius": 10,
+              "DamageReductionPercent": 15,
+              "BuffSeconds": 6,
+              "TargetPolicy": "RecentAttacker",
+              "OriginMode": "Player",
+              "VFXStyle": "FortressBlades"
+            }
           }
         ],
         "passives": [],
@@ -5589,7 +5649,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "천공 찌르기",
             "required_basic_attacks": 9,
             "detail": "폭 1.5×길이 9 Stud 직선에 기본 피해 230%와 2회 관통",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Line",
+              "DamageMultiplier": 2.3,
+              "Width": 1.5,
+              "Length": 9,
+              "MaximumTargets": 3,
+              "TargetPolicy": "BestLine",
+              "VFXStyle": "SkyPierce"
+            }
           },
           {
             "tier": 3,
@@ -5597,7 +5666,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "질풍 회랑",
             "required_basic_attacks": 17,
             "detail": "폭 4×길이 11 Stud 피해 160%, 중심선으로 2 Stud 끌어당김",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Line",
+              "DamageMultiplier": 1.6,
+              "Width": 4,
+              "Length": 11,
+              "PullStuds": 2,
+              "TargetPolicy": "BestLine",
+              "VFXStyle": "GaleCorridor"
+            }
           },
           {
             "tier": 5,
@@ -5605,7 +5683,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "낙천 창우",
             "required_basic_attacks": 35,
             "detail": "반경 10 Stud에 0.6초 간격 7회 창 낙하, 회당 90%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.9,
+              "PulseCount": 7,
+              "PulseInterval": 0.6,
+              "Radius": 10,
+              "TargetPolicy": "BestLine",
+              "OriginMode": "Target",
+              "VFXStyle": "SpearRain"
+            }
           }
         ],
         "passives": [],
@@ -6452,7 +6540,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "뇌광 왕복",
             "required_basic_attacks": 10,
             "detail": "대상까지 투척 후 귀환하며 각 경로 기본 피해 120%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "ReturningLine",
+              "DamageMultiplier": 1.2,
+              "PulseCount": 2,
+              "PulseInterval": 0.35,
+              "Width": 2,
+              "TargetPolicy": "MostChainNeighbors",
+              "VFXStyle": "ThunderReturn"
+            }
           },
           {
             "tier": 3,
@@ -6460,7 +6557,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "연쇄 회수",
             "required_basic_attacks": 18,
             "detail": "최대 5대상 연쇄 140%, 적중마다 0.35초 기절",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Chain",
+              "DamageMultiplier": 1.4,
+              "MaximumTargets": 5,
+              "ChainRadius": 7,
+              "StunSeconds": 0.35,
+              "TargetPolicy": "MostChainNeighbors",
+              "VFXStyle": "ChainRecall"
+            }
           },
           {
             "tier": 5,
@@ -6468,7 +6574,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "폭뢰 순환",
             "required_basic_attacks": 36,
             "detail": "반경 11 Stud에 0.7초 간격 8회 낙뢰, 회당 85%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.85,
+              "PulseCount": 8,
+              "PulseInterval": 0.7,
+              "Radius": 11,
+              "TargetPolicy": "MostChainNeighbors",
+              "OriginMode": "Target",
+              "VFXStyle": "ThunderCycle"
+            }
           }
         ],
         "passives": [],
@@ -7343,7 +7459,15 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "삼연풍",
             "required_basic_attacks": 8,
             "detail": "0.12초 간격으로 같은 대상에 기본 피해 80% 화살 3발",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetSequence",
+              "DamageMultiplier": 0.8,
+              "PulseCount": 3,
+              "PulseInterval": 0.12,
+              "TargetPolicy": "LowestHealth",
+              "VFXStyle": "TripleGale"
+            }
           },
           {
             "tier": 3,
@@ -7351,7 +7475,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "바람 깔때기",
             "required_basic_attacks": 16,
             "detail": "반경 6 Stud 피해 130%, 중심으로 3 Stud 끌어당김",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 1.3,
+              "Radius": 6,
+              "PullStuds": 3,
+              "TargetPolicy": "LowestHealth",
+              "OriginMode": "Target",
+              "VFXStyle": "WindFunnel"
+            }
           },
           {
             "tier": 5,
@@ -7359,7 +7492,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "폭풍 화살비",
             "required_basic_attacks": 32,
             "detail": "반경 11 Stud에 0.45초 간격 10회 화살비, 회당 65%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.65,
+              "PulseCount": 10,
+              "PulseInterval": 0.45,
+              "Radius": 11,
+              "TargetPolicy": "LowestHealth",
+              "OriginMode": "Target",
+              "VFXStyle": "ArrowStorm"
+            }
           }
         ],
         "passives": [],
@@ -8178,7 +8321,13 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "추적 사격",
             "required_basic_attacks": 9,
             "detail": "현재 체력이 가장 낮은 적에게 기본 피해 240% 유도 화살",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetSequence",
+              "DamageMultiplier": 2.4,
+              "TargetPolicy": "LowestHealth",
+              "VFXStyle": "HomingShot"
+            }
           },
           {
             "tier": 3,
@@ -8186,7 +8335,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "사냥 그물",
             "required_basic_attacks": 17,
             "detail": "반경 6 Stud 피해 120%, 2초간 이동속도 45% 감소",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 1.2,
+              "Radius": 6,
+              "SlowPercent": 45,
+              "SlowSeconds": 2,
+              "TargetPolicy": "Fastest",
+              "OriginMode": "Target",
+              "VFXStyle": "HuntingNet"
+            }
           },
           {
             "tier": 5,
@@ -8194,7 +8353,19 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "포식자 강우",
             "required_basic_attacks": 34,
             "detail": "반경 10 Stud에 0.5초 간격 9회 표적 화살, 회당 75%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetRain",
+              "DamageMultiplier": 0.75,
+              "PulseCount": 9,
+              "PulseInterval": 0.5,
+              "Radius": 10,
+              "MaximumTargets": 1,
+              "RetargetEachPulse": true,
+              "TargetPolicy": "Fastest",
+              "OriginMode": "Target",
+              "VFXStyle": "PredatorRain"
+            }
           }
         ],
         "passives": [],
@@ -9013,7 +9184,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "파성 볼트",
             "required_basic_attacks": 11,
             "detail": "최대 체력이 가장 높은 적에게 기본 피해 300%, 3회 관통",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Line",
+              "DamageMultiplier": 3.0,
+              "Width": 2.2,
+              "ExtendThroughTargetStuds": 6,
+              "MaximumTargets": 4,
+              "TargetPolicy": "HighestMaxHealth",
+              "VFXStyle": "SiegeBolt"
+            }
           },
           {
             "tier": 3,
@@ -9021,7 +9201,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "공성 충격",
             "required_basic_attacks": 20,
             "detail": "반경 7 Stud 피해 180%, 4 Stud 밀쳐내기와 0.8초 기절",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 1.8,
+              "Radius": 7,
+              "KnockbackStuds": 4,
+              "StunSeconds": 0.8,
+              "TargetPolicy": "HighestMaxHealth",
+              "OriginMode": "Target",
+              "VFXStyle": "SiegeImpact"
+            }
           },
           {
             "tier": 5,
@@ -9029,7 +9219,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "요새 파괴자",
             "required_basic_attacks": 40,
             "detail": "폭 7×길이 16 Stud를 1초 간격 5회 관통 포격, 회당 150%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentLine",
+              "DamageMultiplier": 1.5,
+              "PulseCount": 5,
+              "PulseInterval": 1.0,
+              "Width": 7,
+              "Length": 16,
+              "TargetPolicy": "HighestMaxHealth",
+              "VFXStyle": "FortressBreaker"
+            }
           }
         ],
         "passives": [],
@@ -9876,7 +10076,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "근접 산탄",
             "required_basic_attacks": 9,
             "detail": "가장 가까운 적 방향 45도 부채꼴에 7펠릿, 펠릿당 45%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Cone",
+              "DamageMultiplier": 0.45,
+              "ProjectileCount": 7,
+              "ConeDegrees": 45,
+              "Length": 18,
+              "TargetPolicy": "HighestDensity",
+              "VFXStyle": "CloseScatter"
+            }
           },
           {
             "tier": 3,
@@ -9884,7 +10093,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "조임 폭발",
             "required_basic_attacks": 16,
             "detail": "반경 6 Stud 피해 145%, 중심으로 2.5 Stud 끌어당김",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 1.45,
+              "Radius": 6,
+              "PullStuds": 2.5,
+              "TargetPolicy": "HighestDensity",
+              "OriginMode": "Target",
+              "VFXStyle": "ConstrictBlast"
+            }
           },
           {
             "tier": 5,
@@ -9892,7 +10110,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "파편 폭풍",
             "required_basic_attacks": 33,
             "detail": "반경 10 Stud에 0.5초 간격 8회 산탄, 회당 80%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.8,
+              "PulseCount": 8,
+              "PulseInterval": 0.5,
+              "Radius": 10,
+              "TargetPolicy": "HighestDensity",
+              "OriginMode": "Target",
+              "VFXStyle": "ShardStorm"
+            }
           }
         ],
         "passives": [],
@@ -10711,7 +10939,15 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "열폭주 점사",
             "required_basic_attacks": 8,
             "detail": "0.1초 간격 5발, 발당 기본 피해 55%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetSequence",
+              "DamageMultiplier": 0.55,
+              "PulseCount": 5,
+              "PulseInterval": 0.1,
+              "TargetPolicy": "HighestHealth",
+              "VFXStyle": "HeatBurst"
+            }
           },
           {
             "tier": 3,
@@ -10719,7 +10955,15 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "오버클럭",
             "required_basic_attacks": 15,
             "detail": "6초간 공격속도 30%와 탄 퍼짐 35% 감소",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "SelfBuff",
+              "AttackSpeedPercent": 30,
+              "SpreadReductionPercent": 35,
+              "BuffSeconds": 6,
+              "TargetPolicy": "HighestHealth",
+              "VFXStyle": "Overclock"
+            }
           },
           {
             "tier": 5,
@@ -10727,7 +10971,19 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "멜트다운 포화",
             "required_basic_attacks": 30,
             "detail": "10초간 0.2초 간격 자동 포격, 회당 기본 피해 65%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetRain",
+              "DamageMultiplier": 0.65,
+              "PulseCount": 50,
+              "PulseInterval": 0.2,
+              "Radius": 14,
+              "MaximumTargets": 1,
+              "RetargetEachPulse": true,
+              "TargetPolicy": "HighestHealth",
+              "OriginMode": "Player",
+              "VFXStyle": "MeltdownBarrage"
+            }
           }
         ],
         "passives": [],
@@ -11546,7 +11802,15 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "묘기 사격",
             "required_basic_attacks": 9,
             "detail": "기본 피해 190%, 기본 도탄 2회",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Chain",
+              "DamageMultiplier": 1.9,
+              "MaximumTargets": 3,
+              "ChainRadius": 7,
+              "TargetPolicy": "MostChainNeighbors",
+              "VFXStyle": "TrickShot"
+            }
           },
           {
             "tier": 3,
@@ -11554,7 +11818,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "자기 도탄",
             "required_basic_attacks": 17,
             "detail": "반경 7 Stud 적을 최대 5회 연쇄하며 각 적을 중심으로 끌어당김",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Chain",
+              "DamageMultiplier": 1.0,
+              "MaximumTargets": 5,
+              "ChainRadius": 7,
+              "PullStuds": 2,
+              "TargetPolicy": "MostChainNeighbors",
+              "VFXStyle": "MagneticRicochet"
+            }
           },
           {
             "tier": 5,
@@ -11562,7 +11835,19 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "거울의 방",
             "required_basic_attacks": 34,
             "detail": "반경 11 Stud에 0.45초 간격 9회 도탄탄 생성, 회당 70%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetRain",
+              "DamageMultiplier": 0.7,
+              "PulseCount": 9,
+              "PulseInterval": 0.45,
+              "Radius": 11,
+              "MaximumTargets": 1,
+              "RetargetEachPulse": true,
+              "TargetPolicy": "MostChainNeighbors",
+              "OriginMode": "Target",
+              "VFXStyle": "MirrorRoom"
+            }
           }
         ],
         "passives": [],
@@ -12409,7 +12694,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "지진 강타",
             "required_basic_attacks": 11,
             "detail": "반경 4 Stud 기본 피해 230%와 0.6초 기절",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 2.3,
+              "Radius": 4,
+              "StunSeconds": 0.6,
+              "TargetPolicy": "HighestDensity",
+              "OriginMode": "Player",
+              "VFXStyle": "QuakeSlam"
+            }
           },
           {
             "tier": 3,
@@ -12417,7 +12711,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "단층선",
             "required_basic_attacks": 20,
             "detail": "폭 5×길이 12 Stud 피해 175%, 양옆으로 3 Stud 밀침",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Line",
+              "DamageMultiplier": 1.75,
+              "Width": 5,
+              "Length": 12,
+              "KnockbackStuds": 3,
+              "KnockbackMode": "Perpendicular",
+              "TargetPolicy": "HighestDensity",
+              "VFXStyle": "FaultLine"
+            }
           },
           {
             "tier": 5,
@@ -12425,7 +12729,18 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "여진 지대",
             "required_basic_attacks": 40,
             "detail": "반경 11 Stud에 1초 간격 8회 여진, 회당 105%와 0.2초 기절",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 1.05,
+              "PulseCount": 8,
+              "PulseInterval": 1.0,
+              "Radius": 11,
+              "StunSeconds": 0.2,
+              "TargetPolicy": "HighestDensity",
+              "OriginMode": "Target",
+              "VFXStyle": "AftershockZone"
+            }
           }
         ],
         "passives": [],
@@ -13244,7 +13559,14 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "수호 타격",
             "required_basic_attacks": 10,
             "detail": "가장 가까운 적 210% 피해와 최대체력 4% 보호막",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetSequence",
+              "DamageMultiplier": 2.1,
+              "ShieldMaxHealthPercent": 4,
+              "TargetPolicy": "Nearest",
+              "VFXStyle": "GuardianStrike"
+            }
           },
           {
             "tier": 3,
@@ -13252,7 +13574,18 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "보루 파동",
             "required_basic_attacks": 19,
             "detail": "반경 7 Stud 피해 140%, 3 Stud 밀침, 4초간 피해감소 12%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 1.4,
+              "Radius": 7,
+              "KnockbackStuds": 3,
+              "DamageReductionPercent": 12,
+              "BuffSeconds": 4,
+              "TargetPolicy": "Nearest",
+              "OriginMode": "Player",
+              "VFXStyle": "BastionWave"
+            }
           },
           {
             "tier": 5,
@@ -13260,7 +13593,19 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "성역 망치",
             "required_basic_attacks": 38,
             "detail": "반경 11 Stud에 1초 간격 7회 방호 파동, 회당 90%와 보호막 2%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.9,
+              "PulseCount": 7,
+              "PulseInterval": 1.0,
+              "Radius": 11,
+              "ShieldMaxHealthPercent": 2,
+              "ShieldEachPulse": true,
+              "TargetPolicy": "Nearest",
+              "OriginMode": "Player",
+              "VFXStyle": "SanctuaryHammer"
+            }
           }
         ],
         "passives": [],
@@ -14079,7 +14424,14 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "혈액 절단",
             "required_basic_attacks": 9,
             "detail": "기본 피해 220%, 가한 생명 피해의 8% 회복",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetSequence",
+              "DamageMultiplier": 2.2,
+              "HealDamagePercent": 8,
+              "TargetPolicy": "LowestHealth",
+              "VFXStyle": "BloodSever"
+            }
           },
           {
             "tier": 3,
@@ -14087,7 +14439,18 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "진홍 소용돌이",
             "required_basic_attacks": 18,
             "detail": "반경 6 Stud 3회 타격, 회당 85%, 중심으로 2 Stud 당김",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.85,
+              "PulseCount": 3,
+              "PulseInterval": 0.25,
+              "Radius": 6,
+              "PullStuds": 2,
+              "TargetPolicy": "LowestHealth",
+              "OriginMode": "Player",
+              "VFXStyle": "CrimsonVortex"
+            }
           },
           {
             "tier": 5,
@@ -14095,7 +14458,19 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "혈우 폭풍",
             "required_basic_attacks": 36,
             "detail": "반경 10 Stud에 0.6초 간격 9회 혈날, 회당 75%와 4초 출혈",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "PersistentRadius",
+              "DamageMultiplier": 0.75,
+              "PulseCount": 9,
+              "PulseInterval": 0.6,
+              "Radius": 10,
+              "BleedDamageMultiplier": 0.15,
+              "BleedSeconds": 4,
+              "TargetPolicy": "LowestHealth",
+              "OriginMode": "Target",
+              "VFXStyle": "BloodRain"
+            }
           }
         ],
         "passives": [],
@@ -14914,7 +15289,15 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "광분 도끼질",
             "required_basic_attacks": 8,
             "detail": "같은 대상에 0.16초 간격 3회, 회당 90%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "TargetSequence",
+              "DamageMultiplier": 0.9,
+              "PulseCount": 3,
+              "PulseInterval": 0.16,
+              "TargetPolicy": "LowestHealthRatio",
+              "VFXStyle": "FrenzyChop"
+            }
           },
           {
             "tier": 3,
@@ -14922,7 +15305,17 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "전쟁 포효 회전",
             "required_basic_attacks": 16,
             "detail": "반경 6 Stud 165% 피해와 5초간 공격속도 25%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Radial",
+              "DamageMultiplier": 1.65,
+              "Radius": 6,
+              "AttackSpeedPercent": 25,
+              "BuffSeconds": 5,
+              "TargetPolicy": "LowestHealthRatio",
+              "OriginMode": "Player",
+              "VFXStyle": "WarRoarSpin"
+            }
           },
           {
             "tier": 5,
@@ -14930,7 +15323,16 @@ window.PACKBOUND_RUNE_BOARD_DB = {
             "name": "파멸 연쇄",
             "required_basic_attacks": 32,
             "detail": "반경 10 Stud 내 적 사이를 8회 도약 타격, 회당 105%",
-            "cooldown_ui": "원형 공격횟수 충전 게이지"
+            "cooldown_ui": "원형 공격횟수 충전 게이지",
+            "runtime": {
+              "Executor": "Chain",
+              "DamageMultiplier": 1.05,
+              "MaximumTargets": 8,
+              "ChainRadius": 10,
+              "AllowRepeatTargets": true,
+              "TargetPolicy": "LowestHealthRatio",
+              "VFXStyle": "RuinChain"
+            }
           }
         ],
         "passives": [],

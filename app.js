@@ -10,9 +10,13 @@
   const waveDbTools = window.PACKBOUND_WAVE_DB_TOOLS;
   const animationDb = window.PACKBOUND_ANIMATION_DB;
   const animationDbTools = window.PACKBOUND_ANIMATION_DB_TOOLS;
+  const fieldDb = window.PACKBOUND_FIELD_DB;
+  const fieldDbTools = window.PACKBOUND_FIELD_DB_TOOLS;
   const combatDb = window.PACKBOUND_COMBAT_DB;
   const combatDbTools = window.PACKBOUND_COMBAT_DB_TOOLS;
   const runeBoardDb = window.PACKBOUND_RUNE_BOARD_DB;
+  const masteryDb = window.PACKBOUND_MASTERY_DB;
+  const masteryDbTools = window.PACKBOUND_MASTERY_DB_TOOLS;
   const tagExplorer = window.PACKBOUND_TAG_EXPLORER;
   const localAccess = window.PACKBOUND_LOCAL_ACCESS;
   const markdownMedia = window.PACKBOUND_MARKDOWN_MEDIA;
@@ -61,6 +65,8 @@
   const canEditItemDb = hasLocalAccess;
   let canEditMonsterDb = false;
   let canEditWaveDb = false;
+  let canEditAnimationDb = false;
+  let canEditMasteryDb = false;
   let canOpenAnimationCuration = false;
   let searchMode = "pages";
   let tagSort = "recent";
@@ -95,18 +101,28 @@
     saving: false,
   };
   let animationDbState = {
+    tab: "gallery",
     query: "",
-    entityType: "all",
-    action: "all",
     status: "all",
+    gallerySubjectId: "",
+    galleryAction: "",
+    curationSubjectId: "",
     compare: [],
     variants: {},
   };
   let animationDbCurationNotice = "";
+  let animationDbSelectionNotice = "";
+  let animationDbSelectionSavingId = "";
+  let animationDbBakeState = { loading: false, error: "", payload: null, status: "" };
   let animationDbWorkspaceState = {
     activeId: "",
     loadingId: "",
     url: "",
+  };
+  let fieldDbState = {
+    query: "",
+    fieldType: "all",
+    selectedId: fieldDb?.fields?.[0]?.id || "",
   };
   let structuredDbState = { databaseId: null, query: "", filters: {} };
   let runeBoardExplorerState = {
@@ -122,6 +138,7 @@
   let filteredPages = wiki?.pages || [];
   let tagIndex = [];
   let tagByName = new Map();
+  const masteryDbEditor = masteryDbTools?.createEditor(masteryDb, combatDb) || null;
 
   async function refreshMonsterDbApiAccess() {
     if (!hasLocalAccess) return;
@@ -189,6 +206,52 @@
     }
     const route = readRoute();
     if (route.kind === "database" && route.slug === "animation-db") renderAnimationDb();
+  }
+
+  async function refreshAnimationDbApiAccess() {
+    if (!hasLocalAccess) return;
+    try {
+      const response = await fetch("/api/animation-db/status", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      const payload = await response.json().catch(() => ({}));
+      canEditAnimationDb = response.ok && payload.editable === true && payload.api_version === 1;
+      if (!canEditAnimationDb) {
+        animationDbSelectionNotice = response.status === 404
+          ? "실행 중인 로컬 위키 서버가 AnimationDB 선택 API보다 오래되었습니다. 서버를 재시작해 주세요."
+          : payload.error || `AnimationDB 선택 API를 확인하지 못했습니다. (${response.status})`;
+      }
+    } catch (error) {
+      canEditAnimationDb = false;
+      animationDbSelectionNotice = `AnimationDB 선택 API에 연결하지 못했습니다. (${String(error.message || error)})`;
+    }
+    const route = readRoute();
+    if (route.kind === "database" && route.slug === "animation-db") renderAnimationDb();
+  }
+
+  async function refreshMasteryDbApiAccess() {
+    if (!hasLocalAccess || !masteryDbEditor) return;
+    try {
+      const response = await fetch("/api/mastery-db/status", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      const payload = await response.json().catch(() => ({}));
+      canEditMasteryDb = response.ok && payload.editable === true && payload.api_version === 1;
+      masteryDbEditor.setEditable(canEditMasteryDb);
+      if (!canEditMasteryDb) {
+        masteryDbEditor.notice = response.status === 404
+          ? "실행 중인 로컬 위키 서버가 마스터리 DB 저장 API보다 오래되었습니다. 서버를 재시작해 주세요."
+          : payload.error || `마스터리 DB 저장 API를 확인하지 못했습니다. (${response.status})`;
+      }
+    } catch (error) {
+      canEditMasteryDb = false;
+      masteryDbEditor.setEditable(false);
+      masteryDbEditor.notice = `마스터리 DB 저장 API에 연결하지 못했습니다. (${String(error.message || error)})`;
+    }
+    const route = readRoute();
+    if (route.kind === "database" && route.slug === "mastery-db") renderMasteryDb();
   }
   const categoryLabels = {
     project: "프로젝트",
@@ -496,6 +559,14 @@
         href: databaseHref("monster-db"),
       },
       {
+        id: "field-db",
+        title: "필드 데이터베이스",
+        description: "콘셉트 · 바닥 · 경계 · 오브젝트",
+        count: fieldDb?.count || 0,
+        unit: "FIELDS",
+        href: databaseHref("field-db"),
+      },
+      {
         id: "wave-db",
         title: "스테이지·웨이브 DB",
         description: "필드 · 웨이브 · 스폰 타임라인",
@@ -510,6 +581,14 @@
         count: animationDb?.count || 0,
         unit: "ANIMS",
         href: databaseHref("animation-db"),
+      },
+      {
+        id: "mastery-db",
+        title: "캐릭터 마스터리 DB",
+        description: "스킬 트리 · 능력치 · 해제 조건",
+        count: masteryDb?.node_count || 0,
+        unit: "SKILLS",
+        href: databaseHref("mastery-db"),
       },
       ...[...(combatDb.databases || []), ...(runeBoardDb.databases || [])].map((database) => ({
         id: database.id,
@@ -3318,6 +3397,107 @@
     }
   }
 
+  function closeAnimationDbBake() {
+    document.getElementById("animationdb-bake-backdrop")?.remove();
+    animationDbBakeState = { loading: false, error: "", payload: null, status: "" };
+  }
+
+  async function copyAnimationBakeText(text, successMessage) {
+    try {
+      await navigator.clipboard.writeText(text);
+      animationDbBakeState.status = successMessage;
+    } catch (_error) {
+      animationDbBakeState.status = "복사 권한을 사용할 수 없습니다. 텍스트를 직접 선택해 복사해 주세요.";
+    }
+    renderAnimationDbBake();
+  }
+
+  function renderAnimationDbBake() {
+    let backdrop = document.getElementById("animationdb-bake-backdrop");
+    if (!backdrop) {
+      document.body.insertAdjacentHTML("beforeend", `
+        <div id="animationdb-bake-backdrop" class="itemdb-editor-backdrop">
+          <section class="itemdb-editor-dialog animationdb-bake-dialog" role="dialog" aria-modal="true" aria-labelledby="animationdb-bake-title">
+            <header><div><span>ANIMATIONDB → ROBLOX</span><h2 id="animationdb-bake-title">게임에 굽기</h2><code>검증 패키지 · Studio 적용</code></div><button type="button" class="itemdb-editor-close" data-animationdb-bake-close aria-label="베이크 창 닫기">×</button></header>
+            <div class="animationdb-bake-body"></div>
+          </section>
+        </div>
+      `);
+      backdrop = document.getElementById("animationdb-bake-backdrop");
+      backdrop.addEventListener("click", (event) => {
+        if (event.target.id === "animationdb-bake-backdrop" && !animationDbBakeState.loading) closeAnimationDbBake();
+      });
+      backdrop.querySelector("[data-animationdb-bake-close]").addEventListener("click", closeAnimationDbBake);
+    }
+    const body = backdrop.querySelector(".animationdb-bake-body");
+    if (animationDbBakeState.loading) {
+      body.innerHTML = '<div class="animationdb-bake-loading"><span></span><strong>최종 큐레이션을 런타임 이미지로 굽는 중…</strong><p>프레임 선택·순서·이동·크기·회전 정보를 반영하고 이미지 무결성을 검사합니다.</p></div>';
+      return;
+    }
+    if (animationDbBakeState.error) {
+      body.innerHTML = `<p class="animationdb-bake-error" role="alert">${escapeHtml(animationDbBakeState.error)}</p><div class="animationdb-bake-actions"><button type="button" data-animationdb-bake-close>닫기</button></div>`;
+      body.querySelector("[data-animationdb-bake-close]").addEventListener("click", closeAnimationDbBake);
+      return;
+    }
+    const payload = animationDbBakeState.payload;
+    if (!payload) return;
+    body.innerHTML = `
+      <div class="animationdb-bake-summary">
+        <span><small>베이크 대상</small><strong>${escapeHtml(payload.target_label)}</strong></span>
+        <span><small>묶음 ID</small><code>${escapeHtml(payload.bake_id)}</code></span>
+        <span><small>런타임 이미지</small><strong>${payload.uploads.length}개</strong></span>
+        <span data-warning="${payload.upload_count > 0}"><small>Roblox 업로드 필요</small><strong>${payload.upload_count}개</strong></span>
+      </div>
+      <div class="animationdb-bake-files" role="list">
+        ${payload.uploads.map((entry) => `
+          <article role="listitem" data-upload="${entry.requires_upload}">
+            <div><strong>${escapeHtml(entry.state)}</strong><span>${entry.frame_count}F · ${entry.cell_width || 128}×${entry.cell_height || 128}${entry.fps ? ` · ${animationMetric(entry.fps)} FPS` : ""}</span></div>
+            <code title="${escapeHtml(entry.path)}">${escapeHtml(entry.path)}</code>
+            <p>SHA256 <code>${escapeHtml(entry.sha256.slice(0, 16))}…</code></p>
+            <em>${entry.requires_upload ? "새 Roblox 이미지 업로드 필요" : `기존 자산 재사용 · ${escapeHtml(entry.asset_id || "ID 확인됨")}`}</em>
+          </article>
+        `).join("")}
+      </div>
+      <p class="animationdb-bake-note">${payload.upload_count
+        ? "웹페이지는 Roblox 계정에 이미지를 대신 업로드하지 않습니다. 아래 적용 요청을 복사해 이 대화에 보내면, 검증된 PNG만 Studio MCP로 업로드하고 저장소와 Studio를 함께 맞춥니다."
+        : "모든 이미지가 현재 Roblox 자산과 동일합니다. 적용 요청을 보내면 Studio의 모듈과 리비전을 확인하고 필요한 부분만 동기화합니다."}</p>
+      <div class="animationdb-bake-actions">
+        <button type="button" class="primary" data-animationdb-bake-copy="request">Studio 적용 요청 복사</button>
+        <button type="button" data-animationdb-bake-copy="manifest">매니페스트 경로 복사</button>
+        <button type="button" data-animationdb-bake-close>닫기</button>
+      </div>
+      <textarea class="animationdb-bake-request" readonly aria-label="Roblox Studio 적용 요청">${escapeHtml(payload.studio_request)}</textarea>
+      ${animationDbBakeState.status ? `<p class="animationdb-bake-status" role="status">${escapeHtml(animationDbBakeState.status)}</p>` : ""}
+    `;
+    body.querySelector('[data-animationdb-bake-copy="request"]').addEventListener("click", () => void copyAnimationBakeText(payload.studio_request, "Studio 적용 요청을 복사했습니다."));
+    body.querySelector('[data-animationdb-bake-copy="manifest"]').addEventListener("click", () => void copyAnimationBakeText(payload.manifest_path, "베이크 매니페스트 경로를 복사했습니다."));
+    body.querySelector("[data-animationdb-bake-close]").addEventListener("click", closeAnimationDbBake);
+  }
+
+  async function openAnimationDbBake(target) {
+    if (!canEditAnimationDb || animationDbBakeState.loading) return;
+    animationDbBakeState = { loading: true, error: "", payload: null, status: "" };
+    renderAnimationDbBake();
+    try {
+      const response = await fetch("/api/animation-db/bake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ api_version: 1, ...target }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `애니메이션을 굽지 못했습니다. (${response.status})`);
+      if (!Array.isArray(payload.uploads) || !payload.manifest_path || !payload.studio_request) {
+        throw new Error("AnimationDB 베이크 결과가 불완전합니다.");
+      }
+      animationDbBakeState.payload = payload;
+    } catch (error) {
+      animationDbBakeState.error = String(error.message || error);
+    } finally {
+      animationDbBakeState.loading = false;
+      renderAnimationDbBake();
+    }
+  }
+
   async function openAnimationWorkspace(workspaceId) {
     if (!canOpenAnimationCuration || animationDbWorkspaceState.loadingId) return;
     animationDbWorkspaceState.loadingId = workspaceId;
@@ -3344,15 +3524,49 @@
     }
   }
 
+  function animationEntityLabel(entityType, uppercase = false) {
+    const labels = uppercase
+      ? { player: "PLAYER", monster: "MONSTER", effect: "EFFECT" }
+      : { player: "플레이어", monster: "몬스터", effect: "효과" };
+    return labels[entityType] || entityType;
+  }
+
+  function renderAnimationSubjectCards(subjects, selectedId, mode) {
+    const attribute = mode === "gallery" ? "data-animation-gallery-subject" : "data-animation-curation-subject";
+    return subjects.map((subject) => {
+      const selected = subject.id === selectedId;
+      const primaryCount = mode === "gallery" ? subject.actions.length : subject.workspaces.length;
+      const secondaryCount = mode === "gallery"
+        ? subject.records.length
+        : subject.workspaces.reduce((sum, workspace) => sum + (workspace.state_count || 0), 0);
+      const primaryLabel = mode === "gallery" ? "동작" : "작업공간";
+      const secondaryLabel = mode === "gallery" ? "애니메이션" : "모션";
+      return `
+        <button type="button" class="animationdb-subject-card ${selected ? "active" : ""}" ${attribute}="${escapeHtml(subject.id)}" aria-pressed="${selected}">
+          <span class="animationdb-subject-preview">
+            ${subject.representative_url ? `<img src="${escapeHtml(subject.representative_url)}" alt="${escapeHtml(subject.label)} 대표 이미지" loading="lazy" decoding="async">` : '<span>NO PREVIEW</span>'}
+          </span>
+          <span class="animationdb-subject-copy">
+            <small>${escapeHtml(animationEntityLabel(subject.entity_type, true))}</small>
+            <strong>${escapeHtml(subject.label)}</strong>
+            <span>${primaryCount} ${primaryLabel} · ${secondaryCount} ${secondaryLabel}</span>
+          </span>
+          <i aria-hidden="true">${selected ? "선택됨" : "열기"}</i>
+        </button>
+      `;
+    }).join("");
+  }
+
   function renderAnimationDbWorkspaces() {
     const root = document.getElementById("animationdb-workspaces");
     if (!root) return;
-    const workspaces = animationDb.workspaces || [];
+    const subjects = animationDbTools.groupWorkspaceSubjects(animationDb.workspaces || []);
+    const subject = subjects.find((entry) => entry.id === animationDbState.curationSubjectId) || null;
+    const workspaces = subject?.workspaces || [];
     const activeWorkspace = animationDbTools.findWorkspace(workspaces, animationDbWorkspaceState.activeId);
-    const entityLabels = { player: "PLAYER", monster: "MONSTER", effect: "EFFECT" };
     root.innerHTML = `
       <header class="animationdb-workspace-heading">
-        <div><span class="page-eyebrow">Production workspace</span><h2>큐레이션 작업공간</h2><p>제작 중인 스프라이트 시트의 프레임 선택·순서·정렬을 원본 큐레이터에서 다룹니다.</p></div>
+        <div><span class="page-eyebrow">3단계 · 작업공간</span><h2>${escapeHtml(subject?.label || "선택한 주체")} 큐레이션</h2><p>작업공간을 확인한 뒤 ‘큐레이션 열기’를 누르면 아래에 실제 편집 화면이 열립니다.</p></div>
         <span class="animationdb-workspace-mode" data-editable="${canOpenAnimationCuration}">${canOpenAnimationCuration ? "로컬 편집 가능" : "읽기 전용 미리보기"}</span>
       </header>
       ${animationDbCurationNotice ? `<div class="itemdb-save-notice" role="status">${escapeHtml(animationDbCurationNotice)}</div>` : ""}
@@ -3363,13 +3577,13 @@
           <article class="animationdb-workspace-card ${active ? "active" : ""}">
             <div class="animationdb-workspace-preview">${workspace.preview_url ? `<img src="${escapeHtml(workspace.preview_url)}" alt="${escapeHtml(workspace.title)} 전체 프레임" loading="lazy" decoding="async">` : '<span>NO PREVIEW</span>'}</div>
             <div class="animationdb-workspace-body">
-              <div class="animationdb-workspace-meta"><span>${escapeHtml(entityLabels[workspace.entity_type] || workspace.entity_type)}</span><em data-status="${escapeHtml(workspace.status)}">${escapeHtml(workspace.status_label)}</em></div>
+              <div class="animationdb-workspace-meta"><span>${escapeHtml(animationEntityLabel(workspace.entity_type, true))}</span><em data-status="${escapeHtml(workspace.status)}">${escapeHtml(workspace.status_label)}</em></div>
               <h3>${escapeHtml(workspace.title)}</h3>
               <code title="${escapeHtml(workspace.source_root)}">${escapeHtml(workspace.source_root)}</code>
               <div class="animationdb-workspace-metrics"><span><strong>${workspace.state_count}</strong><small>모션</small></span><span><strong>${workspace.frame_count}</strong><small>프레임</small></span></div>
               <div class="animationdb-workspace-states">${workspace.states.map((state) => `<span>${escapeHtml(state.name)} · ${state.frames}F</span>`).join("")}</div>
               ${canOpenAnimationCuration
-                ? `<button type="button" data-animation-workspace-open="${escapeHtml(workspace.id)}" ${loading ? "disabled" : ""}>${loading ? "큐레이터 시작 중…" : active ? "큐레이터 다시 열기" : "큐레이션 열기"}</button>`
+                ? `<div class="animationdb-workspace-actions"><button type="button" data-animation-workspace-open="${escapeHtml(workspace.id)}" ${loading ? "disabled" : ""}>${loading ? "큐레이터 시작 중…" : active ? "큐레이터 다시 열기" : "큐레이션 열기"}</button><button type="button" class="primary" data-animation-workspace-bake="${escapeHtml(workspace.id)}">큐레이션 굽기</button></div>`
                 : '<p class="animationdb-workspace-readonly">로컬 위키에서 원본 프레임을 편집할 수 있습니다.</p>'}
             </div>
           </article>
@@ -3385,6 +3599,9 @@
     root.querySelectorAll("[data-animation-workspace-open]").forEach((button) => {
       button.addEventListener("click", () => void openAnimationWorkspace(button.dataset.animationWorkspaceOpen));
     });
+    root.querySelectorAll("[data-animation-workspace-bake]").forEach((button) => {
+      button.addEventListener("click", () => void openAnimationDbBake({ workspace_id: button.dataset.animationWorkspaceBake }));
+    });
     root.querySelector("[data-animation-workspace-close]")?.addEventListener("click", () => {
       animationDbWorkspaceState.activeId = "";
       animationDbWorkspaceState.url = "";
@@ -3398,6 +3615,42 @@
 
   function animationSelectedVariant(record) {
     return animationDbTools.selectedVariant(record, animationDbState.variants[record.id]);
+  }
+
+  async function selectAnimationRecord(recordId) {
+    if (!canEditAnimationDb || animationDbSelectionSavingId) return;
+    const record = animationDbTools.findRecord(animationDb.records, recordId);
+    if (!record) return;
+    const keepingCurrent = record.runtime_relation === "live";
+    const prompt = keepingCurrent
+      ? "현재 게임 적용본을 유지하고, 따로 선택해 둔 후보를 해제할까요?"
+      : `${record.candidate} 후보를 적용 대상으로 선택할까요?\n\n선택 기록만 저장되며, 게임 파일 교체와 Roblox 업로드는 아직 실행되지 않습니다.`;
+    if (!window.confirm(prompt)) return;
+    animationDbSelectionSavingId = recordId;
+    animationDbSelectionNotice = "선택을 저장하고 AnimationDB를 갱신하는 중입니다…";
+    renderAnimationDbResults();
+    try {
+      const response = await fetch("/api/animation-db/select", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ api_version: 1, record_id: recordId }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `애니메이션 선택을 저장하지 못했습니다. (${response.status})`);
+      if (!payload.catalog || !Array.isArray(payload.catalog.records)) {
+        throw new Error("AnimationDB 선택 응답에 갱신된 목록이 없습니다.");
+      }
+      Object.keys(animationDb).forEach((key) => delete animationDb[key]);
+      Object.assign(animationDb, payload.catalog);
+      animationDbSelectionNotice = payload.pending
+        ? `${record.title}의 ${record.candidate} 후보를 적용 대상으로 선택했습니다. 게임 반영은 별도 승격 단계에서 진행됩니다.`
+        : `${record.title}은 현재 게임 적용본을 유지합니다.`;
+    } catch (error) {
+      animationDbSelectionNotice = String(error.message || error);
+    } finally {
+      animationDbSelectionSavingId = "";
+      renderAnimationDbResults();
+    }
   }
 
   function renderAnimationCompare() {
@@ -3435,8 +3688,15 @@
     const root = document.getElementById("animationdb-results");
     const count = document.getElementById("animationdb-result-count");
     if (!root || !count) return;
-    const records = animationDbTools.filterAnimations(animationDb.records, animationDbState);
-    count.textContent = `${records.length} / ${animationDb.count}개 표시`;
+    const subjects = animationDbTools.groupAnimationSubjects(animationDb.records);
+    const subject = subjects.find((entry) => entry.id === animationDbState.gallerySubjectId) || null;
+    const action = subject?.actions.find((entry) => entry.id === animationDbState.galleryAction) || null;
+    const scopedRecords = action?.records || [];
+    const records = animationDbTools.filterAnimations(scopedRecords, {
+      query: animationDbState.query,
+      status: animationDbState.status,
+    });
+    count.textContent = `${records.length} / ${scopedRecords.length}개 표시`;
     if (!records.length) {
       root.innerHTML = '<div class="empty-state">조건에 맞는 애니메이션이 없습니다.</div>';
       renderAnimationCompare();
@@ -3446,14 +3706,35 @@
     root.innerHTML = records.map((record) => {
       const variant = animationSelectedVariant(record);
       const comparing = animationDbState.compare.includes(record.id);
+      const selectedForApply = record.selection_state === "selected";
+      const current = record.selection_state === "current";
+      const sourceOfCurrent = record.selection_state === "source";
+      const saving = animationDbSelectionSavingId === record.id;
+      const groupSelection = (animationDb.selections || []).find((entry) => entry.group === record.selection_group);
+      const hasPendingSelection = Boolean(groupSelection?.pending);
+      let selectionControl = "";
+      if (canEditAnimationDb) {
+        if (sourceOfCurrent) {
+          selectionControl = '<span class="animationdb-selection-source">현재 적용본을 만든 제작 원본</span>';
+        } else if (record.status === "rejected") {
+          selectionControl = '<button type="button" class="animationdb-select" disabled>선택 불가</button>';
+        } else if (selectedForApply) {
+          selectionControl = '<button type="button" class="animationdb-select selected" disabled>적용 대상으로 선택됨</button>';
+        } else if (current && !hasPendingSelection) {
+          selectionControl = '<button type="button" class="animationdb-select current" disabled>현재 게임 적용 중</button>';
+        } else {
+          selectionControl = `<button type="button" class="animationdb-select ${current ? "current" : ""}" data-animation-select="${escapeHtml(record.id)}" ${animationDbSelectionSavingId ? "disabled" : ""}>${saving ? "저장 중…" : current ? "현재 적용본 유지" : "이 후보 선택"}</button>`;
+        }
+      }
       return `
-        <article class="animationdb-card ${comparing ? "selected" : ""}" data-animation-record="${escapeHtml(record.id)}">
+        <article class="animationdb-card ${comparing ? "selected" : ""} ${selectedForApply ? "selection-selected" : ""}" data-animation-record="${escapeHtml(record.id)}">
           <div class="animationdb-card-preview">
             <button type="button" data-image-viewer-src="${escapeHtml(variant?.preview_url || "")}" data-image-viewer-alt="${escapeHtml(`${record.title} ${variant?.label || ""}`)}" data-image-viewer-caption="${escapeHtml(`${record.title} · ${record.candidate} · ${variant?.label || ""}`)}">
               <img src="${escapeHtml(variant?.preview_url || "")}" alt="${escapeHtml(`${record.title} ${variant?.label || ""} 애니메이션`)}" loading="lazy" decoding="async">
               <span>확대 보기</span>
             </button>
             <span class="animationdb-status" data-status="${escapeHtml(record.status)}">${escapeHtml(record.status_label)}</span>
+            ${selectedForApply ? '<span class="animationdb-selection-badge">적용 대상</span>' : ""}
           </div>
           <div class="animationdb-card-body">
             <header><div><span>${record.entity_type === "player" ? "PLAYER" : "MONSTER"}</span><h2>${escapeHtml(record.title)}</h2><code>${escapeHtml(record.candidate)}</code></div><button type="button" class="animationdb-compare-toggle" data-animation-compare="${escapeHtml(record.id)}" aria-pressed="${comparing}">${comparing ? "비교 중" : "비교"}</button></header>
@@ -3467,6 +3748,7 @@
             <div class="animationdb-variants" role="group" aria-label="${escapeHtml(record.title)} 미리보기 선택">
               ${record.variants.map((entry) => `<button type="button" data-animation-variant="${escapeHtml(entry.id)}" data-animation-variant-record="${escapeHtml(record.id)}" class="${entry.id === variant?.id ? "active" : ""}" aria-pressed="${entry.id === variant?.id}">${escapeHtml(entry.label)}</button>`).join("")}
             </div>
+            ${selectionControl ? `<div class="animationdb-selection-action">${selectionControl}</div>` : ""}
             <footer><span>REV ${escapeHtml(animationDb.revision.slice(0, 8))}</span>${variant?.contact_sheet_url ? `<button type="button" data-image-viewer-src="${escapeHtml(variant.contact_sheet_url)}" data-image-viewer-alt="${escapeHtml(`${record.title} 콘택트 시트`)}" data-image-viewer-caption="${escapeHtml(`${record.title} · 전체 프레임 콘택트 시트`)}">전체 프레임 보기</button>` : ""}</footer>
           </div>
         </article>
@@ -3492,20 +3774,150 @@
         renderAnimationDbResults();
       });
     });
+    document.querySelectorAll("[data-animation-select]").forEach((button) => {
+      button.addEventListener("click", () => void selectAnimationRecord(button.dataset.animationSelect));
+    });
     document.querySelector("[data-animation-compare-clear]")?.addEventListener("click", () => {
       animationDbState.compare = [];
       renderAnimationDbResults();
     });
   }
 
+  function renderAnimationDbGallery() {
+    const root = document.getElementById("animationdb-tab-panel");
+    if (!root) return;
+    const subjects = animationDbTools.groupAnimationSubjects(animationDb.records);
+    const selectedSubject = subjects.find((subject) => subject.id === animationDbState.gallerySubjectId) || null;
+    const selectedAction = selectedSubject?.actions.find((action) => action.id === animationDbState.galleryAction) || null;
+    const statusOptions = animationDbTools.filterOptions(selectedAction?.records || [], "status");
+    const statusLabels = new Map((selectedAction?.records || []).map((record) => [record.status, record.status_label]));
+    const selectedRecord = selectedAction?.records.find((record) => ["selected", "current"].includes(record.selection_state)) || null;
+    const selectionPending = selectedRecord?.selection_state === "selected";
+    root.innerHTML = `
+      <section class="animationdb-tree-section" aria-labelledby="animationdb-gallery-subject-heading">
+        <header class="animationdb-tree-heading"><div><span class="page-eyebrow">1단계 · 주체</span><h2 id="animationdb-gallery-subject-heading">애니메이션 주체</h2><p>플레이어나 몬스터를 대표 이미지로 먼저 선택합니다.</p></div><strong>${subjects.length}개 주체</strong></header>
+        <div class="animationdb-subject-list">${renderAnimationSubjectCards(subjects, animationDbState.gallerySubjectId, "gallery")}</div>
+      </section>
+      ${selectedSubject ? `
+        <section class="animationdb-tree-section animationdb-tree-branch" aria-labelledby="animationdb-gallery-action-heading">
+          <header class="animationdb-tree-heading"><div><span class="page-eyebrow">2단계 · 동작</span><h2 id="animationdb-gallery-action-heading">${escapeHtml(selectedSubject.label)}의 애니메이션</h2><p>보고 싶은 동작을 선택하면 해당 애니메이션과 제작 후보가 아래에 재생됩니다.</p></div><button type="button" data-animation-gallery-back>주체 다시 선택</button></header>
+          <div class="animationdb-action-list">
+            ${selectedSubject.actions.map((action) => {
+              const selected = action.id === animationDbState.galleryAction;
+              const live = action.records.some((record) => record.status === "live");
+              return `
+                <button type="button" class="animationdb-action-card ${selected ? "active" : ""}" data-animation-gallery-action="${escapeHtml(action.id)}" aria-pressed="${selected}">
+                  <span>${action.representative_url ? `<img src="${escapeHtml(action.representative_url)}" alt="${escapeHtml(`${selectedSubject.label} ${action.label}`)} 미리보기" loading="lazy" decoding="async">` : "NO PREVIEW"}</span>
+                  <strong>${escapeHtml(action.label)}</strong>
+                  <small>${action.records.length}개 결과${live ? " · 게임 적용본 포함" : ""}</small>
+                </button>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      ` : '<div class="animationdb-tree-placeholder"><span>1</span><p>위에서 주체를 선택하면 동작 목록이 이어집니다.</p></div>'}
+      ${selectedAction ? `
+        <section class="animationdb-output" aria-labelledby="animationdb-output-heading">
+          <header class="animationdb-tree-heading"><div><span class="page-eyebrow">3단계 · 결과</span><h2 id="animationdb-output-heading">${escapeHtml(`${selectedSubject.label} · ${selectedAction.label}`)}</h2><p>방향을 바꾸거나 적용본과 후보를 나란히 비교할 수 있습니다.</p></div><strong>${selectedAction.records.length}개 결과</strong></header>
+          <div class="animationdb-selection-summary" data-pending="${selectionPending}">
+            <div><span>${selectionPending ? "적용 대상으로 선택" : "현재 게임 적용"}</span><strong>${escapeHtml(selectedRecord?.candidate || "선택 기록 없음")}</strong></div>
+            <p>${canEditAnimationDb ? "후보 카드에서 선택할 수 있습니다. 선택은 적용 대상을 기록하며, 실제 게임 파일 교체와 Roblox 업로드는 별도 승격 단계입니다." : "공개 페이지에서는 현재 상태와 선택 결과만 볼 수 있습니다. 후보 선택은 로컬 위키에서만 가능합니다."}</p>
+            ${canEditAnimationDb && selectedRecord ? `<button type="button" data-animation-selection-bake="${escapeHtml(selectedRecord.id)}">${selectionPending ? "선택 후보 게임에 굽기" : "현재 적용본 확인·굽기"}</button>` : ""}
+          </div>
+          ${animationDbSelectionNotice ? `<div class="animationdb-selection-notice" role="status">${escapeHtml(animationDbSelectionNotice)}</div>` : ""}
+          <section class="animationdb-toolbar" aria-label="선택한 애니메이션 검색과 필터">
+            <label class="animationdb-search"><span>결과 안에서 검색</span><input id="animationdb-search" type="search" value="${escapeHtml(animationDbState.query)}" placeholder="후보명이나 상태 검색…"></label>
+            <label><span>상태</span><select id="animationdb-status"><option value="all">전체</option>${statusOptions.map((value) => `<option value="${escapeHtml(value)}" ${animationDbState.status === value ? "selected" : ""}>${escapeHtml(statusLabels.get(value) || value)}</option>`).join("")}</select></label>
+            <strong id="animationdb-result-count"></strong>
+          </section>
+          <section id="animationdb-compare" class="animationdb-compare" aria-live="polite" hidden></section>
+          <section id="animationdb-results" class="animationdb-grid" aria-label="선택한 애니메이션 결과"></section>
+        </section>
+      ` : selectedSubject ? '<div class="animationdb-tree-placeholder"><span>2</span><p>동작을 선택하면 애니메이션이 이 아래에 재생됩니다.</p></div>' : ""}
+    `;
+    root.querySelectorAll("[data-animation-gallery-subject]").forEach((button) => {
+      button.addEventListener("click", () => {
+        animationDbState.gallerySubjectId = button.dataset.animationGallerySubject;
+        animationDbState.galleryAction = "";
+        animationDbState.query = "";
+        animationDbState.status = "all";
+        animationDbState.compare = [];
+        renderAnimationDbGallery();
+      });
+    });
+    root.querySelector("[data-animation-gallery-back]")?.addEventListener("click", () => {
+      animationDbState.gallerySubjectId = "";
+      animationDbState.galleryAction = "";
+      animationDbState.compare = [];
+      renderAnimationDbGallery();
+    });
+    root.querySelectorAll("[data-animation-gallery-action]").forEach((button) => {
+      button.addEventListener("click", () => {
+        animationDbState.galleryAction = button.dataset.animationGalleryAction;
+        animationDbState.query = "";
+        animationDbState.status = "all";
+        animationDbState.compare = [];
+        renderAnimationDbGallery();
+        document.querySelector(".animationdb-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+    if (selectedAction) {
+      document.getElementById("animationdb-search")?.addEventListener("input", (event) => {
+        animationDbState.query = event.target.value;
+        renderAnimationDbResults();
+      });
+      document.getElementById("animationdb-status")?.addEventListener("change", (event) => {
+        animationDbState.status = event.target.value;
+        renderAnimationDbResults();
+      });
+      root.querySelector("[data-animation-selection-bake]")?.addEventListener("click", (event) => {
+        void openAnimationDbBake({ record_id: event.currentTarget.dataset.animationSelectionBake });
+      });
+      renderAnimationDbResults();
+    }
+  }
+
+  function renderAnimationDbCuration() {
+    const root = document.getElementById("animationdb-tab-panel");
+    if (!root) return;
+    const subjects = animationDbTools.groupWorkspaceSubjects(animationDb.workspaces || []);
+    const selectedSubject = subjects.find((subject) => subject.id === animationDbState.curationSubjectId) || null;
+    root.innerHTML = `
+      <section class="animationdb-tree-section" aria-labelledby="animationdb-curation-subject-heading">
+        <header class="animationdb-tree-heading"><div><span class="page-eyebrow">1단계 · 주체</span><h2 id="animationdb-curation-subject-heading">큐레이션 주체</h2><p>프레임을 고르거나 순서를 조정할 플레이어·몬스터·효과를 선택합니다.</p></div><strong>${subjects.length}개 주체</strong></header>
+        <div class="animationdb-subject-list">${renderAnimationSubjectCards(subjects, animationDbState.curationSubjectId, "curation")}</div>
+      </section>
+      ${selectedSubject ? '<section id="animationdb-workspaces" class="animationdb-workspaces animationdb-tree-branch" aria-label="선택한 주체의 애니메이션 큐레이션 작업공간"></section>' : '<div class="animationdb-tree-placeholder"><span>1</span><p>위에서 주체를 선택하면 큐레이션 열기 버튼이 나타납니다.</p></div>'}
+    `;
+    root.querySelectorAll("[data-animation-curation-subject]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const nextSubjectId = button.dataset.animationCurationSubject;
+        if (animationDbState.curationSubjectId !== nextSubjectId) {
+          animationDbWorkspaceState.activeId = "";
+          animationDbWorkspaceState.url = "";
+          animationDbCurationNotice = "";
+        }
+        animationDbState.curationSubjectId = nextSubjectId;
+        renderAnimationDbCuration();
+      });
+    });
+    if (selectedSubject) renderAnimationDbWorkspaces();
+  }
+
+  function renderAnimationDbTab() {
+    document.querySelectorAll("[data-animationdb-tab]").forEach((button) => {
+      const selected = button.dataset.animationdbTab === animationDbState.tab;
+      button.classList.toggle("active", selected);
+      button.setAttribute("aria-selected", String(selected));
+      button.tabIndex = selected ? 0 : -1;
+    });
+    if (animationDbState.tab === "curation") renderAnimationDbCuration();
+    else renderAnimationDbGallery();
+  }
+
   function renderAnimationDb() {
     document.title = "AnimationDB · PackBound Wiki";
     renderNavigation("animation-db", "database");
-    const entityLabels = { player: "플레이어", monster: "몬스터" };
-    const actionOptions = animationDbTools.filterOptions(animationDb.records, "action");
-    const statusOptions = animationDbTools.filterOptions(animationDb.records, "status");
-    const actionLabels = new Map(animationDb.records.map((record) => [record.action, record.action_label]));
-    const statusLabelsByValue = new Map(animationDb.records.map((record) => [record.status, record.status_label]));
     main.innerHTML = `
       <div class="animationdb-layout">
         <header class="animationdb-hero">
@@ -3516,32 +3928,179 @@
           </div>
           <div class="animationdb-contract"><div><span>자동 수집 경로</span><code>${escapeHtml(animationDb.source)}</code></div><div><span>DB 리비전</span><code>${escapeHtml(animationDb.revision)}</code></div><div><span>큐레이션</span><strong>${animationDb.workspace_count || 0} WORKSPACES · GIF 비교</strong></div></div>
         </header>
-        <section id="animationdb-workspaces" class="animationdb-workspaces" aria-label="애니메이션 큐레이션 작업공간"></section>
-        <section class="animationdb-toolbar" aria-label="애니메이션 검색과 필터">
-          <label class="animationdb-search"><span>검색</span><input id="animationdb-search" type="search" value="${escapeHtml(animationDbState.query)}" placeholder="캐릭터, 모션, 후보명 검색…"></label>
-          <label><span>대상</span><select id="animationdb-entity"><option value="all">전체</option>${["player", "monster"].map((value) => `<option value="${value}" ${animationDbState.entityType === value ? "selected" : ""}>${entityLabels[value]}</option>`).join("")}</select></label>
-          <label><span>모션</span><select id="animationdb-action"><option value="all">전체</option>${actionOptions.map((value) => `<option value="${escapeHtml(value)}" ${animationDbState.action === value ? "selected" : ""}>${escapeHtml(actionLabels.get(value) || value)}</option>`).join("")}</select></label>
-          <label><span>상태</span><select id="animationdb-status"><option value="all">전체</option>${statusOptions.map((value) => `<option value="${escapeHtml(value)}" ${animationDbState.status === value ? "selected" : ""}>${escapeHtml(statusLabelsByValue.get(value) || value)}</option>`).join("")}</select></label>
-          <strong id="animationdb-result-count"></strong>
-        </section>
-        <section id="animationdb-compare" class="animationdb-compare" aria-live="polite" hidden></section>
-        <section id="animationdb-results" class="animationdb-grid" aria-label="애니메이션 목록"></section>
+        <nav class="animationdb-tabs" role="tablist" aria-label="애니메이션 데이터베이스 보기 방식">
+          <button type="button" role="tab" data-animationdb-tab="gallery" aria-controls="animationdb-tab-panel">갤러리</button>
+          <button type="button" role="tab" data-animationdb-tab="curation" aria-controls="animationdb-tab-panel">큐레이션</button>
+        </nav>
+        <div id="animationdb-tab-panel" class="animationdb-tab-panel" role="tabpanel"></div>
       </div>
     `;
-    document.getElementById("animationdb-search").addEventListener("input", (event) => {
-      animationDbState.query = event.target.value;
-      renderAnimationDbResults();
+    document.querySelectorAll("[data-animationdb-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        animationDbState.tab = button.dataset.animationdbTab;
+        renderAnimationDbTab();
+      });
     });
-    [
-      ["animationdb-entity", "entityType"],
-      ["animationdb-action", "action"],
-      ["animationdb-status", "status"],
-    ].forEach(([elementId, stateKey]) => document.getElementById(elementId).addEventListener("change", (event) => {
-      animationDbState[stateKey] = event.target.value;
-      renderAnimationDbResults();
-    }));
-    renderAnimationDbWorkspaces();
-    renderAnimationDbResults();
+    renderAnimationDbTab();
+    document.body.classList.remove("menu-open");
+    window.scrollTo(0, 0);
+  }
+
+  function fieldDbIdentifierLabel(value) {
+    return String(value || "").replaceAll("_", " ");
+  }
+
+  function renderFieldDbAtlas(atlas, field) {
+    return `
+      <article class="fielddb-atlas-card">
+        <header>
+          <div><span>${escapeHtml(atlas.id)}</span><h3>${escapeHtml(atlas.label)}</h3></div>
+          <strong>${atlas.slot_count}<small>OBJECTS</small></strong>
+        </header>
+        <button type="button" class="fielddb-atlas-image" data-image-viewer-src="${escapeHtml(atlas.image_url)}" data-image-viewer-alt="${escapeHtml(`${field.display_name} ${atlas.label} 아틀라스`)}" data-image-viewer-caption="${escapeHtml(`${field.display_name} · ${atlas.label} · 3×3 오브젝트 아틀라스`)}">
+          <img src="${escapeHtml(atlas.image_url)}" alt="${escapeHtml(`${field.display_name} ${atlas.label}`)}" loading="lazy" decoding="async">
+          <span aria-hidden="true">크게 보기</span>
+        </button>
+        <ol class="fielddb-slot-list">
+          ${atlas.slots.map((slot) => `<li><span>${slot.index}</span><code>${escapeHtml(fieldDbIdentifierLabel(slot.label))}</code></li>`).join("")}
+        </ol>
+        <footer><span>ROBLOX</span><code>${escapeHtml(atlas.roblox_asset_id)}</code></footer>
+      </article>
+    `;
+  }
+
+  function renderFieldDbDetail(field) {
+    const detail = document.getElementById("fielddb-detail");
+    if (!detail) return;
+    if (!field) {
+      detail.innerHTML = '<div class="fielddb-empty">조건에 맞는 필드가 없습니다. 검색어나 필드 유형을 바꿔 주세요.</div>';
+      detail.style.removeProperty("--field-accent");
+      return;
+    }
+    detail.style.setProperty("--field-accent", field.accent_color);
+    detail.innerHTML = `
+      <header class="fielddb-detail-header">
+        <div>
+          <span>${escapeHtml(field.field_type_label)} · ${escapeHtml(field.status.toUpperCase())}</span>
+          <h2>${escapeHtml(field.display_name)}</h2>
+          <code>${escapeHtml(field.english_name)} · ${escapeHtml(field.id)}</code>
+        </div>
+        <p>${escapeHtml(field.player_experience)}</p>
+      </header>
+      <div class="fielddb-visual-grid">
+        <figure class="fielddb-concept-figure">
+          <button type="button" data-image-viewer-src="${escapeHtml(field.concept_url)}" data-image-viewer-alt="${escapeHtml(`${field.display_name} 콘셉트 아트`)}" data-image-viewer-caption="${escapeHtml(`${field.display_name} · 필드 콘셉트 아트`)}">
+            <img src="${escapeHtml(field.concept_url)}" alt="${escapeHtml(`${field.display_name} 콘셉트 아트`)}" decoding="async">
+          </button>
+          <figcaption><strong>필드 콘셉트</strong><span>${escapeHtml(field.summary)}</span></figcaption>
+        </figure>
+        <figure class="fielddb-layout-figure">
+          <button type="button" data-image-viewer-src="${escapeHtml(field.ground_texture.image_url)}" data-image-viewer-alt="${escapeHtml(`${field.display_name} 바닥 배치도`)}" data-image-viewer-caption="${escapeHtml(`${field.display_name} · 실제 바닥 레이아웃 텍스처`)}">
+            <img src="${escapeHtml(field.ground_texture.image_url)}" alt="${escapeHtml(`${field.display_name} 바닥 배치도`)}" loading="lazy" decoding="async">
+          </button>
+          <figcaption><strong>바닥 레이아웃</strong><code>${escapeHtml(field.ground_texture.roblox_asset_id)}</code></figcaption>
+        </figure>
+      </div>
+      <section class="fielddb-contract" aria-label="${escapeHtml(field.display_name)} 런타임 구성">
+        <header><span>RUNTIME CONTRACT</span><h3>현재 게임 구성</h3></header>
+        <dl>
+          <div><dt>월드 모델</dt><dd><code>${escapeHtml(field.runtime_name)}</code></dd></div>
+          <div><dt>테마</dt><dd><code>${escapeHtml(field.theme)}</code></dd></div>
+          <div><dt>필드 크기</dt><dd>${escapeHtml(fieldDbTools.formatSize(field.size_studs))}</dd></div>
+          <div><dt>월드 중심</dt><dd>${escapeHtml(fieldDbTools.formatCenter(field.center_studs))}</dd></div>
+          <div><dt>표현 방식</dt><dd>고정형 2D 패널 스프라이트</dd></div>
+          <div><dt>필드 연결</dt><dd>독립 필드 · 다리 연결 없음</dd></div>
+        </dl>
+      </section>
+      <div class="fielddb-composition-grid">
+        <section class="fielddb-feature-list">
+          <header><span>PLAYER-FACING RULES</span><h3>구성 핵심</h3></header>
+          <ol>${field.key_features.map((feature) => `<li><span aria-hidden="true"></span><p>${escapeHtml(feature)}</p></li>`).join("")}</ol>
+        </section>
+        <section class="fielddb-object-summary">
+          <header><span>OBJECT KIT</span><h3>오브젝트 구성</h3></header>
+          <div><strong>${field.object_group_count}</strong><span>아틀라스 그룹</span></div>
+          <div><strong>${field.object_slot_count}</strong><span>등록 오브젝트</span></div>
+          <div><strong>${field.background_layers.length}</strong><span>배경 뎁스</span></div>
+          ${field.background_layers.length ? `<p>${field.background_layers.map((layer) => `<code>${escapeHtml(fieldDbIdentifierLabel(layer))}</code>`).join("")}</p>` : '<p><em>별도 패럴랙스 배경 없음</em></p>'}
+        </section>
+      </div>
+      <section class="fielddb-atlas-section">
+        <header><div><span>REGISTERED 2D PANELS</span><h3>필드 구성 오브젝트</h3></div><p>각 이미지는 게임에 등록된 3×3 아틀라스이며, 번호는 좌상단부터 행 우선 순서입니다.</p></header>
+        <div class="fielddb-atlas-grid">${field.atlases.map((atlas) => renderFieldDbAtlas(atlas, field)).join("")}</div>
+      </section>
+    `;
+  }
+
+  function renderFieldDbBrowser() {
+    const list = document.getElementById("fielddb-field-list");
+    const count = document.getElementById("fielddb-result-count");
+    if (!list || !count || !fieldDbTools) return;
+    const fields = fieldDbTools.filterFields(fieldDb, fieldDbState.query, fieldDbState.fieldType);
+    if (!fields.some((field) => field.id === fieldDbState.selectedId)) {
+      fieldDbState.selectedId = fields[0]?.id || "";
+    }
+    const selected = fieldDbTools.findField(fieldDb, fieldDbState.selectedId);
+    count.textContent = `${fields.length} / ${fieldDb.count}개 필드`;
+    list.innerHTML = fields.length ? fields.map((field) => `
+      <button type="button" class="fielddb-field-card ${field.id === fieldDbState.selectedId ? "active" : ""}" data-fielddb-field="${escapeHtml(field.id)}" style="--field-accent:${escapeHtml(field.accent_color)}">
+        <img src="${escapeHtml(field.concept_url)}" alt="" loading="lazy" decoding="async">
+        <span class="fielddb-card-copy"><small>${escapeHtml(field.field_type_label)}</small><strong>${escapeHtml(field.display_name)}</strong><code>${escapeHtml(field.id)}</code></span>
+        <span class="fielddb-card-stat"><strong>${field.object_slot_count}</strong><small>OBJECTS</small></span>
+      </button>
+    `).join("") : '<div class="fielddb-list-empty">검색 결과 없음</div>';
+    list.querySelectorAll("[data-fielddb-field]").forEach((button) => {
+      button.addEventListener("click", () => {
+        fieldDbState.selectedId = button.dataset.fielddbField;
+        renderFieldDbBrowser();
+      });
+    });
+    renderFieldDbDetail(selected);
+  }
+
+  function renderFieldDb() {
+    document.title = "필드 데이터베이스 · PackBound Wiki";
+    renderNavigation("field-db", "database");
+    if (!fieldDb || !fieldDbTools) {
+      main.innerHTML = '<div class="empty-state">필드 DB 데이터를 불러오지 못했습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
+      return;
+    }
+    main.innerHTML = `
+      <div class="fielddb-layout">
+        <header class="fielddb-hero">
+          <div class="page-eyebrow">World composition registry</div>
+          <div class="fielddb-hero-row">
+            <div><h1>필드 데이터베이스</h1><p>베이스 필드와 전투 필드의 콘셉트, 바닥 레이아웃, 월드 위치, 경계, 2D 패널 오브젝트를 한 화면에서 비교합니다.</p></div>
+            <span><strong>${fieldDb.count}</strong><small>${fieldDb.base_count} BASE · ${fieldDb.combat_count} COMBAT</small></span>
+          </div>
+          <div class="fielddb-overview">
+            <div><span>배치 계약</span><strong>${escapeHtml(fieldDb.connectivity_label)}</strong></div>
+            <div><span>필드 간격</span><strong>${fieldDb.field_spacing_studs} STUD</strong></div>
+            <div><span>표현 방식</span><strong>2D PANEL SPRITES</strong></div>
+            <div><span>FieldBuilder</span><strong>VERSION ${fieldDb.field_builder_version}</strong></div>
+          </div>
+        </header>
+        <section class="fielddb-toolbar" aria-label="필드 검색과 필터">
+          <label><span>필드·오브젝트 검색</span><input id="fielddb-search" type="search" value="${escapeHtml(fieldDbState.query)}" placeholder="필드 이름, 테마, 오브젝트 ID…"></label>
+          <label><span>필드 유형</span><select id="fielddb-type-filter"><option value="all">전체 필드</option><option value="base" ${fieldDbState.fieldType === "base" ? "selected" : ""}>베이스 필드</option><option value="combat" ${fieldDbState.fieldType === "combat" ? "selected" : ""}>전투 필드</option></select></label>
+          <strong id="fielddb-result-count"></strong>
+        </section>
+        <div class="fielddb-workspace">
+          <aside id="fielddb-field-list" class="fielddb-field-list" aria-label="필드 목록"></aside>
+          <section id="fielddb-detail" class="fielddb-detail" aria-live="polite"></section>
+        </div>
+        <footer class="fielddb-source"><span>DATA SOURCE</span><code>${escapeHtml(fieldDb.source)}</code><span>RUNTIME</span><code>${escapeHtml(fieldDb.runtime_source)}</code><strong>REV ${escapeHtml(fieldDb.revision)}</strong></footer>
+      </div>
+    `;
+    document.getElementById("fielddb-search").addEventListener("input", (event) => {
+      fieldDbState.query = event.target.value;
+      renderFieldDbBrowser();
+    });
+    document.getElementById("fielddb-type-filter").addEventListener("change", (event) => {
+      fieldDbState.fieldType = event.target.value;
+      renderFieldDbBrowser();
+    });
+    renderFieldDbBrowser();
     document.body.classList.remove("menu-open");
     window.scrollTo(0, 0);
   }
@@ -3649,6 +4208,18 @@
     window.scrollTo(0, 0);
   }
 
+  function renderMasteryDb() {
+    document.title = "캐릭터 마스터리 DB · PackBound Wiki";
+    renderNavigation("mastery-db", "database");
+    if (!masteryDbEditor) {
+      main.innerHTML = '<div class="empty-state">마스터리 DB 데이터를 불러오지 못했습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
+      return;
+    }
+    masteryDbEditor.setEditable(canEditMasteryDb);
+    masteryDbEditor.render(main);
+    document.body.classList.remove("menu-open");
+  }
+
   function renderPage() {
     const route = readRoute();
     document.body.classList.toggle("animationdb-open", route.kind === "database" && route.slug === "animation-db");
@@ -3669,8 +4240,10 @@
     if (route.kind === "database") {
       if (route.slug === "item-db") renderItemDb();
       else if (route.slug === "monster-db") renderMonsterDb();
+      else if (route.slug === "field-db") renderFieldDb();
       else if (route.slug === "wave-db") renderWaveDb();
       else if (route.slug === "animation-db") renderAnimationDb();
+      else if (route.slug === "mastery-db") renderMasteryDb();
       else renderStructuredDatabase(route.slug);
       return;
     }
@@ -3996,5 +4569,7 @@
   else renderPage();
   void refreshMonsterDbApiAccess();
   void refreshWaveDbApiAccess();
+  void refreshAnimationDbApiAccess();
   void refreshAnimationCurationApiAccess();
+  void refreshMasteryDbApiAccess();
 })();
