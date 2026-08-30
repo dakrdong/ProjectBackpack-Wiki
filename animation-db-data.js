@@ -1,6 +1,6 @@
 window.PACKBOUND_ANIMATION_DB = {
   "schema_version": 2,
-  "revision": "cf7e74a9f9ea56af",
+  "revision": "10c4e5cba0886f2f",
   "source": "Assets/**/SpriteProduction/Candidates + Assets/Monsters/Runtime",
   "count": 41,
   "live_count": 35,
@@ -57,6 +57,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 8.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -94,6 +95,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 10.0,
       "duration_seconds": 0.8,
       "directions": [
@@ -131,6 +133,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 12,
+      "atlas_columns": 8,
       "fps": 15.0,
       "duration_seconds": 0.8,
       "directions": [
@@ -138,7 +141,7 @@ window.PACKBOUND_ANIMATION_DB = {
       ],
       "loop": false,
       "created_at": null,
-      "runtime_asset_id": "rbxassetid://93830802283521",
+      "runtime_asset_id": "rbxassetid://85449610843409",
       "runtime_source": "Raw/Attack/attack-east-3x4-magenta-r2.png",
       "source_root": "Assets/Monsters/Runtime/FanburstArtillery",
       "variants": [
@@ -147,7 +150,7 @@ window.PACKBOUND_ANIMATION_DB = {
           "label": "게임 적용본",
           "direction": "East",
           "preview_url": "./animation-media/fanburstartillery-attack-runtime/east-runtime-preview-1388498edb.gif",
-          "contact_sheet_url": "./animation-media/fanburstartillery-attack-runtime/east-runtime-atlas-abb0c87ebb.png",
+          "contact_sheet_url": "./animation-media/fanburstartillery-attack-runtime/east-runtime-atlas-e79d0cc5bb.png",
           "source": "Assets/Monsters/Runtime/FanburstArtillery/attack-east-12x128.png"
         }
       ],
@@ -168,6 +171,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 18.0,
       "duration_seconds": 0.333,
       "directions": [
@@ -205,6 +209,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 15.0,
       "duration_seconds": 0.4,
       "directions": [
@@ -242,6 +247,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 12,
+      "atlas_columns": 8,
       "fps": 12.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -249,7 +255,7 @@ window.PACKBOUND_ANIMATION_DB = {
       ],
       "loop": false,
       "created_at": null,
-      "runtime_asset_id": "rbxassetid://91024462381150",
+      "runtime_asset_id": "rbxassetid://84618982714788",
       "runtime_source": "Raw/Death/death-east-3x4-magenta-r3.png",
       "source_root": "Assets/Monsters/Runtime/FanburstArtillery",
       "variants": [
@@ -258,7 +264,7 @@ window.PACKBOUND_ANIMATION_DB = {
           "label": "게임 적용본",
           "direction": "East",
           "preview_url": "./animation-media/fanburstartillery-death-runtime/east-runtime-preview-eca2aff7aa.gif",
-          "contact_sheet_url": "./animation-media/fanburstartillery-death-runtime/east-runtime-atlas-4dced41571.png",
+          "contact_sheet_url": "./animation-media/fanburstartillery-death-runtime/east-runtime-atlas-57a3cca099.png",
           "source": "Assets/Monsters/Runtime/FanburstArtillery/death-east-12x128.png"
         }
       ],
@@ -279,6 +285,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 6.0,
       "duration_seconds": 1.333,
       "directions": [
@@ -316,6 +323,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 8.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -353,6 +361,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 8.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -390,6 +399,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 8.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -427,6 +437,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 8.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -464,6 +475,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 12.0,
       "duration_seconds": 0.667,
       "directions": [
@@ -501,6 +513,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 15.0,
       "duration_seconds": 0.4,
       "directions": [
@@ -538,6 +551,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 16.0,
       "duration_seconds": 0.5,
       "directions": [
@@ -575,6 +589,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 15.0,
       "duration_seconds": 0.4,
       "directions": [
@@ -612,6 +627,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 12.0,
       "duration_seconds": 0.667,
       "directions": [
@@ -649,6 +665,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 8.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -686,6 +703,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 10.0,
       "duration_seconds": 0.8,
       "directions": [
@@ -723,6 +741,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 12.0,
       "duration_seconds": 0.667,
       "directions": [
@@ -760,6 +779,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 12.0,
       "duration_seconds": 0.5,
       "directions": [
@@ -797,6 +817,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 16.0,
       "duration_seconds": 0.5,
       "directions": [
@@ -834,6 +855,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 16.0,
       "duration_seconds": 0.5,
       "directions": [
@@ -871,6 +893,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 15.0,
       "duration_seconds": 0.4,
       "directions": [
@@ -908,6 +931,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 12,
+      "atlas_columns": 8,
       "fps": 12.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -915,7 +939,7 @@ window.PACKBOUND_ANIMATION_DB = {
       ],
       "loop": false,
       "created_at": null,
-      "runtime_asset_id": "rbxassetid://92093220183664",
+      "runtime_asset_id": "rbxassetid://76152624227250",
       "runtime_source": "",
       "source_root": "Assets/Monsters/Runtime/StampfootLeaper",
       "variants": [
@@ -924,7 +948,7 @@ window.PACKBOUND_ANIMATION_DB = {
           "label": "게임 적용본",
           "direction": "East",
           "preview_url": "./animation-media/stampfootleaper-death-runtime/east-runtime-preview-2fcf778776.gif",
-          "contact_sheet_url": "./animation-media/stampfootleaper-death-runtime/east-runtime-atlas-c8a44b1da3.png",
+          "contact_sheet_url": "./animation-media/stampfootleaper-death-runtime/east-runtime-atlas-81213f7769.png",
           "source": "Assets/Monsters/Runtime/StampfootLeaper/death-east-12x128.png"
         }
       ],
@@ -945,6 +969,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 8.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -982,6 +1007,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 10,
+      "atlas_columns": 8,
       "fps": 10.0,
       "duration_seconds": 1.0,
       "directions": [
@@ -989,7 +1015,7 @@ window.PACKBOUND_ANIMATION_DB = {
       ],
       "loop": true,
       "created_at": null,
-      "runtime_asset_id": "rbxassetid://114123521815146",
+      "runtime_asset_id": "rbxassetid://102117527587381",
       "runtime_source": "",
       "source_root": "Assets/Monsters/Runtime/WalkingNest",
       "variants": [
@@ -998,7 +1024,7 @@ window.PACKBOUND_ANIMATION_DB = {
           "label": "게임 적용본",
           "direction": "East",
           "preview_url": "./animation-media/walkingnest-walk-runtime/east-runtime-preview-8277830b1b.gif",
-          "contact_sheet_url": "./animation-media/walkingnest-walk-runtime/east-runtime-atlas-1e6531dd8a.png",
+          "contact_sheet_url": "./animation-media/walkingnest-walk-runtime/east-runtime-atlas-14b0a1e3ae.png",
           "source": "Assets/Monsters/Runtime/WalkingNest/walk-east-10x128.png"
         }
       ],
@@ -1019,6 +1045,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 8,
+      "atlas_columns": 8,
       "fps": 12.0,
       "duration_seconds": 0.667,
       "directions": [
@@ -1056,6 +1083,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 15.0,
       "duration_seconds": 0.4,
       "directions": [
@@ -1093,6 +1121,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 12.0,
       "duration_seconds": 0.5,
       "directions": [
@@ -1130,6 +1159,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 7,
+      "atlas_columns": 7,
       "fps": 8.0,
       "duration_seconds": 0.875,
       "directions": [
@@ -1167,6 +1197,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 10,
+      "atlas_columns": 8,
       "fps": 15.0,
       "duration_seconds": 0.667,
       "directions": [
@@ -1174,7 +1205,7 @@ window.PACKBOUND_ANIMATION_DB = {
       ],
       "loop": false,
       "created_at": null,
-      "runtime_asset_id": "rbxassetid://113501843207408",
+      "runtime_asset_id": "rbxassetid://125519397920545",
       "runtime_source": "",
       "source_root": "Assets/Monsters/Runtime/WhirlDashSpirit",
       "variants": [
@@ -1183,7 +1214,7 @@ window.PACKBOUND_ANIMATION_DB = {
           "label": "게임 적용본",
           "direction": "East",
           "preview_url": "./animation-media/whirldashspirit-morphspin-runtime/east-runtime-preview-63e35a294a.gif",
-          "contact_sheet_url": "./animation-media/whirldashspirit-morphspin-runtime/east-runtime-atlas-0fdd5e7fea.png",
+          "contact_sheet_url": "./animation-media/whirldashspirit-morphspin-runtime/east-runtime-atlas-07f764f3ec.png",
           "source": "Assets/Monsters/Runtime/WhirlDashSpirit/morph-spin-east-10x128.png"
         }
       ],
@@ -1204,6 +1235,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "live",
       "status_label": "게임 적용",
       "frame_count": 6,
+      "atlas_columns": 6,
       "fps": 18.0,
       "duration_seconds": 0.333,
       "directions": [

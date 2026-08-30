@@ -1,6 +1,6 @@
 window.PACKBOUND_MONSTER_DB = {
   "schema_version": 1,
-  "revision": "178428c17ef95ca7",
+  "revision": "61f6402db732efba",
   "source": "docs/gameplay/monster-definitions.json",
   "count": 6,
   "active_count": 6,
@@ -3413,7 +3413,7 @@ window.PACKBOUND_MONSTER_DB = {
     {
       "id": "grass_vine_monster",
       "enabled": true,
-      "size_scale": 1,
+      "size_scale": 0.5,
       "identity": {
         "display_name": "가시덩굴 화분괴물",
         "description": "양팔의 덩굴을 땅에 찔러 플레이어 위치를 예고한 뒤 지면에서 가시덩굴을 분출시키는 풀속성 몬스터",
@@ -3591,7 +3591,7 @@ window.PACKBOUND_MONSTER_DB = {
     {
       "id": "whirl_dash_spirit",
       "enabled": true,
-      "size_scale": 1,
+      "size_scale": 0.5,
       "identity": {
         "display_name": "회오리 돌진령",
         "description": "목표 위치를 직선으로 예고한 뒤 에너지 구체로 변해 고정된 경로를 빠르게 돌진하는 바람 정령",
@@ -3729,7 +3729,7 @@ window.PACKBOUND_MONSTER_DB = {
             "cell_height": 128
           },
           "MorphSpin": {
-            "asset_id": "rbxassetid://113501843207408",
+            "asset_id": "rbxassetid://125519397920545",
             "frame_count": 10,
             "fps": 15,
             "loop": false,
@@ -3753,7 +3753,7 @@ window.PACKBOUND_MONSTER_DB = {
     {
       "id": "fanburst_artillery",
       "enabled": true,
-      "size_scale": 1,
+      "size_scale": 0.5,
       "identity": {
         "display_name": "부채탄 포대충",
         "description": "등 위의 단일 포신에서 밝은 에너지 구 다섯 발을 부채꼴로 세 차례 발사하는 느린 포대형 몬스터",
@@ -3907,7 +3907,7 @@ window.PACKBOUND_MONSTER_DB = {
             "cell_height": 128
           },
           "Attack": {
-            "asset_id": "rbxassetid://93830802283521",
+            "asset_id": "rbxassetid://85449610843409",
             "frame_count": 12,
             "fps": 15,
             "loop": false,
@@ -3925,7 +3925,7 @@ window.PACKBOUND_MONSTER_DB = {
             "cell_height": 128
           },
           "Death": {
-            "asset_id": "rbxassetid://91024462381150",
+            "asset_id": "rbxassetid://84618982714788",
             "frame_count": 12,
             "fps": 12,
             "loop": false,
@@ -3949,7 +3949,7 @@ window.PACKBOUND_MONSTER_DB = {
     {
       "id": "stampfoot_leaper",
       "enabled": true,
-      "size_scale": 1,
+      "size_scale": 0.5,
       "identity": {
         "display_name": "도장발 쿵귀",
         "description": "한 발로 통통 추적하다 몸을 움츠리고 높이 도약해 예고한 바닥을 찍는 고대 도장 정령",
@@ -4135,7 +4135,7 @@ window.PACKBOUND_MONSTER_DB = {
             "cell_height": 128
           },
           "Death": {
-            "asset_id": "rbxassetid://92093220183664",
+            "asset_id": "rbxassetid://76152624227250",
             "frame_count": 12,
             "fps": 12,
             "loop": false,
@@ -4159,7 +4159,7 @@ window.PACKBOUND_MONSTER_DB = {
     {
       "id": "walking_nest",
       "enabled": true,
-      "size_scale": 1,
+      "size_scale": 0.5,
       "identity": {
         "display_name": "걸어다니는 둥지",
         "description": "단단한 둥지 몸통으로 천천히 접근해 밀어붙이고, 쓰러지면 네 알에서 새끼 도마뱀을 부화시키는 자연 몬스터",
@@ -4291,7 +4291,7 @@ window.PACKBOUND_MONSTER_DB = {
             "cell_height": 128
           },
           "Walk": {
-            "asset_id": "rbxassetid://114123521815146",
+            "asset_id": "rbxassetid://102117527587381",
             "frame_count": 10,
             "fps": 10,
             "loop": true,
@@ -4333,7 +4333,7 @@ window.PACKBOUND_MONSTER_DB = {
     {
       "id": "nest_hatchling_lizard",
       "enabled": true,
-      "size_scale": 1,
+      "size_scale": 0.5,
       "identity": {
         "display_name": "새끼 도마뱀",
         "description": "둥지의 알에서 깨어나 부화 동작 직후 빠르게 추적하고 물어뜯는 자연 속성 하수인",
