@@ -1,6 +1,6 @@
 window.PACKBOUND_WAVE_DB = {
   "schema_version": 3,
-  "revision": "483246e9f260f05f",
+  "revision": "b63dfd3301b6ebfc",
   "source": "docs/gameplay/stage-wave-definitions.json",
   "runtime_source": "src/ReplicatedStorage/Waves/GeneratedStageWaves.luau",
   "field_count": 1,
@@ -22,7 +22,7 @@ window.PACKBOUND_WAVE_DB = {
       "display_name": "고물바람 초원",
       "enabled": true,
       "runtime_model_name": "PackBoundField",
-      "runtime_field_version": 32,
+      "runtime_field_version": 21,
       "player_spawn": [
         12,
         0.65,
