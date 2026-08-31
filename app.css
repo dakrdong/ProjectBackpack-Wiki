@@ -1109,9 +1109,12 @@ body.itemdb-editor-open { overflow: hidden; }
 .rune-db-hero-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; }
 .rune-db-hero h1 { margin: 8px 0 5px; font-size: clamp(36px, 4.4vw, 58px); line-height: 1.04; letter-spacing: -0.04em; }
 .rune-db-hero p { max-width: 800px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
-.rune-db-hero-row > span { display: grid; justify-items: end; flex: 0 0 auto; color: #b78bf0; }
-.rune-db-hero-row > span strong { font: 800 48px/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
-.rune-db-hero-row > span small { margin-top: 5px; color: var(--faint); font-size: 8px; letter-spacing: 0.14em; }
+.rune-db-hero-actions { display: grid; justify-items: end; flex: 0 0 auto; gap: 10px; }
+.rune-db-hero-actions > span { display: grid; justify-items: end; color: #b78bf0; }
+.rune-db-hero-actions > span strong { font: 800 48px/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.rune-db-hero-actions > span small { margin-top: 5px; color: var(--faint); font-size: 8px; letter-spacing: 0.14em; }
+.rune-db-hero-actions > button { min-height: 40px; padding: 0 16px; border: 1px solid rgba(183, 139, 240, 0.58); border-radius: 7px; background: rgba(155, 107, 227, 0.16); color: #ddcaf6; cursor: pointer; font-size: 9px; font-weight: 800; }
+.rune-db-hero-actions > button:hover, .rune-db-hero-actions > button:focus-visible { border-color: #b78bf0; outline: 0; background: rgba(155, 107, 227, 0.25); }
 .rune-db-contract { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 24px; overflow: hidden; border: 1px solid var(--line); border-radius: 11px; background: rgba(16, 27, 44, 0.62); }
 .rune-db-contract > div { min-width: 0; padding: 13px 15px; }
 .rune-db-contract > div + div { border-left: 1px solid var(--line); }
@@ -1142,6 +1145,9 @@ body.itemdb-editor-open { overflow: hidden; }
 .rune-variant-selector button.active { border-color: #b78bf0; background: rgba(155, 107, 227, 0.18); color: #d9c4f5; }
 .rune-variant-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; color: var(--faint); font-size: 8px; }
 .rune-variant-meta code { margin-left: 4px; color: #9ebac9; }
+.rune-single-board { display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 8px; align-items: center; min-height: 42px; padding: 7px 10px; border: 1px solid rgba(155, 107, 227, 0.38); border-radius: 7px; background: rgba(155, 107, 227, 0.09); }
+.rune-single-board span, .rune-single-board small { color: var(--faint); font-size: 8px; }
+.rune-single-board strong { color: #d9c4f5; font: 800 14px ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 .rune-board-section, .rune-ability-section, .rune-effect-section { margin-bottom: 22px; padding: 18px; border: 1px solid var(--line); border-radius: 13px; background: rgba(12, 22, 38, 0.66); }
 .rune-board-section > header, .rune-ability-section > header, .rune-effect-section > header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 14px; }
@@ -1210,6 +1216,18 @@ body.itemdb-editor-open { overflow: hidden; }
 .rune-node-detail dt { color: var(--faint); font-size: 7px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
 .rune-node-detail dd { margin: 4px 0 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
 .rune-node-detail dd code { color: #90b9c7; font-size: 8px; overflow-wrap: anywhere; }
+.rune-node-editor { display: grid; gap: 9px; margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--line-soft); }
+.rune-node-editor > header strong, .rune-node-editor > header span { display: block; }
+.rune-node-editor > header strong { color: var(--text); font-size: 10px; }
+.rune-node-editor > header span { margin-top: 3px; color: var(--faint); font-size: 7px; }
+.rune-node-editor label { display: grid; gap: 4px; }
+.rune-node-editor label > span { color: var(--faint); font-size: 7px; font-weight: 800; letter-spacing: 0.06em; }
+.rune-node-editor select { width: 100%; min-height: 40px; padding: 0 31px 0 9px; border: 1px solid var(--line); border-radius: 6px; outline: 0; background: #0a1524; color: var(--text); font-size: 9px; }
+.rune-node-editor select:focus { border-color: rgba(155, 107, 227, 0.72); box-shadow: 0 0 0 2px rgba(155, 107, 227, 0.1); }
+.rune-node-editor > p { margin: 0; color: var(--faint); font-size: 7px; line-height: 1.5; }
+.rune-node-editor > p.rune-node-editor-error { color: #f49b9b; }
+.rune-node-editor > button { min-height: 40px; border: 1px solid rgba(69, 214, 202, 0.46); border-radius: 6px; background: rgba(69, 214, 202, 0.12); color: var(--cyan); cursor: pointer; font-size: 9px; font-weight: 800; }
+.rune-node-editor > button:disabled { opacity: 0.38; cursor: default; }
 .rune-board-distribution h3 { margin: 0 0 9px; font-size: 11px; }
 .rune-board-distribution > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
 .rune-board-distribution span { display: grid; grid-template-columns: 9px 1fr auto; gap: 5px; align-items: center; padding: 5px 6px; border: 1px solid var(--line-soft); border-radius: 5px; }
@@ -1555,16 +1573,18 @@ body.itemdb-editor-open { overflow: hidden; }
   .rune-db-layout { padding: 40px 16px 72px; }
   .rune-db-hero-row { display: block; }
   .rune-db-hero h1 { font-size: 38px; }
-  .rune-db-hero-row > span { justify-items: start; margin-top: 15px; }
-  .rune-db-hero-row > span strong { font-size: 34px; }
+  .rune-db-hero-actions { justify-items: start; margin-top: 15px; }
+  .rune-db-hero-actions > span { justify-items: start; }
+  .rune-db-hero-actions > span strong { font-size: 34px; }
+  .rune-db-hero-actions > button { min-width: 160px; min-height: 44px; }
   .rune-db-contract { grid-template-columns: 1fr; }
   .rune-db-contract > div + div { border-top: 1px solid var(--line); border-left: 0; }
   .rune-item-panel { grid-template-columns: 112px minmax(0, 1fr); gap: 13px; padding: 13px; }
   .rune-item-image, .rune-item-image button { min-height: 112px; height: 112px; }
   .rune-item-copy h2 { font-size: 21px; }
   .rune-item-selector { grid-column: 1 / -1; }
-  .rune-variant-selector { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .rune-variant-selector button { min-height: 42px; }
+  .rune-single-board { grid-template-columns: auto auto; min-height: 48px; }
+  .rune-single-board small { grid-column: 1 / -1; }
   .rune-board-section, .rune-ability-section, .rune-effect-section { padding: 13px; }
   .rune-board-section > header, .rune-ability-section > header, .rune-effect-section > header { align-items: flex-start; flex-direction: column; gap: 9px; }
   .rune-board-section > header nav { width: 100%; }
@@ -1579,6 +1599,7 @@ body.itemdb-editor-open { overflow: hidden; }
   .rune-board-viewport { min-height: 520px; max-height: 68vh; }
   .rune-board-canvas { margin: 10px 0; }
   .rune-board-workspace > aside { grid-template-columns: 1fr; }
+  .rune-node-editor select, .rune-node-editor > button { min-height: 44px; }
   .rune-ability-grid, .rune-effect-grid { grid-template-columns: 1fr; }
 }
 

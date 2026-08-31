@@ -127,6 +127,83 @@
     };
   }
 
+  function createPlacementHistory(limit = 100) {
+    if (!Number.isInteger(limit) || limit < 1 || limit > 1000) {
+      throw new Error("배치 기록 한도는 1부터 1000 사이의 정수여야 합니다.");
+    }
+    return { limit, past: [], future: [] };
+  }
+
+  function resetPlacementHistory(history) {
+    history.past.length = 0;
+    history.future.length = 0;
+  }
+
+  function recordPlacementChange(history, change) {
+    const requiredIds = ["stage_id", "wave_id", "layer_id"];
+    if (!history || !Array.isArray(history.past) || !Array.isArray(history.future)) {
+      throw new Error("배치 기록 상태가 올바르지 않습니다.");
+    }
+    if (requiredIds.some((field) => typeof change?.[field] !== "string" || !change[field])) {
+      throw new Error("배치 기록에는 스테이지·웨이브·시간 레이어 ID가 필요합니다.");
+    }
+    if (!Array.isArray(change.before) || !Array.isArray(change.after)) {
+      throw new Error("배치 기록의 이전·이후 목록이 올바르지 않습니다.");
+    }
+    if (JSON.stringify(change.before) === JSON.stringify(change.after)) return false;
+    history.past.push({
+      stage_id: change.stage_id,
+      wave_id: change.wave_id,
+      layer_id: change.layer_id,
+      label: typeof change.label === "string" && change.label ? change.label : "몬스터 배치 변경",
+      before: deepClone(change.before),
+      after: deepClone(change.after),
+    });
+    while (history.past.length > history.limit) history.past.shift();
+    history.future.length = 0;
+    return true;
+  }
+
+  function placementLayer(document, change) {
+    const stage = (document?.stages || []).find((entry) => entry.id === change.stage_id);
+    const wave = (stage?.waves || []).find((entry) => entry.id === change.wave_id);
+    return (wave?.layers || []).find((entry) => entry.id === change.layer_id) || null;
+  }
+
+  function applyPlacementHistoryEntry(document, change, field) {
+    const layer = placementLayer(document, change);
+    if (!layer) {
+      throw new Error("되돌릴 배치의 스테이지·웨이브·시간 레이어를 찾을 수 없습니다.");
+    }
+    layer.placements = deepClone(change[field]);
+  }
+
+  function undoPlacementChange(history, document) {
+    const change = history?.past?.pop();
+    if (!change) return null;
+    try {
+      applyPlacementHistoryEntry(document, change, "before");
+    } catch (error) {
+      history.past.push(change);
+      throw error;
+    }
+    history.future.push(change);
+    return deepClone(change);
+  }
+
+  function redoPlacementChange(history, document) {
+    const change = history?.future?.pop();
+    if (!change) return null;
+    try {
+      applyPlacementHistoryEntry(document, change, "after");
+    } catch (error) {
+      history.future.push(change);
+      throw error;
+    }
+    history.past.push(change);
+    return deepClone(change);
+  }
+
   function newLayer(layers, atSeconds = 0) {
     return {
       id: nextId("layer", layers, 3),
@@ -141,6 +218,7 @@
       id,
       display_name: `웨이브 ${(waves || []).length + 1}`,
       start_delay_seconds: (waves || []).length ? 2 : 1,
+      field_phase_id: null,
       layers: [newLayer([], 0)],
     };
   }
@@ -160,6 +238,7 @@
   const api = {
     blockedCellSet,
     cellKey,
+    createPlacementHistory,
     deepClone,
     formatTime,
     gridColumns,
@@ -173,11 +252,15 @@
     nextId,
     parseTime,
     placementAt,
+    recordPlacementChange,
+    redoPlacementChange,
+    resetPlacementHistory,
     sortedLayers,
     timeParts,
     totalLayers,
     totalSpawns,
     totalWaves,
+    undoPlacementChange,
     worldPosition,
   };
   root.PACKBOUND_WAVE_DB_TOOLS = api;

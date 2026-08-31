@@ -1,11 +1,12 @@
 window.PACKBOUND_FIELD_DB = {
   "schema_version": 1,
-  "revision": "82b3dfc27e7b1f45",
+  "revision": "7efcaad6ebef84d8",
   "source": "Assets/World/PanelSprites/packbound_field_object_kits_v1.json",
   "runtime_source": "src/ServerScriptService/FieldBuilder.luau",
-  "field_builder_version": 32,
-  "count": 5,
+  "field_builder_version": 36,
+  "count": 6,
   "base_count": 1,
+  "tutorial_count": 1,
   "combat_count": 4,
   "connectivity": "isolated",
   "connectivity_label": "서로 연결되지 않은 독립 필드",
@@ -218,6 +219,222 @@ window.PACKBOUND_FIELD_DB = {
               "index": 9,
               "id": "dead_end_cluster",
               "label": "dead end cluster"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tutorial_field",
+      "display_name": "튜토리얼 필드",
+      "english_name": "Tutorial Field",
+      "field_type": "tutorial",
+      "field_type_label": "튜토리얼 필드",
+      "runtime_name": "TutorialField",
+      "theme": "TutorialWorkshop",
+      "status": "active",
+      "summary": "이동과 NPC 대화를 안전하게 익히는 독립형 온보딩 필드.",
+      "player_experience": "베이스 캠프의 안내도에서 입장해 튜토리얼 엔지니어와 대화하고, 짧은 표식 동선을 따라 기본 조작을 연습한다.",
+      "center_studs": [
+        -520,
+        0,
+        -520
+      ],
+      "size_studs": [
+        188,
+        188
+      ],
+      "footprint_scale": 1,
+      "accent_color": "#4DDBE2",
+      "key_features": [
+        "튜토리얼 엔지니어 NPC와 감정 대화",
+        "이동 연습용 표식과 안전한 비전투 공간",
+        "베이스 캠프로 즉시 돌아가는 귀환 표지판"
+      ],
+      "background_layers": [
+        "mystic_castle_panorama",
+        "parallax_far_ridges",
+        "grounded_mid_canopy",
+        "foreground_canopy"
+      ],
+      "concept": "Assets/World/Concepts/junkwind_meadow_field_concept_v1.png",
+      "concept_url": "./field-db-media/tutorial_field-concept.png?v=6e88fc02e799",
+      "ground_texture": {
+        "file": "Assets/World/Textures/junkwind_meadow_field_layout_v1.png",
+        "image_url": "./field-db-media/tutorial_field-layout.png?v=975ace933413",
+        "roblox_asset_id": "rbxassetid://105093818434394"
+      },
+      "object_group_count": 3,
+      "object_slot_count": 27,
+      "atlases": [
+        {
+          "id": "boundaries_landmarks",
+          "label": "경계·랜드마크",
+          "file": "Assets/World/PanelSprites/junkwind_meadow_boundaries_landmarks_atlas_v2.png",
+          "image_url": "./field-db-media/tutorial_field-atlas-boundaries_landmarks.png?v=49423ee09e75",
+          "roblox_asset_id": "rbxassetid://118575758028838",
+          "canvas_size": 1024,
+          "cell_size": 341,
+          "slot_count": 9,
+          "slots": [
+            {
+              "index": 1,
+              "id": "meadow_bush_cluster",
+              "label": "meadow bush cluster"
+            },
+            {
+              "index": 2,
+              "id": "rust_cliff_cluster",
+              "label": "rust cliff cluster"
+            },
+            {
+              "index": 3,
+              "id": "junk_fence_cluster",
+              "label": "junk fence cluster"
+            },
+            {
+              "index": 4,
+              "id": "giant_junkwind_duck",
+              "label": "giant junkwind duck"
+            },
+            {
+              "index": 5,
+              "id": "broken_relay_tower",
+              "label": "broken relay tower"
+            },
+            {
+              "index": 6,
+              "id": "sealed_relay_gate",
+              "label": "sealed relay gate"
+            },
+            {
+              "index": 7,
+              "id": "meadow_rock_cluster",
+              "label": "meadow rock cluster"
+            },
+            {
+              "index": 8,
+              "id": "junk_vending_machine",
+              "label": "junk vending machine"
+            },
+            {
+              "index": 9,
+              "id": "bush_swallowed_cart",
+              "label": "bush swallowed cart"
+            }
+          ]
+        },
+        {
+          "id": "props",
+          "label": "필드 소품",
+          "file": "Assets/World/PanelSprites/junkwind_meadow_props_atlas_v2.png",
+          "image_url": "./field-db-media/tutorial_field-atlas-props.png?v=5144c123b9ce",
+          "roblox_asset_id": "rbxassetid://123986997787802",
+          "canvas_size": 1024,
+          "cell_size": 341,
+          "slot_count": 9,
+          "slots": [
+            {
+              "index": 1,
+              "id": "energy_coil_pylon",
+              "label": "energy coil pylon"
+            },
+            {
+              "index": 2,
+              "id": "hazard_barricade",
+              "label": "hazard barricade"
+            },
+            {
+              "index": 3,
+              "id": "reward_supply_crate",
+              "label": "reward supply crate"
+            },
+            {
+              "index": 4,
+              "id": "junk_scrap_pile",
+              "label": "junk scrap pile"
+            },
+            {
+              "index": 5,
+              "id": "meadow_puddle",
+              "label": "meadow puddle"
+            },
+            {
+              "index": 6,
+              "id": "direction_sign",
+              "label": "direction sign"
+            },
+            {
+              "index": 7,
+              "id": "flower_tuft",
+              "label": "flower tuft"
+            },
+            {
+              "index": 8,
+              "id": "bottle_lamp",
+              "label": "bottle lamp"
+            },
+            {
+              "index": 9,
+              "id": "battery_pile",
+              "label": "battery pile"
+            }
+          ]
+        },
+        {
+          "id": "edge_facades",
+          "label": "가장자리 마감",
+          "file": "Assets/World/PanelSprites/junkwind_meadow_edge_facades_atlas_v6.png",
+          "image_url": "./field-db-media/tutorial_field-atlas-edge_facades.png?v=a18aa809ec23",
+          "roblox_asset_id": "rbxassetid://81001225136424",
+          "canvas_size": 1024,
+          "cell_size": 341,
+          "slot_count": 9,
+          "slots": [
+            {
+              "index": 1,
+              "id": "bush_cliff",
+              "label": "bush cliff"
+            },
+            {
+              "index": 2,
+              "id": "fence_cliff",
+              "label": "fence cliff"
+            },
+            {
+              "index": 3,
+              "id": "dead_end_barricade",
+              "label": "dead end barricade"
+            },
+            {
+              "index": 4,
+              "id": "outer_corner_cliff",
+              "label": "outer corner cliff"
+            },
+            {
+              "index": 5,
+              "id": "inner_corner_cliff",
+              "label": "inner corner cliff"
+            },
+            {
+              "index": 6,
+              "id": "runoff_cliff",
+              "label": "runoff cliff"
+            },
+            {
+              "index": 7,
+              "id": "boulder_buttress",
+              "label": "boulder buttress"
+            },
+            {
+              "index": 8,
+              "id": "bramble_curtain",
+              "label": "bramble curtain"
+            },
+            {
+              "index": 9,
+              "id": "guardrail_closure",
+              "label": "guardrail closure"
             }
           ]
         }

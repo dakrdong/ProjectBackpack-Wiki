@@ -67,6 +67,7 @@
   let canEditWaveDb = false;
   let canEditAnimationDb = false;
   let canEditMasteryDb = false;
+  let canEditRuneBoardDb = false;
   let canOpenAnimationCuration = false;
   let searchMode = "pages";
   let tagSort = "recent";
@@ -87,19 +88,23 @@
   let monsterDbNotice = "";
   let waveDbNotice = "";
   let waveDbBakeState = null;
+  const initialWaveDbDocument = {
+    schema_version: waveDb?.schema_version || 5,
+    fields: waveDbTools?.deepClone(waveDb?.fields || []) || [],
+    stages: waveDbTools?.deepClone(waveDb?.stages || []) || [],
+  };
   let waveDbState = {
     selectedStageId: waveDb?.stages?.[0]?.id || "",
-    document: {
-      schema_version: waveDb?.schema_version || 3,
-      fields: waveDbTools?.deepClone(waveDb?.fields || []) || [],
-      stages: waveDbTools?.deepClone(waveDb?.stages || []) || [],
-    },
+    document: initialWaveDbDocument,
+    cleanDocument: waveDbTools?.deepClone(initialWaveDbDocument) || initialWaveDbDocument,
+    placementHistory: waveDbTools?.createPlacementHistory(100) || { limit: 100, past: [], future: [] },
     activeWaves: {},
     activeLayers: {},
     selectedMonsters: {},
     dirty: false,
     saving: false,
   };
+  let waveDbKeyboardBound = false;
   let animationDbState = {
     tab: "gallery",
     query: "",
@@ -133,6 +138,9 @@
     gradeFilter: null,
     abilityFilter: "",
   };
+  let runeBoardEditorState = null;
+  let runeBoardBakeState = null;
+  let runeBoardNotice = "";
   let imageViewerReturnFocus = null;
   let dateRange = { from: "", to: "" };
   let filteredPages = wiki?.pages || [];
@@ -252,6 +260,30 @@
     }
     const route = readRoute();
     if (route.kind === "database" && route.slug === "mastery-db") renderMasteryDb();
+  }
+
+  async function refreshRuneBoardDbApiAccess() {
+    if (!hasLocalAccess) return;
+    try {
+      const response = await fetch("/api/rune-board-db/status", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      const payload = await response.json().catch(() => ({}));
+      canEditRuneBoardDb = response.ok && payload.editable === true && payload.api_version === 1;
+      if (!canEditRuneBoardDb) {
+        runeBoardNotice = response.status === 404
+          ? "실행 중인 로컬 위키 서버가 RuneBoardDB 편집 API보다 오래되었습니다. 서버를 재시작해 주세요."
+          : payload.error || `RuneBoardDB 편집 API를 확인하지 못했습니다. (${response.status})`;
+      }
+    } catch (error) {
+      canEditRuneBoardDb = false;
+      runeBoardNotice = `RuneBoardDB 편집 API에 연결하지 못했습니다. (${String(error.message || error)})`;
+    }
+    const route = readRoute();
+    if (route.kind === "database" && route.slug === "rune-board-variants") {
+      renderRuneBoardExplorer({ preserveScroll: true });
+    }
   }
   const categoryLabels = {
     project: "프로젝트",
@@ -1097,7 +1129,11 @@
         <td>${renderFootprint(item)}</td>
         <td><strong>${escapeHtml(item.role)}</strong><small>${escapeHtml(`${Number(item.weight_kg).toFixed(1)}Kg`)}</small></td>
         <td class="itemdb-concept">${escapeHtml(item.concept)}</td>
-        <td><small>${item.combat_art ? `${escapeHtml(item.combat_art.native_facing)} · ${escapeHtml(item.combat_art.attack_motion)} · ${escapeHtml(item.combat_art.pivot)}` : "장착 아이콘"}</small></td>
+        <td><small>${item.support_effect
+          ? `<strong>${escapeHtml(item.support_effect.name)}</strong><br>${escapeHtml(item.support_effect.summary)}`
+          : item.combat_art
+            ? `${escapeHtml(item.combat_art.native_facing)} · ${escapeHtml(item.combat_art.attack_motion)} · ${escapeHtml(item.combat_art.pivot)}`
+            : "장착 아이콘"}</small></td>
         <td><button type="button" class="itemdb-rune-link" data-itemdb-rune-board="${escapeHtml(item.id)}"><strong>10</strong><span>룬 보드 후보</span></button></td>
       </tr>
     `).join("");
@@ -2002,7 +2038,7 @@
         <header><h2>${escapeHtml(family.label)}</h2><span>${family.items.length}개</span></header>
         <div class="itemdb-table-wrap">
           <table class="itemdb-table">
-            <thead><tr><th>이미지</th><th>게임</th><th>아이템</th><th>부위·형태</th><th>사각 점유</th><th>역할·무게</th><th>콘셉트</th><th>전투 리소스 계약</th><th>룬 보드</th></tr></thead>
+            <thead><tr><th>이미지</th><th>게임</th><th>아이템</th><th>부위·형태</th><th>사각 점유</th><th>역할·무게</th><th>콘셉트</th><th>전투·지원 효과</th><th>룬 보드</th></tr></thead>
             <tbody>${renderItemRows(family.items)}</tbody>
           </table>
         </div>
@@ -2046,7 +2082,7 @@
         <header class="itemdb-hero">
           <div class="page-eyebrow">Generated catalog</div>
           <div class="itemdb-hero-row">
-            <div><h1>ItemDB</h1><p>새 알파 장비 48종의 투명 이미지, 사각 점유 형태, 부위, 무게와 전투 리소스 계약을 한 곳에서 비교합니다. 폐기된 특수 아이템과 시너지는 포함하지 않습니다.</p></div>
+            <div><h1>ItemDB</h1><p>알파 장비 ${itemDb.count}종의 투명 이미지, 사각 점유 형태, 무게, 공격 리소스와 보조 효과를 한 곳에서 비교합니다. 공격 무기와 보조무기는 같은 6칸을 공유하며 보조무기는 최대 2개입니다.</p></div>
             <div class="itemdb-hero-actions">
               <span class="itemdb-total"><strong>${itemDb.active_count}</strong><small>GAME ON · ${itemDb.count} TOTAL</small></span>
               ${canEditItemDb ? '<button type="button" class="itemdb-bake-button" data-itemdb-bake>게임에 굽기</button>' : ""}
@@ -2057,6 +2093,7 @@
             <div><span>격자 구조</span><strong>${escapeHtml(itemDb.common.grid_topology)}</strong></div>
             <div><span>허용 회전</span><strong>${itemDb.common.rotations.map((value) => `${value}°`).join(" · ")}</strong></div>
             <div><span>최대 스택</span><strong>${itemDb.common.maximum_stack}</strong></div>
+            <div><span>권장 효율 조합</span><strong>공격 5 + 보조 1</strong></div>
             <div><span>DB 리비전</span><code>${escapeHtml(itemDb.revision || "—")}</code></div>
             <div><span>단일 원본</span><code>${escapeHtml(itemDb.source)}</code></div>
           </div>
@@ -2337,6 +2374,46 @@
     return node.code;
   }
 
+  function ensureRuneBoardEditorState(item, variant, cellIndex) {
+    const node = runeBoardNode(item, variant, cellIndex);
+    if (!node) return null;
+    const key = `${item.item_id}:${variant.variant}:${cellIndex}`;
+    if (!runeBoardEditorState || runeBoardEditorState.key !== key) {
+      runeBoardEditorState = {
+        key,
+        grade: node.grade,
+        abilityCode: node.code,
+        dirty: false,
+        saving: false,
+        error: "",
+      };
+    }
+    return runeBoardEditorState;
+  }
+
+  function renderRuneBoardNodeEditor(item, variant, cellIndex) {
+    if (!canEditRuneBoardDb) return "";
+    const state = ensureRuneBoardEditorState(item, variant, cellIndex);
+    if (!state) return "";
+    const gradeOptions = runeBoardDb.explorer.contract.grade_definitions.map((entry) => (
+      `<option value="${entry.grade}" ${state.grade === entry.grade ? "selected" : ""}>G${entry.grade} · ${escapeHtml(entry.name)}</option>`
+    )).join("");
+    const abilityOptions = variant.codebook.map((code) => {
+      const meta = runeBoardAbilityMeta(item, code);
+      return `<option value="${escapeHtml(code)}" ${state.abilityCode === code ? "selected" : ""}>${escapeHtml(`${code} · ${meta.label}`)}</option>`;
+    }).join("");
+    return `
+      <form class="rune-node-editor" data-rune-node-editor>
+        <header><strong>선택한 칸 편집</strong><span>등급과 능력은 함께 저장됩니다.</span></header>
+        <label><span>등급</span><select data-rune-node-grade ${state.saving ? "disabled" : ""}>${gradeOptions}</select></label>
+        <label><span>능력치</span><select data-rune-node-ability ${state.saving ? "disabled" : ""}>${abilityOptions}</select></label>
+        <p>고유 레어는 G6, 수치 레어는 G3 이상이어야 하며 E1/E2/E3은 각각 G1/G3/G5부터 배치할 수 있습니다.</p>
+        ${state.error ? `<p class="rune-node-editor-error" role="alert">${escapeHtml(state.error)}</p>` : ""}
+        <button type="submit" class="primary" ${!state.dirty || state.saving ? "disabled" : ""}>${state.saving ? "저장 중…" : "이 칸 저장"}</button>
+      </form>
+    `;
+  }
+
   function renderRuneBoardNodeDetail(item, variant, cellIndex) {
     const node = runeBoardNode(item, variant, cellIndex);
     if (!node) return '<div class="empty-state compact">노드를 선택하세요.</div>';
@@ -2360,7 +2437,66 @@
         <div><dt>런타임 훅</dt><dd><code>${escapeHtml(hook)}</code></dd></div>
         <div><dt>보드 위치</dt><dd>영역 ${node.cell.region} · #${node.cell.index} · (${node.cell.q}, ${node.cell.r})${node.cell.is_start ? " · 시작점" : ""}</dd></div>
       </dl>
+      ${renderRuneBoardNodeEditor(item, variant, cellIndex)}
     `;
+  }
+
+  function bindRuneBoardNodeEditor(item, variant, cellIndex) {
+    const form = document.querySelector("[data-rune-node-editor]");
+    if (!form) return;
+    const updateDraft = () => {
+      const state = ensureRuneBoardEditorState(item, variant, cellIndex);
+      const node = runeBoardNode(item, variant, cellIndex);
+      if (!state || !node) return;
+      state.grade = Number(form.querySelector("[data-rune-node-grade]").value);
+      state.abilityCode = form.querySelector("[data-rune-node-ability]").value;
+      state.dirty = state.grade !== node.grade || state.abilityCode !== node.code;
+      state.error = "";
+      form.querySelector('button[type="submit"]').disabled = !state.dirty || state.saving;
+      form.querySelector(".rune-node-editor-error")?.remove();
+    };
+    form.querySelector("[data-rune-node-grade]")?.addEventListener("change", updateDraft);
+    form.querySelector("[data-rune-node-ability]")?.addEventListener("change", updateDraft);
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const state = ensureRuneBoardEditorState(item, variant, cellIndex);
+      if (!state || !state.dirty || state.saving) return;
+      state.saving = true;
+      state.error = "";
+      const detail = document.getElementById("rune-board-node-detail");
+      if (detail) {
+        detail.innerHTML = renderRuneBoardNodeDetail(item, variant, cellIndex);
+        bindRuneBoardNodeEditor(item, variant, cellIndex);
+      }
+      try {
+        const response = await fetch("/api/rune-board-db/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            expected_revision: runeBoardDb.revision,
+            item_id: item.item_id,
+            cell_index: cellIndex,
+            grade: state.grade,
+            ability_code: state.abilityCode,
+          }),
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(payload.error || `룬 보드 칸 저장에 실패했습니다. (${response.status})`);
+        item.variants[0] = payload.variant;
+        runeBoardDb.revision = payload.revision;
+        runeBoardNotice = `#${cellIndex} 칸을 저장했습니다. 변경된 RuneBoardDB 리비전은 ${payload.revision}입니다.`;
+        runeBoardEditorState = null;
+        renderRuneBoardExplorer({ preserveScroll: true });
+      } catch (error) {
+        state.saving = false;
+        state.error = String(error.message || error);
+        const currentDetail = document.getElementById("rune-board-node-detail");
+        if (currentDetail) {
+          currentDetail.innerHTML = renderRuneBoardNodeDetail(item, variant, cellIndex);
+          bindRuneBoardNodeEditor(item, variant, cellIndex);
+        }
+      }
+    });
   }
 
   function renderRuneBoardCanvas(item, variant) {
@@ -2428,6 +2564,86 @@
     }).join("");
   }
 
+  function closeRuneBoardBake() {
+    document.getElementById("rune-board-bake-backdrop")?.remove();
+    runeBoardBakeState = null;
+    document.body.classList.remove("itemdb-editor-open");
+  }
+
+  function renderRuneBoardBakeDialog() {
+    let backdrop = document.getElementById("rune-board-bake-backdrop");
+    if (!backdrop) {
+      document.body.insertAdjacentHTML("beforeend", `
+        <div id="rune-board-bake-backdrop" class="itemdb-editor-backdrop">
+          <section class="itemdb-editor-dialog monsterdb-bake-dialog" role="dialog" aria-modal="true" aria-labelledby="rune-board-bake-title">
+            <header><div><span>RUNEBOARDDB → GAME</span><h2 id="rune-board-bake-title">게임에 굽기</h2><code>ReplicatedStorage.RuneBoard.GeneratedRuneBoards</code></div><button type="button" class="itemdb-editor-close" data-rune-board-bake-close aria-label="굽기 창 닫기">×</button></header>
+            <div class="monsterdb-bake-body"></div>
+          </section>
+        </div>
+      `);
+      backdrop = document.getElementById("rune-board-bake-backdrop");
+      backdrop.addEventListener("click", (event) => {
+        if (event.target === backdrop && !runeBoardBakeState?.loading) closeRuneBoardBake();
+      });
+      backdrop.querySelector("[data-rune-board-bake-close]").addEventListener("click", closeRuneBoardBake);
+    }
+    document.body.classList.add("itemdb-editor-open");
+    const body = backdrop.querySelector(".monsterdb-bake-body");
+    const state = runeBoardBakeState;
+    if (state.loading) {
+      body.innerHTML = '<p class="itemdb-bake-status">현재 룬 보드와 편집 내용을 Studio 적용 패키지로 만드는 중…</p>';
+      return;
+    }
+    if (state.error) {
+      body.innerHTML = `<p class="itemdb-bake-status" data-tone="error" role="alert">${escapeHtml(state.error)}</p>`;
+      return;
+    }
+    const payload = state.payload;
+    body.innerHTML = `
+      <div class="monsterdb-bake-summary"><span><strong>${escapeHtml(payload.revision)}</strong><small>DB 리비전</small></span><span><strong>${payload.item_count}</strong><small>아이템</small></span><span><strong>${payload.board_count}</strong><small>고정 보드</small></span><span><strong>${payload.module_count}</strong><small>적용 모듈</small></span></div>
+      <p class="itemdb-bake-status">Studio Play를 멈춘 뒤 적용 스크립트를 Command Bar 또는 Studio MCP에서 실행하면 01번 보드와 런타임 모듈이 함께 갱신됩니다.</p>
+      <div class="monsterdb-bake-actions"><button type="button" class="primary" data-rune-board-bake-copy>적용 스크립트 복사</button><button type="button" data-rune-board-bake-download>파일 내려받기</button></div>
+      ${state.status ? `<p class="monsterdb-bake-status" role="status">${escapeHtml(state.status)}</p>` : ""}
+    `;
+    body.querySelector("[data-rune-board-bake-copy]").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(payload.script);
+        state.status = "RuneBoardDB 적용 스크립트를 복사했습니다.";
+      } catch (error) {
+        state.status = `복사에 실패했습니다. 파일 내려받기를 사용해 주세요. (${String(error.message || error)})`;
+      }
+      renderRuneBoardBakeDialog();
+    });
+    body.querySelector("[data-rune-board-bake-download]").addEventListener("click", () => {
+      const blob = new Blob([payload.script], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = payload.filename;
+      anchor.click();
+      URL.revokeObjectURL(url);
+      state.status = `${payload.filename} 파일을 내려받았습니다.`;
+      renderRuneBoardBakeDialog();
+    });
+  }
+
+  async function openRuneBoardBake() {
+    if (!canEditRuneBoardDb || runeBoardBakeState) return;
+    runeBoardBakeState = { loading: true, payload: null, error: "", status: "" };
+    renderRuneBoardBakeDialog();
+    try {
+      const response = await fetch("/api/rune-board-db/bake", { headers: { Accept: "application/json" }, cache: "no-store" });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `룬 보드 굽기에 실패했습니다. (${response.status})`);
+      runeBoardBakeState.loading = false;
+      runeBoardBakeState.payload = payload;
+    } catch (error) {
+      runeBoardBakeState.loading = false;
+      runeBoardBakeState.error = String(error.message || error);
+    }
+    renderRuneBoardBakeDialog();
+  }
+
   function renderRuneBoardExplorer({ preserveScroll = false } = {}) {
     const explorer = runeBoardDb?.explorer;
     const database = (runeBoardDb.databases || []).find((entry) => entry.id === "rune-board-variants");
@@ -2458,7 +2674,7 @@
     }
     const catalogItem = runeBoardCatalogItem(item.item_id);
     const image = catalogItem?.image_url || catalogItem?.image || "";
-    const familyLabels = { Weapon: "무기", Armor: "방어구", Accessory: "장신구" };
+    const familyLabels = { Weapon: "공격 무기", Support: "보조무기", Armor: "방어구", Accessory: "장신구" };
     const slotLabels = {
       Weapon: "무기", Head: "머리", Earring: "귀걸이", Necklace: "목걸이", Top: "상의",
       Bottom: "하의", Gloves: "글러브", Shoes: "신발", Belt: "벨트", Ring: "반지",
@@ -2474,15 +2690,16 @@
         <header class="rune-db-hero">
           <div class="page-eyebrow">Interactive rune board database</div>
           <div class="rune-db-hero-row">
-            <div><h1>아이템 룬 보드 DB</h1><p>신규 장비 이미지와 아이템별 고정 Seed 후보 10개를 함께 비교하고, 427개 노드를 직접 선택해 등급·능력·레어 여부·구현 훅을 확인합니다.</p></div>
-            <span><strong>480</strong><small>48 ITEMS × 10 BOARDS</small></span>
+            <div><h1>아이템 룬 보드 DB</h1><p>무기·방어구·장신구·보조무기는 아이템마다 고정된 01번 보드 하나만 사용합니다. 427개 칸을 선택해 등급과 능력치를 편집하고 Studio 적용 패키지로 구울 수 있습니다.</p></div>
+            <div class="rune-db-hero-actions"><span><strong>${explorer.items.length}</strong><small>${explorer.items.length} ITEMS × 1 BOARD</small></span>${canEditRuneBoardDb ? '<button type="button" data-rune-board-bake>게임에 굽기</button>' : ""}</div>
           </div>
           <div class="rune-db-contract">
             <div><span>보드 크기</span><strong>${explorer.contract.total_cells}칸</strong></div>
             <div><span>영역</span><strong>${explorer.contract.regions} × ${explorer.contract.cells_per_region}칸</strong></div>
-            <div><span>후보 선택</span><strong>생성 시 균등 무작위 1개</strong></div>
+            <div><span>아이템별 보드</span><strong>01번 고정 · 후보 없음</strong></div>
             <div><span>DB 리비전</span><code>${escapeHtml(runeBoardDb.revision)}</code></div>
           </div>
+          ${runeBoardNotice ? `<div class="itemdb-save-notice" role="status">${escapeHtml(runeBoardNotice)}</div>` : ""}
         </header>
 
         <section class="rune-item-panel">
@@ -2500,16 +2717,14 @@
             <label><span>아이템 선택</span><select id="rune-board-item-select">
               ${explorer.items.map((entry) => `<option value="${escapeHtml(entry.item_id)}" ${entry.item_id === item.item_id ? "selected" : ""}>${escapeHtml(`${familyLabels[entry.board_kind] || entry.board_kind} · ${entry.item_name}`)}</option>`).join("")}
             </select></label>
-            <div class="rune-variant-selector" role="group" aria-label="룬 보드 후보 선택">
-              ${item.variants.map((entry) => `<button type="button" data-rune-board-variant="${entry.variant}" class="${entry.variant === variant.variant ? "active" : ""}" aria-pressed="${entry.variant === variant.variant}">${String(entry.variant).padStart(2, "0")}</button>`).join("")}
-            </div>
+            <div class="rune-single-board"><span>고정 룬 보드</span><strong>01</strong><small>이 아이템이 사용하는 유일한 보드입니다.</small></div>
             <div class="rune-variant-meta"><span>Seed <code>${escapeHtml(variant.seed)}</code></span><span>Hash <code>${escapeHtml(variant.board_hash)}</code></span></div>
           </div>
         </section>
 
         <section class="rune-board-section">
           <header>
-            <div><span class="page-eyebrow">Board candidate ${String(variant.variant).padStart(2, "0")}</span><h2>427칸 배치도</h2></div>
+            <div><span class="page-eyebrow">Fixed board 01</span><h2>427칸 배치도</h2></div>
             <nav aria-label="룬 보드 연관 데이터"><a href="${databaseHref("rune-board-abilities")}">능력 수치 DB</a><a href="${databaseHref("item-skill-passive")}">스킬·패시브 DB</a></nav>
           </header>
           <div class="rune-grade-legend">
@@ -2536,7 +2751,7 @@
         </section>
 
         <section class="rune-effect-section">
-          <header><div><span class="page-eyebrow">Item identity effects</span><h2>${item.skills?.length ? "무기 스킬" : item.passives?.length ? "방어구 패시브" : "장신구 규칙"}</h2></div><span>${item.skills?.length || item.passives?.length || 0}개</span></header>
+          <header><div><span class="page-eyebrow">Item identity effects</span><h2>${item.skills?.length ? "무기 스킬" : item.passives?.length ? (item.board_kind === "Support" ? "보조무기 패시브" : "방어구 패시브") : "장신구 규칙"}</h2></div><span>${item.skills?.length || item.passives?.length || 0}개</span></header>
           <div class="rune-effect-grid">${renderRuneBoardEffects(item)}</div>
         </section>
       </div>
@@ -2550,6 +2765,7 @@
         gradeFilter: null,
         abilityFilter: "",
       };
+      runeBoardEditorState = null;
       renderRuneBoardExplorer({ preserveScroll: true });
     });
     document.querySelectorAll("[data-rune-board-variant]").forEach((button) => {
@@ -2562,13 +2778,17 @@
     document.querySelectorAll("[data-rune-board-cell]").forEach((button) => {
       button.addEventListener("click", () => {
         runeBoardExplorerState.selectedCell = Number(button.dataset.runeBoardCell);
+        runeBoardEditorState = null;
         document.querySelectorAll("[data-rune-board-cell]").forEach((cellButton) => {
           const selected = cellButton === button;
           cellButton.classList.toggle("selected", selected);
           cellButton.setAttribute("aria-pressed", String(selected));
         });
         const detail = document.getElementById("rune-board-node-detail");
-        if (detail) detail.innerHTML = renderRuneBoardNodeDetail(item, variant, runeBoardExplorerState.selectedCell);
+        if (detail) {
+          detail.innerHTML = renderRuneBoardNodeDetail(item, variant, runeBoardExplorerState.selectedCell);
+          bindRuneBoardNodeEditor(item, variant, runeBoardExplorerState.selectedCell);
+        }
       });
     });
     document.querySelectorAll("[data-rune-filter-region]").forEach((button) => {
@@ -2601,6 +2821,8 @@
       runeBoardExplorerState.abilityFilter = "";
       applyRuneBoardFilters(item, variant);
     });
+    document.querySelector("[data-rune-board-bake]")?.addEventListener("click", openRuneBoardBake);
+    bindRuneBoardNodeEditor(item, variant, runeBoardExplorerState.selectedCell);
     applyRuneBoardFilters(item, variant);
     document.body.classList.remove("menu-open");
     if (preserveScroll) window.scrollTo(0, previousScrollY);
@@ -2625,7 +2847,7 @@
     if (spec.kind === "boolean") {
       control = `<label class="monsterdb-switch"><input type="checkbox" ${common} ${value ? "checked" : ""}><span></span><strong>${value ? "사용" : "미사용"}</strong></label>`;
     } else if (spec.kind === "select") {
-      control = `<select ${common}>${spec.options.map((option) => `<option value="${escapeHtml(option)}" ${option === value ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select>`;
+      control = `<select ${common}>${spec.options.map((option) => `<option value="${escapeHtml(option)}" ${option === value ? "selected" : ""}>${escapeHtml(spec.path === "size_class" ? monsterSizeClassLabel(option) : option)}</option>`).join("")}</select>`;
     } else if (spec.kind === "textarea" || spec.kind === "vector3-list") {
       control = `<textarea ${common} rows="${spec.kind === "vector3-list" ? 4 : 3}">${escapeHtml(monsterDbTools.serializeField(spec, value))}</textarea>`;
     } else {
@@ -2843,6 +3065,10 @@
     });
   }
 
+  function monsterSizeClassLabel(sizeClass) {
+    return ({ Small: "소형", Medium: "중형", Large: "대형" })[sizeClass] || sizeClass || "미지정";
+  }
+
   function renderMonsterDbCards(monsters) {
     const root = document.getElementById("monsterdb-results");
     const count = document.getElementById("monsterdb-result-count");
@@ -2856,9 +3082,17 @@
       <article class="monsterdb-card" data-enabled="${monster.enabled}">
         <div class="monsterdb-card-art"><img src="${escapeHtml(monster.concept_art_url)}" alt="${escapeHtml(monster.identity.display_name)} 대표 이미지" loading="lazy" decoding="async"><span>${escapeHtml(monster.identity.element)}</span></div>
         <div class="monsterdb-card-body">
-          <header><div><span>${escapeHtml(monster.identity.tier)} · LV.${monster.identity.level}</span><h2>${escapeHtml(monster.identity.display_name)}</h2><code>${escapeHtml(monster.id)}</code></div><em>${monster.enabled ? "GAME ON" : "OFF"}</em></header>
+          <header><div><span>${escapeHtml(monster.identity.tier)} · LV.${monster.identity.level}</span><h2>${escapeHtml(monster.identity.display_name)}</h2><code>${escapeHtml(monster.id)}</code></div><em>${monster.catalog_only ? "제작 대기" : monster.enabled ? "GAME ON" : "OFF"}</em></header>
           <p>${escapeHtml(monster.identity.description)}</p>
+          ${monster.catalog_only ? `
+          <div class="monsterdb-stat-grid monsterdb-stat-grid-catalog-only">
+            <span data-size-class="${escapeHtml(monster.size_class)}"><small>크기</small><strong>${escapeHtml(monsterSizeClassLabel(monster.size_class))}</strong></span>
+            <span><small>등록 상태</small><strong>${escapeHtml(monster.status)}</strong></span>
+            <span><small>런타임</small><strong>미등록</strong></span>
+            <span><small>등급</small><strong>${escapeHtml(monster.identity.tier)}</strong></span>
+          </div>` : `
           <div class="monsterdb-stat-grid">
+            <span data-size-class="${escapeHtml(monster.size_class)}"><small>크기</small><strong>${escapeHtml(monsterSizeClassLabel(monster.size_class))}</strong></span>
             <span><small>체력</small><strong>${monster.stats.max_health}</strong></span>
             <span><small>공격력</small><strong>${monster.stats.attack_power}</strong></span>
             <span><small>이동속도</small><strong>${monster.movement.chase_speed}</strong></span>
@@ -2867,9 +3101,9 @@
             <span><small>${monster.attack.kind === "FanVolleyProjectile" ? "첫 발사 예고" : monster.attack.kind === "TelegraphedLeapSlam" ? "착지 예고" : "장판예고"}</small><strong>${monster.attack.telegraph_duration_seconds}s</strong></span>
             <span><small>공격간격</small><strong>${monster.attack.attack_interval_seconds}s</strong></span>
             <span><small>동시 스폰</small><strong>${monster.spawn.maximum_alive}</strong></span>
-          </div>
+          </div>`}
           <div class="monsterdb-tags">${monster.identity.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
-          ${canEditMonsterDb ? `<button type="button" class="monsterdb-edit-button" data-monsterdb-edit="${escapeHtml(monster.id)}">모든 속성 편집</button>` : ""}
+          ${canEditMonsterDb && !monster.catalog_only ? `<button type="button" class="monsterdb-edit-button" data-monsterdb-edit="${escapeHtml(monster.id)}">모든 속성 편집</button>` : ""}
         </div>
       </article>
     `).join("");
@@ -2908,13 +3142,77 @@
     return selected;
   }
 
-  function setWaveDbDirty() {
-    waveDbState.dirty = true;
-    waveDbNotice = "저장하지 않은 변경사항이 있습니다.";
+  function updateWaveDbDirtyState(notice = "") {
+    waveDbState.dirty = JSON.stringify(waveDbState.document) !== JSON.stringify(waveDbState.cleanDocument);
+    waveDbNotice = notice || (waveDbState.dirty ? "저장하지 않은 변경사항이 있습니다." : "저장된 상태와 같습니다.");
     const saveButton = document.querySelector("[data-wavedb-save]");
-    if (saveButton) saveButton.disabled = false;
-    const notice = document.querySelector("[data-wavedb-notice]");
-    if (notice) notice.textContent = waveDbNotice;
+    if (saveButton) saveButton.disabled = !waveDbState.dirty || waveDbState.saving;
+    const noticeElement = document.querySelector("[data-wavedb-notice]");
+    if (noticeElement) noticeElement.textContent = waveDbNotice;
+  }
+
+  function setWaveDbDirty() {
+    updateWaveDbDirtyState("저장하지 않은 변경사항이 있습니다.");
+  }
+
+  function resetWaveDbPlacementHistory() {
+    waveDbTools.resetPlacementHistory(waveDbState.placementHistory);
+  }
+
+  function recordWaveDbPlacementMutation(stage, wave, layer, before, label) {
+    const recorded = waveDbTools.recordPlacementChange(waveDbState.placementHistory, {
+      stage_id: stage.id,
+      wave_id: wave.id,
+      layer_id: layer.id,
+      label,
+      before,
+      after: layer.placements,
+    });
+    if (recorded) updateWaveDbDirtyState(`${label}을 기록했습니다.`);
+    return recorded;
+  }
+
+  function applyWaveDbPlacementHistory(direction) {
+    if (waveDbState.saving) return;
+    try {
+      const change = direction === "undo"
+        ? waveDbTools.undoPlacementChange(waveDbState.placementHistory, waveDbState.document)
+        : waveDbTools.redoPlacementChange(waveDbState.placementHistory, waveDbState.document);
+      if (!change) return;
+      waveDbState.selectedStageId = change.stage_id;
+      waveDbState.activeWaves[change.stage_id] = change.wave_id;
+      waveDbState.activeLayers[`${change.stage_id}/${change.wave_id}`] = change.layer_id;
+      updateWaveDbDirtyState(
+        direction === "undo"
+          ? `${change.label}을 되돌렸습니다.`
+          : `${change.label}을 다시 실행했습니다.`,
+      );
+      renderWaveDb({ preserveScroll: true });
+    } catch (error) {
+      waveDbNotice = String(error.message || error);
+      resetWaveDbPlacementHistory();
+      renderWaveDb({ preserveScroll: true });
+    }
+  }
+
+  function bindWaveDbKeyboardShortcuts() {
+    if (waveDbKeyboardBound) return;
+    waveDbKeyboardBound = true;
+    document.addEventListener("keydown", (event) => {
+      if (!document.querySelector(".wavedb-layout") || waveDbState.saving) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && (
+        target.isContentEditable
+        || target.matches("input, textarea, select")
+      )) return;
+      const modifier = event.metaKey || event.ctrlKey;
+      const key = event.key.toLowerCase();
+      const undo = modifier && key === "z" && !event.shiftKey;
+      const redo = modifier && ((key === "z" && event.shiftKey) || key === "y");
+      if (!undo && !redo) return;
+      event.preventDefault();
+      applyWaveDbPlacementHistory(undo ? "undo" : "redo");
+    });
   }
 
   function waveDbWaveKey(stage, wave) {
@@ -3115,6 +3413,7 @@
         fields: waveDbTools.deepClone(waveDb.fields),
         stages: waveDbTools.deepClone(waveDb.stages),
       };
+      waveDbState.cleanDocument = waveDbTools.deepClone(waveDbState.document);
       waveDbState.dirty = false;
       waveDbNotice = `스테이지·웨이브 설정을 저장했습니다. 게임 적용 전 리비전은 ${payload.revision}입니다.`;
     } catch (error) {
@@ -3141,6 +3440,7 @@
     }));
     root.querySelector('[data-wavedb-stage-field="field_id"]')?.addEventListener("change", () => {
       updateWaveDbDocumentFromInputs(root, stage);
+      resetWaveDbPlacementHistory();
       setWaveDbDirty();
       renderWaveDb({ preserveScroll: true });
     });
@@ -3159,6 +3459,7 @@
       const index = waveDbState.document.stages.findIndex((entry) => entry.id === stage.id);
       waveDbState.document.stages.splice(index, 1);
       waveDbState.selectedStageId = waveDbState.document.stages[Math.max(0, index - 1)].id;
+      resetWaveDbPlacementHistory();
       setWaveDbDirty();
       renderWaveDb({ preserveScroll: true });
     });
@@ -3205,6 +3506,7 @@
         if (index < 0) return;
         wave.layers.splice(index, 1);
         waveDbState.activeLayers[key] = waveDbTools.sortedLayers(wave.layers)[Math.max(0, index - 1)]?.id || "";
+        resetWaveDbPlacementHistory();
         setWaveDbDirty();
         renderWaveDb({ preserveScroll: true });
       });
@@ -3218,19 +3520,32 @@
         const column = Number(button.dataset.column);
         const row = Number(button.dataset.row);
         const existing = waveDbTools.placementAt(layer, column, row);
-        if (existing) layer.placements.splice(layer.placements.indexOf(existing), 1);
         const monsterId = selectedWaveDbMonster(stage, wave);
+        if ((!existing && monsterId === "__erase__") || existing?.monster_id === monsterId) return;
+        const before = waveDbTools.deepClone(layer.placements);
+        if (existing) layer.placements.splice(layer.placements.indexOf(existing), 1);
         if (monsterId !== "__erase__") layer.placements.push(waveDbTools.newPlacement(layer.placements, monsterId, column, row));
-        setWaveDbDirty();
-        renderWaveDb({ preserveScroll: true });
+        const previousName = waveDbTools.monsterById(monsterDb?.monsters || [], existing?.monster_id)?.identity?.display_name;
+        const nextName = waveDbTools.monsterById(monsterDb?.monsters || [], monsterId)?.identity?.display_name;
+        const label = existing && monsterId === "__erase__"
+          ? `${previousName || existing.monster_id} 배치 삭제`
+          : existing
+            ? `${previousName || existing.monster_id} → ${nextName || monsterId} 배치 변경`
+            : `${nextName || monsterId} 배치 추가`;
+        if (recordWaveDbPlacementMutation(stage, wave, layer, before, label)) {
+          renderWaveDb({ preserveScroll: true });
+        }
       }));
       waveRoot.querySelectorAll("[data-wavedb-remove-placement]").forEach((button) => button.addEventListener("click", () => {
         const layer = activeWaveDbLayer(stage, wave);
         if (!layer) return;
         const index = layer.placements.findIndex((placement) => placement.id === button.dataset.wavedbRemovePlacement);
         if (index < 0) return;
+        const before = waveDbTools.deepClone(layer.placements);
+        const removed = layer.placements[index];
         layer.placements.splice(index, 1);
-        setWaveDbDirty();
+        const removedName = waveDbTools.monsterById(monsterDb?.monsters || [], removed.monster_id)?.identity?.display_name;
+        recordWaveDbPlacementMutation(stage, wave, layer, before, `${removedName || removed.monster_id} 배치 삭제`);
         renderWaveDb({ preserveScroll: true });
       }));
       waveRoot.querySelector("[data-wavedb-remove-wave]")?.addEventListener("click", () => {
@@ -3238,6 +3553,7 @@
         updateWaveDbDocumentFromInputs(root, stage);
         stage.waves.splice(waveIndex, 1);
         waveDbState.activeWaves[stage.id] = stage.waves[Math.max(0, waveIndex - 1)]?.id || "";
+        resetWaveDbPlacementHistory();
         setWaveDbDirty();
         renderWaveDb({ preserveScroll: true });
       });
@@ -3250,6 +3566,8 @@
         renderWaveDb({ preserveScroll: true });
       }));
     });
+    root.querySelector("[data-wavedb-undo]")?.addEventListener("click", () => applyWaveDbPlacementHistory("undo"));
+    root.querySelector("[data-wavedb-redo]")?.addEventListener("click", () => applyWaveDbPlacementHistory("redo"));
     root.querySelector("[data-wavedb-save]")?.addEventListener("click", saveWaveDb);
     root.querySelector("[data-wavedb-bake]")?.addEventListener("click", openWaveDbBake);
   }
@@ -3364,7 +3682,7 @@
           <section class="wavedb-editor">
             <header class="wavedb-stage-header">
               <div><span>STAGE SETTINGS</span><h2>${escapeHtml(stage.display_name)}</h2><code>${escapeHtml(stage.id)}</code></div>
-              <div class="wavedb-stage-actions">${canEditWaveDb ? `<button type="button" class="danger" data-wavedb-remove-stage ${waveDbState.document.stages.length === 1 ? "disabled" : ""}>스테이지 삭제</button><button type="button" data-wavedb-bake>게임에 굽기</button><button type="button" class="primary" data-wavedb-save ${!waveDbState.dirty || waveDbState.saving ? "disabled" : ""}>${waveDbState.saving ? "저장 중…" : "전체 저장"}</button>` : ""}</div>
+              <div class="wavedb-stage-actions">${canEditWaveDb ? `<button type="button" class="danger" data-wavedb-remove-stage ${waveDbState.document.stages.length === 1 ? "disabled" : ""}>스테이지 삭제</button><button type="button" class="wavedb-history-button" data-wavedb-undo aria-label="최근 몬스터 배치 되돌리기" title="최근 몬스터 배치 되돌리기 (Cmd/Ctrl+Z)" ${waveDbState.placementHistory.past.length ? "" : "disabled"}>↶ 되돌리기</button><button type="button" class="wavedb-history-button" data-wavedb-redo aria-label="되돌린 몬스터 배치 다시 실행" title="되돌린 몬스터 배치 다시 실행 (Cmd/Ctrl+Shift+Z 또는 Ctrl+Y)" ${waveDbState.placementHistory.future.length ? "" : "disabled"}>↷ 다시 실행</button><button type="button" data-wavedb-bake>게임에 굽기</button><button type="button" class="primary" data-wavedb-save ${!waveDbState.dirty || waveDbState.saving ? "disabled" : ""}>${waveDbState.saving ? "저장 중…" : "전체 저장"}</button>` : ""}</div>
             </header>
             ${waveDbNotice ? `<div class="wavedb-notice" data-wavedb-notice role="status">${escapeHtml(waveDbNotice)}</div>` : '<div class="wavedb-notice quiet" data-wavedb-notice>변경하면 전체 스테이지 구성이 함께 검증·저장됩니다.</div>'}
             ${renderWaveDbStageTimelineToolbar(stage, selectedWave, disabled)}
@@ -3383,6 +3701,7 @@
       </div>
     `;
     bindWaveDbEditor(document.querySelector(".wavedb-layout"), stage);
+    bindWaveDbKeyboardShortcuts();
     document.body.classList.remove("menu-open");
     window.scrollTo(previousScroll.x, previousScroll.y);
   }
@@ -4070,8 +4389,8 @@
         <header class="fielddb-hero">
           <div class="page-eyebrow">World composition registry</div>
           <div class="fielddb-hero-row">
-            <div><h1>필드 데이터베이스</h1><p>베이스 필드와 전투 필드의 콘셉트, 바닥 레이아웃, 월드 위치, 경계, 2D 패널 오브젝트를 한 화면에서 비교합니다.</p></div>
-            <span><strong>${fieldDb.count}</strong><small>${fieldDb.base_count} BASE · ${fieldDb.combat_count} COMBAT</small></span>
+            <div><h1>필드 데이터베이스</h1><p>베이스·튜토리얼·전투 필드의 콘셉트, 바닥 레이아웃, 월드 위치, 경계, 2D 패널 오브젝트를 한 화면에서 비교합니다.</p></div>
+            <span><strong>${fieldDb.count}</strong><small>${fieldDb.base_count} BASE · ${fieldDb.tutorial_count} TUTORIAL · ${fieldDb.combat_count} COMBAT</small></span>
           </div>
           <div class="fielddb-overview">
             <div><span>배치 계약</span><strong>${escapeHtml(fieldDb.connectivity_label)}</strong></div>
@@ -4082,7 +4401,7 @@
         </header>
         <section class="fielddb-toolbar" aria-label="필드 검색과 필터">
           <label><span>필드·오브젝트 검색</span><input id="fielddb-search" type="search" value="${escapeHtml(fieldDbState.query)}" placeholder="필드 이름, 테마, 오브젝트 ID…"></label>
-          <label><span>필드 유형</span><select id="fielddb-type-filter"><option value="all">전체 필드</option><option value="base" ${fieldDbState.fieldType === "base" ? "selected" : ""}>베이스 필드</option><option value="combat" ${fieldDbState.fieldType === "combat" ? "selected" : ""}>전투 필드</option></select></label>
+          <label><span>필드 유형</span><select id="fielddb-type-filter"><option value="all">전체 필드</option><option value="base" ${fieldDbState.fieldType === "base" ? "selected" : ""}>베이스 필드</option><option value="tutorial" ${fieldDbState.fieldType === "tutorial" ? "selected" : ""}>튜토리얼 필드</option><option value="combat" ${fieldDbState.fieldType === "combat" ? "selected" : ""}>전투 필드</option></select></label>
           <strong id="fielddb-result-count"></strong>
         </section>
         <div class="fielddb-workspace">
@@ -4559,6 +4878,7 @@
     if (event.key === "Escape") {
       closeItemDbBake();
       closeWaveDbBake();
+      closeRuneBoardBake();
       closeSearch();
       document.body.classList.remove("menu-open");
     }
@@ -4572,4 +4892,5 @@
   void refreshAnimationDbApiAccess();
   void refreshAnimationCurationApiAccess();
   void refreshMasteryDbApiAccess();
+  void refreshRuneBoardDbApiAccess();
 })();

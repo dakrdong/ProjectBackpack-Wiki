@@ -48,6 +48,8 @@
   function editableMonster(monster) {
     const copy = JSON.parse(JSON.stringify(monster));
     delete copy.concept_art_url;
+    delete copy.catalog_only;
+    delete copy.status;
     return copy;
   }
 

@@ -1,28 +1,48 @@
 window.PACKBOUND_ANIMATION_DB = {
   "schema_version": 2,
-  "revision": "10c4e5cba0886f2f",
+  "revision": "0c15cc706984bad2",
   "source": "Assets/**/SpriteProduction/Candidates + Assets/Monsters/Runtime",
-  "count": 41,
-  "live_count": 35,
-  "character_count": 7,
-  "active_monster_count": 6,
-  "registered_monster_count": 6,
+  "count": 91,
+  "live_count": 85,
+  "character_count": 17,
+  "active_monster_count": 16,
+  "registered_monster_count": 16,
   "registered_monster_ids": [
     "grass_vine_monster",
     "whirl_dash_spirit",
     "fanburst_artillery",
     "stampfoot_leaper",
     "walking_nest",
-    "nest_hatchling_lizard"
+    "nest_hatchling_lizard",
+    "junk_can_pillbug",
+    "bottlecap_beetle",
+    "cable_worm",
+    "tire_roller",
+    "paper_cup_hermit",
+    "bulb_gnat",
+    "screw_snail",
+    "zipper_centipede",
+    "scouring_pad_fuzz",
+    "plastic_bag_ghost"
   ],
-  "curation_monster_count": 6,
+  "curation_monster_count": 16,
   "curation_monster_ids": [
     "grass_vine_monster",
     "whirl_dash_spirit",
     "fanburst_artillery",
     "stampfoot_leaper",
     "walking_nest",
-    "nest_hatchling_lizard"
+    "nest_hatchling_lizard",
+    "junk_can_pillbug",
+    "bottlecap_beetle",
+    "cable_worm",
+    "tire_roller",
+    "paper_cup_hermit",
+    "bulb_gnat",
+    "screw_snail",
+    "zipper_centipede",
+    "scouring_pad_fuzz",
+    "plastic_bag_ghost"
   ],
   "actions": [
     "Attack",
@@ -31,6 +51,7 @@ window.PACKBOUND_ANIMATION_DB = {
     "AttackLand",
     "Dash",
     "Death",
+    "Fly",
     "Hit",
     "Idle",
     "IdleHover",
@@ -44,6 +65,576 @@ window.PACKBOUND_ANIMATION_DB = {
     "Walk"
   ],
   "records": [
+    {
+      "id": "bottlecapbeetle-idle-runtime",
+      "entity_type": "monster",
+      "character": "BottlecapBeetle",
+      "character_label": "병뚜껑 딱정이",
+      "runtime_monster_id": "bottlecap_beetle",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "병뚜껑 딱정이 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://132863975231015",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BottlecapBeetle",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bottlecapbeetle-idle-runtime/east-runtime-preview-4b860430ef.gif",
+          "contact_sheet_url": "./animation-media/bottlecapbeetle-idle-runtime/east-runtime-atlas-44205bd1b1.png",
+          "source": "Assets/Monsters/Runtime/BottlecapBeetle/idle-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:BottlecapBeetle:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bottlecapbeetle-walk-runtime",
+      "entity_type": "monster",
+      "character": "BottlecapBeetle",
+      "character_label": "병뚜껑 딱정이",
+      "runtime_monster_id": "bottlecap_beetle",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "병뚜껑 딱정이 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 0.8,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://89652208696962",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BottlecapBeetle",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bottlecapbeetle-walk-runtime/east-runtime-preview-9a08c333b2.gif",
+          "contact_sheet_url": "./animation-media/bottlecapbeetle-walk-runtime/east-runtime-atlas-025a681d37.png",
+          "source": "Assets/Monsters/Runtime/BottlecapBeetle/walk-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:BottlecapBeetle:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bottlecapbeetle-attack-runtime",
+      "entity_type": "monster",
+      "character": "BottlecapBeetle",
+      "character_label": "병뚜껑 딱정이",
+      "runtime_monster_id": "bottlecap_beetle",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "병뚜껑 딱정이 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://138116709840386",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BottlecapBeetle",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bottlecapbeetle-attack-runtime/east-runtime-preview-4d92a3a805.gif",
+          "contact_sheet_url": "./animation-media/bottlecapbeetle-attack-runtime/east-runtime-atlas-852ea02f50.png",
+          "source": "Assets/Monsters/Runtime/BottlecapBeetle/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:BottlecapBeetle:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bottlecapbeetle-hit-runtime",
+      "entity_type": "monster",
+      "character": "BottlecapBeetle",
+      "character_label": "병뚜껑 딱정이",
+      "runtime_monster_id": "bottlecap_beetle",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "병뚜껑 딱정이 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://124778828299816",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BottlecapBeetle",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bottlecapbeetle-hit-runtime/east-runtime-preview-bf90f56578.gif",
+          "contact_sheet_url": "./animation-media/bottlecapbeetle-hit-runtime/east-runtime-atlas-7faf72a102.png",
+          "source": "Assets/Monsters/Runtime/BottlecapBeetle/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:BottlecapBeetle:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bottlecapbeetle-death-runtime",
+      "entity_type": "monster",
+      "character": "BottlecapBeetle",
+      "character_label": "병뚜껑 딱정이",
+      "runtime_monster_id": "bottlecap_beetle",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "병뚜껑 딱정이 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://71007469017839",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BottlecapBeetle",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bottlecapbeetle-death-runtime/east-runtime-preview-125903833f.gif",
+          "contact_sheet_url": "./animation-media/bottlecapbeetle-death-runtime/east-runtime-atlas-f3cebad47d.png",
+          "source": "Assets/Monsters/Runtime/BottlecapBeetle/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:BottlecapBeetle:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bulbgnat-idlehover-runtime",
+      "entity_type": "monster",
+      "character": "BulbGnat",
+      "character_label": "전구 날파리",
+      "runtime_monster_id": "bulb_gnat",
+      "action": "IdleHover",
+      "action_label": "공중 대기",
+      "title": "전구 날파리 · 공중 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://109504995775773",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BulbGnat",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bulbgnat-idlehover-runtime/east-runtime-preview-02602871c3.gif",
+          "contact_sheet_url": "./animation-media/bulbgnat-idlehover-runtime/east-runtime-atlas-13e1b79ca5.png",
+          "source": "Assets/Monsters/Runtime/BulbGnat/idle-hover-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:BulbGnat:IdleHover",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bulbgnat-attack-runtime",
+      "entity_type": "monster",
+      "character": "BulbGnat",
+      "character_label": "전구 날파리",
+      "runtime_monster_id": "bulb_gnat",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "전구 날파리 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://123321320314376",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BulbGnat",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bulbgnat-attack-runtime/east-runtime-preview-abf73f4647.gif",
+          "contact_sheet_url": "./animation-media/bulbgnat-attack-runtime/east-runtime-atlas-8d506fbf8e.png",
+          "source": "Assets/Monsters/Runtime/BulbGnat/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:BulbGnat:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bulbgnat-hit-runtime",
+      "entity_type": "monster",
+      "character": "BulbGnat",
+      "character_label": "전구 날파리",
+      "runtime_monster_id": "bulb_gnat",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "전구 날파리 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://87340286561770",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BulbGnat",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bulbgnat-hit-runtime/east-runtime-preview-ba29a8f7a3.gif",
+          "contact_sheet_url": "./animation-media/bulbgnat-hit-runtime/east-runtime-atlas-e8b7c72784.png",
+          "source": "Assets/Monsters/Runtime/BulbGnat/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:BulbGnat:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bulbgnat-death-runtime",
+      "entity_type": "monster",
+      "character": "BulbGnat",
+      "character_label": "전구 날파리",
+      "runtime_monster_id": "bulb_gnat",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "전구 날파리 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://102063656659210",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BulbGnat",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bulbgnat-death-runtime/east-runtime-preview-ddfe0fd538.gif",
+          "contact_sheet_url": "./animation-media/bulbgnat-death-runtime/east-runtime-atlas-d5add246ea.png",
+          "source": "Assets/Monsters/Runtime/BulbGnat/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:BulbGnat:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "bulbgnat-fly-runtime",
+      "entity_type": "monster",
+      "character": "BulbGnat",
+      "character_label": "전구 날파리",
+      "runtime_monster_id": "bulb_gnat",
+      "action": "Fly",
+      "action_label": "Fly",
+      "title": "전구 날파리 · Fly",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 12.0,
+      "duration_seconds": 0.667,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://114025193209503",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/BulbGnat",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/bulbgnat-fly-runtime/east-runtime-preview-29062d17a2.gif",
+          "contact_sheet_url": "./animation-media/bulbgnat-fly-runtime/east-runtime-atlas-a5c1d8d293.png",
+          "source": "Assets/Monsters/Runtime/BulbGnat/fly-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:BulbGnat:Fly",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "cableworm-idle-runtime",
+      "entity_type": "monster",
+      "character": "CableWorm",
+      "character_label": "전선 지렁이",
+      "runtime_monster_id": "cable_worm",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "전선 지렁이 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://105918043686964",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/CableWorm",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/cableworm-idle-runtime/east-runtime-preview-1f35a3ec0a.gif",
+          "contact_sheet_url": "./animation-media/cableworm-idle-runtime/east-runtime-atlas-2181a72b70.png",
+          "source": "Assets/Monsters/Runtime/CableWorm/idle-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:CableWorm:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "cableworm-walk-runtime",
+      "entity_type": "monster",
+      "character": "CableWorm",
+      "character_label": "전선 지렁이",
+      "runtime_monster_id": "cable_worm",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "전선 지렁이 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 0.8,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://137586813895595",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/CableWorm",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/cableworm-walk-runtime/east-runtime-preview-83f631ea55.gif",
+          "contact_sheet_url": "./animation-media/cableworm-walk-runtime/east-runtime-atlas-a076073166.png",
+          "source": "Assets/Monsters/Runtime/CableWorm/walk-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:CableWorm:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "cableworm-attack-runtime",
+      "entity_type": "monster",
+      "character": "CableWorm",
+      "character_label": "전선 지렁이",
+      "runtime_monster_id": "cable_worm",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "전선 지렁이 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://99613104155202",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/CableWorm",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/cableworm-attack-runtime/east-runtime-preview-24979bf2cf.gif",
+          "contact_sheet_url": "./animation-media/cableworm-attack-runtime/east-runtime-atlas-ee83af7b1a.png",
+          "source": "Assets/Monsters/Runtime/CableWorm/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:CableWorm:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "cableworm-hit-runtime",
+      "entity_type": "monster",
+      "character": "CableWorm",
+      "character_label": "전선 지렁이",
+      "runtime_monster_id": "cable_worm",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "전선 지렁이 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://117391482844806",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/CableWorm",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/cableworm-hit-runtime/east-runtime-preview-66029b9744.gif",
+          "contact_sheet_url": "./animation-media/cableworm-hit-runtime/east-runtime-atlas-1368f1d9bc.png",
+          "source": "Assets/Monsters/Runtime/CableWorm/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:CableWorm:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "cableworm-death-runtime",
+      "entity_type": "monster",
+      "character": "CableWorm",
+      "character_label": "전선 지렁이",
+      "runtime_monster_id": "cable_worm",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "전선 지렁이 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://96160454286891",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/CableWorm",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/cableworm-death-runtime/east-runtime-preview-304fcd593c.gif",
+          "contact_sheet_url": "./animation-media/cableworm-death-runtime/east-runtime-atlas-79d4c458b8.png",
+          "source": "Assets/Monsters/Runtime/CableWorm/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:CableWorm:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
     {
       "id": "fanburstartillery-idle-runtime",
       "entity_type": "monster",
@@ -425,6 +1016,196 @@ window.PACKBOUND_ANIMATION_DB = {
       "selection_state": "current"
     },
     {
+      "id": "junkcanpillbug-idle-runtime",
+      "entity_type": "monster",
+      "character": "JunkCanPillbug",
+      "character_label": "깡통 콩벌레",
+      "runtime_monster_id": "junk_can_pillbug",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "깡통 콩벌레 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://94901785540480",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/JunkCanPillbug",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/junkcanpillbug-idle-runtime/east-runtime-preview-8372745c4d.gif",
+          "contact_sheet_url": "./animation-media/junkcanpillbug-idle-runtime/east-runtime-atlas-1108e8b88b.png",
+          "source": "Assets/Monsters/Runtime/JunkCanPillbug/idle-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:JunkCanPillbug:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "junkcanpillbug-walk-runtime",
+      "entity_type": "monster",
+      "character": "JunkCanPillbug",
+      "character_label": "깡통 콩벌레",
+      "runtime_monster_id": "junk_can_pillbug",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "깡통 콩벌레 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 0.8,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://119327274097928",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/JunkCanPillbug",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/junkcanpillbug-walk-runtime/east-runtime-preview-b0f7d1f829.gif",
+          "contact_sheet_url": "./animation-media/junkcanpillbug-walk-runtime/east-runtime-atlas-dccccfe1d1.png",
+          "source": "Assets/Monsters/Runtime/JunkCanPillbug/walk-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:JunkCanPillbug:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "junkcanpillbug-attack-runtime",
+      "entity_type": "monster",
+      "character": "JunkCanPillbug",
+      "character_label": "깡통 콩벌레",
+      "runtime_monster_id": "junk_can_pillbug",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "깡통 콩벌레 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://76696687310835",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/JunkCanPillbug",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/junkcanpillbug-attack-runtime/east-runtime-preview-4c16bb3e05.gif",
+          "contact_sheet_url": "./animation-media/junkcanpillbug-attack-runtime/east-runtime-atlas-8a1968b416.png",
+          "source": "Assets/Monsters/Runtime/JunkCanPillbug/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:JunkCanPillbug:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "junkcanpillbug-hit-runtime",
+      "entity_type": "monster",
+      "character": "JunkCanPillbug",
+      "character_label": "깡통 콩벌레",
+      "runtime_monster_id": "junk_can_pillbug",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "깡통 콩벌레 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://83618895647092",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/JunkCanPillbug",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/junkcanpillbug-hit-runtime/east-runtime-preview-be1e9cceb6.gif",
+          "contact_sheet_url": "./animation-media/junkcanpillbug-hit-runtime/east-runtime-atlas-232c640f75.png",
+          "source": "Assets/Monsters/Runtime/JunkCanPillbug/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:JunkCanPillbug:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "junkcanpillbug-death-runtime",
+      "entity_type": "monster",
+      "character": "JunkCanPillbug",
+      "character_label": "깡통 콩벌레",
+      "runtime_monster_id": "junk_can_pillbug",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "깡통 콩벌레 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://81254010967501",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/JunkCanPillbug",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/junkcanpillbug-death-runtime/east-runtime-preview-9cfc2df498.gif",
+          "contact_sheet_url": "./animation-media/junkcanpillbug-death-runtime/east-runtime-atlas-33db57379e.png",
+          "source": "Assets/Monsters/Runtime/JunkCanPillbug/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:JunkCanPillbug:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
       "id": "nesthatchlinglizard-idle-runtime",
       "entity_type": "monster",
       "character": "NestHatchlingLizard",
@@ -649,6 +1430,766 @@ window.PACKBOUND_ANIMATION_DB = {
         }
       ],
       "selection_group": "monster:NestHatchlingLizard:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "papercuphermit-idle-runtime",
+      "entity_type": "monster",
+      "character": "PaperCupHermit",
+      "character_label": "종이컵 소라게",
+      "runtime_monster_id": "paper_cup_hermit",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "종이컵 소라게 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://137558929888753",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PaperCupHermit",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/papercuphermit-idle-runtime/east-runtime-preview-ed145a978f.gif",
+          "contact_sheet_url": "./animation-media/papercuphermit-idle-runtime/east-runtime-atlas-474aefdb82.png",
+          "source": "Assets/Monsters/Runtime/PaperCupHermit/idle-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:PaperCupHermit:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "papercuphermit-walk-runtime",
+      "entity_type": "monster",
+      "character": "PaperCupHermit",
+      "character_label": "종이컵 소라게",
+      "runtime_monster_id": "paper_cup_hermit",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "종이컵 소라게 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 0.8,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://118876447607935",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PaperCupHermit",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/papercuphermit-walk-runtime/east-runtime-preview-b20eec7929.gif",
+          "contact_sheet_url": "./animation-media/papercuphermit-walk-runtime/east-runtime-atlas-ca730a8f36.png",
+          "source": "Assets/Monsters/Runtime/PaperCupHermit/walk-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:PaperCupHermit:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "papercuphermit-attack-runtime",
+      "entity_type": "monster",
+      "character": "PaperCupHermit",
+      "character_label": "종이컵 소라게",
+      "runtime_monster_id": "paper_cup_hermit",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "종이컵 소라게 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://100420900537768",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PaperCupHermit",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/papercuphermit-attack-runtime/east-runtime-preview-ad1277e78b.gif",
+          "contact_sheet_url": "./animation-media/papercuphermit-attack-runtime/east-runtime-atlas-a99307ce7c.png",
+          "source": "Assets/Monsters/Runtime/PaperCupHermit/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:PaperCupHermit:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "papercuphermit-hit-runtime",
+      "entity_type": "monster",
+      "character": "PaperCupHermit",
+      "character_label": "종이컵 소라게",
+      "runtime_monster_id": "paper_cup_hermit",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "종이컵 소라게 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://75117014248560",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PaperCupHermit",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/papercuphermit-hit-runtime/east-runtime-preview-63c355dc9d.gif",
+          "contact_sheet_url": "./animation-media/papercuphermit-hit-runtime/east-runtime-atlas-b857d1af89.png",
+          "source": "Assets/Monsters/Runtime/PaperCupHermit/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:PaperCupHermit:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "papercuphermit-death-runtime",
+      "entity_type": "monster",
+      "character": "PaperCupHermit",
+      "character_label": "종이컵 소라게",
+      "runtime_monster_id": "paper_cup_hermit",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "종이컵 소라게 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://106817652052655",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PaperCupHermit",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/papercuphermit-death-runtime/east-runtime-preview-a1d11ec10f.gif",
+          "contact_sheet_url": "./animation-media/papercuphermit-death-runtime/east-runtime-atlas-302b6bccf2.png",
+          "source": "Assets/Monsters/Runtime/PaperCupHermit/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:PaperCupHermit:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "plasticbagghost-idlehover-runtime",
+      "entity_type": "monster",
+      "character": "PlasticBagGhost",
+      "character_label": "비닐봉지 유령",
+      "runtime_monster_id": "plastic_bag_ghost",
+      "action": "IdleHover",
+      "action_label": "공중 대기",
+      "title": "비닐봉지 유령 · 공중 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://79989577612062",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PlasticBagGhost",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/plasticbagghost-idlehover-runtime/east-runtime-preview-dd1d7c9edf.gif",
+          "contact_sheet_url": "./animation-media/plasticbagghost-idlehover-runtime/east-runtime-atlas-9e91287176.png",
+          "source": "Assets/Monsters/Runtime/PlasticBagGhost/idle-hover-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:PlasticBagGhost:IdleHover",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "plasticbagghost-attack-runtime",
+      "entity_type": "monster",
+      "character": "PlasticBagGhost",
+      "character_label": "비닐봉지 유령",
+      "runtime_monster_id": "plastic_bag_ghost",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "비닐봉지 유령 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://119896966847988",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PlasticBagGhost",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/plasticbagghost-attack-runtime/east-runtime-preview-410bd2047e.gif",
+          "contact_sheet_url": "./animation-media/plasticbagghost-attack-runtime/east-runtime-atlas-fd63e30fa7.png",
+          "source": "Assets/Monsters/Runtime/PlasticBagGhost/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:PlasticBagGhost:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "plasticbagghost-hit-runtime",
+      "entity_type": "monster",
+      "character": "PlasticBagGhost",
+      "character_label": "비닐봉지 유령",
+      "runtime_monster_id": "plastic_bag_ghost",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "비닐봉지 유령 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://133712164360009",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PlasticBagGhost",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/plasticbagghost-hit-runtime/east-runtime-preview-513f490d12.gif",
+          "contact_sheet_url": "./animation-media/plasticbagghost-hit-runtime/east-runtime-atlas-67f0794a17.png",
+          "source": "Assets/Monsters/Runtime/PlasticBagGhost/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:PlasticBagGhost:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "plasticbagghost-death-runtime",
+      "entity_type": "monster",
+      "character": "PlasticBagGhost",
+      "character_label": "비닐봉지 유령",
+      "runtime_monster_id": "plastic_bag_ghost",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "비닐봉지 유령 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://85852965399746",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PlasticBagGhost",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/plasticbagghost-death-runtime/east-runtime-preview-618cf47a03.gif",
+          "contact_sheet_url": "./animation-media/plasticbagghost-death-runtime/east-runtime-atlas-269e182003.png",
+          "source": "Assets/Monsters/Runtime/PlasticBagGhost/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:PlasticBagGhost:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "plasticbagghost-fly-runtime",
+      "entity_type": "monster",
+      "character": "PlasticBagGhost",
+      "character_label": "비닐봉지 유령",
+      "runtime_monster_id": "plastic_bag_ghost",
+      "action": "Fly",
+      "action_label": "Fly",
+      "title": "비닐봉지 유령 · Fly",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 12.0,
+      "duration_seconds": 0.667,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://102004340124718",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/PlasticBagGhost",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/plasticbagghost-fly-runtime/east-runtime-preview-aaf44037b6.gif",
+          "contact_sheet_url": "./animation-media/plasticbagghost-fly-runtime/east-runtime-atlas-0f6d6c4c3d.png",
+          "source": "Assets/Monsters/Runtime/PlasticBagGhost/fly-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:PlasticBagGhost:Fly",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "scouringpadfuzz-idle-runtime",
+      "entity_type": "monster",
+      "character": "ScouringPadFuzz",
+      "character_label": "수세미 복슬이",
+      "runtime_monster_id": "scouring_pad_fuzz",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "수세미 복슬이 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://136196064630040",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScouringPadFuzz",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/scouringpadfuzz-idle-runtime/east-runtime-preview-7874b95a7a.gif",
+          "contact_sheet_url": "./animation-media/scouringpadfuzz-idle-runtime/east-runtime-atlas-31f0ccfd2b.png",
+          "source": "Assets/Monsters/Runtime/ScouringPadFuzz/idle-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ScouringPadFuzz:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "scouringpadfuzz-walk-runtime",
+      "entity_type": "monster",
+      "character": "ScouringPadFuzz",
+      "character_label": "수세미 복슬이",
+      "runtime_monster_id": "scouring_pad_fuzz",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "수세미 복슬이 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 0.8,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://103028701437281",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScouringPadFuzz",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/scouringpadfuzz-walk-runtime/east-runtime-preview-f6c9226f63.gif",
+          "contact_sheet_url": "./animation-media/scouringpadfuzz-walk-runtime/east-runtime-atlas-9213a3778d.png",
+          "source": "Assets/Monsters/Runtime/ScouringPadFuzz/walk-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:ScouringPadFuzz:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "scouringpadfuzz-attack-runtime",
+      "entity_type": "monster",
+      "character": "ScouringPadFuzz",
+      "character_label": "수세미 복슬이",
+      "runtime_monster_id": "scouring_pad_fuzz",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "수세미 복슬이 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://118520941853182",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScouringPadFuzz",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/scouringpadfuzz-attack-runtime/east-runtime-preview-a423bfec49.gif",
+          "contact_sheet_url": "./animation-media/scouringpadfuzz-attack-runtime/east-runtime-atlas-18260689a4.png",
+          "source": "Assets/Monsters/Runtime/ScouringPadFuzz/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ScouringPadFuzz:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "scouringpadfuzz-hit-runtime",
+      "entity_type": "monster",
+      "character": "ScouringPadFuzz",
+      "character_label": "수세미 복슬이",
+      "runtime_monster_id": "scouring_pad_fuzz",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "수세미 복슬이 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://79244599033020",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScouringPadFuzz",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/scouringpadfuzz-hit-runtime/east-runtime-preview-4e9f57e6d3.gif",
+          "contact_sheet_url": "./animation-media/scouringpadfuzz-hit-runtime/east-runtime-atlas-2fd489b868.png",
+          "source": "Assets/Monsters/Runtime/ScouringPadFuzz/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ScouringPadFuzz:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "scouringpadfuzz-death-runtime",
+      "entity_type": "monster",
+      "character": "ScouringPadFuzz",
+      "character_label": "수세미 복슬이",
+      "runtime_monster_id": "scouring_pad_fuzz",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "수세미 복슬이 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://120926466325778",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScouringPadFuzz",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/scouringpadfuzz-death-runtime/east-runtime-preview-c2cde7eae9.gif",
+          "contact_sheet_url": "./animation-media/scouringpadfuzz-death-runtime/east-runtime-atlas-2664485661.png",
+          "source": "Assets/Monsters/Runtime/ScouringPadFuzz/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ScouringPadFuzz:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "screwsnail-idle-runtime",
+      "entity_type": "monster",
+      "character": "ScrewSnail",
+      "character_label": "나사 달팽이",
+      "runtime_monster_id": "screw_snail",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "나사 달팽이 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://120193891545502",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScrewSnail",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/screwsnail-idle-runtime/east-runtime-preview-2bfc455aa9.gif",
+          "contact_sheet_url": "./animation-media/screwsnail-idle-runtime/east-runtime-atlas-b1402a782f.png",
+          "source": "Assets/Monsters/Runtime/ScrewSnail/idle-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ScrewSnail:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "screwsnail-walk-runtime",
+      "entity_type": "monster",
+      "character": "ScrewSnail",
+      "character_label": "나사 달팽이",
+      "runtime_monster_id": "screw_snail",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "나사 달팽이 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 0.8,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://119393889177617",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScrewSnail",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/screwsnail-walk-runtime/east-runtime-preview-c19830de0f.gif",
+          "contact_sheet_url": "./animation-media/screwsnail-walk-runtime/east-runtime-atlas-c12b062ca3.png",
+          "source": "Assets/Monsters/Runtime/ScrewSnail/walk-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:ScrewSnail:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "screwsnail-attack-runtime",
+      "entity_type": "monster",
+      "character": "ScrewSnail",
+      "character_label": "나사 달팽이",
+      "runtime_monster_id": "screw_snail",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "나사 달팽이 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://126642632915191",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScrewSnail",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/screwsnail-attack-runtime/east-runtime-preview-79de16d106.gif",
+          "contact_sheet_url": "./animation-media/screwsnail-attack-runtime/east-runtime-atlas-20aaa9cffe.png",
+          "source": "Assets/Monsters/Runtime/ScrewSnail/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ScrewSnail:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "screwsnail-hit-runtime",
+      "entity_type": "monster",
+      "character": "ScrewSnail",
+      "character_label": "나사 달팽이",
+      "runtime_monster_id": "screw_snail",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "나사 달팽이 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://115135762445155",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScrewSnail",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/screwsnail-hit-runtime/east-runtime-preview-8f4c70f077.gif",
+          "contact_sheet_url": "./animation-media/screwsnail-hit-runtime/east-runtime-atlas-5835febfd6.png",
+          "source": "Assets/Monsters/Runtime/ScrewSnail/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ScrewSnail:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "screwsnail-death-runtime",
+      "entity_type": "monster",
+      "character": "ScrewSnail",
+      "character_label": "나사 달팽이",
+      "runtime_monster_id": "screw_snail",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "나사 달팽이 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://75769380151668",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ScrewSnail",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/screwsnail-death-runtime/east-runtime-preview-2ed9dd42dd.gif",
+          "contact_sheet_url": "./animation-media/screwsnail-death-runtime/east-runtime-atlas-2b71238d10.png",
+          "source": "Assets/Monsters/Runtime/ScrewSnail/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ScrewSnail:Death",
       "runtime_relation": "live",
       "selection_state": "current"
     },
@@ -957,6 +2498,196 @@ window.PACKBOUND_ANIMATION_DB = {
       "selection_state": "current"
     },
     {
+      "id": "tireroller-idle-runtime",
+      "entity_type": "monster",
+      "character": "TireRoller",
+      "character_label": "타이어 통통이",
+      "runtime_monster_id": "tire_roller",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "타이어 통통이 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://104472958425868",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/TireRoller",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/tireroller-idle-runtime/east-runtime-preview-d8145b95d4.gif",
+          "contact_sheet_url": "./animation-media/tireroller-idle-runtime/east-runtime-atlas-0603a8a412.png",
+          "source": "Assets/Monsters/Runtime/TireRoller/idle-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:TireRoller:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "tireroller-walk-runtime",
+      "entity_type": "monster",
+      "character": "TireRoller",
+      "character_label": "타이어 통통이",
+      "runtime_monster_id": "tire_roller",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "타이어 통통이 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 0.8,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://95432785814452",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/TireRoller",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/tireroller-walk-runtime/east-runtime-preview-324b48c39f.gif",
+          "contact_sheet_url": "./animation-media/tireroller-walk-runtime/east-runtime-atlas-646f713bd5.png",
+          "source": "Assets/Monsters/Runtime/TireRoller/walk-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:TireRoller:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "tireroller-attack-runtime",
+      "entity_type": "monster",
+      "character": "TireRoller",
+      "character_label": "타이어 통통이",
+      "runtime_monster_id": "tire_roller",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "타이어 통통이 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://90247668648291",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/TireRoller",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/tireroller-attack-runtime/east-runtime-preview-53c5147505.gif",
+          "contact_sheet_url": "./animation-media/tireroller-attack-runtime/east-runtime-atlas-9fa622fa75.png",
+          "source": "Assets/Monsters/Runtime/TireRoller/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:TireRoller:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "tireroller-hit-runtime",
+      "entity_type": "monster",
+      "character": "TireRoller",
+      "character_label": "타이어 통통이",
+      "runtime_monster_id": "tire_roller",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "타이어 통통이 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://131858856415338",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/TireRoller",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/tireroller-hit-runtime/east-runtime-preview-a110031889.gif",
+          "contact_sheet_url": "./animation-media/tireroller-hit-runtime/east-runtime-atlas-143bd3653b.png",
+          "source": "Assets/Monsters/Runtime/TireRoller/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:TireRoller:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "tireroller-death-runtime",
+      "entity_type": "monster",
+      "character": "TireRoller",
+      "character_label": "타이어 통통이",
+      "runtime_monster_id": "tire_roller",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "타이어 통통이 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://128397977751752",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/TireRoller",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/tireroller-death-runtime/east-runtime-preview-9b71db760a.gif",
+          "contact_sheet_url": "./animation-media/tireroller-death-runtime/east-runtime-atlas-1f03295515.png",
+          "source": "Assets/Monsters/Runtime/TireRoller/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:TireRoller:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
       "id": "walkingnest-idle-runtime",
       "entity_type": "monster",
       "character": "WalkingNest",
@@ -1257,6 +2988,196 @@ window.PACKBOUND_ANIMATION_DB = {
         }
       ],
       "selection_group": "monster:WhirlDashSpirit:OrbDash",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "zippercentipede-idle-runtime",
+      "entity_type": "monster",
+      "character": "ZipperCentipede",
+      "character_label": "지퍼 지네",
+      "runtime_monster_id": "zipper_centipede",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "지퍼 지네 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 8.0,
+      "duration_seconds": 0.75,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://90772541830300",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ZipperCentipede",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/zippercentipede-idle-runtime/east-runtime-preview-4691aabb44.gif",
+          "contact_sheet_url": "./animation-media/zippercentipede-idle-runtime/east-runtime-atlas-e64bfed593.png",
+          "source": "Assets/Monsters/Runtime/ZipperCentipede/idle-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ZipperCentipede:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "zippercentipede-walk-runtime",
+      "entity_type": "monster",
+      "character": "ZipperCentipede",
+      "character_label": "지퍼 지네",
+      "runtime_monster_id": "zipper_centipede",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "지퍼 지네 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 0.8,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://79901529524855",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ZipperCentipede",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/zippercentipede-walk-runtime/east-runtime-preview-60c3511a2e.gif",
+          "contact_sheet_url": "./animation-media/zippercentipede-walk-runtime/east-runtime-atlas-19ac567c94.png",
+          "source": "Assets/Monsters/Runtime/ZipperCentipede/walk-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:ZipperCentipede:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "zippercentipede-attack-runtime",
+      "entity_type": "monster",
+      "character": "ZipperCentipede",
+      "character_label": "지퍼 지네",
+      "runtime_monster_id": "zipper_centipede",
+      "action": "Attack",
+      "action_label": "공격",
+      "title": "지퍼 지네 · 공격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://96916671627435",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ZipperCentipede",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/zippercentipede-attack-runtime/east-runtime-preview-b885bda9b3.gif",
+          "contact_sheet_url": "./animation-media/zippercentipede-attack-runtime/east-runtime-atlas-fdec1673c3.png",
+          "source": "Assets/Monsters/Runtime/ZipperCentipede/attack-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ZipperCentipede:Attack",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "zippercentipede-hit-runtime",
+      "entity_type": "monster",
+      "character": "ZipperCentipede",
+      "character_label": "지퍼 지네",
+      "runtime_monster_id": "zipper_centipede",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "지퍼 지네 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://132023871010471",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ZipperCentipede",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/zippercentipede-hit-runtime/east-runtime-preview-419d80b410.gif",
+          "contact_sheet_url": "./animation-media/zippercentipede-hit-runtime/east-runtime-atlas-450f114e81.png",
+          "source": "Assets/Monsters/Runtime/ZipperCentipede/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ZipperCentipede:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "zippercentipede-death-runtime",
+      "entity_type": "monster",
+      "character": "ZipperCentipede",
+      "character_label": "지퍼 지네",
+      "runtime_monster_id": "zipper_centipede",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "지퍼 지네 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 12.0,
+      "duration_seconds": 0.5,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://137924703575565",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/ZipperCentipede",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/zippercentipede-death-runtime/east-runtime-preview-59eebe7bd1.gif",
+          "contact_sheet_url": "./animation-media/zippercentipede-death-runtime/east-runtime-atlas-dd456c0896.png",
+          "source": "Assets/Monsters/Runtime/ZipperCentipede/death-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:ZipperCentipede:Death",
       "runtime_relation": "live",
       "selection_state": "current"
     },
@@ -1644,6 +3565,111 @@ window.PACKBOUND_ANIMATION_DB = {
   "selection_count": 0,
   "selections": [
     {
+      "group": "monster:BottlecapBeetle:Attack",
+      "current_record_id": "bottlecapbeetle-attack-runtime",
+      "selected_record_id": "bottlecapbeetle-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BottlecapBeetle:Death",
+      "current_record_id": "bottlecapbeetle-death-runtime",
+      "selected_record_id": "bottlecapbeetle-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BottlecapBeetle:Hit",
+      "current_record_id": "bottlecapbeetle-hit-runtime",
+      "selected_record_id": "bottlecapbeetle-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BottlecapBeetle:Idle",
+      "current_record_id": "bottlecapbeetle-idle-runtime",
+      "selected_record_id": "bottlecapbeetle-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BottlecapBeetle:Walk",
+      "current_record_id": "bottlecapbeetle-walk-runtime",
+      "selected_record_id": "bottlecapbeetle-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BulbGnat:Attack",
+      "current_record_id": "bulbgnat-attack-runtime",
+      "selected_record_id": "bulbgnat-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BulbGnat:Death",
+      "current_record_id": "bulbgnat-death-runtime",
+      "selected_record_id": "bulbgnat-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BulbGnat:Fly",
+      "current_record_id": "bulbgnat-fly-runtime",
+      "selected_record_id": "bulbgnat-fly-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BulbGnat:Hit",
+      "current_record_id": "bulbgnat-hit-runtime",
+      "selected_record_id": "bulbgnat-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:BulbGnat:IdleHover",
+      "current_record_id": "bulbgnat-idlehover-runtime",
+      "selected_record_id": "bulbgnat-idlehover-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:CableWorm:Attack",
+      "current_record_id": "cableworm-attack-runtime",
+      "selected_record_id": "cableworm-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:CableWorm:Death",
+      "current_record_id": "cableworm-death-runtime",
+      "selected_record_id": "cableworm-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:CableWorm:Hit",
+      "current_record_id": "cableworm-hit-runtime",
+      "selected_record_id": "cableworm-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:CableWorm:Idle",
+      "current_record_id": "cableworm-idle-runtime",
+      "selected_record_id": "cableworm-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:CableWorm:Walk",
+      "current_record_id": "cableworm-walk-runtime",
+      "selected_record_id": "cableworm-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
       "group": "monster:FanburstArtillery:Attack",
       "current_record_id": "fanburstartillery-attack-runtime",
       "selected_record_id": "fanburstartillery-attack-runtime",
@@ -1714,6 +3740,41 @@ window.PACKBOUND_ANIMATION_DB = {
       "selected_on": null
     },
     {
+      "group": "monster:JunkCanPillbug:Attack",
+      "current_record_id": "junkcanpillbug-attack-runtime",
+      "selected_record_id": "junkcanpillbug-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:JunkCanPillbug:Death",
+      "current_record_id": "junkcanpillbug-death-runtime",
+      "selected_record_id": "junkcanpillbug-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:JunkCanPillbug:Hit",
+      "current_record_id": "junkcanpillbug-hit-runtime",
+      "selected_record_id": "junkcanpillbug-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:JunkCanPillbug:Idle",
+      "current_record_id": "junkcanpillbug-idle-runtime",
+      "selected_record_id": "junkcanpillbug-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:JunkCanPillbug:Walk",
+      "current_record_id": "junkcanpillbug-walk-runtime",
+      "selected_record_id": "junkcanpillbug-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
       "group": "monster:NestHatchlingLizard:Attack",
       "current_record_id": "nesthatchlinglizard-attack-runtime",
       "selected_record_id": "nesthatchlinglizard-attack-runtime",
@@ -1752,6 +3813,146 @@ window.PACKBOUND_ANIMATION_DB = {
       "group": "monster:NestHatchlingLizard:Walk",
       "current_record_id": "nesthatchlinglizard-walk-runtime",
       "selected_record_id": "nesthatchlinglizard-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PaperCupHermit:Attack",
+      "current_record_id": "papercuphermit-attack-runtime",
+      "selected_record_id": "papercuphermit-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PaperCupHermit:Death",
+      "current_record_id": "papercuphermit-death-runtime",
+      "selected_record_id": "papercuphermit-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PaperCupHermit:Hit",
+      "current_record_id": "papercuphermit-hit-runtime",
+      "selected_record_id": "papercuphermit-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PaperCupHermit:Idle",
+      "current_record_id": "papercuphermit-idle-runtime",
+      "selected_record_id": "papercuphermit-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PaperCupHermit:Walk",
+      "current_record_id": "papercuphermit-walk-runtime",
+      "selected_record_id": "papercuphermit-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PlasticBagGhost:Attack",
+      "current_record_id": "plasticbagghost-attack-runtime",
+      "selected_record_id": "plasticbagghost-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PlasticBagGhost:Death",
+      "current_record_id": "plasticbagghost-death-runtime",
+      "selected_record_id": "plasticbagghost-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PlasticBagGhost:Fly",
+      "current_record_id": "plasticbagghost-fly-runtime",
+      "selected_record_id": "plasticbagghost-fly-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PlasticBagGhost:Hit",
+      "current_record_id": "plasticbagghost-hit-runtime",
+      "selected_record_id": "plasticbagghost-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:PlasticBagGhost:IdleHover",
+      "current_record_id": "plasticbagghost-idlehover-runtime",
+      "selected_record_id": "plasticbagghost-idlehover-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScouringPadFuzz:Attack",
+      "current_record_id": "scouringpadfuzz-attack-runtime",
+      "selected_record_id": "scouringpadfuzz-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScouringPadFuzz:Death",
+      "current_record_id": "scouringpadfuzz-death-runtime",
+      "selected_record_id": "scouringpadfuzz-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScouringPadFuzz:Hit",
+      "current_record_id": "scouringpadfuzz-hit-runtime",
+      "selected_record_id": "scouringpadfuzz-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScouringPadFuzz:Idle",
+      "current_record_id": "scouringpadfuzz-idle-runtime",
+      "selected_record_id": "scouringpadfuzz-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScouringPadFuzz:Walk",
+      "current_record_id": "scouringpadfuzz-walk-runtime",
+      "selected_record_id": "scouringpadfuzz-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScrewSnail:Attack",
+      "current_record_id": "screwsnail-attack-runtime",
+      "selected_record_id": "screwsnail-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScrewSnail:Death",
+      "current_record_id": "screwsnail-death-runtime",
+      "selected_record_id": "screwsnail-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScrewSnail:Hit",
+      "current_record_id": "screwsnail-hit-runtime",
+      "selected_record_id": "screwsnail-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScrewSnail:Idle",
+      "current_record_id": "screwsnail-idle-runtime",
+      "selected_record_id": "screwsnail-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ScrewSnail:Walk",
+      "current_record_id": "screwsnail-walk-runtime",
+      "selected_record_id": "screwsnail-walk-runtime",
       "pending": false,
       "selected_on": null
     },
@@ -1812,6 +4013,41 @@ window.PACKBOUND_ANIMATION_DB = {
       "selected_on": null
     },
     {
+      "group": "monster:TireRoller:Attack",
+      "current_record_id": "tireroller-attack-runtime",
+      "selected_record_id": "tireroller-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:TireRoller:Death",
+      "current_record_id": "tireroller-death-runtime",
+      "selected_record_id": "tireroller-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:TireRoller:Hit",
+      "current_record_id": "tireroller-hit-runtime",
+      "selected_record_id": "tireroller-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:TireRoller:Idle",
+      "current_record_id": "tireroller-idle-runtime",
+      "selected_record_id": "tireroller-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:TireRoller:Walk",
+      "current_record_id": "tireroller-walk-runtime",
+      "selected_record_id": "tireroller-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
       "group": "monster:WalkingNest:Attack",
       "current_record_id": "walkingnest-attack-runtime",
       "selected_record_id": "walkingnest-attack-runtime",
@@ -1868,6 +4104,41 @@ window.PACKBOUND_ANIMATION_DB = {
       "selected_on": null
     },
     {
+      "group": "monster:ZipperCentipede:Attack",
+      "current_record_id": "zippercentipede-attack-runtime",
+      "selected_record_id": "zippercentipede-attack-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ZipperCentipede:Death",
+      "current_record_id": "zippercentipede-death-runtime",
+      "selected_record_id": "zippercentipede-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ZipperCentipede:Hit",
+      "current_record_id": "zippercentipede-hit-runtime",
+      "selected_record_id": "zippercentipede-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ZipperCentipede:Idle",
+      "current_record_id": "zippercentipede-idle-runtime",
+      "selected_record_id": "zippercentipede-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:ZipperCentipede:Walk",
+      "current_record_id": "zippercentipede-walk-runtime",
+      "selected_record_id": "zippercentipede-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
       "group": "player:RookieMale:Dash",
       "current_record_id": "rookiemale-dash-bd627647",
       "selected_record_id": "rookiemale-dash-bd627647",
@@ -1890,7 +4161,7 @@ window.PACKBOUND_ANIMATION_DB = {
     }
   ],
   "workspace_source": "Assets/**/SpriteProduction/**/sprite-request.json",
-  "workspace_count": 8,
+  "workspace_count": 20,
   "workspaces": [
     {
       "id": "underworld-chain-executioner-slash-fx-0b7f8c17",
@@ -1916,6 +4187,159 @@ window.PACKBOUND_ANIMATION_DB = {
       "representative_url": "./animation-media/workspaces/underworld-chain-executioner-slash-fx-0b7f8c17/subject-representative-c762f49ae6.png",
       "preview_url": "./animation-media/workspaces/underworld-chain-executioner-slash-fx-0b7f8c17/workspace-preview-0d7f9d72af.png",
       "curation_available": true
+    },
+    {
+      "id": "bottlecapbeetle-e77755c5",
+      "entity_type": "monster",
+      "character": "BottlecapBeetle",
+      "character_label": "병뚜껑 딱정이",
+      "title": "병뚜껑 딱정이",
+      "description": "주황색 병뚜껑을 등껍질로 쓰는 빠른 군집형 잡몹이다. 작은 다리로 몰려들어 양쪽 집게로 짧게 꼬집는다.",
+      "source_root": "Assets/Monsters/Runtime/BottlecapBeetle",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "Idle",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Walk",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/bottlecapbeetle-e77755c5/runtime-workspace-preview-44205bd1b1.png",
+      "preview_url": "./animation-media/workspaces/bottlecapbeetle-e77755c5/runtime-workspace-preview-44205bd1b1.png",
+      "curation_available": false
+    },
+    {
+      "id": "bulbgnat-f73f0d81",
+      "entity_type": "monster",
+      "character": "BulbGnat",
+      "character_label": "전구 날파리",
+      "title": "전구 날파리",
+      "description": "작은 전구 몸과 반투명 날개로 떠다니는 비행형 잡몹이다. 낮게 날아 접근한 뒤 머리와 전구 몸체로 빠르게 들이받는다.",
+      "source_root": "Assets/Monsters/Runtime/BulbGnat",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "IdleHover",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "Fly",
+          "frames": 8,
+          "fps": 12.0,
+          "loop": true
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/bulbgnat-f73f0d81/runtime-workspace-preview-13e1b79ca5.png",
+      "preview_url": "./animation-media/workspaces/bulbgnat-f73f0d81/runtime-workspace-preview-13e1b79ca5.png",
+      "curation_available": false
+    },
+    {
+      "id": "cableworm-2129eba3",
+      "entity_type": "monster",
+      "character": "CableWorm",
+      "character_label": "전선 지렁이",
+      "title": "전선 지렁이",
+      "description": "노랑·검정 절연 전선 몸과 플러그 머리를 가진 행렬형 잡몹이다. 좁은 몸으로 같은 표적을 따라붙어 플러그를 내민다.",
+      "source_root": "Assets/Monsters/Runtime/CableWorm",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "Idle",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Walk",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/cableworm-2129eba3/runtime-workspace-preview-2181a72b70.png",
+      "preview_url": "./animation-media/workspaces/cableworm-2129eba3/runtime-workspace-preview-2181a72b70.png",
+      "curation_available": false
     },
     {
       "id": "fanburstartillery-9932e182",
@@ -1983,7 +4407,7 @@ window.PACKBOUND_ANIMATION_DB = {
       "status": "curated",
       "status_label": "큐레이션 적용",
       "state_count": 4,
-      "frame_count": 32,
+      "frame_count": 33,
       "states": [
         {
           "name": "Idle",
@@ -2005,7 +4429,7 @@ window.PACKBOUND_ANIMATION_DB = {
         },
         {
           "name": "VineEruption",
-          "frames": 8,
+          "frames": 9,
           "fps": 8.0,
           "loop": false
         }
@@ -2014,6 +4438,261 @@ window.PACKBOUND_ANIMATION_DB = {
       "representative_url": "./animation-media/workspaces/grassvinemonster-c26c23c2/subject-representative-900a21ef76.png",
       "preview_url": "./animation-media/workspaces/grassvinemonster-c26c23c2/workspace-preview-79f9116be5.png",
       "curation_available": true
+    },
+    {
+      "id": "junkcanpillbug-6cb92c1b",
+      "entity_type": "monster",
+      "character": "JunkCanPillbug",
+      "character_label": "깡통 콩벌레",
+      "title": "깡통 콩벌레",
+      "description": "찌그러진 청록색 음료 캔을 등껍질처럼 두른 표준 추적형 잡몹이다. 여섯 발로 짧게 접근해 캔 입구와 이마로 들이받는다.",
+      "source_root": "Assets/Monsters/Runtime/JunkCanPillbug",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "Idle",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Walk",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/junkcanpillbug-6cb92c1b/runtime-workspace-preview-1108e8b88b.png",
+      "preview_url": "./animation-media/workspaces/junkcanpillbug-6cb92c1b/runtime-workspace-preview-1108e8b88b.png",
+      "curation_available": false
+    },
+    {
+      "id": "papercuphermit-625f358a",
+      "entity_type": "monster",
+      "character": "PaperCupHermit",
+      "character_label": "종이컵 소라게",
+      "title": "종이컵 소라게",
+      "description": "찌그러진 종이컵을 집으로 삼아 천천히 전방을 메우는 완충형 잡몹이다. 집게와 컵 몸통으로 가까운 플레이어를 밀어붙인다.",
+      "source_root": "Assets/Monsters/Runtime/PaperCupHermit",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "Idle",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Walk",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/papercuphermit-625f358a/runtime-workspace-preview-474aefdb82.png",
+      "preview_url": "./animation-media/workspaces/papercuphermit-625f358a/runtime-workspace-preview-474aefdb82.png",
+      "curation_available": false
+    },
+    {
+      "id": "plasticbagghost-8be04a8c",
+      "entity_type": "monster",
+      "character": "PlasticBagGhost",
+      "character_label": "비닐봉지 유령",
+      "title": "비닐봉지 유령",
+      "description": "반투명 비닐봉지 몸이 바람에 흔들리는 비행형 잡몹이다. 낮게 부유해 다가오며 봉지 입구와 얼굴로 짧게 덮친다.",
+      "source_root": "Assets/Monsters/Runtime/PlasticBagGhost",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "IdleHover",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "Fly",
+          "frames": 8,
+          "fps": 12.0,
+          "loop": true
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/plasticbagghost-8be04a8c/runtime-workspace-preview-9e91287176.png",
+      "preview_url": "./animation-media/workspaces/plasticbagghost-8be04a8c/runtime-workspace-preview-9e91287176.png",
+      "curation_available": false
+    },
+    {
+      "id": "scouringpadfuzz-fea7cbee",
+      "entity_type": "monster",
+      "character": "ScouringPadFuzz",
+      "character_label": "수세미 복슬이",
+      "title": "수세미 복슬이",
+      "description": "초록 수세미를 털처럼 뒤집어쓴 둔중한 잡몹이다. 짧은 다리로 무리 속을 메우며 복슬한 몸 전체로 밀고 들어온다.",
+      "source_root": "Assets/Monsters/Runtime/ScouringPadFuzz",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "Idle",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Walk",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/scouringpadfuzz-fea7cbee/runtime-workspace-preview-31f0ccfd2b.png",
+      "preview_url": "./animation-media/workspaces/scouringpadfuzz-fea7cbee/runtime-workspace-preview-31f0ccfd2b.png",
+      "curation_available": false
+    },
+    {
+      "id": "screwsnail-f56e0678",
+      "entity_type": "monster",
+      "character": "ScrewSnail",
+      "character_label": "나사 달팽이",
+      "title": "나사 달팽이",
+      "description": "무거운 나사 껍데기를 지고 느리게 전선을 밀어내는 공간 압박형 잡몹이다. 짧은 촉수와 머리로 가까운 플레이어를 들이받는다.",
+      "source_root": "Assets/Monsters/Runtime/ScrewSnail",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "Idle",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Walk",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/screwsnail-f56e0678/runtime-workspace-preview-b1402a782f.png",
+      "preview_url": "./animation-media/workspaces/screwsnail-f56e0678/runtime-workspace-preview-b1402a782f.png",
+      "curation_available": false
     },
     {
       "id": "stampfootleaper-7a7ad090",
@@ -2083,6 +4762,57 @@ window.PACKBOUND_ANIMATION_DB = {
       "curation_available": true
     },
     {
+      "id": "tireroller-8df89b05",
+      "entity_type": "monster",
+      "character": "TireRoller",
+      "character_label": "타이어 통통이",
+      "title": "타이어 통통이",
+      "description": "타이어 몸통과 큰 두 발로 빠르게 공간을 압박하는 잡몹이다. 방향 전환은 둔하지만 몸 전체를 굴려 강하게 부딪힌다.",
+      "source_root": "Assets/Monsters/Runtime/TireRoller",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "Idle",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Walk",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/tireroller-8df89b05/runtime-workspace-preview-0603a8a412.png",
+      "preview_url": "./animation-media/workspaces/tireroller-8df89b05/runtime-workspace-preview-0603a8a412.png",
+      "curation_available": false
+    },
+    {
       "id": "whirldashspirit-c1de6c26",
       "entity_type": "monster",
       "character": "WhirlDashSpirit",
@@ -2118,6 +4848,57 @@ window.PACKBOUND_ANIMATION_DB = {
       "representative_url": "./animation-media/workspaces/whirldashspirit-c1de6c26/subject-representative-1fb29f65b4.png",
       "preview_url": "./animation-media/workspaces/whirldashspirit-c1de6c26/workspace-preview-e04bb614c7.png",
       "curation_available": true
+    },
+    {
+      "id": "zippercentipede-9f0b1384",
+      "entity_type": "monster",
+      "character": "ZipperCentipede",
+      "character_label": "지퍼 지네",
+      "title": "지퍼 지네",
+      "description": "주황색 지퍼 머리와 금속 이빨 같은 등을 가진 길쭉한 잡몹이다. 여러 발로 빠르게 붙어 지퍼 고리로 물어뜯는다.",
+      "source_root": "Assets/Monsters/Runtime/ZipperCentipede",
+      "status": "runtime",
+      "status_label": "게임 적용",
+      "state_count": 5,
+      "frame_count": 32,
+      "states": [
+        {
+          "name": "Idle",
+          "frames": 6,
+          "fps": 8.0,
+          "loop": true
+        },
+        {
+          "name": "Walk",
+          "frames": 8,
+          "fps": 10.0,
+          "loop": true
+        },
+        {
+          "name": "Attack",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Hit",
+          "frames": 6,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "Death",
+          "frames": 6,
+          "fps": 12.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "East"
+      ],
+      "representative_url": "./animation-media/workspaces/zippercentipede-9f0b1384/runtime-workspace-preview-e64bfed593.png",
+      "preview_url": "./animation-media/workspaces/zippercentipede-9f0b1384/runtime-workspace-preview-e64bfed593.png",
+      "curation_available": false
     },
     {
       "id": "nest-hatchling-lizard-da8c69df",
@@ -2178,6 +4959,205 @@ window.PACKBOUND_ANIMATION_DB = {
       "directions": [],
       "representative_url": "./animation-media/workspaces/nest-hatchling-lizard-da8c69df/subject-representative-f8c7976180.png",
       "preview_url": "./animation-media/workspaces/nest-hatchling-lizard-da8c69df/workspace-preview-c3eb60fe78.png",
+      "curation_available": true
+    },
+    {
+      "id": "overcharge-vendatoad-09902ed9",
+      "entity_type": "monster",
+      "character": "overcharge_vendatoad",
+      "character_label": "Overcharge Vendatoad",
+      "title": "Overcharge Vendatoad",
+      "description": "The exact approved v002 Overcharge Vendatoad identity anchor: a squat deep-purple discarded vending-machine toad with four distinct slime legs, one roof satellite dish, one cyan front coil, exactly three unlabeled green/cyan/purple cans, orange slot eyes, and one orange emergency button on the visible screen-right side.",
+      "source_root": "Assets/Monsters/SpriteProduction/OverchargeVendatoad/Animation/v001",
+      "status": "curated",
+      "status_label": "큐레이션 적용",
+      "state_count": 30,
+      "frame_count": 110,
+      "states": [
+        {
+          "name": "idle_a",
+          "frames": 4,
+          "fps": 8.0,
+          "loop": false
+        },
+        {
+          "name": "idle_b",
+          "frames": 4,
+          "fps": 8.0,
+          "loop": false
+        },
+        {
+          "name": "walk_a",
+          "frames": 4,
+          "fps": 10.0,
+          "loop": false
+        },
+        {
+          "name": "walk_b",
+          "frames": 3,
+          "fps": 10.0,
+          "loop": false
+        },
+        {
+          "name": "walk_c",
+          "frames": 3,
+          "fps": 10.0,
+          "loop": false
+        },
+        {
+          "name": "hit_a",
+          "frames": 3,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "hit_b",
+          "frames": 3,
+          "fps": 15.0,
+          "loop": false
+        },
+        {
+          "name": "death_a",
+          "frames": 4,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "death_b",
+          "frames": 4,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "death_c",
+          "frames": 4,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "death_d",
+          "frames": 4,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "can_storm_a",
+          "frames": 4,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "can_storm_b",
+          "frames": 4,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "can_storm_c",
+          "frames": 3,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "can_storm_d",
+          "frames": 3,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "coil_ring_a",
+          "frames": 4,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "coil_ring_b",
+          "frames": 4,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "coil_ring_c",
+          "frames": 4,
+          "fps": 12.0,
+          "loop": false
+        },
+        {
+          "name": "dish_sweep_a",
+          "frames": 4,
+          "fps": 16.0,
+          "loop": false
+        },
+        {
+          "name": "dish_sweep_b",
+          "frames": 4,
+          "fps": 16.0,
+          "loop": false
+        },
+        {
+          "name": "dish_sweep_c",
+          "frames": 4,
+          "fps": 16.0,
+          "loop": false
+        },
+        {
+          "name": "dish_sweep_d",
+          "frames": 4,
+          "fps": 16.0,
+          "loop": false
+        },
+        {
+          "name": "sold_out_wall_a",
+          "frames": 4,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "sold_out_wall_b",
+          "frames": 4,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "sold_out_wall_c",
+          "frames": 3,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "sold_out_wall_d",
+          "frames": 3,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "jackpot_burst_a",
+          "frames": 4,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "jackpot_burst_b",
+          "frames": 4,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "jackpot_burst_c",
+          "frames": 3,
+          "fps": 14.0,
+          "loop": false
+        },
+        {
+          "name": "jackpot_burst_d",
+          "frames": 3,
+          "fps": 14.0,
+          "loop": false
+        }
+      ],
+      "directions": [],
+      "representative_url": "./animation-media/workspaces/overcharge-vendatoad-09902ed9/subject-representative-16903756af.png",
+      "preview_url": "./animation-media/workspaces/overcharge-vendatoad-09902ed9/workspace-preview-f97e859516.png",
       "curation_available": true
     },
     {
@@ -2303,6 +5283,124 @@ window.PACKBOUND_ANIMATION_DB = {
       "directions": [],
       "representative_url": "./animation-media/workspaces/walking-nest-b35c81eb/subject-representative-71e6df3140.png",
       "preview_url": "./animation-media/workspaces/walking-nest-b35c81eb/workspace-preview-3f79c5bec5.png",
+      "curation_available": true
+    },
+    {
+      "id": "tutorial-engineer-cebc9bfd",
+      "entity_type": "npc",
+      "character": "tutorial-engineer",
+      "character_label": "Tutorial-Engineer",
+      "title": "Tutorial-Engineer",
+      "description": "approved late-thirties scientist-engineer tutorial NPC; asymmetric cyan/amber goggles; physical-right diagnostic tool; physical-left coral boot lace",
+      "source_root": "Assets/Characters/NPC/TutorialEngineer/SpriteProduction/Candidates/v001/GameEmotes",
+      "status": "curated",
+      "status_label": "큐레이션 적용",
+      "state_count": 16,
+      "frame_count": 94,
+      "states": [
+        {
+          "name": "east_idle",
+          "frames": 18,
+          "fps": 4.0,
+          "loop": true
+        },
+        {
+          "name": "west_idle",
+          "frames": 18,
+          "fps": 4.0,
+          "loop": true
+        },
+        {
+          "name": "east_welcome",
+          "frames": 4,
+          "fps": 6.0,
+          "loop": false
+        },
+        {
+          "name": "west_welcome",
+          "frames": 4,
+          "fps": 6.0,
+          "loop": false
+        },
+        {
+          "name": "east_surprise",
+          "frames": 4,
+          "fps": 8.0,
+          "loop": false
+        },
+        {
+          "name": "west_surprise",
+          "frames": 4,
+          "fps": 8.0,
+          "loop": false
+        },
+        {
+          "name": "east_tearful",
+          "frames": 4,
+          "fps": 6.0,
+          "loop": false
+        },
+        {
+          "name": "west_tearful",
+          "frames": 4,
+          "fps": 6.0,
+          "loop": false
+        },
+        {
+          "name": "east_big_laugh",
+          "frames": 4,
+          "fps": 6.0,
+          "loop": false
+        },
+        {
+          "name": "west_big_laugh",
+          "frames": 4,
+          "fps": 6.0,
+          "loop": false
+        },
+        {
+          "name": "east_awkward",
+          "frames": 4,
+          "fps": 5.0,
+          "loop": false
+        },
+        {
+          "name": "west_awkward",
+          "frames": 4,
+          "fps": 5.0,
+          "loop": false
+        },
+        {
+          "name": "east_idea",
+          "frames": 4,
+          "fps": 8.0,
+          "loop": false
+        },
+        {
+          "name": "west_idea",
+          "frames": 4,
+          "fps": 8.0,
+          "loop": false
+        },
+        {
+          "name": "east_greeting",
+          "frames": 5,
+          "fps": 6.0,
+          "loop": false
+        },
+        {
+          "name": "west_greeting",
+          "frames": 5,
+          "fps": 6.0,
+          "loop": false
+        }
+      ],
+      "directions": [
+        "east",
+        "west"
+      ],
+      "representative_url": "./animation-media/workspaces/tutorial-engineer-cebc9bfd/workspace-preview-c5058dcea3.png",
+      "preview_url": "./animation-media/workspaces/tutorial-engineer-cebc9bfd/workspace-preview-c5058dcea3.png",
       "curation_available": true
     }
   ]

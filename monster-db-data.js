@@ -1,9 +1,11 @@
 window.PACKBOUND_MONSTER_DB = {
   "schema_version": 1,
-  "revision": "61f6402db732efba",
+  "revision": "eae9202ed1888c2e",
   "source": "docs/gameplay/monster-definitions.json",
-  "count": 6,
-  "active_count": 6,
+  "count": 17,
+  "runtime_count": 16,
+  "catalog_only_count": 1,
+  "active_count": 16,
   "groups": [
     {
       "name": "기본 정보",
@@ -25,6 +27,20 @@ window.PACKBOUND_MONSTER_DB = {
           "unit": "",
           "help": "끄면 새 몬스터를 생성하지 않습니다.",
           "readonly": false
+        },
+        {
+          "group": "기본 정보",
+          "path": "size_class",
+          "label": "크기 분류",
+          "kind": "select",
+          "unit": "",
+          "help": "전투 수치와 분리된 소형·중형·대형 분류입니다. 화면 크기는 size_scale이 담당합니다.",
+          "readonly": false,
+          "options": [
+            "Small",
+            "Medium",
+            "Large"
+          ]
         },
         {
           "group": "기본 정보",
@@ -416,6 +432,39 @@ window.PACKBOUND_MONSTER_DB = {
           "minimum": 0,
           "maximum": 10,
           "step": 1
+        },
+        {
+          "group": "이동·경로",
+          "path": "movement.crowd_separation_enabled",
+          "label": "군집 분리 조향",
+          "kind": "boolean",
+          "unit": "",
+          "help": "다수의 직접 추적 몬스터가 완전히 겹치지 않도록 저비용 근거리 분리 조향을 적용합니다.",
+          "readonly": false
+        },
+        {
+          "group": "이동·경로",
+          "path": "movement.crowd_separation_radius_studs",
+          "label": "군집 분리 반경",
+          "kind": "number",
+          "unit": "stud",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 20,
+          "step": 0.05
+        },
+        {
+          "group": "이동·경로",
+          "path": "movement.crowd_separation_weight",
+          "label": "군집 분리 강도",
+          "kind": "number",
+          "unit": "0–1",
+          "help": "",
+          "readonly": false,
+          "minimum": 0,
+          "maximum": 1,
+          "step": 0.05
         }
       ]
     },
@@ -489,6 +538,18 @@ window.PACKBOUND_MONSTER_DB = {
           "unit": "",
           "help": "",
           "readonly": false
+        },
+        {
+          "group": "AI 행동",
+          "path": "behavior.threat_cost",
+          "label": "위협 비용",
+          "kind": "number",
+          "unit": "cost",
+          "help": "웨이브 구성과 스트레스 프리셋에서 사용하는 상대 위협량입니다.",
+          "readonly": false,
+          "minimum": 0.01,
+          "maximum": 1000,
+          "step": 0.05
         }
       ]
     },
@@ -1870,7 +1931,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Idle"
         },
         {
           "group": "애니메이션 · Idle",
@@ -1888,7 +1950,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Idle"
         },
         {
           "group": "애니메이션 · Idle",
@@ -1906,7 +1969,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Idle"
         },
         {
           "group": "애니메이션 · Idle",
@@ -1921,7 +1985,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Idle"
         },
         {
           "group": "애니메이션 · Idle",
@@ -1940,7 +2005,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Idle"
         },
         {
           "group": "애니메이션 · Idle",
@@ -1958,7 +2024,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Idle"
         },
         {
           "group": "애니메이션 · Idle",
@@ -1976,7 +2043,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Idle"
         }
       ]
     },
@@ -1996,7 +2064,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Walk"
         },
         {
           "group": "애니메이션 · Walk",
@@ -2014,7 +2083,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Walk"
         },
         {
           "group": "애니메이션 · Walk",
@@ -2032,7 +2102,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Walk"
         },
         {
           "group": "애니메이션 · Walk",
@@ -2047,7 +2118,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Walk"
         },
         {
           "group": "애니메이션 · Walk",
@@ -2066,7 +2138,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Walk"
         },
         {
           "group": "애니메이션 · Walk",
@@ -2084,7 +2157,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Walk"
         },
         {
           "group": "애니메이션 · Walk",
@@ -2102,7 +2176,8 @@ window.PACKBOUND_MONSTER_DB = {
             "FanVolleyProjectile",
             "ContactMelee",
             "TelegraphedLeapSlam"
-          ]
+          ],
+          "requires_animation_clip": "Walk"
         }
       ]
     },
@@ -2342,8 +2417,10 @@ window.PACKBOUND_MONSTER_DB = {
           "help": "",
           "readonly": false,
           "attack_kinds": [
-            "TelegraphedLinearDash"
-          ]
+            "TelegraphedLinearDash",
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "IdleHover"
         },
         {
           "group": "애니메이션 · IdleHover",
@@ -2357,8 +2434,10 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 64,
           "step": 1,
           "attack_kinds": [
-            "TelegraphedLinearDash"
-          ]
+            "TelegraphedLinearDash",
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "IdleHover"
         },
         {
           "group": "애니메이션 · IdleHover",
@@ -2372,8 +2451,10 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 60,
           "step": 0.1,
           "attack_kinds": [
-            "TelegraphedLinearDash"
-          ]
+            "TelegraphedLinearDash",
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "IdleHover"
         },
         {
           "group": "애니메이션 · IdleHover",
@@ -2384,8 +2465,10 @@ window.PACKBOUND_MONSTER_DB = {
           "help": "",
           "readonly": false,
           "attack_kinds": [
-            "TelegraphedLinearDash"
-          ]
+            "TelegraphedLinearDash",
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "IdleHover"
         },
         {
           "group": "애니메이션 · IdleHover",
@@ -2400,8 +2483,10 @@ window.PACKBOUND_MONSTER_DB = {
             "Omni"
           ],
           "attack_kinds": [
-            "TelegraphedLinearDash"
-          ]
+            "TelegraphedLinearDash",
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "IdleHover"
         },
         {
           "group": "애니메이션 · IdleHover",
@@ -2415,8 +2500,10 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 4096,
           "step": 1,
           "attack_kinds": [
-            "TelegraphedLinearDash"
-          ]
+            "TelegraphedLinearDash",
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "IdleHover"
         },
         {
           "group": "애니메이션 · IdleHover",
@@ -2430,8 +2517,122 @@ window.PACKBOUND_MONSTER_DB = {
           "maximum": 4096,
           "step": 1,
           "attack_kinds": [
-            "TelegraphedLinearDash"
-          ]
+            "TelegraphedLinearDash",
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "IdleHover"
+        }
+      ]
+    },
+    {
+      "name": "애니메이션 · Fly",
+      "fields": [
+        {
+          "group": "애니메이션 · Fly",
+          "path": "presentation.animations.Fly.asset_id",
+          "label": "Roblox 아틀라스 ID",
+          "kind": "asset-id",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Fly"
+        },
+        {
+          "group": "애니메이션 · Fly",
+          "path": "presentation.animations.Fly.frame_count",
+          "label": "프레임 수",
+          "kind": "integer",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 64,
+          "step": 1,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Fly"
+        },
+        {
+          "group": "애니메이션 · Fly",
+          "path": "presentation.animations.Fly.fps",
+          "label": "기본 FPS",
+          "kind": "number",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "minimum": 0.1,
+          "maximum": 60,
+          "step": 0.1,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Fly"
+        },
+        {
+          "group": "애니메이션 · Fly",
+          "path": "presentation.animations.Fly.loop",
+          "label": "반복 재생",
+          "kind": "boolean",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Fly"
+        },
+        {
+          "group": "애니메이션 · Fly",
+          "path": "presentation.animations.Fly.direction",
+          "label": "방향 계약",
+          "kind": "select",
+          "unit": "",
+          "help": "",
+          "readonly": false,
+          "options": [
+            "East",
+            "Omni"
+          ],
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Fly"
+        },
+        {
+          "group": "애니메이션 · Fly",
+          "path": "presentation.animations.Fly.cell_width",
+          "label": "셀 너비",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Fly"
+        },
+        {
+          "group": "애니메이션 · Fly",
+          "path": "presentation.animations.Fly.cell_height",
+          "label": "셀 높이",
+          "kind": "integer",
+          "unit": "px",
+          "help": "",
+          "readonly": false,
+          "minimum": 1,
+          "maximum": 4096,
+          "step": 1,
+          "attack_kinds": [
+            "ContactMelee"
+          ],
+          "requires_animation_clip": "Fly"
         }
       ]
     },
@@ -3413,6 +3614,7 @@ window.PACKBOUND_MONSTER_DB = {
     {
       "id": "grass_vine_monster",
       "enabled": true,
+      "size_class": "Medium",
       "size_scale": 0.5,
       "identity": {
         "display_name": "가시덩굴 화분괴물",
@@ -3456,7 +3658,10 @@ window.PACKBOUND_MONSTER_DB = {
         "leash_range": 78,
         "return_home_distance": 5,
         "stuck_timeout_seconds": 2.5,
-        "path_retry_limit": 2
+        "path_retry_limit": 2,
+        "crowd_separation_enabled": false,
+        "crowd_separation_radius_studs": 1,
+        "crowd_separation_weight": 0
       },
       "behavior": {
         "ai_tick_seconds": 0.1,
@@ -3464,7 +3669,8 @@ window.PACKBOUND_MONSTER_DB = {
         "can_switch_targets": true,
         "switch_target_advantage": 6,
         "forget_target_seconds": 2.5,
-        "return_home_enabled": true
+        "return_home_enabled": true,
+        "threat_cost": 1
       },
       "attack": {
         "kind": "TargetedGroundEruption",
@@ -3586,11 +3792,13 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/grass_vine_monster.png?v=f2260ed76c13"
+      "concept_art_url": "./monster-media/grass_vine_monster.png?v=f2260ed76c13",
+      "catalog_only": false
     },
     {
       "id": "whirl_dash_spirit",
       "enabled": true,
+      "size_class": "Medium",
       "size_scale": 0.5,
       "identity": {
         "display_name": "회오리 돌진령",
@@ -3607,7 +3815,7 @@ window.PACKBOUND_MONSTER_DB = {
         ]
       },
       "stats": {
-        "max_health": 90,
+        "max_health": 110,
         "attack_power": 24,
         "defense": 1,
         "knockback_resistance": 0.15
@@ -3634,7 +3842,10 @@ window.PACKBOUND_MONSTER_DB = {
         "leash_range": 80,
         "return_home_distance": 5,
         "stuck_timeout_seconds": 2.5,
-        "path_retry_limit": 2
+        "path_retry_limit": 2,
+        "crowd_separation_enabled": false,
+        "crowd_separation_radius_studs": 1,
+        "crowd_separation_weight": 0
       },
       "behavior": {
         "ai_tick_seconds": 0.08,
@@ -3642,7 +3853,8 @@ window.PACKBOUND_MONSTER_DB = {
         "can_switch_targets": true,
         "switch_target_advantage": 6,
         "forget_target_seconds": 2.5,
-        "return_home_enabled": true
+        "return_home_enabled": true,
+        "threat_cost": 1
       },
       "attack": {
         "kind": "TelegraphedLinearDash",
@@ -3748,11 +3960,13 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/whirl_dash_spirit.png?v=dd0314752d5f"
+      "concept_art_url": "./monster-media/whirl_dash_spirit.png?v=dd0314752d5f",
+      "catalog_only": false
     },
     {
       "id": "fanburst_artillery",
       "enabled": true,
+      "size_class": "Medium",
       "size_scale": 0.5,
       "identity": {
         "display_name": "부채탄 포대충",
@@ -3769,7 +3983,7 @@ window.PACKBOUND_MONSTER_DB = {
         ]
       },
       "stats": {
-        "max_health": 140,
+        "max_health": 110,
         "attack_power": 15,
         "defense": 4,
         "knockback_resistance": 0.35
@@ -3796,7 +4010,10 @@ window.PACKBOUND_MONSTER_DB = {
         "leash_range": 82,
         "return_home_distance": 5,
         "stuck_timeout_seconds": 2.5,
-        "path_retry_limit": 2
+        "path_retry_limit": 2,
+        "crowd_separation_enabled": false,
+        "crowd_separation_radius_studs": 1,
+        "crowd_separation_weight": 0
       },
       "behavior": {
         "ai_tick_seconds": 0.08,
@@ -3804,7 +4021,8 @@ window.PACKBOUND_MONSTER_DB = {
         "can_switch_targets": true,
         "switch_target_advantage": 6,
         "forget_target_seconds": 2.5,
-        "return_home_enabled": true
+        "return_home_enabled": true,
+        "threat_cost": 1
       },
       "attack": {
         "kind": "FanVolleyProjectile",
@@ -3944,11 +4162,13 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/fanburst_artillery.png?v=315af1d579d5"
+      "concept_art_url": "./monster-media/fanburst_artillery.png?v=315af1d579d5",
+      "catalog_only": false
     },
     {
       "id": "stampfoot_leaper",
       "enabled": true,
+      "size_class": "Medium",
       "size_scale": 0.5,
       "identity": {
         "display_name": "도장발 쿵귀",
@@ -3965,7 +4185,7 @@ window.PACKBOUND_MONSTER_DB = {
         ]
       },
       "stats": {
-        "max_health": 165,
+        "max_health": 100,
         "attack_power": 24,
         "defense": 6,
         "knockback_resistance": 0.55
@@ -3992,7 +4212,10 @@ window.PACKBOUND_MONSTER_DB = {
         "leash_range": 80,
         "return_home_distance": 5,
         "stuck_timeout_seconds": 2.5,
-        "path_retry_limit": 2
+        "path_retry_limit": 2,
+        "crowd_separation_enabled": false,
+        "crowd_separation_radius_studs": 1,
+        "crowd_separation_weight": 0
       },
       "behavior": {
         "ai_tick_seconds": 0.08,
@@ -4000,7 +4223,8 @@ window.PACKBOUND_MONSTER_DB = {
         "can_switch_targets": true,
         "switch_target_advantage": 6,
         "forget_target_seconds": 2.5,
-        "return_home_enabled": true
+        "return_home_enabled": true,
+        "threat_cost": 1.5
       },
       "attack": {
         "kind": "TelegraphedLeapSlam",
@@ -4154,11 +4378,13 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/stampfoot_leaper.png?v=068fe62c7b4e"
+      "concept_art_url": "./monster-media/stampfoot_leaper.png?v=068fe62c7b4e",
+      "catalog_only": false
     },
     {
       "id": "walking_nest",
       "enabled": true,
+      "size_class": "Medium",
       "size_scale": 0.5,
       "identity": {
         "display_name": "걸어다니는 둥지",
@@ -4175,7 +4401,7 @@ window.PACKBOUND_MONSTER_DB = {
         ]
       },
       "stats": {
-        "max_health": 180,
+        "max_health": 120,
         "attack_power": 18,
         "defense": 5,
         "knockback_resistance": 0.55
@@ -4202,7 +4428,10 @@ window.PACKBOUND_MONSTER_DB = {
         "leash_range": 78,
         "return_home_distance": 5,
         "stuck_timeout_seconds": 2.5,
-        "path_retry_limit": 2
+        "path_retry_limit": 2,
+        "crowd_separation_enabled": false,
+        "crowd_separation_radius_studs": 1,
+        "crowd_separation_weight": 0
       },
       "behavior": {
         "ai_tick_seconds": 0.08,
@@ -4210,7 +4439,8 @@ window.PACKBOUND_MONSTER_DB = {
         "can_switch_targets": true,
         "switch_target_advantage": 6,
         "forget_target_seconds": 2.5,
-        "return_home_enabled": true
+        "return_home_enabled": true,
+        "threat_cost": 1
       },
       "attack": {
         "kind": "ContactMelee",
@@ -4328,11 +4558,13 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/walking_nest.png?v=6355a91a3423"
+      "concept_art_url": "./monster-media/walking_nest.png?v=6355a91a3423",
+      "catalog_only": false
     },
     {
       "id": "nest_hatchling_lizard",
       "enabled": true,
+      "size_class": "Small",
       "size_scale": 0.5,
       "identity": {
         "display_name": "새끼 도마뱀",
@@ -4349,7 +4581,7 @@ window.PACKBOUND_MONSTER_DB = {
         ]
       },
       "stats": {
-        "max_health": 28,
+        "max_health": 38,
         "attack_power": 8,
         "defense": 0,
         "knockback_resistance": 0.05
@@ -4376,7 +4608,10 @@ window.PACKBOUND_MONSTER_DB = {
         "leash_range": 82,
         "return_home_distance": 3,
         "stuck_timeout_seconds": 1.25,
-        "path_retry_limit": 2
+        "path_retry_limit": 2,
+        "crowd_separation_enabled": false,
+        "crowd_separation_radius_studs": 1,
+        "crowd_separation_weight": 0
       },
       "behavior": {
         "ai_tick_seconds": 0.05,
@@ -4384,7 +4619,8 @@ window.PACKBOUND_MONSTER_DB = {
         "can_switch_targets": true,
         "switch_target_advantage": 4,
         "forget_target_seconds": 1.5,
-        "return_home_enabled": true
+        "return_home_enabled": true,
+        "threat_cost": 0.25
       },
       "attack": {
         "kind": "ContactMelee",
@@ -4511,7 +4747,1825 @@ window.PACKBOUND_MONSTER_DB = {
           }
         }
       },
-      "concept_art_url": "./monster-media/nest_hatchling_lizard.png?v=8a5e2241df4f"
+      "concept_art_url": "./monster-media/nest_hatchling_lizard.png?v=8a5e2241df4f",
+      "catalog_only": false
+    },
+    {
+      "id": "junk_can_pillbug",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "깡통 콩벌레",
+        "description": "찌그러진 청록색 음료 캔을 등껍질처럼 두른 표준 추적형 잡몹이다. 여섯 발로 짧게 접근해 캔 입구와 이마로 들이받는다.",
+        "element": "Neutral",
+        "species": "ScrapBeast",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 44,
+        "attack_power": 6,
+        "defense": 0,
+        "knockback_resistance": 0.1
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 7,
+        "chase_speed": 9,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 1,
+        "agent_height": 1.8,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 2,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.25
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.5,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 2,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.4,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 8,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/junk_can_pillbug_representative_v1.png",
+        "display_width_studs": 5.4,
+        "display_height_studs": 4.8,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 2.4,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 1,
+        "collision_height": 1.8,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://94901785540480",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://119327274097928",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://76696687310835",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://83618895647092",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://81254010967501",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/junk_can_pillbug.png?v=2331df3cfad8",
+      "catalog_only": false
+    },
+    {
+      "id": "bottlecap_beetle",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "병뚜껑 딱정이",
+        "description": "주황색 병뚜껑을 등껍질로 쓰는 빠른 군집형 잡몹이다. 작은 다리로 몰려들어 양쪽 집게로 짧게 꼬집는다.",
+        "element": "Neutral",
+        "species": "ScrapInsect",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 27,
+        "attack_power": 5,
+        "defense": 0,
+        "knockback_resistance": 0.03
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 9,
+        "chase_speed": 13,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 0.85,
+        "agent_height": 1.6,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 1.7,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.25
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.3,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 1.8,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.15,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 6,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/bottlecap_beetle_representative_v1.png",
+        "display_width_studs": 5,
+        "display_height_studs": 4.4,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 2.2,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 0.85,
+        "collision_height": 1.6,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://132863975231015",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://89652208696962",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://138116709840386",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://124778828299816",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://71007469017839",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/bottlecap_beetle.png?v=a867e4f74cd6",
+      "catalog_only": false
+    },
+    {
+      "id": "cable_worm",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "전선 지렁이",
+        "description": "노랑·검정 절연 전선 몸과 플러그 머리를 가진 행렬형 잡몹이다. 좁은 몸으로 같은 표적을 따라붙어 플러그를 내민다.",
+        "element": "Lightning",
+        "species": "ScrapWorm",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 33,
+        "attack_power": 6,
+        "defense": 0,
+        "knockback_resistance": 0.05
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 8,
+        "chase_speed": 11,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 0.9,
+        "agent_height": 1.6,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 1.8,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.25
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.6,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 2,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.3,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 7,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/cable_worm_representative_v1.png",
+        "display_width_studs": 6.4,
+        "display_height_studs": 4.4,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 2.1,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 0.9,
+        "collision_height": 1.6,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://105918043686964",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://137586813895595",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://99613104155202",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://117391482844806",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://96160454286891",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/cable_worm.png?v=c08581aee307",
+      "catalog_only": false
+    },
+    {
+      "id": "tire_roller",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "타이어 통통이",
+        "description": "타이어 몸통과 큰 두 발로 빠르게 공간을 압박하는 잡몹이다. 방향 전환은 둔하지만 몸 전체를 굴려 강하게 부딪힌다.",
+        "element": "Neutral",
+        "species": "ScrapBeast",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 55,
+        "attack_power": 8,
+        "defense": 0,
+        "knockback_resistance": 0.15
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 8,
+        "chase_speed": 12,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 1.2,
+        "agent_height": 2.3,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 2.4,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.5
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 3,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 2.35,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.6,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 14,
+        "vertical_knockback_force": 2,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/tire_roller_representative_v1.png",
+        "display_width_studs": 5.8,
+        "display_height_studs": 5.8,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 2.7,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 1.2,
+        "collision_height": 2.3,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://104472958425868",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://95432785814452",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://90247668648291",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://131858856415338",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://128397977751752",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/tire_roller.png?v=d60123fbe725",
+      "catalog_only": false
+    },
+    {
+      "id": "paper_cup_hermit",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "종이컵 소라게",
+        "description": "찌그러진 종이컵을 집으로 삼아 천천히 전방을 메우는 완충형 잡몹이다. 집게와 컵 몸통으로 가까운 플레이어를 밀어붙인다.",
+        "element": "Neutral",
+        "species": "ScrapCrustacean",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 49,
+        "attack_power": 7,
+        "defense": 0,
+        "knockback_resistance": 0.15
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 5.5,
+        "chase_speed": 7.5,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 1.15,
+        "agent_height": 2,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 2.3,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.25
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.8,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 2.2,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.7,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 9,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/paper_cup_hermit_representative_v1.png",
+        "display_width_studs": 5.8,
+        "display_height_studs": 5,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 2.4,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 1.15,
+        "collision_height": 2,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://137558929888753",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://118876447607935",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://100420900537768",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://75117014248560",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://106817652052655",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/paper_cup_hermit.png?v=d2734186b093",
+      "catalog_only": false
+    },
+    {
+      "id": "bulb_gnat",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "전구 날파리",
+        "description": "작은 전구 몸과 반투명 날개로 떠다니는 비행형 잡몹이다. 낮게 날아 접근한 뒤 머리와 전구 몸체로 빠르게 들이받는다.",
+        "element": "Lightning",
+        "species": "ScrapInsect",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "Flying",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 24,
+        "attack_power": 5,
+        "defense": 0,
+        "knockback_resistance": 0
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 10,
+        "chase_speed": 13,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 0.8,
+        "agent_height": 1.5,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 1.7,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.25
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.4,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 1.8,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.1,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 5,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/bulb_gnat_representative_v1.png",
+        "display_width_studs": 5.2,
+        "display_height_studs": 5.2,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 3.3,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 0.8,
+        "collision_height": 1.5,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Attack": {
+            "asset_id": "rbxassetid://123321320314376",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "IdleHover": {
+            "asset_id": "rbxassetid://109504995775773",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Fly": {
+            "asset_id": "rbxassetid://114025193209503",
+            "frame_count": 8,
+            "fps": 12,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://87340286561770",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://102063656659210",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/bulb_gnat.png?v=8efb4e9bb39d",
+      "catalog_only": false
+    },
+    {
+      "id": "screw_snail",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "나사 달팽이",
+        "description": "무거운 나사 껍데기를 지고 느리게 전선을 밀어내는 공간 압박형 잡몹이다. 짧은 촉수와 머리로 가까운 플레이어를 들이받는다.",
+        "element": "Earth",
+        "species": "ScrapMollusk",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 65,
+        "attack_power": 7,
+        "defense": 0,
+        "knockback_resistance": 0.2
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 4.5,
+        "chase_speed": 6,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 1.3,
+        "agent_height": 2,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 2.6,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.5
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 3,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 2.4,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.8,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 12,
+        "vertical_knockback_force": 2,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/screw_snail_representative_v1.png",
+        "display_width_studs": 6.2,
+        "display_height_studs": 5,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 2.3,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 1.3,
+        "collision_height": 2,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://120193891545502",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://119393889177617",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://126642632915191",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://115135762445155",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://75769380151668",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/screw_snail.png?v=acf959adcbbc",
+      "catalog_only": false
+    },
+    {
+      "id": "zipper_centipede",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "지퍼 지네",
+        "description": "주황색 지퍼 머리와 금속 이빨 같은 등을 가진 길쭉한 잡몹이다. 여러 발로 빠르게 붙어 지퍼 고리로 물어뜯는다.",
+        "element": "Neutral",
+        "species": "ScrapArthropod",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 38,
+        "attack_power": 6,
+        "defense": 0,
+        "knockback_resistance": 0.05
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 8.5,
+        "chase_speed": 11,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 0.9,
+        "agent_height": 1.5,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 1.8,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.25
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.6,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 2,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.25,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 7,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/zipper_centipede_representative_v1.png",
+        "display_width_studs": 6.8,
+        "display_height_studs": 4.2,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 2,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 0.9,
+        "collision_height": 1.5,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://90772541830300",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://79901529524855",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://96916671627435",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://132023871010471",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://137924703575565",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/zipper_centipede.png?v=8a38084b6b71",
+      "catalog_only": false
+    },
+    {
+      "id": "scouring_pad_fuzz",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "수세미 복슬이",
+        "description": "초록 수세미를 털처럼 뒤집어쓴 둔중한 잡몹이다. 짧은 다리로 무리 속을 메우며 복슬한 몸 전체로 밀고 들어온다.",
+        "element": "Nature",
+        "species": "ScrapBeast",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 44,
+        "attack_power": 6,
+        "defense": 0,
+        "knockback_resistance": 0.1
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 6.5,
+        "chase_speed": 8.5,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 1.2,
+        "agent_height": 2,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 2.4,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.25
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.9,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 2.2,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.5,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 9,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/scouring_pad_fuzz_representative_v1.png",
+        "display_width_studs": 5.8,
+        "display_height_studs": 5.4,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 2.5,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 1.2,
+        "collision_height": 2,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://136196064630040",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://103028701437281",
+            "frame_count": 8,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Attack": {
+            "asset_id": "rbxassetid://118520941853182",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://79244599033020",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://120926466325778",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/scouring_pad_fuzz.png?v=767ddabf0925",
+      "catalog_only": false
+    },
+    {
+      "id": "plastic_bag_ghost",
+      "enabled": true,
+      "size_class": "Small",
+      "size_scale": 0.5,
+      "identity": {
+        "display_name": "비닐봉지 유령",
+        "description": "반투명 비닐봉지 몸이 바람에 흔들리는 비행형 잡몹이다. 낮게 부유해 다가오며 봉지 입구와 얼굴로 짧게 덮친다.",
+        "element": "Wind",
+        "species": "ScrapSpirit",
+        "faction": "Wild",
+        "tier": "Normal",
+        "level": 1,
+        "tags": [
+          "Fodder",
+          "Flying",
+          "ContactMelee"
+        ]
+      },
+      "stats": {
+        "max_health": 27,
+        "attack_power": 5,
+        "defense": 0,
+        "knockback_resistance": 0
+      },
+      "detection": {
+        "search_range": 48,
+        "lose_target_range": 66,
+        "target_refresh_seconds": 0.2,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 12
+      },
+      "movement": {
+        "walk_speed": 9,
+        "chase_speed": 12,
+        "use_pathfinding": false,
+        "repath_interval_seconds": 1,
+        "waypoint_spacing": 3,
+        "agent_radius": 0.85,
+        "agent_height": 1.5,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 82,
+        "return_home_distance": 4,
+        "stuck_timeout_seconds": 1.5,
+        "path_retry_limit": 1,
+        "crowd_separation_enabled": true,
+        "crowd_separation_radius_studs": 1.8,
+        "crowd_separation_weight": 0.32
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.1,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 4,
+        "forget_target_seconds": 2,
+        "return_home_enabled": true,
+        "threat_cost": 0.25
+      },
+      "attack": {
+        "kind": "ContactMelee",
+        "minimum_range": 0,
+        "maximum_range": 2.5,
+        "damage_multiplier": 1,
+        "flat_damage_bonus": 0,
+        "telegraph_duration_seconds": 0,
+        "hit_radius": 1.9,
+        "attack_speed_multiplier": 1,
+        "effect_speed_multiplier": 1,
+        "attack_interval_seconds": 1.2,
+        "cooldown_seconds": 0.25,
+        "recovery_seconds": 0.2,
+        "lock_target_position": true,
+        "can_move_while_casting": false,
+        "require_line_of_sight": false,
+        "knockback_force": 5,
+        "vertical_knockback_force": 1,
+        "maximum_targets": 1,
+        "damage_frame_zero_based": 3
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 64,
+        "respawn_seconds": 10,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 0.7,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Representatives/plastic_bag_ghost_representative_v1.png",
+        "display_width_studs": 5.2,
+        "display_height_studs": 5.8,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 260,
+        "billboard_offset_y": 3.4,
+        "show_health_bar": false,
+        "show_nameplate": false,
+        "health_bar_height_pixels": 5,
+        "collision_radius": 0.85,
+        "collision_height": 1.5,
+        "telegraph_color": "#E63946",
+        "telegraph_transparency": 0.38,
+        "telegraph_thickness": 0.12,
+        "animations": {
+          "Attack": {
+            "asset_id": "rbxassetid://119896966847988",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "IdleHover": {
+            "asset_id": "rbxassetid://79989577612062",
+            "frame_count": 6,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Fly": {
+            "asset_id": "rbxassetid://102004340124718",
+            "frame_count": 8,
+            "fps": 12,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://133712164360009",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://85852965399746",
+            "frame_count": 6,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "concept_art_url": "./monster-media/plastic_bag_ghost.png?v=c76704054d90",
+      "catalog_only": false
+    },
+    {
+      "id": "overcharge_vendatoad",
+      "size_class": "Large",
+      "status": "ProductionPending",
+      "identity": {
+        "display_name": "과충전 자판두꺼비",
+        "description": "고물바람 초원의 첫 정식 보스로 제작 중이며, 남은 애니메이션과 모바일 실전 검증이 끝날 때까지 런타임 등록과 웨이브 활성화를 보류한다.",
+        "element": "Lightning",
+        "species": "SlimeBeast",
+        "faction": "Wild",
+        "tier": "Boss",
+        "level": 1,
+        "tags": [
+          "Boss",
+          "ProductionPending",
+          "BossPatternSet"
+        ]
+      },
+      "presentation": {
+        "concept_art_path": "Assets/Monsters/Concepts/overcharge_vendatoad_anchor_v2.png"
+      },
+      "concept_art_url": "./monster-media/overcharge_vendatoad.png?v=16903756af12",
+      "catalog_only": true,
+      "enabled": false
     }
   ]
 };

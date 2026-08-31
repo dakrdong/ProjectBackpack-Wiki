@@ -12,14 +12,39 @@ window.PACKBOUND_ITEM_DB = {
       270
     ],
     "flip_allowed": false,
-    "maximum_stack": 999
+    "maximum_stack": 999,
+    "loadout_balance": {
+      "maximum_combat_items": 6,
+      "maximum_support_weapons": 2,
+      "attack_weapon_efficiency": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 0.94,
+        "6": 0.85
+      },
+      "support_resonance_damage_per_item": 0.1,
+      "support_resonance_cap": 0.2,
+      "design_targets": {
+        "six_attack_equivalent": 5.1,
+        "five_attack_one_support_equivalent": 5.17,
+        "four_attack_two_support_equivalent": 4.8
+      }
+    }
   },
   "families": [
     {
       "id": "weapon",
-      "label": "무기",
+      "label": "공격 무기",
       "count": 14,
       "active_count": 14
+    },
+    {
+      "id": "support",
+      "label": "보조무기",
+      "count": 6,
+      "active_count": 6
     },
     {
       "id": "armor",
@@ -34,14 +59,14 @@ window.PACKBOUND_ITEM_DB = {
       "active_count": 14
     }
   ],
-  "count": 48,
-  "active_count": 48,
+  "count": 54,
+  "active_count": 54,
   "items": [
     {
       "id": "weapon.berserker_axe",
       "name": "광전사 도끼",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Axe",
@@ -123,6 +148,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -133,7 +159,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.gale_recurve_bow",
       "name": "질풍 곡궁",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "RecurveBow",
@@ -209,6 +235,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -219,7 +246,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.guardian_counter_sword",
       "name": "반격의 수호검",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Sword",
@@ -285,6 +312,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -295,7 +323,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.guardian_mace",
       "name": "수호자 메이스",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Mace",
@@ -361,6 +389,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -371,7 +400,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.hunter_recurve_bow",
       "name": "추적자의 곡궁",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "RecurveBow",
@@ -443,6 +472,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -453,7 +483,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.overheat_repeater",
       "name": "과열식 연발총",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Gun",
@@ -514,6 +544,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -524,7 +555,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.quake_mace",
       "name": "지진 메이스",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Mace",
@@ -590,6 +621,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -600,7 +632,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.rapid_gear_sword",
       "name": "연격의 톱니검",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Sword",
@@ -662,6 +694,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -672,7 +705,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.ricochet_pistol",
       "name": "도탄 권총",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Gun",
@@ -733,6 +766,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -743,7 +777,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.scatter_crossbow",
       "name": "산탄 석궁",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Crossbow",
@@ -813,6 +847,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -823,7 +858,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.siege_crossbow",
       "name": "공성 석궁",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Crossbow",
@@ -901,6 +936,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -911,7 +947,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.sky_piercer_spear",
       "name": "천공 장창",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Spear",
@@ -981,6 +1017,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -991,7 +1028,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.thunder_return_javelin",
       "name": "뇌광 투창",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Spear",
@@ -1061,6 +1098,7 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1071,7 +1109,7 @@ window.PACKBOUND_ITEM_DB = {
       "id": "weapon.vampire_axe",
       "name": "흡혈 도끼",
       "family": "weapon",
-      "family_label": "무기",
+      "family_label": "공격 무기",
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Axe",
@@ -1145,6 +1183,405 @@ window.PACKBOUND_ITEM_DB = {
           ]
         }
       },
+      "support_effect": null,
+      "stats": [],
+      "synergies": [],
+      "synergy_labels": [],
+      "effects": {},
+      "effect_search_terms": []
+    },
+    {
+      "id": "support.bastion_gearshield",
+      "name": "보루 톱니방패",
+      "family": "support",
+      "family_label": "보조무기",
+      "category": "Weapon",
+      "slot": "Weapon",
+      "form": "Shield",
+      "role": "주기적 보호막",
+      "weight_kg": 4.8,
+      "type_size": "Weapon · Shield · 4칸 · 4.8Kg",
+      "concept": "보호막이 없을 때 10초마다 최대 체력의 8%만큼 보호막을 다시 충전하는 전면 방어 장치",
+      "art_direction": "front-facing compact teal-and-brass gear shield with a broad readable silhouette and central cyan ward core",
+      "enabled": true,
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "occupied_cells": 4,
+      "bounds": {
+        "width": 2,
+        "height": 2
+      },
+      "pattern": "■■/■■",
+      "source_image": "Assets/Items/InventoryIcons/SupportWeapons/support_bastion_gearshield.png",
+      "media_path": "./item-media/support/support_bastion_gearshield.png",
+      "image": "./item-media/support/support_bastion_gearshield.png?v=ebada0c700df052c",
+      "image_url": "./item-media/support/support_bastion_gearshield.png?v=ebada0c700df052c",
+      "icon_asset": "rbxassetid://101706118166018",
+      "image_layout": {
+        "scale": 1.0,
+        "offset_x": 0.074,
+        "offset_y": 0.0258,
+        "rotation_degrees": 0,
+        "canvas_width": 1024,
+        "canvas_height": 1024
+      },
+      "combat_art": null,
+      "support_effect": {
+        "id": "shield_recharge",
+        "name": "보루 재충전",
+        "mode": "Periodic",
+        "summary": "보호막이 없을 때 10초마다 최대 체력의 8% 보호막을 충전합니다.",
+        "magnitude": 8.0,
+        "unit": "MaxHealthPercent",
+        "interval_seconds": 10.0
+      },
+      "stats": [],
+      "synergies": [],
+      "synergy_labels": [],
+      "effects": {},
+      "effect_search_terms": []
+    },
+    {
+      "id": "support.guardian_standard",
+      "name": "생명수호 전투깃발",
+      "family": "support",
+      "family_label": "보조무기",
+      "category": "Weapon",
+      "slot": "Weapon",
+      "form": "Standard",
+      "role": "회복·보호막 증폭",
+      "weight_kg": 3.8,
+      "type_size": "Weapon · Standard · 3칸 · 3.8Kg",
+      "concept": "생명 문양 아래 전열을 고정해 자신이 받는 모든 회복과 보호막의 양을 25% 높이는 휴대 전투깃발",
+      "art_direction": "upright teal guardian standard locked to the exact three-cell L mask ■■/■□; mast and base fill the left column, the heart pennant fills top-right, and bottom-right stays fully empty",
+      "enabled": true,
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "occupied_cells": 3,
+      "bounds": {
+        "width": 2,
+        "height": 2
+      },
+      "pattern": "■■/■□",
+      "source_image": "Assets/Items/InventoryIcons/SupportWeapons/support_guardian_standard.png",
+      "media_path": "./item-media/support/support_guardian_standard.png",
+      "image": "./item-media/support/support_guardian_standard.png?v=8ea9f982cbc3a14d",
+      "image_url": "./item-media/support/support_guardian_standard.png?v=8ea9f982cbc3a14d",
+      "icon_asset": "rbxassetid://92563441607382",
+      "image_layout": {
+        "scale": 0.95,
+        "offset_x": 0.1522,
+        "offset_y": -0.0363,
+        "rotation_degrees": 0,
+        "canvas_width": 1024,
+        "canvas_height": 1024
+      },
+      "combat_art": null,
+      "support_effect": {
+        "id": "recovery_amplification",
+        "name": "생명수호 깃발",
+        "mode": "Passive",
+        "summary": "자신이 받는 회복과 보호막의 양이 25% 증가합니다.",
+        "magnitude": 25.0,
+        "unit": "Percent",
+        "interval_seconds": 0.0
+      },
+      "stats": [],
+      "synergies": [],
+      "synergy_labels": [],
+      "effects": {},
+      "effect_search_terms": []
+    },
+    {
+      "id": "support.lifeline_cross",
+      "name": "생명회로 십자가",
+      "family": "support",
+      "family_label": "보조무기",
+      "category": "Weapon",
+      "slot": "Weapon",
+      "form": "Cross",
+      "role": "주기적 회복",
+      "weight_kg": 2.6,
+      "type_size": "Weapon · Cross · 6칸 · 2.6Kg",
+      "concept": "부상 상태일 때 6초마다 최대 체력의 4%를 회복시켜 전투 이탈 없이 버틸 시간을 늘리는 성물",
+      "art_direction": "front-facing ivory-and-coral healing cross locked to the exact six-cell mask □■□/■■■/□■□/□■□; the four corner cells stay fully empty",
+      "enabled": true,
+      "coordinates": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "occupied_cells": 6,
+      "bounds": {
+        "width": 3,
+        "height": 4
+      },
+      "pattern": "□■□/■■■/□■□/□■□",
+      "source_image": "Assets/Items/InventoryIcons/SupportWeapons/support_lifeline_cross.png",
+      "media_path": "./item-media/support/support_lifeline_cross.png",
+      "image": "./item-media/support/support_lifeline_cross.png?v=9fc772a45123a72e",
+      "image_url": "./item-media/support/support_lifeline_cross.png?v=9fc772a45123a72e",
+      "icon_asset": "rbxassetid://128416023493723",
+      "image_layout": {
+        "scale": 1.0,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rotation_degrees": 0,
+        "canvas_width": 1024,
+        "canvas_height": 1024
+      },
+      "combat_art": null,
+      "support_effect": {
+        "id": "periodic_heal",
+        "name": "생명 맥동",
+        "mode": "Periodic",
+        "summary": "부상 상태일 때 6초마다 최대 체력의 4%를 회복합니다.",
+        "magnitude": 4.0,
+        "unit": "MaxHealthPercent",
+        "interval_seconds": 6.0
+      },
+      "stats": [],
+      "synergies": [],
+      "synergy_labels": [],
+      "effects": {},
+      "effect_search_terms": []
+    },
+    {
+      "id": "support.rally_horn",
+      "name": "결집 전투뿔",
+      "family": "support",
+      "family_label": "보조무기",
+      "category": "Weapon",
+      "slot": "Weapon",
+      "form": "Horn",
+      "role": "스킬 충전 버프",
+      "weight_kg": 2.2,
+      "type_size": "Weapon · Horn · 3칸 · 2.2Kg",
+      "concept": "짧은 신호음을 반복해 모든 공격 무기의 자동 스킬 충전 속도를 20% 높이는 결집 장비",
+      "art_direction": "teal-and-brass rally horn locked to the exact three-cell L mask ■■/■□; gauge and bell fill the top row, the curled tube fills bottom-left, and bottom-right stays fully empty",
+      "enabled": true,
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "occupied_cells": 3,
+      "bounds": {
+        "width": 2,
+        "height": 2
+      },
+      "pattern": "■■/■□",
+      "source_image": "Assets/Items/InventoryIcons/SupportWeapons/support_rally_horn.png",
+      "media_path": "./item-media/support/support_rally_horn.png",
+      "image": "./item-media/support/support_rally_horn.png?v=4ad907815c72c9da",
+      "image_url": "./item-media/support/support_rally_horn.png?v=4ad907815c72c9da",
+      "icon_asset": "rbxassetid://110622394772144",
+      "image_layout": {
+        "scale": 1.0,
+        "offset_x": 0.2447,
+        "offset_y": 0.0637,
+        "rotation_degrees": 0,
+        "canvas_width": 1024,
+        "canvas_height": 1024
+      },
+      "combat_art": null,
+      "support_effect": {
+        "id": "skill_charge",
+        "name": "결집 신호",
+        "mode": "Passive",
+        "summary": "장착한 모든 공격 무기의 스킬 충전 속도가 20% 증가합니다.",
+        "magnitude": 20.0,
+        "unit": "Percent",
+        "interval_seconds": 0.0
+      },
+      "stats": [],
+      "synergies": [],
+      "synergy_labels": [],
+      "effects": {},
+      "effect_search_terms": []
+    },
+    {
+      "id": "support.resonance_mace",
+      "name": "공명 지휘메이스",
+      "family": "support",
+      "family_label": "보조무기",
+      "category": "Weapon",
+      "slot": "Weapon",
+      "form": "Mace",
+      "role": "공격 속도 버프",
+      "weight_kg": 4.0,
+      "type_size": "Weapon · Mace · 3칸 · 4.0Kg",
+      "concept": "타격 대신 공명 박자를 전파해 장착한 모든 공격 무기의 공격 속도를 12% 높이는 지휘 도구",
+      "art_direction": "upright ceremonial teal-and-brass resonance mace with three cyan speaker nodes and no offensive spikes",
+      "enabled": true,
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "occupied_cells": 3,
+      "bounds": {
+        "width": 1,
+        "height": 3
+      },
+      "pattern": "■/■/■",
+      "source_image": "Assets/Items/InventoryIcons/SupportWeapons/support_resonance_mace.png",
+      "media_path": "./item-media/support/support_resonance_mace.png",
+      "image": "./item-media/support/support_resonance_mace.png?v=105ea1c8aa32feb6",
+      "image_url": "./item-media/support/support_resonance_mace.png?v=105ea1c8aa32feb6",
+      "icon_asset": "rbxassetid://97724854031624",
+      "image_layout": {
+        "scale": 1.0,
+        "offset_x": 0.1138,
+        "offset_y": 0.0919,
+        "rotation_degrees": 0,
+        "canvas_width": 1024,
+        "canvas_height": 1024
+      },
+      "combat_art": null,
+      "support_effect": {
+        "id": "attack_speed",
+        "name": "공명 박자",
+        "mode": "Passive",
+        "summary": "장착한 모든 공격 무기의 공격 속도가 12% 증가합니다.",
+        "magnitude": 12.0,
+        "unit": "Percent",
+        "interval_seconds": 0.0
+      },
+      "stats": [],
+      "synergies": [],
+      "synergy_labels": [],
+      "effects": {},
+      "effect_search_terms": []
+    },
+    {
+      "id": "support.ward_lantern",
+      "name": "수호등 랜턴",
+      "family": "support",
+      "family_label": "보조무기",
+      "category": "Weapon",
+      "slot": "Weapon",
+      "form": "Lantern",
+      "role": "피해 경감",
+      "weight_kg": 3.0,
+      "type_size": "Weapon · Lantern · 4칸 · 3.0Kg",
+      "concept": "푸른 방호광으로 충격을 분산해 받는 피해를 12% 줄이는 휴대형 수호등",
+      "art_direction": "compact teal ward lantern with cyan core, brass cage, and coral handle accents; no flame or scenery",
+      "enabled": true,
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "occupied_cells": 4,
+      "bounds": {
+        "width": 2,
+        "height": 2
+      },
+      "pattern": "■■/■■",
+      "source_image": "Assets/Items/InventoryIcons/SupportWeapons/support_ward_lantern.png",
+      "media_path": "./item-media/support/support_ward_lantern.png",
+      "image": "./item-media/support/support_ward_lantern.png?v=633679d261006c54",
+      "image_url": "./item-media/support/support_ward_lantern.png?v=633679d261006c54",
+      "icon_asset": "rbxassetid://132945934463659",
+      "image_layout": {
+        "scale": 0.9,
+        "offset_x": 0.0435,
+        "offset_y": 0.0568,
+        "rotation_degrees": 0,
+        "canvas_width": 1024,
+        "canvas_height": 1024
+      },
+      "combat_art": null,
+      "support_effect": {
+        "id": "damage_reduction",
+        "name": "수호광",
+        "mode": "Passive",
+        "summary": "받는 피해가 12% 감소합니다.",
+        "magnitude": 12.0,
+        "unit": "Percent",
+        "interval_seconds": 0.0
+      },
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1211,6 +1648,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1269,6 +1707,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1335,6 +1774,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1393,6 +1833,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1451,6 +1892,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1501,6 +1943,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1551,6 +1994,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1609,6 +2053,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1663,6 +2108,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1721,6 +2167,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1787,6 +2234,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1841,6 +2289,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1899,6 +2348,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -1957,6 +2407,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2007,6 +2458,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2057,6 +2509,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2123,6 +2576,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2189,6 +2643,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2247,6 +2702,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2305,6 +2761,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2363,6 +2820,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2413,6 +2871,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2463,6 +2922,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2521,6 +2981,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2567,6 +3028,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2613,6 +3075,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2663,6 +3126,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2717,6 +3181,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2767,6 +3232,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2821,6 +3287,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2867,6 +3334,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2913,6 +3381,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -2959,6 +3428,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -3005,6 +3475,7 @@ window.PACKBOUND_ITEM_DB = {
         "canvas_height": 1024
       },
       "combat_art": null,
+      "support_effect": null,
       "stats": [],
       "synergies": [],
       "synergy_labels": [],
@@ -3020,5 +3491,5 @@ window.PACKBOUND_ITEM_DB = {
     "conditions": [],
     "abilities": []
   },
-  "revision": "8fb41028ba82d814"
+  "revision": "6190a010348b071c"
 };
