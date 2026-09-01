@@ -34,9 +34,9 @@ window.PACKBOUND_ITEM_DB = {
     },
     "combat_stats": {
       "source": "docs/gameplay/item-combat-stats.json",
-      "revision": "007be9e2c2a7ff0d",
-      "implemented_count": 17,
-      "planned_count": 37,
+      "revision": "a8565803ae2a7029",
+      "implemented_count": 54,
+      "planned_count": 0,
       "grade_contract": {
         "minimum_major": 0,
         "maximum_major": 6,
@@ -3500,12 +3500,102 @@ window.PACKBOUND_ITEM_DB = {
         "interval_seconds": 10.0
       },
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G0-1": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G0-2": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G0-3": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G1-0": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G1-1": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G1-2": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G1-3": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G2-0": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G2-1": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G2-2": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G2-3": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G3-0": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G3-1": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G3-2": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G3-3": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G4-0": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G4-1": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G4-2": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G4-3": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G5-0": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G5-1": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G5-2": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G5-3": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G6-0": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G6-1": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G6-2": {
+            "SupportShieldRechargePercent": 8.0
+          },
+          "G6-3": {
+            "SupportShieldRechargePercent": 8.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "SupportShieldRechargePercent",
+        "SupportShieldRechargePercent",
+        "SupportShieldRechargePercent 8.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -3570,12 +3660,102 @@ window.PACKBOUND_ITEM_DB = {
         "interval_seconds": 0.0
       },
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G0-1": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G0-2": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G0-3": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G1-0": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G1-1": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G1-2": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G1-3": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G2-0": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G2-1": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G2-2": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G2-3": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G3-0": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G3-1": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G3-2": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G3-3": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G4-0": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G4-1": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G4-2": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G4-3": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G5-0": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G5-1": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G5-2": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G5-3": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G6-0": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G6-1": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G6-2": {
+            "SupportRecoveryPercent": 25.0
+          },
+          "G6-3": {
+            "SupportRecoveryPercent": 25.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "SupportRecoveryPercent",
+        "SupportRecoveryPercent",
+        "SupportRecoveryPercent 25.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -3652,12 +3832,102 @@ window.PACKBOUND_ITEM_DB = {
         "interval_seconds": 6.0
       },
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G0-1": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G0-2": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G0-3": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G1-0": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G1-1": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G1-2": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G1-3": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G2-0": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G2-1": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G2-2": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G2-3": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G3-0": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G3-1": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G3-2": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G3-3": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G4-0": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G4-1": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G4-2": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G4-3": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G5-0": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G5-1": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G5-2": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G5-3": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G6-0": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G6-1": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G6-2": {
+            "SupportPeriodicHealPercent": 4.0
+          },
+          "G6-3": {
+            "SupportPeriodicHealPercent": 4.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "SupportPeriodicHealPercent",
+        "SupportPeriodicHealPercent",
+        "SupportPeriodicHealPercent 4.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -3722,12 +3992,102 @@ window.PACKBOUND_ITEM_DB = {
         "interval_seconds": 0.0
       },
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G0-1": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G0-2": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G0-3": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G1-0": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G1-1": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G1-2": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G1-3": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G2-0": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G2-1": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G2-2": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G2-3": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G3-0": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G3-1": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G3-2": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G3-3": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G4-0": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G4-1": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G4-2": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G4-3": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G5-0": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G5-1": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G5-2": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G5-3": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G6-0": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G6-1": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G6-2": {
+            "SupportSkillChargePercent": 20.0
+          },
+          "G6-3": {
+            "SupportSkillChargePercent": 20.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "SupportSkillChargePercent",
+        "SupportSkillChargePercent",
+        "SupportSkillChargePercent 20.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -3956,12 +4316,102 @@ window.PACKBOUND_ITEM_DB = {
         "interval_seconds": 0.0
       },
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G0-1": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G0-2": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G0-3": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G1-0": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G1-1": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G1-2": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G1-3": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G2-0": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G2-1": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G2-2": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G2-3": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G3-0": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G3-1": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G3-2": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G3-3": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G4-0": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G4-1": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G4-2": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G4-3": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G5-0": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G5-1": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G5-2": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G5-3": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G6-0": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G6-1": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G6-2": {
+            "SupportDamageReductionPercent": 12.0
+          },
+          "G6-3": {
+            "SupportDamageReductionPercent": 12.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "SupportDamageReductionPercent",
+        "SupportDamageReductionPercent",
+        "SupportDamageReductionPercent 12.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4030,12 +4480,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 10.0,
+            "MaxHealth": 30.0
+          },
+          "G0-1": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 11.0,
+            "MaxHealth": 33.0
+          },
+          "G0-2": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 12.1,
+            "MaxHealth": 36.3
+          },
+          "G0-3": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 13.3,
+            "MaxHealth": 39.9
+          },
+          "G1-0": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 16.0,
+            "MaxHealth": 47.9
+          },
+          "G1-1": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 17.6,
+            "MaxHealth": 52.7
+          },
+          "G1-2": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 19.4,
+            "MaxHealth": 58.0
+          },
+          "G1-3": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 21.3,
+            "MaxHealth": 63.8
+          },
+          "G2-0": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 25.6,
+            "MaxHealth": 76.6
+          },
+          "G2-1": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 28.2,
+            "MaxHealth": 84.3
+          },
+          "G2-2": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 31.0,
+            "MaxHealth": 92.7
+          },
+          "G2-3": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 34.1,
+            "MaxHealth": 102.0
+          },
+          "G3-0": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 40.9,
+            "MaxHealth": 122.4
+          },
+          "G3-1": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 45.0,
+            "MaxHealth": 134.6
+          },
+          "G3-2": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 49.5,
+            "MaxHealth": 148.1
+          },
+          "G3-3": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 54.5,
+            "MaxHealth": 162.9
+          },
+          "G4-0": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 65.4,
+            "MaxHealth": 195.5
+          },
+          "G4-1": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 71.9,
+            "MaxHealth": 215.1
+          },
+          "G4-2": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 79.1,
+            "MaxHealth": 236.6
+          },
+          "G4-3": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 87.0,
+            "MaxHealth": 260.3
+          },
+          "G5-0": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 104.4,
+            "MaxHealth": 312.4
+          },
+          "G5-1": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 114.8,
+            "MaxHealth": 343.6
+          },
+          "G5-2": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 126.3,
+            "MaxHealth": 378.0
+          },
+          "G5-3": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 138.9,
+            "MaxHealth": 415.8
+          },
+          "G6-0": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 166.7,
+            "MaxHealth": 499.0
+          },
+          "G6-1": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 183.4,
+            "MaxHealth": 548.9
+          },
+          "G6-2": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 201.7,
+            "MaxHealth": 603.8
+          },
+          "G6-3": {
+            "CrowdControlResistancePercent": 8.0,
+            "Defense": 221.9,
+            "MaxHealth": 664.2
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "CrowdControlResistancePercent",
+        "군중 제어 저항",
+        "CrowdControlResistancePercent 8.0",
+        "Defense",
+        "방어력",
+        "Defense 10.0",
+        "MaxHealth",
+        "최대 체력",
+        "MaxHealth 30.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4096,12 +4698,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 5.0,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 18.0
+          },
+          "G0-1": {
+            "Defense": 5.5,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 19.8
+          },
+          "G0-2": {
+            "Defense": 6.1,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 21.8
+          },
+          "G0-3": {
+            "Defense": 6.7,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 24.0
+          },
+          "G1-0": {
+            "Defense": 8.0,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 28.8
+          },
+          "G1-1": {
+            "Defense": 8.8,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 31.7
+          },
+          "G1-2": {
+            "Defense": 9.7,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 34.9
+          },
+          "G1-3": {
+            "Defense": 10.7,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 38.4
+          },
+          "G2-0": {
+            "Defense": 12.8,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 46.1
+          },
+          "G2-1": {
+            "Defense": 14.1,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 50.7
+          },
+          "G2-2": {
+            "Defense": 15.5,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 55.8
+          },
+          "G2-3": {
+            "Defense": 17.1,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 61.4
+          },
+          "G3-0": {
+            "Defense": 20.5,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 73.7
+          },
+          "G3-1": {
+            "Defense": 22.6,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 81.1
+          },
+          "G3-2": {
+            "Defense": 24.9,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 89.2
+          },
+          "G3-3": {
+            "Defense": 27.4,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 98.1
+          },
+          "G4-0": {
+            "Defense": 32.9,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 117.7
+          },
+          "G4-1": {
+            "Defense": 36.2,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 129.5
+          },
+          "G4-2": {
+            "Defense": 39.8,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 142.5
+          },
+          "G4-3": {
+            "Defense": 43.8,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 156.8
+          },
+          "G5-0": {
+            "Defense": 52.6,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 188.2
+          },
+          "G5-1": {
+            "Defense": 57.9,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 207.0
+          },
+          "G5-2": {
+            "Defense": 63.7,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 227.7
+          },
+          "G5-3": {
+            "Defense": 70.1,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 250.5
+          },
+          "G6-0": {
+            "Defense": 84.1,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 300.6
+          },
+          "G6-1": {
+            "Defense": 92.5,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 330.7
+          },
+          "G6-2": {
+            "Defense": 101.8,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 363.8
+          },
+          "G6-3": {
+            "Defense": 112.0,
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 400.2
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 5.0",
+        "HealthRegenerationPercentPer10Seconds",
+        "HealthRegenerationPercentPer10Seconds",
+        "HealthRegenerationPercentPer10Seconds 1.5",
+        "MaxHealth",
+        "최대 체력",
+        "MaxHealth 18.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4170,12 +4924,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 4.0,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G0-1": {
+            "Defense": 4.4,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G0-2": {
+            "Defense": 4.8,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G0-3": {
+            "Defense": 5.3,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G1-0": {
+            "Defense": 6.4,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G1-1": {
+            "Defense": 7.0,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G1-2": {
+            "Defense": 7.7,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G1-3": {
+            "Defense": 8.5,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G2-0": {
+            "Defense": 10.2,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G2-1": {
+            "Defense": 11.2,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G2-2": {
+            "Defense": 12.3,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G2-3": {
+            "Defense": 13.5,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G3-0": {
+            "Defense": 16.2,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G3-1": {
+            "Defense": 17.8,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G3-2": {
+            "Defense": 19.6,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G3-3": {
+            "Defense": 21.6,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G4-0": {
+            "Defense": 25.9,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G4-1": {
+            "Defense": 28.5,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G4-2": {
+            "Defense": 31.4,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G4-3": {
+            "Defense": 34.5,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G5-0": {
+            "Defense": 41.4,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G5-1": {
+            "Defense": 45.5,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G5-2": {
+            "Defense": 50.1,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G5-3": {
+            "Defense": 55.1,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G6-0": {
+            "Defense": 66.1,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G6-1": {
+            "Defense": 72.7,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G6-2": {
+            "Defense": 80.0,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          },
+          "G6-3": {
+            "Defense": 88.0,
+            "DodgeChancePercent": 7.0,
+            "DodgeDamageBoostPercent": 12.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 4.0",
+        "DodgeChancePercent",
+        "회피 확률",
+        "DodgeChancePercent 7.0",
+        "DodgeDamageBoostPercent",
+        "DodgeDamageBoostPercent",
+        "DodgeDamageBoostPercent 12.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4236,12 +5142,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 4.0,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G0-1": {
+            "Defense": 4.4,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G0-2": {
+            "Defense": 4.8,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G0-3": {
+            "Defense": 5.3,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G1-0": {
+            "Defense": 6.4,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G1-1": {
+            "Defense": 7.0,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G1-2": {
+            "Defense": 7.7,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G1-3": {
+            "Defense": 8.5,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G2-0": {
+            "Defense": 10.2,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G2-1": {
+            "Defense": 11.2,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G2-2": {
+            "Defense": 12.3,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G2-3": {
+            "Defense": 13.5,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G3-0": {
+            "Defense": 16.2,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G3-1": {
+            "Defense": 17.8,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G3-2": {
+            "Defense": 19.6,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G3-3": {
+            "Defense": 21.6,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G4-0": {
+            "Defense": 25.9,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G4-1": {
+            "Defense": 28.5,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G4-2": {
+            "Defense": 31.4,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G4-3": {
+            "Defense": 34.5,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G5-0": {
+            "Defense": 41.4,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G5-1": {
+            "Defense": 45.5,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G5-2": {
+            "Defense": 50.1,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G5-3": {
+            "Defense": 55.1,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G6-0": {
+            "Defense": 66.1,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G6-1": {
+            "Defense": 72.7,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G6-2": {
+            "Defense": 80.0,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G6-3": {
+            "Defense": 88.0,
+            "GlobalAttackSpeedPercent": 5.0,
+            "MovementSpeedPercent": 5.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 4.0",
+        "GlobalAttackSpeedPercent",
+        "GlobalAttackSpeedPercent",
+        "GlobalAttackSpeedPercent 5.0",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent 5.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4302,12 +5360,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 3.0,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G0-1": {
+            "Defense": 3.3,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G0-2": {
+            "Defense": 3.6,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G0-3": {
+            "Defense": 4.0,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G1-0": {
+            "Defense": 4.8,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G1-1": {
+            "Defense": 5.3,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G1-2": {
+            "Defense": 5.8,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G1-3": {
+            "Defense": 6.4,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G2-0": {
+            "Defense": 7.7,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G2-1": {
+            "Defense": 8.5,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G2-2": {
+            "Defense": 9.4,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G2-3": {
+            "Defense": 10.3,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G3-0": {
+            "Defense": 12.4,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G3-1": {
+            "Defense": 13.6,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G3-2": {
+            "Defense": 15.0,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G3-3": {
+            "Defense": 16.5,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G4-0": {
+            "Defense": 19.8,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G4-1": {
+            "Defense": 21.8,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G4-2": {
+            "Defense": 24.0,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G4-3": {
+            "Defense": 26.4,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G5-0": {
+            "Defense": 31.7,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G5-1": {
+            "Defense": 34.9,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G5-2": {
+            "Defense": 38.4,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G5-3": {
+            "Defense": 42.2,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G6-0": {
+            "Defense": 50.6,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G6-1": {
+            "Defense": 55.7,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G6-2": {
+            "Defense": 61.3,
+            "ExecuteDamagePercent": 12.0
+          },
+          "G6-3": {
+            "Defense": 67.4,
+            "ExecuteDamagePercent": 12.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 3.0",
+        "ExecuteDamagePercent",
+        "ExecuteDamagePercent",
+        "ExecuteDamagePercent 12.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4360,12 +5539,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 2.0,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G0-1": {
+            "Defense": 2.2,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G0-2": {
+            "Defense": 2.4,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G0-3": {
+            "Defense": 2.6,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G1-0": {
+            "Defense": 3.1,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G1-1": {
+            "Defense": 3.4,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G1-2": {
+            "Defense": 3.7,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G1-3": {
+            "Defense": 4.1,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G2-0": {
+            "Defense": 4.9,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G2-1": {
+            "Defense": 5.4,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G2-2": {
+            "Defense": 5.9,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G2-3": {
+            "Defense": 6.5,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G3-0": {
+            "Defense": 7.8,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G3-1": {
+            "Defense": 8.6,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G3-2": {
+            "Defense": 9.5,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G3-3": {
+            "Defense": 10.5,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G4-0": {
+            "Defense": 12.6,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G4-1": {
+            "Defense": 13.9,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G4-2": {
+            "Defense": 15.3,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G4-3": {
+            "Defense": 16.8,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G5-0": {
+            "Defense": 20.2,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G5-1": {
+            "Defense": 22.2,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G5-2": {
+            "Defense": 24.4,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G5-3": {
+            "Defense": 26.8,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G6-0": {
+            "Defense": 32.2,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G6-1": {
+            "Defense": 35.4,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G6-2": {
+            "Defense": 38.9,
+            "GlobalAttackSpeedPercent": 8.0
+          },
+          "G6-3": {
+            "Defense": 42.8,
+            "GlobalAttackSpeedPercent": 8.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 2.0",
+        "GlobalAttackSpeedPercent",
+        "GlobalAttackSpeedPercent",
+        "GlobalAttackSpeedPercent 8.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4418,12 +5718,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 2.0
+          },
+          "G0-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 2.2
+          },
+          "G0-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 2.4
+          },
+          "G0-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 2.6
+          },
+          "G1-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 3.1
+          },
+          "G1-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 3.4
+          },
+          "G1-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 3.7
+          },
+          "G1-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 4.1
+          },
+          "G2-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 4.9
+          },
+          "G2-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 5.4
+          },
+          "G2-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 5.9
+          },
+          "G2-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 6.5
+          },
+          "G3-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 7.8
+          },
+          "G3-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 8.6
+          },
+          "G3-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 9.5
+          },
+          "G3-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 10.5
+          },
+          "G4-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 12.6
+          },
+          "G4-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 13.9
+          },
+          "G4-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 15.3
+          },
+          "G4-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 16.8
+          },
+          "G5-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 20.2
+          },
+          "G5-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 22.2
+          },
+          "G5-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 24.4
+          },
+          "G5-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 26.8
+          },
+          "G6-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 32.2
+          },
+          "G6-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 35.4
+          },
+          "G6-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 38.9
+          },
+          "G6-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 3.0,
+            "Defense": 42.8
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AccuracyPercent",
+        "명중률",
+        "AccuracyPercent 7.0",
+        "CriticalChancePercent",
+        "치명타 확률",
+        "CriticalChancePercent 3.0",
+        "Defense",
+        "방어력",
+        "Defense 2.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4484,12 +5936,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 3.0,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G0-1": {
+            "Defense": 3.3,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G0-2": {
+            "Defense": 3.6,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G0-3": {
+            "Defense": 4.0,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G1-0": {
+            "Defense": 4.8,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G1-1": {
+            "Defense": 5.3,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G1-2": {
+            "Defense": 5.8,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G1-3": {
+            "Defense": 6.4,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G2-0": {
+            "Defense": 7.7,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G2-1": {
+            "Defense": 8.5,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G2-2": {
+            "Defense": 9.4,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G2-3": {
+            "Defense": 10.3,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G3-0": {
+            "Defense": 12.4,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G3-1": {
+            "Defense": 13.6,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G3-2": {
+            "Defense": 15.0,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G3-3": {
+            "Defense": 16.5,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G4-0": {
+            "Defense": 19.8,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G4-1": {
+            "Defense": 21.8,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G4-2": {
+            "Defense": 24.0,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G4-3": {
+            "Defense": 26.4,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G5-0": {
+            "Defense": 31.7,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G5-1": {
+            "Defense": 34.9,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G5-2": {
+            "Defense": 38.4,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G5-3": {
+            "Defense": 42.2,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G6-0": {
+            "Defense": 50.6,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G6-1": {
+            "Defense": 55.7,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G6-2": {
+            "Defense": 61.3,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          },
+          "G6-3": {
+            "Defense": 67.4,
+            "SkillDamagePercent": 6.0,
+            "SkillTriggeredAttackSpeedPercent": 10.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 3.0",
+        "SkillDamagePercent",
+        "SkillDamagePercent",
+        "SkillDamagePercent 6.0",
+        "SkillTriggeredAttackSpeedPercent",
+        "SkillTriggeredAttackSpeedPercent",
+        "SkillTriggeredAttackSpeedPercent 10.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4764,12 +6368,195 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "BlockChancePercent": 6.0,
+            "Defense": 7.0,
+            "MaxHealth": 15.0,
+            "ShieldGainPercent": 8.0
+          },
+          "G0-1": {
+            "BlockChancePercent": 6.0,
+            "Defense": 7.7,
+            "MaxHealth": 16.5,
+            "ShieldGainPercent": 8.0
+          },
+          "G0-2": {
+            "BlockChancePercent": 6.0,
+            "Defense": 8.5,
+            "MaxHealth": 18.2,
+            "ShieldGainPercent": 8.0
+          },
+          "G0-3": {
+            "BlockChancePercent": 6.0,
+            "Defense": 9.4,
+            "MaxHealth": 20.0,
+            "ShieldGainPercent": 8.0
+          },
+          "G1-0": {
+            "BlockChancePercent": 6.0,
+            "Defense": 11.3,
+            "MaxHealth": 24.0,
+            "ShieldGainPercent": 8.0
+          },
+          "G1-1": {
+            "BlockChancePercent": 6.0,
+            "Defense": 12.4,
+            "MaxHealth": 26.4,
+            "ShieldGainPercent": 8.0
+          },
+          "G1-2": {
+            "BlockChancePercent": 6.0,
+            "Defense": 13.6,
+            "MaxHealth": 29.0,
+            "ShieldGainPercent": 8.0
+          },
+          "G1-3": {
+            "BlockChancePercent": 6.0,
+            "Defense": 15.0,
+            "MaxHealth": 31.9,
+            "ShieldGainPercent": 8.0
+          },
+          "G2-0": {
+            "BlockChancePercent": 6.0,
+            "Defense": 18.0,
+            "MaxHealth": 38.3,
+            "ShieldGainPercent": 8.0
+          },
+          "G2-1": {
+            "BlockChancePercent": 6.0,
+            "Defense": 19.8,
+            "MaxHealth": 42.1,
+            "ShieldGainPercent": 8.0
+          },
+          "G2-2": {
+            "BlockChancePercent": 6.0,
+            "Defense": 21.8,
+            "MaxHealth": 46.3,
+            "ShieldGainPercent": 8.0
+          },
+          "G2-3": {
+            "BlockChancePercent": 6.0,
+            "Defense": 24.0,
+            "MaxHealth": 50.9,
+            "ShieldGainPercent": 8.0
+          },
+          "G3-0": {
+            "BlockChancePercent": 6.0,
+            "Defense": 28.8,
+            "MaxHealth": 61.1,
+            "ShieldGainPercent": 8.0
+          },
+          "G3-1": {
+            "BlockChancePercent": 6.0,
+            "Defense": 31.7,
+            "MaxHealth": 67.2,
+            "ShieldGainPercent": 8.0
+          },
+          "G3-2": {
+            "BlockChancePercent": 6.0,
+            "Defense": 34.9,
+            "MaxHealth": 73.9,
+            "ShieldGainPercent": 8.0
+          },
+          "G3-3": {
+            "BlockChancePercent": 6.0,
+            "Defense": 38.4,
+            "MaxHealth": 81.3,
+            "ShieldGainPercent": 8.0
+          },
+          "G4-0": {
+            "BlockChancePercent": 6.0,
+            "Defense": 46.1,
+            "MaxHealth": 97.6,
+            "ShieldGainPercent": 8.0
+          },
+          "G4-1": {
+            "BlockChancePercent": 6.0,
+            "Defense": 50.7,
+            "MaxHealth": 107.4,
+            "ShieldGainPercent": 8.0
+          },
+          "G4-2": {
+            "BlockChancePercent": 6.0,
+            "Defense": 55.8,
+            "MaxHealth": 118.1,
+            "ShieldGainPercent": 8.0
+          },
+          "G4-3": {
+            "BlockChancePercent": 6.0,
+            "Defense": 61.4,
+            "MaxHealth": 129.9,
+            "ShieldGainPercent": 8.0
+          },
+          "G5-0": {
+            "BlockChancePercent": 6.0,
+            "Defense": 73.7,
+            "MaxHealth": 155.9,
+            "ShieldGainPercent": 8.0
+          },
+          "G5-1": {
+            "BlockChancePercent": 6.0,
+            "Defense": 81.1,
+            "MaxHealth": 171.5,
+            "ShieldGainPercent": 8.0
+          },
+          "G5-2": {
+            "BlockChancePercent": 6.0,
+            "Defense": 89.2,
+            "MaxHealth": 188.7,
+            "ShieldGainPercent": 8.0
+          },
+          "G5-3": {
+            "BlockChancePercent": 6.0,
+            "Defense": 98.1,
+            "MaxHealth": 207.6,
+            "ShieldGainPercent": 8.0
+          },
+          "G6-0": {
+            "BlockChancePercent": 6.0,
+            "Defense": 117.7,
+            "MaxHealth": 249.1,
+            "ShieldGainPercent": 8.0
+          },
+          "G6-1": {
+            "BlockChancePercent": 6.0,
+            "Defense": 129.5,
+            "MaxHealth": 274.0,
+            "ShieldGainPercent": 8.0
+          },
+          "G6-2": {
+            "BlockChancePercent": 6.0,
+            "Defense": 142.5,
+            "MaxHealth": 301.4,
+            "ShieldGainPercent": 8.0
+          },
+          "G6-3": {
+            "BlockChancePercent": 6.0,
+            "Defense": 156.8,
+            "MaxHealth": 331.5,
+            "ShieldGainPercent": 8.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "BlockChancePercent",
+        "방패 막기 확률",
+        "BlockChancePercent 6.0",
+        "Defense",
+        "방어력",
+        "Defense 7.0",
+        "MaxHealth",
+        "최대 체력",
+        "MaxHealth 15.0",
+        "ShieldGainPercent",
+        "ShieldGainPercent",
+        "ShieldGainPercent 8.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4838,12 +6625,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 4.0,
+            "SkillDamagePercent": 8.0
+          },
+          "G0-1": {
+            "Defense": 4.4,
+            "SkillDamagePercent": 8.0
+          },
+          "G0-2": {
+            "Defense": 4.8,
+            "SkillDamagePercent": 8.0
+          },
+          "G0-3": {
+            "Defense": 5.3,
+            "SkillDamagePercent": 8.0
+          },
+          "G1-0": {
+            "Defense": 6.4,
+            "SkillDamagePercent": 8.0
+          },
+          "G1-1": {
+            "Defense": 7.0,
+            "SkillDamagePercent": 8.0
+          },
+          "G1-2": {
+            "Defense": 7.7,
+            "SkillDamagePercent": 8.0
+          },
+          "G1-3": {
+            "Defense": 8.5,
+            "SkillDamagePercent": 8.0
+          },
+          "G2-0": {
+            "Defense": 10.2,
+            "SkillDamagePercent": 8.0
+          },
+          "G2-1": {
+            "Defense": 11.2,
+            "SkillDamagePercent": 8.0
+          },
+          "G2-2": {
+            "Defense": 12.3,
+            "SkillDamagePercent": 8.0
+          },
+          "G2-3": {
+            "Defense": 13.5,
+            "SkillDamagePercent": 8.0
+          },
+          "G3-0": {
+            "Defense": 16.2,
+            "SkillDamagePercent": 8.0
+          },
+          "G3-1": {
+            "Defense": 17.8,
+            "SkillDamagePercent": 8.0
+          },
+          "G3-2": {
+            "Defense": 19.6,
+            "SkillDamagePercent": 8.0
+          },
+          "G3-3": {
+            "Defense": 21.6,
+            "SkillDamagePercent": 8.0
+          },
+          "G4-0": {
+            "Defense": 25.9,
+            "SkillDamagePercent": 8.0
+          },
+          "G4-1": {
+            "Defense": 28.5,
+            "SkillDamagePercent": 8.0
+          },
+          "G4-2": {
+            "Defense": 31.4,
+            "SkillDamagePercent": 8.0
+          },
+          "G4-3": {
+            "Defense": 34.5,
+            "SkillDamagePercent": 8.0
+          },
+          "G5-0": {
+            "Defense": 41.4,
+            "SkillDamagePercent": 8.0
+          },
+          "G5-1": {
+            "Defense": 45.5,
+            "SkillDamagePercent": 8.0
+          },
+          "G5-2": {
+            "Defense": 50.1,
+            "SkillDamagePercent": 8.0
+          },
+          "G5-3": {
+            "Defense": 55.1,
+            "SkillDamagePercent": 8.0
+          },
+          "G6-0": {
+            "Defense": 66.1,
+            "SkillDamagePercent": 8.0
+          },
+          "G6-1": {
+            "Defense": 72.7,
+            "SkillDamagePercent": 8.0
+          },
+          "G6-2": {
+            "Defense": 80.0,
+            "SkillDamagePercent": 8.0
+          },
+          "G6-3": {
+            "Defense": 88.0,
+            "SkillDamagePercent": 8.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 4.0",
+        "SkillDamagePercent",
+        "SkillDamagePercent",
+        "SkillDamagePercent 8.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4900,12 +6808,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 3.0
+          },
+          "G0-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 3.3
+          },
+          "G0-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 3.6
+          },
+          "G0-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 4.0
+          },
+          "G1-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 4.8
+          },
+          "G1-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 5.3
+          },
+          "G1-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 5.8
+          },
+          "G1-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 6.4
+          },
+          "G2-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 7.7
+          },
+          "G2-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 8.5
+          },
+          "G2-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 9.4
+          },
+          "G2-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 10.3
+          },
+          "G3-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 12.4
+          },
+          "G3-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 13.6
+          },
+          "G3-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 15.0
+          },
+          "G3-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 16.5
+          },
+          "G4-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 19.8
+          },
+          "G4-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 21.8
+          },
+          "G4-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 24.0
+          },
+          "G4-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 26.4
+          },
+          "G5-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 31.7
+          },
+          "G5-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 34.9
+          },
+          "G5-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 38.4
+          },
+          "G5-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 42.2
+          },
+          "G6-0": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 50.6
+          },
+          "G6-1": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 55.7
+          },
+          "G6-2": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 61.3
+          },
+          "G6-3": {
+            "AccuracyPercent": 7.0,
+            "CriticalChancePercent": 2.0,
+            "Defense": 67.4
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AccuracyPercent",
+        "명중률",
+        "AccuracyPercent 7.0",
+        "CriticalChancePercent",
+        "치명타 확률",
+        "CriticalChancePercent 2.0",
+        "Defense",
+        "방어력",
+        "Defense 3.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -4966,12 +7026,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 6.0
+          },
+          "G0-1": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 6.6
+          },
+          "G0-2": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 7.3
+          },
+          "G0-3": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 8.0
+          },
+          "G1-0": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 9.6
+          },
+          "G1-1": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 10.6
+          },
+          "G1-2": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 11.7
+          },
+          "G1-3": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 12.9
+          },
+          "G2-0": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 15.5
+          },
+          "G2-1": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 17.1
+          },
+          "G2-2": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 18.8
+          },
+          "G2-3": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 20.7
+          },
+          "G3-0": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 24.8
+          },
+          "G3-1": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 27.3
+          },
+          "G3-2": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 30.0
+          },
+          "G3-3": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 33.0
+          },
+          "G4-0": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 39.6
+          },
+          "G4-1": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 43.6
+          },
+          "G4-2": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 48.0
+          },
+          "G4-3": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 52.8
+          },
+          "G5-0": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 63.4
+          },
+          "G5-1": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 69.7
+          },
+          "G5-2": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 76.7
+          },
+          "G5-3": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 84.4
+          },
+          "G6-0": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 101.3
+          },
+          "G6-1": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 111.4
+          },
+          "G6-2": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 122.5
+          },
+          "G6-3": {
+            "DashDamageReductionPercent": 10.0,
+            "Defense": 134.8
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "DashDamageReductionPercent",
+        "DashDamageReductionPercent",
+        "DashDamageReductionPercent 10.0",
+        "Defense",
+        "방어력",
+        "Defense 6.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5032,12 +7213,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 4.0
+          },
+          "G0-1": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 4.4
+          },
+          "G0-2": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 4.8
+          },
+          "G0-3": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 5.3
+          },
+          "G1-0": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 6.4
+          },
+          "G1-1": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 7.0
+          },
+          "G1-2": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 7.7
+          },
+          "G1-3": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 8.5
+          },
+          "G2-0": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 10.2
+          },
+          "G2-1": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 11.2
+          },
+          "G2-2": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 12.3
+          },
+          "G2-3": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 13.5
+          },
+          "G3-0": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 16.2
+          },
+          "G3-1": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 17.8
+          },
+          "G3-2": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 19.6
+          },
+          "G3-3": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 21.6
+          },
+          "G4-0": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 25.9
+          },
+          "G4-1": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 28.5
+          },
+          "G4-2": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 31.4
+          },
+          "G4-3": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 34.5
+          },
+          "G5-0": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 41.4
+          },
+          "G5-1": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 45.5
+          },
+          "G5-2": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 50.1
+          },
+          "G5-3": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 55.1
+          },
+          "G6-0": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 66.1
+          },
+          "G6-1": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 72.7
+          },
+          "G6-2": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 80.0
+          },
+          "G6-3": {
+            "DashDistanceStuds": 6.0,
+            "Defense": 88.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "DashDistanceStuds",
+        "DashDistanceStuds",
+        "DashDistanceStuds 6.0",
+        "Defense",
+        "방어력",
+        "Defense 4.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5090,12 +7392,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 3.0,
+            "DodgeChancePercent": 7.0
+          },
+          "G0-1": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 3.3,
+            "DodgeChancePercent": 7.0
+          },
+          "G0-2": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 3.6,
+            "DodgeChancePercent": 7.0
+          },
+          "G0-3": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 4.0,
+            "DodgeChancePercent": 7.0
+          },
+          "G1-0": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 4.8,
+            "DodgeChancePercent": 7.0
+          },
+          "G1-1": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 5.3,
+            "DodgeChancePercent": 7.0
+          },
+          "G1-2": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 5.8,
+            "DodgeChancePercent": 7.0
+          },
+          "G1-3": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 6.4,
+            "DodgeChancePercent": 7.0
+          },
+          "G2-0": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 7.7,
+            "DodgeChancePercent": 7.0
+          },
+          "G2-1": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 8.5,
+            "DodgeChancePercent": 7.0
+          },
+          "G2-2": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 9.4,
+            "DodgeChancePercent": 7.0
+          },
+          "G2-3": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 10.3,
+            "DodgeChancePercent": 7.0
+          },
+          "G3-0": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 12.4,
+            "DodgeChancePercent": 7.0
+          },
+          "G3-1": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 13.6,
+            "DodgeChancePercent": 7.0
+          },
+          "G3-2": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 15.0,
+            "DodgeChancePercent": 7.0
+          },
+          "G3-3": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 16.5,
+            "DodgeChancePercent": 7.0
+          },
+          "G4-0": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 19.8,
+            "DodgeChancePercent": 7.0
+          },
+          "G4-1": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 21.8,
+            "DodgeChancePercent": 7.0
+          },
+          "G4-2": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 24.0,
+            "DodgeChancePercent": 7.0
+          },
+          "G4-3": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 26.4,
+            "DodgeChancePercent": 7.0
+          },
+          "G5-0": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 31.7,
+            "DodgeChancePercent": 7.0
+          },
+          "G5-1": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 34.9,
+            "DodgeChancePercent": 7.0
+          },
+          "G5-2": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 38.4,
+            "DodgeChancePercent": 7.0
+          },
+          "G5-3": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 42.2,
+            "DodgeChancePercent": 7.0
+          },
+          "G6-0": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 50.6,
+            "DodgeChancePercent": 7.0
+          },
+          "G6-1": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 55.7,
+            "DodgeChancePercent": 7.0
+          },
+          "G6-2": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 61.3,
+            "DodgeChancePercent": 7.0
+          },
+          "G6-3": {
+            "DashInvulnerabilitySeconds": 0.1,
+            "Defense": 67.4,
+            "DodgeChancePercent": 7.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "DashInvulnerabilitySeconds",
+        "대시 무적 시간",
+        "DashInvulnerabilitySeconds 0.1",
+        "Defense",
+        "방어력",
+        "Defense 3.0",
+        "DodgeChancePercent",
+        "회피 확률",
+        "DodgeChancePercent 7.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5148,12 +7602,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 3.0,
+            "MovementSpeedPercent": 9.0
+          },
+          "G0-1": {
+            "Defense": 3.3,
+            "MovementSpeedPercent": 9.0
+          },
+          "G0-2": {
+            "Defense": 3.6,
+            "MovementSpeedPercent": 9.0
+          },
+          "G0-3": {
+            "Defense": 4.0,
+            "MovementSpeedPercent": 9.0
+          },
+          "G1-0": {
+            "Defense": 4.8,
+            "MovementSpeedPercent": 9.0
+          },
+          "G1-1": {
+            "Defense": 5.3,
+            "MovementSpeedPercent": 9.0
+          },
+          "G1-2": {
+            "Defense": 5.8,
+            "MovementSpeedPercent": 9.0
+          },
+          "G1-3": {
+            "Defense": 6.4,
+            "MovementSpeedPercent": 9.0
+          },
+          "G2-0": {
+            "Defense": 7.7,
+            "MovementSpeedPercent": 9.0
+          },
+          "G2-1": {
+            "Defense": 8.5,
+            "MovementSpeedPercent": 9.0
+          },
+          "G2-2": {
+            "Defense": 9.4,
+            "MovementSpeedPercent": 9.0
+          },
+          "G2-3": {
+            "Defense": 10.3,
+            "MovementSpeedPercent": 9.0
+          },
+          "G3-0": {
+            "Defense": 12.4,
+            "MovementSpeedPercent": 9.0
+          },
+          "G3-1": {
+            "Defense": 13.6,
+            "MovementSpeedPercent": 9.0
+          },
+          "G3-2": {
+            "Defense": 15.0,
+            "MovementSpeedPercent": 9.0
+          },
+          "G3-3": {
+            "Defense": 16.5,
+            "MovementSpeedPercent": 9.0
+          },
+          "G4-0": {
+            "Defense": 19.8,
+            "MovementSpeedPercent": 9.0
+          },
+          "G4-1": {
+            "Defense": 21.8,
+            "MovementSpeedPercent": 9.0
+          },
+          "G4-2": {
+            "Defense": 24.0,
+            "MovementSpeedPercent": 9.0
+          },
+          "G4-3": {
+            "Defense": 26.4,
+            "MovementSpeedPercent": 9.0
+          },
+          "G5-0": {
+            "Defense": 31.7,
+            "MovementSpeedPercent": 9.0
+          },
+          "G5-1": {
+            "Defense": 34.9,
+            "MovementSpeedPercent": 9.0
+          },
+          "G5-2": {
+            "Defense": 38.4,
+            "MovementSpeedPercent": 9.0
+          },
+          "G5-3": {
+            "Defense": 42.2,
+            "MovementSpeedPercent": 9.0
+          },
+          "G6-0": {
+            "Defense": 50.6,
+            "MovementSpeedPercent": 9.0
+          },
+          "G6-1": {
+            "Defense": 55.7,
+            "MovementSpeedPercent": 9.0
+          },
+          "G6-2": {
+            "Defense": 61.3,
+            "MovementSpeedPercent": 9.0
+          },
+          "G6-3": {
+            "Defense": 67.4,
+            "MovementSpeedPercent": 9.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 3.0",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent 9.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5222,12 +7797,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 12.0,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G0-1": {
+            "Defense": 13.2,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G0-2": {
+            "Defense": 14.5,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G0-3": {
+            "Defense": 16.0,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G1-0": {
+            "Defense": 19.2,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G1-1": {
+            "Defense": 21.1,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G1-2": {
+            "Defense": 23.2,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G1-3": {
+            "Defense": 25.5,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G2-0": {
+            "Defense": 30.6,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G2-1": {
+            "Defense": 33.7,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G2-2": {
+            "Defense": 37.1,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G2-3": {
+            "Defense": 40.8,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G3-0": {
+            "Defense": 49.0,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G3-1": {
+            "Defense": 53.9,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G3-2": {
+            "Defense": 59.3,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G3-3": {
+            "Defense": 65.2,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G4-0": {
+            "Defense": 78.2,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G4-1": {
+            "Defense": 86.0,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G4-2": {
+            "Defense": 94.6,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G4-3": {
+            "Defense": 104.1,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G5-0": {
+            "Defense": 124.9,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G5-1": {
+            "Defense": 137.4,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G5-2": {
+            "Defense": 151.1,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G5-3": {
+            "Defense": 166.2,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G6-0": {
+            "Defense": 199.4,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G6-1": {
+            "Defense": 219.3,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G6-2": {
+            "Defense": 241.2,
+            "FinalDamageReductionPercent": 4.0
+          },
+          "G6-3": {
+            "Defense": 265.3,
+            "FinalDamageReductionPercent": 4.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 12.0",
+        "FinalDamageReductionPercent",
+        "FinalDamageReductionPercent",
+        "FinalDamageReductionPercent 4.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5296,12 +7992,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "BlockChancePercent": 4.0,
+            "Defense": 10.0,
+            "ThornsDamagePercent": 12.0
+          },
+          "G0-1": {
+            "BlockChancePercent": 4.0,
+            "Defense": 11.0,
+            "ThornsDamagePercent": 12.0
+          },
+          "G0-2": {
+            "BlockChancePercent": 4.0,
+            "Defense": 12.1,
+            "ThornsDamagePercent": 12.0
+          },
+          "G0-3": {
+            "BlockChancePercent": 4.0,
+            "Defense": 13.3,
+            "ThornsDamagePercent": 12.0
+          },
+          "G1-0": {
+            "BlockChancePercent": 4.0,
+            "Defense": 16.0,
+            "ThornsDamagePercent": 12.0
+          },
+          "G1-1": {
+            "BlockChancePercent": 4.0,
+            "Defense": 17.6,
+            "ThornsDamagePercent": 12.0
+          },
+          "G1-2": {
+            "BlockChancePercent": 4.0,
+            "Defense": 19.4,
+            "ThornsDamagePercent": 12.0
+          },
+          "G1-3": {
+            "BlockChancePercent": 4.0,
+            "Defense": 21.3,
+            "ThornsDamagePercent": 12.0
+          },
+          "G2-0": {
+            "BlockChancePercent": 4.0,
+            "Defense": 25.6,
+            "ThornsDamagePercent": 12.0
+          },
+          "G2-1": {
+            "BlockChancePercent": 4.0,
+            "Defense": 28.2,
+            "ThornsDamagePercent": 12.0
+          },
+          "G2-2": {
+            "BlockChancePercent": 4.0,
+            "Defense": 31.0,
+            "ThornsDamagePercent": 12.0
+          },
+          "G2-3": {
+            "BlockChancePercent": 4.0,
+            "Defense": 34.1,
+            "ThornsDamagePercent": 12.0
+          },
+          "G3-0": {
+            "BlockChancePercent": 4.0,
+            "Defense": 40.9,
+            "ThornsDamagePercent": 12.0
+          },
+          "G3-1": {
+            "BlockChancePercent": 4.0,
+            "Defense": 45.0,
+            "ThornsDamagePercent": 12.0
+          },
+          "G3-2": {
+            "BlockChancePercent": 4.0,
+            "Defense": 49.5,
+            "ThornsDamagePercent": 12.0
+          },
+          "G3-3": {
+            "BlockChancePercent": 4.0,
+            "Defense": 54.5,
+            "ThornsDamagePercent": 12.0
+          },
+          "G4-0": {
+            "BlockChancePercent": 4.0,
+            "Defense": 65.4,
+            "ThornsDamagePercent": 12.0
+          },
+          "G4-1": {
+            "BlockChancePercent": 4.0,
+            "Defense": 71.9,
+            "ThornsDamagePercent": 12.0
+          },
+          "G4-2": {
+            "BlockChancePercent": 4.0,
+            "Defense": 79.1,
+            "ThornsDamagePercent": 12.0
+          },
+          "G4-3": {
+            "BlockChancePercent": 4.0,
+            "Defense": 87.0,
+            "ThornsDamagePercent": 12.0
+          },
+          "G5-0": {
+            "BlockChancePercent": 4.0,
+            "Defense": 104.4,
+            "ThornsDamagePercent": 12.0
+          },
+          "G5-1": {
+            "BlockChancePercent": 4.0,
+            "Defense": 114.8,
+            "ThornsDamagePercent": 12.0
+          },
+          "G5-2": {
+            "BlockChancePercent": 4.0,
+            "Defense": 126.3,
+            "ThornsDamagePercent": 12.0
+          },
+          "G5-3": {
+            "BlockChancePercent": 4.0,
+            "Defense": 138.9,
+            "ThornsDamagePercent": 12.0
+          },
+          "G6-0": {
+            "BlockChancePercent": 4.0,
+            "Defense": 166.7,
+            "ThornsDamagePercent": 12.0
+          },
+          "G6-1": {
+            "BlockChancePercent": 4.0,
+            "Defense": 183.4,
+            "ThornsDamagePercent": 12.0
+          },
+          "G6-2": {
+            "BlockChancePercent": 4.0,
+            "Defense": 201.7,
+            "ThornsDamagePercent": 12.0
+          },
+          "G6-3": {
+            "BlockChancePercent": 4.0,
+            "Defense": 221.9,
+            "ThornsDamagePercent": 12.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "BlockChancePercent",
+        "방패 막기 확률",
+        "BlockChancePercent 4.0",
+        "Defense",
+        "방어력",
+        "Defense 10.0",
+        "ThornsDamagePercent",
+        "ThornsDamagePercent",
+        "ThornsDamagePercent 12.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5362,12 +8210,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 5.0,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G0-1": {
+            "Defense": 5.5,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G0-2": {
+            "Defense": 6.1,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G0-3": {
+            "Defense": 6.7,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G1-0": {
+            "Defense": 8.0,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G1-1": {
+            "Defense": 8.8,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G1-2": {
+            "Defense": 9.7,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G1-3": {
+            "Defense": 10.7,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G2-0": {
+            "Defense": 12.8,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G2-1": {
+            "Defense": 14.1,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G2-2": {
+            "Defense": 15.5,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G2-3": {
+            "Defense": 17.1,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G3-0": {
+            "Defense": 20.5,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G3-1": {
+            "Defense": 22.6,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G3-2": {
+            "Defense": 24.9,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G3-3": {
+            "Defense": 27.4,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G4-0": {
+            "Defense": 32.9,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G4-1": {
+            "Defense": 36.2,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G4-2": {
+            "Defense": 39.8,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G4-3": {
+            "Defense": 43.8,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G5-0": {
+            "Defense": 52.6,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G5-1": {
+            "Defense": 57.9,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G5-2": {
+            "Defense": 63.7,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G5-3": {
+            "Defense": 70.1,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G6-0": {
+            "Defense": 84.1,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G6-1": {
+            "Defense": 92.5,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G6-2": {
+            "Defense": 101.8,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          },
+          "G6-3": {
+            "Defense": 112.0,
+            "DodgeChancePercent": 3.0,
+            "MovementSpeedPercent": 5.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 5.0",
+        "DodgeChancePercent",
+        "회피 확률",
+        "DodgeChancePercent 3.0",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent 5.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5428,12 +8428,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 8.0,
+            "ThornsDamagePercent": 20.0
+          },
+          "G0-1": {
+            "Defense": 8.8,
+            "ThornsDamagePercent": 20.0
+          },
+          "G0-2": {
+            "Defense": 9.7,
+            "ThornsDamagePercent": 20.0
+          },
+          "G0-3": {
+            "Defense": 10.7,
+            "ThornsDamagePercent": 20.0
+          },
+          "G1-0": {
+            "Defense": 12.8,
+            "ThornsDamagePercent": 20.0
+          },
+          "G1-1": {
+            "Defense": 14.1,
+            "ThornsDamagePercent": 20.0
+          },
+          "G1-2": {
+            "Defense": 15.5,
+            "ThornsDamagePercent": 20.0
+          },
+          "G1-3": {
+            "Defense": 17.1,
+            "ThornsDamagePercent": 20.0
+          },
+          "G2-0": {
+            "Defense": 20.5,
+            "ThornsDamagePercent": 20.0
+          },
+          "G2-1": {
+            "Defense": 22.6,
+            "ThornsDamagePercent": 20.0
+          },
+          "G2-2": {
+            "Defense": 24.9,
+            "ThornsDamagePercent": 20.0
+          },
+          "G2-3": {
+            "Defense": 27.4,
+            "ThornsDamagePercent": 20.0
+          },
+          "G3-0": {
+            "Defense": 32.9,
+            "ThornsDamagePercent": 20.0
+          },
+          "G3-1": {
+            "Defense": 36.2,
+            "ThornsDamagePercent": 20.0
+          },
+          "G3-2": {
+            "Defense": 39.8,
+            "ThornsDamagePercent": 20.0
+          },
+          "G3-3": {
+            "Defense": 43.8,
+            "ThornsDamagePercent": 20.0
+          },
+          "G4-0": {
+            "Defense": 52.6,
+            "ThornsDamagePercent": 20.0
+          },
+          "G4-1": {
+            "Defense": 57.9,
+            "ThornsDamagePercent": 20.0
+          },
+          "G4-2": {
+            "Defense": 63.7,
+            "ThornsDamagePercent": 20.0
+          },
+          "G4-3": {
+            "Defense": 70.1,
+            "ThornsDamagePercent": 20.0
+          },
+          "G5-0": {
+            "Defense": 84.1,
+            "ThornsDamagePercent": 20.0
+          },
+          "G5-1": {
+            "Defense": 92.5,
+            "ThornsDamagePercent": 20.0
+          },
+          "G5-2": {
+            "Defense": 101.8,
+            "ThornsDamagePercent": 20.0
+          },
+          "G5-3": {
+            "Defense": 112.0,
+            "ThornsDamagePercent": 20.0
+          },
+          "G6-0": {
+            "Defense": 134.4,
+            "ThornsDamagePercent": 20.0
+          },
+          "G6-1": {
+            "Defense": 147.8,
+            "ThornsDamagePercent": 20.0
+          },
+          "G6-2": {
+            "Defense": 162.6,
+            "ThornsDamagePercent": 20.0
+          },
+          "G6-3": {
+            "Defense": 178.9,
+            "ThornsDamagePercent": 20.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 8.0",
+        "ThornsDamagePercent",
+        "ThornsDamagePercent",
+        "ThornsDamagePercent 20.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5494,12 +8615,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G0-1": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G0-2": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G0-3": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G1-0": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G1-1": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G1-2": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G1-3": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G2-0": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G2-1": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G2-2": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G2-3": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G3-0": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G3-1": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G3-2": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G3-3": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G4-0": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G4-1": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G4-2": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G4-3": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G5-0": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G5-1": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G5-2": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G5-3": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G6-0": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G6-1": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G6-2": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          },
+          "G6-3": {
+            "GlobalAttackPowerPercent": 5.0,
+            "MovementSpeedPercent": 3.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "GlobalAttackPowerPercent",
+        "GlobalAttackPowerPercent",
+        "GlobalAttackPowerPercent 5.0",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent 3.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5552,12 +8794,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G0-1": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G0-2": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G0-3": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G1-0": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G1-1": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G1-2": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G1-3": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G2-0": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G2-1": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G2-2": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G2-3": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G3-0": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G3-1": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G3-2": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G3-3": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G4-0": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G4-1": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G4-2": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G4-3": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G5-0": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G5-1": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G5-2": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G5-3": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G6-0": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G6-1": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G6-2": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          },
+          "G6-3": {
+            "GlobalAttackSpeedPercent": 4.0,
+            "SkillChargePercent": 5.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "GlobalAttackSpeedPercent",
+        "GlobalAttackSpeedPercent",
+        "GlobalAttackSpeedPercent 4.0",
+        "SkillChargePercent",
+        "SkillChargePercent",
+        "SkillChargePercent 5.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5610,12 +8973,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G0-1": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G0-2": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G0-3": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G1-0": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G1-1": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G1-2": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G1-3": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G2-0": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G2-1": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G2-2": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G2-3": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G3-0": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G3-1": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G3-2": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G3-3": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G4-0": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G4-1": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G4-2": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G4-3": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G5-0": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G5-1": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G5-2": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G5-3": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G6-0": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G6-1": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G6-2": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          },
+          "G6-3": {
+            "HealingReceivedPercent": 12.0,
+            "HealthRegenerationPercentPer10Seconds": 1.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "HealingReceivedPercent",
+        "HealingReceivedPercent",
+        "HealingReceivedPercent 12.0",
+        "HealthRegenerationPercentPer10Seconds",
+        "HealthRegenerationPercentPer10Seconds",
+        "HealthRegenerationPercentPer10Seconds 1.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5676,12 +9160,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 15.0
+          },
+          "G0-1": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 16.5
+          },
+          "G0-2": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 18.2
+          },
+          "G0-3": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 20.0
+          },
+          "G1-0": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 24.0
+          },
+          "G1-1": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 26.4
+          },
+          "G1-2": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 29.0
+          },
+          "G1-3": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 31.9
+          },
+          "G2-0": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 38.3
+          },
+          "G2-1": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 42.1
+          },
+          "G2-2": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 46.3
+          },
+          "G2-3": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 50.9
+          },
+          "G3-0": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 61.1
+          },
+          "G3-1": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 67.2
+          },
+          "G3-2": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 73.9
+          },
+          "G3-3": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 81.3
+          },
+          "G4-0": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 97.6
+          },
+          "G4-1": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 107.4
+          },
+          "G4-2": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 118.1
+          },
+          "G4-3": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 129.9
+          },
+          "G5-0": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 155.9
+          },
+          "G5-1": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 171.5
+          },
+          "G5-2": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 188.7
+          },
+          "G5-3": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 207.6
+          },
+          "G6-0": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 249.1
+          },
+          "G6-1": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 274.0
+          },
+          "G6-2": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 301.4
+          },
+          "G6-3": {
+            "HealthRegenerationPercentPer10Seconds": 1.5,
+            "MaxHealth": 331.5
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "HealthRegenerationPercentPer10Seconds",
+        "HealthRegenerationPercentPer10Seconds",
+        "HealthRegenerationPercentPer10Seconds 1.5",
+        "MaxHealth",
+        "최대 체력",
+        "MaxHealth 15.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5730,12 +9335,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G0-1": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G0-2": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G0-3": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G1-0": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G1-1": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G1-2": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G1-3": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G2-0": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G2-1": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G2-2": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G2-3": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G3-0": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G3-1": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G3-2": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G3-3": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G4-0": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G4-1": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G4-2": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G4-3": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G5-0": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G5-1": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G5-2": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G5-3": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G6-0": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G6-1": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G6-2": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          },
+          "G6-3": {
+            "AccuracyPercent": 4.0,
+            "CrowdControlResistancePercent": 8.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AccuracyPercent",
+        "명중률",
+        "AccuracyPercent 4.0",
+        "CrowdControlResistancePercent",
+        "군중 제어 저항",
+        "CrowdControlResistancePercent 8.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5784,12 +9510,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G0-1": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G0-2": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G0-3": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G1-0": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G1-1": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G1-2": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G1-3": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G2-0": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G2-1": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G2-2": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G2-3": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G3-0": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G3-1": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G3-2": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G3-3": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G4-0": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G4-1": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G4-2": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G4-3": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G5-0": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G5-1": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G5-2": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G5-3": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G6-0": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G6-1": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G6-2": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          },
+          "G6-3": {
+            "MeleeAttackRangeStuds": 1.0,
+            "MovementSpeedPercent": 4.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "MeleeAttackRangeStuds",
+        "MeleeAttackRangeStuds",
+        "MeleeAttackRangeStuds 1.0",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent",
+        "MovementSpeedPercent 4.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5842,12 +9689,102 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "SkillDamagePercent": 12.0
+          },
+          "G0-1": {
+            "SkillDamagePercent": 12.0
+          },
+          "G0-2": {
+            "SkillDamagePercent": 12.0
+          },
+          "G0-3": {
+            "SkillDamagePercent": 12.0
+          },
+          "G1-0": {
+            "SkillDamagePercent": 12.0
+          },
+          "G1-1": {
+            "SkillDamagePercent": 12.0
+          },
+          "G1-2": {
+            "SkillDamagePercent": 12.0
+          },
+          "G1-3": {
+            "SkillDamagePercent": 12.0
+          },
+          "G2-0": {
+            "SkillDamagePercent": 12.0
+          },
+          "G2-1": {
+            "SkillDamagePercent": 12.0
+          },
+          "G2-2": {
+            "SkillDamagePercent": 12.0
+          },
+          "G2-3": {
+            "SkillDamagePercent": 12.0
+          },
+          "G3-0": {
+            "SkillDamagePercent": 12.0
+          },
+          "G3-1": {
+            "SkillDamagePercent": 12.0
+          },
+          "G3-2": {
+            "SkillDamagePercent": 12.0
+          },
+          "G3-3": {
+            "SkillDamagePercent": 12.0
+          },
+          "G4-0": {
+            "SkillDamagePercent": 12.0
+          },
+          "G4-1": {
+            "SkillDamagePercent": 12.0
+          },
+          "G4-2": {
+            "SkillDamagePercent": 12.0
+          },
+          "G4-3": {
+            "SkillDamagePercent": 12.0
+          },
+          "G5-0": {
+            "SkillDamagePercent": 12.0
+          },
+          "G5-1": {
+            "SkillDamagePercent": 12.0
+          },
+          "G5-2": {
+            "SkillDamagePercent": 12.0
+          },
+          "G5-3": {
+            "SkillDamagePercent": 12.0
+          },
+          "G6-0": {
+            "SkillDamagePercent": 12.0
+          },
+          "G6-1": {
+            "SkillDamagePercent": 12.0
+          },
+          "G6-2": {
+            "SkillDamagePercent": 12.0
+          },
+          "G6-3": {
+            "SkillDamagePercent": 12.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "SkillDamagePercent",
+        "SkillDamagePercent",
+        "SkillDamagePercent 12.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5904,12 +9841,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G0-1": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G0-2": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G0-3": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G1-0": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G1-1": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G1-2": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G1-3": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G2-0": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G2-1": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G2-2": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G2-3": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G3-0": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G3-1": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G3-2": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G3-3": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G4-0": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G4-1": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G4-2": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G4-3": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G5-0": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G5-1": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G5-2": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G5-3": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G6-0": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G6-1": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G6-2": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          },
+          "G6-3": {
+            "GlobalAttackPowerPercent": 6.0,
+            "SkillDamagePercent": 5.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "GlobalAttackPowerPercent",
+        "GlobalAttackPowerPercent",
+        "GlobalAttackPowerPercent 6.0",
+        "SkillDamagePercent",
+        "SkillDamagePercent",
+        "SkillDamagePercent 5.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -5962,12 +10020,164 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 12.0,
+            "ShieldGainPercent": 10.0
+          },
+          "G0-1": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 13.2,
+            "ShieldGainPercent": 10.0
+          },
+          "G0-2": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 14.5,
+            "ShieldGainPercent": 10.0
+          },
+          "G0-3": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 16.0,
+            "ShieldGainPercent": 10.0
+          },
+          "G1-0": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 19.2,
+            "ShieldGainPercent": 10.0
+          },
+          "G1-1": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 21.1,
+            "ShieldGainPercent": 10.0
+          },
+          "G1-2": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 23.2,
+            "ShieldGainPercent": 10.0
+          },
+          "G1-3": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 25.5,
+            "ShieldGainPercent": 10.0
+          },
+          "G2-0": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 30.6,
+            "ShieldGainPercent": 10.0
+          },
+          "G2-1": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 33.7,
+            "ShieldGainPercent": 10.0
+          },
+          "G2-2": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 37.1,
+            "ShieldGainPercent": 10.0
+          },
+          "G2-3": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 40.8,
+            "ShieldGainPercent": 10.0
+          },
+          "G3-0": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 49.0,
+            "ShieldGainPercent": 10.0
+          },
+          "G3-1": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 53.9,
+            "ShieldGainPercent": 10.0
+          },
+          "G3-2": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 59.3,
+            "ShieldGainPercent": 10.0
+          },
+          "G3-3": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 65.2,
+            "ShieldGainPercent": 10.0
+          },
+          "G4-0": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 78.2,
+            "ShieldGainPercent": 10.0
+          },
+          "G4-1": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 86.0,
+            "ShieldGainPercent": 10.0
+          },
+          "G4-2": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 94.6,
+            "ShieldGainPercent": 10.0
+          },
+          "G4-3": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 104.1,
+            "ShieldGainPercent": 10.0
+          },
+          "G5-0": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 124.9,
+            "ShieldGainPercent": 10.0
+          },
+          "G5-1": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 137.4,
+            "ShieldGainPercent": 10.0
+          },
+          "G5-2": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 151.1,
+            "ShieldGainPercent": 10.0
+          },
+          "G5-3": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 166.2,
+            "ShieldGainPercent": 10.0
+          },
+          "G6-0": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 199.4,
+            "ShieldGainPercent": 10.0
+          },
+          "G6-1": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 219.3,
+            "ShieldGainPercent": 10.0
+          },
+          "G6-2": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 241.2,
+            "ShieldGainPercent": 10.0
+          },
+          "G6-3": {
+            "HealingReceivedPercent": 6.0,
+            "MaxHealth": 265.3,
+            "ShieldGainPercent": 10.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "HealingReceivedPercent",
+        "HealingReceivedPercent",
+        "HealingReceivedPercent 6.0",
+        "MaxHealth",
+        "최대 체력",
+        "MaxHealth 12.0",
+        "ShieldGainPercent",
+        "ShieldGainPercent",
+        "ShieldGainPercent 10.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -6024,12 +10234,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 25.0
+          },
+          "G0-1": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 27.5
+          },
+          "G0-2": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 30.3
+          },
+          "G0-3": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 33.3
+          },
+          "G1-0": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 40.0
+          },
+          "G1-1": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 44.0
+          },
+          "G1-2": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 48.4
+          },
+          "G1-3": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 53.2
+          },
+          "G2-0": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 63.8
+          },
+          "G2-1": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 70.2
+          },
+          "G2-2": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 77.2
+          },
+          "G2-3": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 84.9
+          },
+          "G3-0": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 101.9
+          },
+          "G3-1": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 112.1
+          },
+          "G3-2": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 123.3
+          },
+          "G3-3": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 135.6
+          },
+          "G4-0": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 162.7
+          },
+          "G4-1": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 179.0
+          },
+          "G4-2": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 196.9
+          },
+          "G4-3": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 216.6
+          },
+          "G5-0": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 259.9
+          },
+          "G5-1": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 285.9
+          },
+          "G5-2": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 314.5
+          },
+          "G5-3": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 346.0
+          },
+          "G6-0": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 415.2
+          },
+          "G6-1": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 456.7
+          },
+          "G6-2": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 502.4
+          },
+          "G6-3": {
+            "FinalDamageReductionPercent": 3.0,
+            "MaxHealth": 552.6
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "FinalDamageReductionPercent",
+        "FinalDamageReductionPercent",
+        "FinalDamageReductionPercent 3.0",
+        "MaxHealth",
+        "최대 체력",
+        "MaxHealth 25.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -6078,12 +10409,102 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "SkillChargePercent": 10.0
+          },
+          "G0-1": {
+            "SkillChargePercent": 10.0
+          },
+          "G0-2": {
+            "SkillChargePercent": 10.0
+          },
+          "G0-3": {
+            "SkillChargePercent": 10.0
+          },
+          "G1-0": {
+            "SkillChargePercent": 10.0
+          },
+          "G1-1": {
+            "SkillChargePercent": 10.0
+          },
+          "G1-2": {
+            "SkillChargePercent": 10.0
+          },
+          "G1-3": {
+            "SkillChargePercent": 10.0
+          },
+          "G2-0": {
+            "SkillChargePercent": 10.0
+          },
+          "G2-1": {
+            "SkillChargePercent": 10.0
+          },
+          "G2-2": {
+            "SkillChargePercent": 10.0
+          },
+          "G2-3": {
+            "SkillChargePercent": 10.0
+          },
+          "G3-0": {
+            "SkillChargePercent": 10.0
+          },
+          "G3-1": {
+            "SkillChargePercent": 10.0
+          },
+          "G3-2": {
+            "SkillChargePercent": 10.0
+          },
+          "G3-3": {
+            "SkillChargePercent": 10.0
+          },
+          "G4-0": {
+            "SkillChargePercent": 10.0
+          },
+          "G4-1": {
+            "SkillChargePercent": 10.0
+          },
+          "G4-2": {
+            "SkillChargePercent": 10.0
+          },
+          "G4-3": {
+            "SkillChargePercent": 10.0
+          },
+          "G5-0": {
+            "SkillChargePercent": 10.0
+          },
+          "G5-1": {
+            "SkillChargePercent": 10.0
+          },
+          "G5-2": {
+            "SkillChargePercent": 10.0
+          },
+          "G5-3": {
+            "SkillChargePercent": 10.0
+          },
+          "G6-0": {
+            "SkillChargePercent": 10.0
+          },
+          "G6-1": {
+            "SkillChargePercent": 10.0
+          },
+          "G6-2": {
+            "SkillChargePercent": 10.0
+          },
+          "G6-3": {
+            "SkillChargePercent": 10.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "SkillChargePercent",
+        "SkillChargePercent",
+        "SkillChargePercent 10.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -6307,12 +10728,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G0-1": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G0-2": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G0-3": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G1-0": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G1-1": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G1-2": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G1-3": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G2-0": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G2-1": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G2-2": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G2-3": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G3-0": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G3-1": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G3-2": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G3-3": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G4-0": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G4-1": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G4-2": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G4-3": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G5-0": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G5-1": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G5-2": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G5-3": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G6-0": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G6-1": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G6-2": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          },
+          "G6-3": {
+            "GlobalAttackPowerPercent": 8.0,
+            "LowHealthDamagePercent": 10.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "GlobalAttackPowerPercent",
+        "GlobalAttackPowerPercent",
+        "GlobalAttackPowerPercent 8.0",
+        "LowHealthDamagePercent",
+        "LowHealthDamagePercent",
+        "LowHealthDamagePercent 10.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -6361,12 +10903,133 @@ window.PACKBOUND_ITEM_DB = {
       "combat_art": null,
       "support_effect": null,
       "combat_stats": {
-        "status": "Planned",
-        "grades": null
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "Defense": 4.0,
+            "ShieldGainPercent": 8.0
+          },
+          "G0-1": {
+            "Defense": 4.4,
+            "ShieldGainPercent": 8.0
+          },
+          "G0-2": {
+            "Defense": 4.8,
+            "ShieldGainPercent": 8.0
+          },
+          "G0-3": {
+            "Defense": 5.3,
+            "ShieldGainPercent": 8.0
+          },
+          "G1-0": {
+            "Defense": 6.4,
+            "ShieldGainPercent": 8.0
+          },
+          "G1-1": {
+            "Defense": 7.0,
+            "ShieldGainPercent": 8.0
+          },
+          "G1-2": {
+            "Defense": 7.7,
+            "ShieldGainPercent": 8.0
+          },
+          "G1-3": {
+            "Defense": 8.5,
+            "ShieldGainPercent": 8.0
+          },
+          "G2-0": {
+            "Defense": 10.2,
+            "ShieldGainPercent": 8.0
+          },
+          "G2-1": {
+            "Defense": 11.2,
+            "ShieldGainPercent": 8.0
+          },
+          "G2-2": {
+            "Defense": 12.3,
+            "ShieldGainPercent": 8.0
+          },
+          "G2-3": {
+            "Defense": 13.5,
+            "ShieldGainPercent": 8.0
+          },
+          "G3-0": {
+            "Defense": 16.2,
+            "ShieldGainPercent": 8.0
+          },
+          "G3-1": {
+            "Defense": 17.8,
+            "ShieldGainPercent": 8.0
+          },
+          "G3-2": {
+            "Defense": 19.6,
+            "ShieldGainPercent": 8.0
+          },
+          "G3-3": {
+            "Defense": 21.6,
+            "ShieldGainPercent": 8.0
+          },
+          "G4-0": {
+            "Defense": 25.9,
+            "ShieldGainPercent": 8.0
+          },
+          "G4-1": {
+            "Defense": 28.5,
+            "ShieldGainPercent": 8.0
+          },
+          "G4-2": {
+            "Defense": 31.4,
+            "ShieldGainPercent": 8.0
+          },
+          "G4-3": {
+            "Defense": 34.5,
+            "ShieldGainPercent": 8.0
+          },
+          "G5-0": {
+            "Defense": 41.4,
+            "ShieldGainPercent": 8.0
+          },
+          "G5-1": {
+            "Defense": 45.5,
+            "ShieldGainPercent": 8.0
+          },
+          "G5-2": {
+            "Defense": 50.1,
+            "ShieldGainPercent": 8.0
+          },
+          "G5-3": {
+            "Defense": 55.1,
+            "ShieldGainPercent": 8.0
+          },
+          "G6-0": {
+            "Defense": 66.1,
+            "ShieldGainPercent": 8.0
+          },
+          "G6-1": {
+            "Defense": 72.7,
+            "ShieldGainPercent": 8.0
+          },
+          "G6-2": {
+            "Defense": 80.0,
+            "ShieldGainPercent": 8.0
+          },
+          "G6-3": {
+            "Defense": 88.0,
+            "ShieldGainPercent": 8.0
+          }
+        }
       },
       "stats": [
-        "전투 수치 예정",
-        "Planned"
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "Defense",
+        "방어력",
+        "Defense 4.0",
+        "ShieldGainPercent",
+        "ShieldGainPercent",
+        "ShieldGainPercent 8.0"
       ],
       "synergies": [],
       "synergy_labels": [],
@@ -6382,5 +11045,5 @@ window.PACKBOUND_ITEM_DB = {
     "conditions": [],
     "abilities": []
   },
-  "revision": "68a90da7bb116039"
+  "revision": "214ba84978a5a13d"
 };

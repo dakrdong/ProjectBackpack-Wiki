@@ -1,8 +1,8 @@
 window.PACKBOUND_COMBAT_DB = {
   "source_page_id": "backpack-combat-stat-database",
-  "source_title": "아이템 등급·룬·서버 전투를 잇는 고정 능력치 기준선",
-  "source": "wiki/content/pages/backpack-combat-stat-database/v003.md",
-  "source_version": 3,
+  "source_title": "알파 장비 54종의 고정 전투 스펙과 공용 패시브",
+  "source": "wiki/content/pages/backpack-combat-stat-database/v004.md",
+  "source_version": 4,
   "source_updated_at": "2026-09-01",
   "database_count": 6,
   "record_count": 178,
@@ -72,7 +72,7 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 핵심·증가 능력치",
           "priority": "P0",
           "data_status": "완료",
-          "runtime_status": "미개발",
+          "runtime_status": "완료",
           "decision": "기본 피해량으로 채택"
         },
         {
@@ -82,7 +82,7 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 핵심·증가 능력치",
           "priority": "P0",
           "data_status": "완료",
-          "runtime_status": "미개발",
+          "runtime_status": "완료",
           "decision": "지속 피해 감소용으로 채택"
         },
         {
@@ -92,7 +92,7 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 핵심·증가 능력치",
           "priority": "P0",
           "data_status": "완료",
-          "runtime_status": "미개발",
+          "runtime_status": "완료",
           "decision": "캐릭터 생존 기반으로 채택"
         },
         {
@@ -102,7 +102,7 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 핵심·증가 능력치",
           "priority": "P0",
           "data_status": "완료",
-          "runtime_status": "미개발",
+          "runtime_status": "완료",
           "decision": "무기별 독립 자동 공격 타이머"
         },
         {
@@ -112,7 +112,7 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 핵심·증가 능력치",
           "priority": "P0",
           "data_status": "완료",
-          "runtime_status": "미개발",
+          "runtime_status": "완료",
           "decision": "무기별 독립 대상 탐색 거리"
         },
         {
@@ -252,7 +252,7 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 전투 보조 능력치",
           "priority": "P1",
           "data_status": "완료",
-          "runtime_status": "미개발",
+          "runtime_status": "완료",
           "decision": "0~100% 확률"
         },
         {
@@ -262,7 +262,7 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 전투 보조 능력치",
           "priority": "P1",
           "data_status": "완료",
-          "runtime_status": "미개발",
+          "runtime_status": "완료",
           "decision": "기본 1.5배"
         },
         {
@@ -272,7 +272,7 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 전투 보조 능력치",
           "priority": "P2",
           "data_status": "완료",
-          "runtime_status": "미개발",
+          "runtime_status": "완료",
           "decision": "최대 75%, 연속 회피 체감 검증 필요"
         },
         {
@@ -292,8 +292,8 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 전투 보조 능력치",
           "priority": "P1",
           "data_status": "완료",
-          "runtime_status": "미개발",
-          "decision": "캐릭터 이동 컨트롤러 연결 필요"
+          "runtime_status": "완료",
+          "decision": "장비 합계를 캐릭터 이동 속도에 적용"
         },
         {
           "record_id": "KnockbackPower",
@@ -302,8 +302,8 @@ window.PACKBOUND_COMBAT_DB = {
           "group": "현재 정의된 전투 보조 능력치",
           "priority": "P1",
           "data_status": "완료",
-          "runtime_status": "미개발",
-          "decision": "적 물리·경직 계약과 함께 구현"
+          "runtime_status": "완료",
+          "decision": "무기 공격과 적 군중 제어 계약에 적용"
         },
         {
           "record_id": "ArmorPenetration",
@@ -660,21 +660,21 @@ window.PACKBOUND_COMBAT_DB = {
           "record_id": "resource-1",
           "name": "현재 체력",
           "priority": "P0",
-          "development_status": "미개발",
+          "development_status": "완료",
           "rule": "최대 체력과 분리된 서버 권위 현재값"
         },
         {
           "record_id": "resource-2",
           "name": "보호막",
           "priority": "P0",
-          "development_status": "미개발",
-          "rule": "방어력 적용 전후 순서를 확정하고 먼저 소모되는 임시값"
+          "development_status": "완료",
+          "rule": "방어력 적용 뒤 남은 피해보다 먼저 소모되는 임시값"
         },
         {
           "record_id": "resource-3",
           "name": "무기 쿨타임 진행도",
           "priority": "P0",
-          "development_status": "미개발",
+          "development_status": "완료",
           "rule": "무기 인스턴스별 독립 타이머"
         },
         {
