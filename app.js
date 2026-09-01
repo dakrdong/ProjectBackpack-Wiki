@@ -2,6 +2,8 @@
   "use strict";
 
   const wiki = window.PACKBOUND_WIKI;
+  const alphaProgress = window.PACKBOUND_ALPHA_PROGRESS;
+  const alphaProgressTools = window.PACKBOUND_ALPHA_PROGRESS_TOOLS;
   const itemDb = window.PACKBOUND_ITEM_DB;
   const itemDbTools = window.PACKBOUND_ITEM_DB_TOOLS;
   const monsterDb = window.PACKBOUND_MONSTER_DB;
@@ -146,6 +148,7 @@
   let filteredPages = wiki?.pages || [];
   let tagIndex = [];
   let tagByName = new Map();
+  let alphaProgressState = { query: "", status: "all" };
   const masteryDbEditor = masteryDbTools?.createEditor(masteryDb, combatDb) || null;
 
   async function refreshMonsterDbApiAccess() {
@@ -541,7 +544,13 @@
     const segments = path.split("/").filter(Boolean);
     const params = new URLSearchParams(query);
     const legacyItemDb = segments[0] === "item-db";
-    const kind = segments[0] === "tree" ? "tree" : segments[0] === "db" || legacyItemDb ? "database" : "page";
+    const kind = segments[0] === "tree"
+      ? "tree"
+      : segments[0] === "progress"
+        ? "progress"
+        : segments[0] === "db" || legacyItemDb
+          ? "database"
+          : "page";
     return {
       kind,
       slug: decodeURIComponent(kind === "database" ? (legacyItemDb ? "item-db" : segments[1] || "item-db") : segments[1] || defaultPage || ""),
@@ -562,6 +571,10 @@
   function treeHref(view = "category") {
     const normalized = wikiTimeline.normalizeView(view);
     return normalized === "category" ? "#/tree" : `#/tree?sort=${encodeURIComponent(normalized)}`;
+  }
+
+  function alphaProgressHref() {
+    return "#/progress/alpha";
   }
 
   function databaseHref(databaseId) {
@@ -679,6 +692,11 @@
     document.getElementById("revision-count").textContent = `총 ${wiki.revision_count}개 버전 보존 중`;
     navigation.innerHTML = `
       <section class="nav-overview">
+        <a class="nav-progress-link ${activeKind === "progress" ? "active" : ""}" href="${alphaProgressHref()}">
+          <span class="nav-progress-icon" aria-hidden="true"><i></i></span>
+          <span><strong>알파 완성 진행도</strong><small>전체 개발 파트와 다음 완료 조건</small></span>
+          <em>${alphaProgress ? `${alphaProgress.overall_progress}%` : "—"}</em>
+        </a>
         <a class="nav-tree-link ${activeKind === "tree" ? "active" : ""}" href="${treeHref()}">
           <span class="nav-tree-icon" aria-hidden="true"><i></i><i></i><i></i></span>
           <span><strong>전체 위키 트리</strong><small>구조와 이력 한눈에 보기</small></span>
@@ -955,6 +973,224 @@
         `}
       </div>
     `;
+  }
+
+  function alphaStatusMeta(status) {
+    return alphaProgressTools?.statusMeta(status) || { label: status || "미확인", shortLabel: status || "미확인" };
+  }
+
+  function renderAlphaMetric(metric) {
+    if (!metric) return '<span class="alpha-progress-metric alpha-progress-metric-empty" aria-hidden="true"></span>';
+    return `<span class="alpha-progress-metric"><strong>${escapeHtml(String(metric.current))}</strong> / ${escapeHtml(String(metric.target))} ${escapeHtml(metric.unit)}</span>`;
+  }
+
+  function renderAlphaSources(sources = []) {
+    if (!sources.length) return "";
+    return `
+      <details class="alpha-progress-sources">
+        <summary>근거 파일 ${sources.length}개</summary>
+        <ul>${sources.map((source) => `<li><code>${escapeHtml(source)}</code></li>`).join("")}</ul>
+      </details>
+    `;
+  }
+
+  function renderAlphaProgressNode(node, depth = 0) {
+    const progress = Number(node.computed_progress || 0);
+    const status = alphaStatusMeta(node.computed_status);
+    const children = node.children || [];
+    const progressBar = `
+      <span class="alpha-progress-bar" role="progressbar" aria-label="${escapeHtml(node.title)} 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress}">
+        <i style="width:${progress}%"></i>
+      </span>
+    `;
+    if (children.length) {
+      const shouldOpen = alphaProgressState.query || alphaProgressState.status !== "all" || depth < 1;
+      return `
+        <details class="alpha-progress-node alpha-progress-branch depth-${depth}" data-alpha-node-id="${escapeHtml(node.id)}" data-alpha-status="${escapeHtml(node.computed_status)}" ${shouldOpen ? "open" : ""}>
+          <summary>
+            <span class="alpha-progress-toggle" aria-hidden="true"></span>
+            <span class="alpha-progress-node-copy">
+              <strong>${escapeHtml(node.title)}</strong>
+              ${node.description ? `<small>${escapeHtml(node.description)}</small>` : ""}
+            </span>
+            <span class="alpha-progress-branch-count">${node.proven_count}/${node.leaf_count}</span>
+            ${renderAlphaMetric(node.metric)}
+            ${progressBar}
+            <span class="alpha-progress-percent">${progress}%</span>
+            <span class="alpha-progress-status status-${escapeHtml(node.computed_status)}">${escapeHtml(status.shortLabel)}</span>
+          </summary>
+          <div class="alpha-progress-children">
+            ${renderAlphaSources(node.sources)}
+            ${children.map((child) => renderAlphaProgressNode(child, depth + 1)).join("")}
+          </div>
+        </details>
+      `;
+    }
+
+    return `
+      <details class="alpha-progress-node alpha-progress-leaf depth-${depth}" data-alpha-node-id="${escapeHtml(node.id)}" data-alpha-status="${escapeHtml(node.computed_status)}">
+        <summary>
+          <span class="alpha-progress-leaf-mark status-${escapeHtml(node.computed_status)}" aria-hidden="true"></span>
+          <span class="alpha-progress-node-copy">
+            <strong>${escapeHtml(node.title)}</strong>
+            ${node.description ? `<small>${escapeHtml(node.description)}</small>` : ""}
+          </span>
+          ${renderAlphaMetric(node.metric)}
+          ${progressBar}
+          <span class="alpha-progress-percent">${progress}%</span>
+          <span class="alpha-progress-status status-${escapeHtml(node.computed_status)}">${escapeHtml(status.shortLabel)}</span>
+        </summary>
+        <div class="alpha-progress-leaf-detail">
+          <div>
+            <span>현재 근거</span>
+            <ul>${(node.evidence || []).map((evidence) => `<li>${escapeHtml(evidence)}</li>`).join("")}</ul>
+          </div>
+          <div>
+            <span>${node.blocker ? "차단 요인" : "다음 완료 조건"}</span>
+            ${node.blocker ? `<p class="alpha-progress-blocker">${escapeHtml(node.blocker)}</p>` : ""}
+            <p>${escapeHtml(node.next_step)}</p>
+          </div>
+          ${renderAlphaSources(node.sources)}
+        </div>
+      </details>
+    `;
+  }
+
+  function renderAlphaProgressResults() {
+    const container = document.getElementById("alpha-progress-results");
+    if (!container || !alphaProgress || !alphaProgressTools) return;
+    const categories = alphaProgressTools.filterTree(
+      alphaProgress.categories,
+      alphaProgressState.query,
+      alphaProgressState.status,
+    );
+    const visibleLeaves = alphaProgressTools.countVisibleLeaves(categories);
+    const count = document.getElementById("alpha-progress-result-count");
+    if (count) count.textContent = `${visibleLeaves}개 세부 항목`;
+    container.innerHTML = categories.length
+      ? categories.map((category) => renderAlphaProgressNode(category)).join("")
+      : '<div class="alpha-progress-empty">조건에 맞는 개발 항목이 없습니다.</div>';
+  }
+
+  function bindAlphaProgressControls() {
+    const search = document.getElementById("alpha-progress-search");
+    search?.addEventListener("input", (event) => {
+      alphaProgressState.query = event.target.value;
+      renderAlphaProgressResults();
+    });
+    document.querySelectorAll("[data-alpha-status-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        alphaProgressState.status = button.dataset.alphaStatusFilter || "all";
+        document.querySelectorAll("[data-alpha-status-filter]").forEach((candidate) => {
+          const active = candidate === button;
+          candidate.classList.toggle("active", active);
+          candidate.setAttribute("aria-pressed", String(active));
+        });
+        renderAlphaProgressResults();
+      });
+    });
+    document.querySelectorAll("[data-alpha-tree-action]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const open = button.dataset.alphaTreeAction === "expand";
+        document.querySelectorAll("#alpha-progress-results details.alpha-progress-node").forEach((node) => {
+          node.open = open;
+        });
+      });
+    });
+  }
+
+  function renderAlphaProgress() {
+    document.title = "알파 완성 진행도 · PackBound Wiki";
+    renderNavigation("alpha", "progress");
+    if (!alphaProgress || !alphaProgressTools) {
+      main.innerHTML = '<div class="empty-state">알파 진행도 데이터를 불러오지 못했습니다. <code>python3 tools/alpha_progress.py build</code>를 실행하세요.</div>';
+      return;
+    }
+    const statusCounts = alphaProgress.status_counts || {};
+    const tracks = alphaProgress.track_progress || {};
+    const discrepancies = alphaProgress.snapshot?.studio?.discrepancies || [];
+    main.innerHTML = `
+      <div class="alpha-progress-layout">
+        <header class="alpha-progress-hero">
+          <div class="alpha-progress-hero-copy">
+            <span class="page-eyebrow">Alpha completion map · ${escapeHtml(alphaProgress.snapshot.reviewed_on)}</span>
+            <h1>${escapeHtml(alphaProgress.title)}</h1>
+            <p>${escapeHtml(alphaProgress.summary)}</p>
+            <div class="alpha-progress-snapshot">
+              <span>기준 커밋 <code>${escapeHtml(alphaProgress.snapshot.baseline_commit)}</code></span>
+              <span>Studio <strong>${escapeHtml(alphaProgress.snapshot.studio.place_name)}</strong></span>
+              <span>리비전 <code>${escapeHtml(alphaProgress.revision)}</code></span>
+            </div>
+          </div>
+          <div class="alpha-progress-score" style="--alpha-overall:${alphaProgress.overall_progress * 3.6}deg">
+            <div><strong>${alphaProgress.overall_progress}</strong><span>%</span><small>전체 가중 진행도</small></div>
+          </div>
+        </header>
+
+        <section class="alpha-progress-track-grid" aria-label="진행도 관점별 요약">
+          <article><span>시스템 준비도</span><strong>${tracks.system?.progress ?? 0}%</strong><p>플레이 루프와 기능이 실제로 이어지는 정도입니다.</p></article>
+          <article><span>콘텐츠 커버리지</span><strong>${tracks.content?.progress ?? 0}%</strong><p>목표 수량의 스테이지·몬스터·밸런스가 채워진 정도입니다.</p></article>
+          <article><span>품질·출시 준비도</span><strong>${tracks.quality?.progress ?? 0}%</strong><p>모바일 검증, 성능, 운영과 배포 준비 정도입니다.</p></article>
+        </section>
+
+        <section class="alpha-progress-definition">
+          <div><span>알파 완료의 의미</span><p>${escapeHtml(alphaProgress.alpha_definition)}</p></div>
+          <div><span>판정 범위</span><p>${escapeHtml(alphaProgress.snapshot.scope_note)}</p></div>
+        </section>
+
+        ${discrepancies.length ? `
+          <section class="alpha-progress-drift" aria-label="저장소와 Studio 차이">
+            <strong>적용 상태 차이 ${discrepancies.length}건</strong>
+            ${discrepancies.map((item) => `<p><b>${escapeHtml(item.title)}</b>${escapeHtml(item.detail)}</p>`).join("")}
+          </section>
+        ` : ""}
+
+        <section class="alpha-progress-highlights" aria-label="현재 판단">
+          ${alphaProgress.highlights.map((highlight) => `
+            <article class="kind-${escapeHtml(highlight.kind)}"><span>${highlight.kind === "priority" ? "다음 우선순위" : highlight.kind === "risk" ? "핵심 위험" : "현재 강점"}</span><strong>${escapeHtml(highlight.title)}</strong><p>${escapeHtml(highlight.body)}</p></article>
+          `).join("")}
+        </section>
+
+        <section class="alpha-progress-stats" aria-label="알파 개발 항목 통계">
+          <div><strong>${alphaProgress.category_count}</strong><span>개발 파트</span></div>
+          <div><strong>${alphaProgress.leaf_count}</strong><span>세부 항목</span></div>
+          <div><strong>${alphaProgress.proven_count}</strong><span>완료·검증</span></div>
+          <div><strong>${statusCounts.partial || 0}</strong><span>진행 중</span></div>
+          <div><strong>${statusCounts.planned_only || 0}</strong><span>계획만 있음</span></div>
+        </section>
+
+        <section class="alpha-progress-toolbar" aria-label="진행도 필터">
+          <label class="alpha-progress-search"><span>항목 찾기</span><input id="alpha-progress-search" type="search" placeholder="스테이지, 룬, 보스, 저장…" value="${escapeHtml(alphaProgressState.query)}"></label>
+          <div class="alpha-progress-filter" role="group" aria-label="개발 상태 필터">
+            ${[
+              ["all", "전체"],
+              ["proven", "완료"],
+              ["partial", "진행 중"],
+              ["planned_only", "계획"],
+              ["blocked", "차단"],
+              ["unknown", "미확인"],
+            ].map(([value, label]) => `<button type="button" data-alpha-status-filter="${value}" class="${alphaProgressState.status === value ? "active" : ""}" aria-pressed="${alphaProgressState.status === value}">${label}</button>`).join("")}
+          </div>
+          <div class="alpha-progress-tree-actions">
+            <button type="button" data-alpha-tree-action="expand">모두 펼치기</button>
+            <button type="button" data-alpha-tree-action="collapse">모두 접기</button>
+          </div>
+        </section>
+
+        <div class="alpha-progress-tree-heading"><div><span class="page-eyebrow">Work breakdown structure</span><h2>알파 개발 트리</h2></div><strong id="alpha-progress-result-count">${alphaProgress.leaf_count}개 세부 항목</strong></div>
+        <section class="alpha-progress-tree" id="alpha-progress-results" aria-label="알파 버전 개발 진행도 트리"></section>
+
+        <details class="alpha-progress-methodology">
+          <summary>진행률을 계산한 방법</summary>
+          <p>${escapeHtml(alphaProgress.methodology.aggregation)}</p>
+          <p>${escapeHtml(alphaProgress.methodology.status_rule)}</p>
+        </details>
+      </div>
+    `;
+    renderAlphaProgressResults();
+    bindAlphaProgressControls();
+    document.body.classList.remove("menu-open");
+    window.scrollTo(0, 0);
   }
 
   function axialCenter(q, r) {
@@ -4580,6 +4816,10 @@
       main.innerHTML = renderTree(route.treeView);
       document.body.classList.remove("menu-open");
       window.scrollTo(0, 0);
+      return;
+    }
+    if (route.kind === "progress") {
+      renderAlphaProgress();
       return;
     }
     if (route.kind === "database") {
