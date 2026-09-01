@@ -1,9 +1,9 @@
 window.PACKBOUND_COMBAT_DB = {
   "source_page_id": "backpack-combat-stat-database",
-  "source_title": "백팩 전투 능력치 데이터베이스의 무기 스킬 런타임 전환",
-  "source": "wiki/content/pages/backpack-combat-stat-database/v002.md",
-  "source_version": 2,
-  "source_updated_at": "2026-08-27",
+  "source_title": "아이템 등급·룬·서버 전투를 잇는 고정 능력치 기준선",
+  "source": "wiki/content/pages/backpack-combat-stat-database/v003.md",
+  "source_version": 3,
+  "source_updated_at": "2026-09-01",
   "database_count": 6,
   "record_count": 178,
   "databases": [

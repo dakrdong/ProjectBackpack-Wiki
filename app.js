@@ -1111,6 +1111,30 @@
     `).join("");
   }
 
+  function renderItemCombatStats(item) {
+    const combat = item.combat_stats;
+    if (!combat || combat.status !== "Implemented") {
+      return '<strong>전투 수치 예정</strong><br><span>Planned · 임의 기본값 없음</span>';
+    }
+    const labels = {
+      AccuracyPercent: ["명중률", "%"],
+      AttackPower: ["공격력", ""],
+      AttackRange: ["사거리", ""],
+      AttacksPerSecond: ["초당 공격", "회"],
+      CriticalChancePercent: ["치명타", "%"],
+      CrowdControlResistancePercent: ["제어 저항", "%"],
+      Defense: ["방어력", ""],
+      MaxHealth: ["최대 체력", ""],
+      SupportAttackSpeedPercent: ["전체 공속", "%"],
+    };
+    const base = combat.grades?.["G0-0"] || {};
+    const summary = Object.entries(base).map(([id, value]) => {
+      const [label, suffix] = labels[id] || [id, ""];
+      return `${label} ${Number(value).toFixed(1)}${suffix}`;
+    }).join(" · ");
+    return `<strong>G0-0 · ${escapeHtml(summary)}</strong><br><span>G0-0~G6-3 고정표</span>`;
+  }
+
   function renderItemRows(items) {
     return items.map((item) => `
       <tr data-itemdb-item-id="${escapeHtml(item.id)}" data-itemdb-enabled="${item.enabled}">
@@ -1129,11 +1153,11 @@
         <td>${renderFootprint(item)}</td>
         <td><strong>${escapeHtml(item.role)}</strong><small>${escapeHtml(`${Number(item.weight_kg).toFixed(1)}Kg`)}</small></td>
         <td class="itemdb-concept">${escapeHtml(item.concept)}</td>
-        <td><small>${item.support_effect
-          ? `<strong>${escapeHtml(item.support_effect.name)}</strong><br>${escapeHtml(item.support_effect.summary)}`
+        <td class="itemdb-stats"><small>${renderItemCombatStats(item)}<br><span>${item.support_effect
+          ? `${escapeHtml(item.support_effect.name)} · ${escapeHtml(item.support_effect.summary)}`
           : item.combat_art
             ? `${escapeHtml(item.combat_art.native_facing)} · ${escapeHtml(item.combat_art.attack_motion)} · ${escapeHtml(item.combat_art.pivot)}`
-            : "장착 아이콘"}</small></td>
+            : "장착 아이콘"}</span></small></td>
         <td><button type="button" class="itemdb-rune-link" data-itemdb-rune-board="${escapeHtml(item.id)}"><strong>10</strong><span>룬 보드 후보</span></button></td>
       </tr>
     `).join("");
@@ -2038,7 +2062,7 @@
         <header><h2>${escapeHtml(family.label)}</h2><span>${family.items.length}개</span></header>
         <div class="itemdb-table-wrap">
           <table class="itemdb-table">
-            <thead><tr><th>이미지</th><th>게임</th><th>아이템</th><th>부위·형태</th><th>사각 점유</th><th>역할·무게</th><th>콘셉트</th><th>전투·지원 효과</th><th>룬 보드</th></tr></thead>
+            <thead><tr><th>이미지</th><th>게임</th><th>아이템</th><th>부위·형태</th><th>사각 점유</th><th>역할·무게</th><th>콘셉트</th><th>전투 수치·효과</th><th>룬 보드</th></tr></thead>
             <tbody>${renderItemRows(family.items)}</tbody>
           </table>
         </div>
@@ -2082,7 +2106,7 @@
         <header class="itemdb-hero">
           <div class="page-eyebrow">Generated catalog</div>
           <div class="itemdb-hero-row">
-            <div><h1>ItemDB</h1><p>알파 장비 ${itemDb.count}종의 투명 이미지, 사각 점유 형태, 무게, 공격 리소스와 보조 효과를 한 곳에서 비교합니다. 공격 무기와 보조무기는 같은 6칸을 공유하며 보조무기는 최대 2개입니다.</p></div>
+            <div><h1>ItemDB</h1><p>알파 장비 ${itemDb.count}종의 투명 이미지, 사각 점유 형태, 무게, 등급별 전투 수치와 보조 효과를 한 곳에서 비교합니다. 공격 무기와 보조무기는 같은 6칸을 공유하며 보조무기는 최대 2개입니다.</p></div>
             <div class="itemdb-hero-actions">
               <span class="itemdb-total"><strong>${itemDb.active_count}</strong><small>GAME ON · ${itemDb.count} TOTAL</small></span>
               ${canEditItemDb ? '<button type="button" class="itemdb-bake-button" data-itemdb-bake>게임에 굽기</button>' : ""}
@@ -2095,7 +2119,9 @@
             <div><span>최대 스택</span><strong>${itemDb.common.maximum_stack}</strong></div>
             <div><span>권장 효율 조합</span><strong>공격 5 + 보조 1</strong></div>
             <div><span>DB 리비전</span><code>${escapeHtml(itemDb.revision || "—")}</code></div>
-            <div><span>단일 원본</span><code>${escapeHtml(itemDb.source)}</code></div>
+            <div><span>전투 수치 리비전</span><code>${escapeHtml(itemDb.common.combat_stats?.revision || "—")}</code></div>
+            <div><span>아이템 원본</span><code>${escapeHtml(itemDb.source)}</code></div>
+            <div><span>전투 수치 원본</span><code>${escapeHtml(itemDb.common.combat_stats?.source || "—")}</code></div>
           </div>
         </header>
         <section class="itemdb-toolbar" aria-label="ItemDB 검색과 분류">

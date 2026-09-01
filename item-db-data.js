@@ -31,6 +31,28 @@ window.PACKBOUND_ITEM_DB = {
         "five_attack_one_support_equivalent": 5.17,
         "four_attack_two_support_equivalent": 4.8
       }
+    },
+    "combat_stats": {
+      "source": "docs/gameplay/item-combat-stats.json",
+      "revision": "007be9e2c2a7ff0d",
+      "implemented_count": 17,
+      "planned_count": 37,
+      "grade_contract": {
+        "minimum_major": 0,
+        "maximum_major": 6,
+        "minimum_minor": 0,
+        "maximum_minor": 3,
+        "minor_growth_percent": 10,
+        "major_transition_growth_percent": 20,
+        "rounding_decimal_places": 1,
+        "rounding_mode": "HalfUp",
+        "recurrence": "PreviousRoundedValue",
+        "recursive_scaling_stat_ids": [
+          "AttackPower",
+          "Defense",
+          "MaxHealth"
+        ]
+      }
     }
   },
   "families": [
@@ -149,7 +171,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 28.0,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G0-1": {
+            "AttackPower": 30.8,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G0-2": {
+            "AttackPower": 33.9,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G0-3": {
+            "AttackPower": 37.3,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G1-0": {
+            "AttackPower": 44.8,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G1-1": {
+            "AttackPower": 49.3,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G1-2": {
+            "AttackPower": 54.2,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G1-3": {
+            "AttackPower": 59.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G2-0": {
+            "AttackPower": 71.5,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G2-1": {
+            "AttackPower": 78.7,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G2-2": {
+            "AttackPower": 86.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G2-3": {
+            "AttackPower": 95.3,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G3-0": {
+            "AttackPower": 114.4,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G3-1": {
+            "AttackPower": 125.8,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G3-2": {
+            "AttackPower": 138.4,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G3-3": {
+            "AttackPower": 152.2,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G4-0": {
+            "AttackPower": 182.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G4-1": {
+            "AttackPower": 200.9,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G4-2": {
+            "AttackPower": 221.0,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G4-3": {
+            "AttackPower": 243.1,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G5-0": {
+            "AttackPower": 291.7,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G5-1": {
+            "AttackPower": 320.9,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G5-2": {
+            "AttackPower": 353.0,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G5-3": {
+            "AttackPower": 388.3,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G6-0": {
+            "AttackPower": 466.0,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G6-1": {
+            "AttackPower": 512.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G6-2": {
+            "AttackPower": 563.9,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G6-3": {
+            "AttackPower": 620.3,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 0.9
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 28.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 48.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 0.9"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -236,7 +417,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 10.0,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G0-1": {
+            "AttackPower": 11.0,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G0-2": {
+            "AttackPower": 12.1,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G0-3": {
+            "AttackPower": 13.3,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G1-0": {
+            "AttackPower": 16.0,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G1-1": {
+            "AttackPower": 17.6,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G1-2": {
+            "AttackPower": 19.4,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G1-3": {
+            "AttackPower": 21.3,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G2-0": {
+            "AttackPower": 25.6,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G2-1": {
+            "AttackPower": 28.2,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G2-2": {
+            "AttackPower": 31.0,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G2-3": {
+            "AttackPower": 34.1,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G3-0": {
+            "AttackPower": 40.9,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G3-1": {
+            "AttackPower": 45.0,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G3-2": {
+            "AttackPower": 49.5,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G3-3": {
+            "AttackPower": 54.5,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G4-0": {
+            "AttackPower": 65.4,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G4-1": {
+            "AttackPower": 71.9,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G4-2": {
+            "AttackPower": 79.1,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G4-3": {
+            "AttackPower": 87.0,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G5-0": {
+            "AttackPower": 104.4,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G5-1": {
+            "AttackPower": 114.8,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G5-2": {
+            "AttackPower": 126.3,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G5-3": {
+            "AttackPower": 138.9,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G6-0": {
+            "AttackPower": 166.7,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G6-1": {
+            "AttackPower": 183.4,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G6-2": {
+            "AttackPower": 201.7,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          },
+          "G6-3": {
+            "AttackPower": 221.9,
+            "AttackRange": 110.0,
+            "AttacksPerSecond": 1.9
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 10.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 110.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.9"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -313,7 +653,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 20.0,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G0-1": {
+            "AttackPower": 22.0,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G0-2": {
+            "AttackPower": 24.2,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G0-3": {
+            "AttackPower": 26.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G1-0": {
+            "AttackPower": 31.9,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G1-1": {
+            "AttackPower": 35.1,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G1-2": {
+            "AttackPower": 38.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G1-3": {
+            "AttackPower": 42.5,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G2-0": {
+            "AttackPower": 51.0,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G2-1": {
+            "AttackPower": 56.1,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G2-2": {
+            "AttackPower": 61.7,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G2-3": {
+            "AttackPower": 67.9,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G3-0": {
+            "AttackPower": 81.5,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G3-1": {
+            "AttackPower": 89.7,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G3-2": {
+            "AttackPower": 98.7,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G3-3": {
+            "AttackPower": 108.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G4-0": {
+            "AttackPower": 130.3,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G4-1": {
+            "AttackPower": 143.3,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G4-2": {
+            "AttackPower": 157.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G4-3": {
+            "AttackPower": 173.4,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G5-0": {
+            "AttackPower": 208.1,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G5-1": {
+            "AttackPower": 228.9,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G5-2": {
+            "AttackPower": 251.8,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G5-3": {
+            "AttackPower": 277.0,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G6-0": {
+            "AttackPower": 332.4,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G6-1": {
+            "AttackPower": 365.6,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G6-2": {
+            "AttackPower": 402.2,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          },
+          "G6-3": {
+            "AttackPower": 442.4,
+            "AttackRange": 48.0,
+            "AttacksPerSecond": 1.1
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 20.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 48.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.1"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -390,7 +889,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 22.0,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G0-1": {
+            "AttackPower": 24.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G0-2": {
+            "AttackPower": 26.6,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G0-3": {
+            "AttackPower": 29.3,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G1-0": {
+            "AttackPower": 35.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G1-1": {
+            "AttackPower": 38.7,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G1-2": {
+            "AttackPower": 42.6,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G1-3": {
+            "AttackPower": 46.9,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G2-0": {
+            "AttackPower": 56.3,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G2-1": {
+            "AttackPower": 61.9,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G2-2": {
+            "AttackPower": 68.1,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G2-3": {
+            "AttackPower": 74.9,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G3-0": {
+            "AttackPower": 89.9,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G3-1": {
+            "AttackPower": 98.9,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G3-2": {
+            "AttackPower": 108.8,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G3-3": {
+            "AttackPower": 119.7,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G4-0": {
+            "AttackPower": 143.6,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G4-1": {
+            "AttackPower": 158.0,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G4-2": {
+            "AttackPower": 173.8,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G4-3": {
+            "AttackPower": 191.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G5-0": {
+            "AttackPower": 229.4,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G5-1": {
+            "AttackPower": 252.3,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G5-2": {
+            "AttackPower": 277.5,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G5-3": {
+            "AttackPower": 305.3,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G6-0": {
+            "AttackPower": 366.4,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G6-1": {
+            "AttackPower": 403.0,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G6-2": {
+            "AttackPower": 443.3,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G6-3": {
+            "AttackPower": 487.6,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.0
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 22.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 45.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.0"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -473,7 +1131,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 14.0,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G0-1": {
+            "AttackPower": 15.4,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G0-2": {
+            "AttackPower": 16.9,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G0-3": {
+            "AttackPower": 18.6,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G1-0": {
+            "AttackPower": 22.3,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G1-1": {
+            "AttackPower": 24.5,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G1-2": {
+            "AttackPower": 27.0,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G1-3": {
+            "AttackPower": 29.7,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G2-0": {
+            "AttackPower": 35.6,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G2-1": {
+            "AttackPower": 39.2,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G2-2": {
+            "AttackPower": 43.1,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G2-3": {
+            "AttackPower": 47.4,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G3-0": {
+            "AttackPower": 56.9,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G3-1": {
+            "AttackPower": 62.6,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G3-2": {
+            "AttackPower": 68.9,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G3-3": {
+            "AttackPower": 75.8,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G4-0": {
+            "AttackPower": 91.0,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G4-1": {
+            "AttackPower": 100.1,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G4-2": {
+            "AttackPower": 110.1,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G4-3": {
+            "AttackPower": 121.1,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G5-0": {
+            "AttackPower": 145.3,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G5-1": {
+            "AttackPower": 159.8,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G5-2": {
+            "AttackPower": 175.8,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G5-3": {
+            "AttackPower": 193.4,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G6-0": {
+            "AttackPower": 232.1,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G6-1": {
+            "AttackPower": 255.3,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G6-2": {
+            "AttackPower": 280.8,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          },
+          "G6-3": {
+            "AttackPower": 308.9,
+            "AttackRange": 118.0,
+            "AttacksPerSecond": 1.5
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 14.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 118.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.5"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -545,7 +1362,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 8.0,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G0-1": {
+            "AttackPower": 8.8,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G0-2": {
+            "AttackPower": 9.7,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G0-3": {
+            "AttackPower": 10.7,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G1-0": {
+            "AttackPower": 12.8,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G1-1": {
+            "AttackPower": 14.1,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G1-2": {
+            "AttackPower": 15.5,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G1-3": {
+            "AttackPower": 17.1,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G2-0": {
+            "AttackPower": 20.5,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G2-1": {
+            "AttackPower": 22.6,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G2-2": {
+            "AttackPower": 24.9,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G2-3": {
+            "AttackPower": 27.4,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G3-0": {
+            "AttackPower": 32.9,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G3-1": {
+            "AttackPower": 36.2,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G3-2": {
+            "AttackPower": 39.8,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G3-3": {
+            "AttackPower": 43.8,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G4-0": {
+            "AttackPower": 52.6,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G4-1": {
+            "AttackPower": 57.9,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G4-2": {
+            "AttackPower": 63.7,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G4-3": {
+            "AttackPower": 70.1,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G5-0": {
+            "AttackPower": 84.1,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G5-1": {
+            "AttackPower": 92.5,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G5-2": {
+            "AttackPower": 101.8,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G5-3": {
+            "AttackPower": 112.0,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G6-0": {
+            "AttackPower": 134.4,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G6-1": {
+            "AttackPower": 147.8,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G6-2": {
+            "AttackPower": 162.6,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          },
+          "G6-3": {
+            "AttackPower": 178.9,
+            "AttackRange": 112.0,
+            "AttacksPerSecond": 2.6
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 8.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 112.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 2.6"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -622,7 +1598,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 30.0,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G0-1": {
+            "AttackPower": 33.0,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G0-2": {
+            "AttackPower": 36.3,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G0-3": {
+            "AttackPower": 39.9,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G1-0": {
+            "AttackPower": 47.9,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G1-1": {
+            "AttackPower": 52.7,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G1-2": {
+            "AttackPower": 58.0,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G1-3": {
+            "AttackPower": 63.8,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G2-0": {
+            "AttackPower": 76.6,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G2-1": {
+            "AttackPower": 84.3,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G2-2": {
+            "AttackPower": 92.7,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G2-3": {
+            "AttackPower": 102.0,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G3-0": {
+            "AttackPower": 122.4,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G3-1": {
+            "AttackPower": 134.6,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G3-2": {
+            "AttackPower": 148.1,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G3-3": {
+            "AttackPower": 162.9,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G4-0": {
+            "AttackPower": 195.5,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G4-1": {
+            "AttackPower": 215.1,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G4-2": {
+            "AttackPower": 236.6,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G4-3": {
+            "AttackPower": 260.3,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G5-0": {
+            "AttackPower": 312.4,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G5-1": {
+            "AttackPower": 343.6,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G5-2": {
+            "AttackPower": 378.0,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G5-3": {
+            "AttackPower": 415.8,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G6-0": {
+            "AttackPower": 499.0,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G6-1": {
+            "AttackPower": 548.9,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G6-2": {
+            "AttackPower": 603.8,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          },
+          "G6-3": {
+            "AttackPower": 664.2,
+            "AttackRange": 44.0,
+            "AttacksPerSecond": 0.8
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 30.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 44.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 0.8"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -695,7 +1830,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 12.0,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G0-1": {
+            "AttackPower": 13.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G0-2": {
+            "AttackPower": 14.5,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G0-3": {
+            "AttackPower": 16.0,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G1-0": {
+            "AttackPower": 19.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G1-1": {
+            "AttackPower": 21.1,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G1-2": {
+            "AttackPower": 23.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G1-3": {
+            "AttackPower": 25.5,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G2-0": {
+            "AttackPower": 30.6,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G2-1": {
+            "AttackPower": 33.7,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G2-2": {
+            "AttackPower": 37.1,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G2-3": {
+            "AttackPower": 40.8,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G3-0": {
+            "AttackPower": 49.0,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G3-1": {
+            "AttackPower": 53.9,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G3-2": {
+            "AttackPower": 59.3,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G3-3": {
+            "AttackPower": 65.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G4-0": {
+            "AttackPower": 78.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G4-1": {
+            "AttackPower": 86.0,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G4-2": {
+            "AttackPower": 94.6,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G4-3": {
+            "AttackPower": 104.1,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G5-0": {
+            "AttackPower": 124.9,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G5-1": {
+            "AttackPower": 137.4,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G5-2": {
+            "AttackPower": 151.1,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G5-3": {
+            "AttackPower": 166.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G6-0": {
+            "AttackPower": 199.4,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G6-1": {
+            "AttackPower": 219.3,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G6-2": {
+            "AttackPower": 241.2,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          },
+          "G6-3": {
+            "AttackPower": 265.3,
+            "AttackRange": 45.0,
+            "AttacksPerSecond": 1.8
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 12.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 45.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.8"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -767,7 +2061,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 13.0,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G0-1": {
+            "AttackPower": 14.3,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G0-2": {
+            "AttackPower": 15.7,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G0-3": {
+            "AttackPower": 17.3,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G1-0": {
+            "AttackPower": 20.8,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G1-1": {
+            "AttackPower": 22.9,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G1-2": {
+            "AttackPower": 25.2,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G1-3": {
+            "AttackPower": 27.7,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G2-0": {
+            "AttackPower": 33.2,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G2-1": {
+            "AttackPower": 36.5,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G2-2": {
+            "AttackPower": 40.2,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G2-3": {
+            "AttackPower": 44.2,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G3-0": {
+            "AttackPower": 53.0,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G3-1": {
+            "AttackPower": 58.3,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G3-2": {
+            "AttackPower": 64.1,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G3-3": {
+            "AttackPower": 70.5,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G4-0": {
+            "AttackPower": 84.6,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G4-1": {
+            "AttackPower": 93.1,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G4-2": {
+            "AttackPower": 102.4,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G4-3": {
+            "AttackPower": 112.6,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G5-0": {
+            "AttackPower": 135.1,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G5-1": {
+            "AttackPower": 148.6,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G5-2": {
+            "AttackPower": 163.5,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G5-3": {
+            "AttackPower": 179.9,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G6-0": {
+            "AttackPower": 215.9,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G6-1": {
+            "AttackPower": 237.5,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G6-2": {
+            "AttackPower": 261.3,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          },
+          "G6-3": {
+            "AttackPower": 287.4,
+            "AttackRange": 102.0,
+            "AttacksPerSecond": 1.7
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 13.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 102.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.7"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -848,7 +2301,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 22.0,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G0-1": {
+            "AttackPower": 24.2,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G0-2": {
+            "AttackPower": 26.6,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G0-3": {
+            "AttackPower": 29.3,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G1-0": {
+            "AttackPower": 35.2,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G1-1": {
+            "AttackPower": 38.7,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G1-2": {
+            "AttackPower": 42.6,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G1-3": {
+            "AttackPower": 46.9,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G2-0": {
+            "AttackPower": 56.3,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G2-1": {
+            "AttackPower": 61.9,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G2-2": {
+            "AttackPower": 68.1,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G2-3": {
+            "AttackPower": 74.9,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G3-0": {
+            "AttackPower": 89.9,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G3-1": {
+            "AttackPower": 98.9,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G3-2": {
+            "AttackPower": 108.8,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G3-3": {
+            "AttackPower": 119.7,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G4-0": {
+            "AttackPower": 143.6,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G4-1": {
+            "AttackPower": 158.0,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G4-2": {
+            "AttackPower": 173.8,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G4-3": {
+            "AttackPower": 191.2,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G5-0": {
+            "AttackPower": 229.4,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G5-1": {
+            "AttackPower": 252.3,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G5-2": {
+            "AttackPower": 277.5,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G5-3": {
+            "AttackPower": 305.3,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G6-0": {
+            "AttackPower": 366.4,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G6-1": {
+            "AttackPower": 403.0,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G6-2": {
+            "AttackPower": 443.3,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          },
+          "G6-3": {
+            "AttackPower": 487.6,
+            "AttackRange": 78.0,
+            "AttacksPerSecond": 1.0
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 22.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 78.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.0"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -937,7 +2549,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 32.0,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G0-1": {
+            "AttackPower": 35.2,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G0-2": {
+            "AttackPower": 38.7,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G0-3": {
+            "AttackPower": 42.6,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G1-0": {
+            "AttackPower": 51.1,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G1-1": {
+            "AttackPower": 56.2,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G1-2": {
+            "AttackPower": 61.8,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G1-3": {
+            "AttackPower": 68.0,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G2-0": {
+            "AttackPower": 81.6,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G2-1": {
+            "AttackPower": 89.8,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G2-2": {
+            "AttackPower": 98.8,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G2-3": {
+            "AttackPower": 108.7,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G3-0": {
+            "AttackPower": 130.4,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G3-1": {
+            "AttackPower": 143.4,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G3-2": {
+            "AttackPower": 157.7,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G3-3": {
+            "AttackPower": 173.5,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G4-0": {
+            "AttackPower": 208.2,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G4-1": {
+            "AttackPower": 229.0,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G4-2": {
+            "AttackPower": 251.9,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G4-3": {
+            "AttackPower": 277.1,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G5-0": {
+            "AttackPower": 332.5,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G5-1": {
+            "AttackPower": 365.8,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G5-2": {
+            "AttackPower": 402.4,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G5-3": {
+            "AttackPower": 442.6,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G6-0": {
+            "AttackPower": 531.1,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G6-1": {
+            "AttackPower": 584.2,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G6-2": {
+            "AttackPower": 642.6,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          },
+          "G6-3": {
+            "AttackPower": 706.9,
+            "AttackRange": 125.0,
+            "AttacksPerSecond": 0.7
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 32.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 125.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 0.7"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1018,7 +2789,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 18.0,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G0-1": {
+            "AttackPower": 19.8,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G0-2": {
+            "AttackPower": 21.8,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G0-3": {
+            "AttackPower": 24.0,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G1-0": {
+            "AttackPower": 28.8,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G1-1": {
+            "AttackPower": 31.7,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G1-2": {
+            "AttackPower": 34.9,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G1-3": {
+            "AttackPower": 38.4,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G2-0": {
+            "AttackPower": 46.1,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G2-1": {
+            "AttackPower": 50.7,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G2-2": {
+            "AttackPower": 55.8,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G2-3": {
+            "AttackPower": 61.4,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G3-0": {
+            "AttackPower": 73.7,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G3-1": {
+            "AttackPower": 81.1,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G3-2": {
+            "AttackPower": 89.2,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G3-3": {
+            "AttackPower": 98.1,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G4-0": {
+            "AttackPower": 117.7,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G4-1": {
+            "AttackPower": 129.5,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G4-2": {
+            "AttackPower": 142.5,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G4-3": {
+            "AttackPower": 156.8,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G5-0": {
+            "AttackPower": 188.2,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G5-1": {
+            "AttackPower": 207.0,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G5-2": {
+            "AttackPower": 227.7,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G5-3": {
+            "AttackPower": 250.5,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G6-0": {
+            "AttackPower": 300.6,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G6-1": {
+            "AttackPower": 330.7,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G6-2": {
+            "AttackPower": 363.8,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G6-3": {
+            "AttackPower": 400.2,
+            "AttackRange": 58.0,
+            "AttacksPerSecond": 1.2
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 18.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 58.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.2"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1099,7 +3029,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 20.0,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G0-1": {
+            "AttackPower": 22.0,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G0-2": {
+            "AttackPower": 24.2,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G0-3": {
+            "AttackPower": 26.6,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G1-0": {
+            "AttackPower": 31.9,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G1-1": {
+            "AttackPower": 35.1,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G1-2": {
+            "AttackPower": 38.6,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G1-3": {
+            "AttackPower": 42.5,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G2-0": {
+            "AttackPower": 51.0,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G2-1": {
+            "AttackPower": 56.1,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G2-2": {
+            "AttackPower": 61.7,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G2-3": {
+            "AttackPower": 67.9,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G3-0": {
+            "AttackPower": 81.5,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G3-1": {
+            "AttackPower": 89.7,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G3-2": {
+            "AttackPower": 98.7,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G3-3": {
+            "AttackPower": 108.6,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G4-0": {
+            "AttackPower": 130.3,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G4-1": {
+            "AttackPower": 143.3,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G4-2": {
+            "AttackPower": 157.6,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G4-3": {
+            "AttackPower": 173.4,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G5-0": {
+            "AttackPower": 208.1,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G5-1": {
+            "AttackPower": 228.9,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G5-2": {
+            "AttackPower": 251.8,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G5-3": {
+            "AttackPower": 277.0,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G6-0": {
+            "AttackPower": 332.4,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G6-1": {
+            "AttackPower": 365.6,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G6-2": {
+            "AttackPower": 402.2,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          },
+          "G6-3": {
+            "AttackPower": 442.4,
+            "AttackRange": 95.0,
+            "AttacksPerSecond": 0.9
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 20.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 95.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 0.9"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1184,7 +3273,166 @@ window.PACKBOUND_ITEM_DB = {
         }
       },
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AttackPower": 20.0,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G0-1": {
+            "AttackPower": 22.0,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G0-2": {
+            "AttackPower": 24.2,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G0-3": {
+            "AttackPower": 26.6,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G1-0": {
+            "AttackPower": 31.9,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G1-1": {
+            "AttackPower": 35.1,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G1-2": {
+            "AttackPower": 38.6,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G1-3": {
+            "AttackPower": 42.5,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G2-0": {
+            "AttackPower": 51.0,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G2-1": {
+            "AttackPower": 56.1,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G2-2": {
+            "AttackPower": 61.7,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G2-3": {
+            "AttackPower": 67.9,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G3-0": {
+            "AttackPower": 81.5,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G3-1": {
+            "AttackPower": 89.7,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G3-2": {
+            "AttackPower": 98.7,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G3-3": {
+            "AttackPower": 108.6,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G4-0": {
+            "AttackPower": 130.3,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G4-1": {
+            "AttackPower": 143.3,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G4-2": {
+            "AttackPower": 157.6,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G4-3": {
+            "AttackPower": 173.4,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G5-0": {
+            "AttackPower": 208.1,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G5-1": {
+            "AttackPower": 228.9,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G5-2": {
+            "AttackPower": 251.8,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G5-3": {
+            "AttackPower": 277.0,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G6-0": {
+            "AttackPower": 332.4,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G6-1": {
+            "AttackPower": 365.6,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G6-2": {
+            "AttackPower": 402.2,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          },
+          "G6-3": {
+            "AttackPower": 442.4,
+            "AttackRange": 47.0,
+            "AttacksPerSecond": 1.2
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AttackPower",
+        "공격력",
+        "AttackPower 20.0",
+        "AttackRange",
+        "공격 사거리",
+        "AttackRange 47.0",
+        "AttacksPerSecond",
+        "초당 공격 횟수",
+        "AttacksPerSecond 1.2"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1251,7 +3499,14 @@ window.PACKBOUND_ITEM_DB = {
         "unit": "MaxHealthPercent",
         "interval_seconds": 10.0
       },
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1314,7 +3569,14 @@ window.PACKBOUND_ITEM_DB = {
         "unit": "Percent",
         "interval_seconds": 0.0
       },
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1389,7 +3651,14 @@ window.PACKBOUND_ITEM_DB = {
         "unit": "MaxHealthPercent",
         "interval_seconds": 6.0
       },
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1452,7 +3721,14 @@ window.PACKBOUND_ITEM_DB = {
         "unit": "Percent",
         "interval_seconds": 0.0
       },
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1515,7 +3791,104 @@ window.PACKBOUND_ITEM_DB = {
         "unit": "Percent",
         "interval_seconds": 0.0
       },
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G0-1": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G0-2": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G0-3": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G1-0": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G1-1": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G1-2": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G1-3": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G2-0": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G2-1": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G2-2": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G2-3": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G3-0": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G3-1": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G3-2": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G3-3": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G4-0": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G4-1": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G4-2": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G4-3": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G5-0": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G5-1": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G5-2": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G5-3": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G6-0": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G6-1": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G6-2": {
+            "SupportAttackSpeedPercent": 12.0
+          },
+          "G6-3": {
+            "SupportAttackSpeedPercent": 12.0
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "SupportAttackSpeedPercent",
+        "전체 무기 공격 속도",
+        "SupportAttackSpeedPercent 12.0"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1582,7 +3955,14 @@ window.PACKBOUND_ITEM_DB = {
         "unit": "Percent",
         "interval_seconds": 0.0
       },
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1649,7 +4029,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1708,7 +4095,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1775,7 +4169,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1834,7 +4235,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1893,7 +4301,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1944,7 +4359,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -1995,7 +4417,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2054,7 +4483,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2109,7 +4545,166 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 8.0,
+            "MaxHealth": 25.0
+          },
+          "G0-1": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 8.8,
+            "MaxHealth": 27.5
+          },
+          "G0-2": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 9.7,
+            "MaxHealth": 30.3
+          },
+          "G0-3": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 10.7,
+            "MaxHealth": 33.3
+          },
+          "G1-0": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 12.8,
+            "MaxHealth": 40.0
+          },
+          "G1-1": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 14.1,
+            "MaxHealth": 44.0
+          },
+          "G1-2": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 15.5,
+            "MaxHealth": 48.4
+          },
+          "G1-3": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 17.1,
+            "MaxHealth": 53.2
+          },
+          "G2-0": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 20.5,
+            "MaxHealth": 63.8
+          },
+          "G2-1": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 22.6,
+            "MaxHealth": 70.2
+          },
+          "G2-2": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 24.9,
+            "MaxHealth": 77.2
+          },
+          "G2-3": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 27.4,
+            "MaxHealth": 84.9
+          },
+          "G3-0": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 32.9,
+            "MaxHealth": 101.9
+          },
+          "G3-1": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 36.2,
+            "MaxHealth": 112.1
+          },
+          "G3-2": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 39.8,
+            "MaxHealth": 123.3
+          },
+          "G3-3": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 43.8,
+            "MaxHealth": 135.6
+          },
+          "G4-0": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 52.6,
+            "MaxHealth": 162.7
+          },
+          "G4-1": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 57.9,
+            "MaxHealth": 179.0
+          },
+          "G4-2": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 63.7,
+            "MaxHealth": 196.9
+          },
+          "G4-3": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 70.1,
+            "MaxHealth": 216.6
+          },
+          "G5-0": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 84.1,
+            "MaxHealth": 259.9
+          },
+          "G5-1": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 92.5,
+            "MaxHealth": 285.9
+          },
+          "G5-2": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 101.8,
+            "MaxHealth": 314.5
+          },
+          "G5-3": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 112.0,
+            "MaxHealth": 346.0
+          },
+          "G6-0": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 134.4,
+            "MaxHealth": 415.2
+          },
+          "G6-1": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 147.8,
+            "MaxHealth": 456.7
+          },
+          "G6-2": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 162.6,
+            "MaxHealth": 502.4
+          },
+          "G6-3": {
+            "CrowdControlResistancePercent": 5.0,
+            "Defense": 178.9,
+            "MaxHealth": 552.6
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "CrowdControlResistancePercent",
+        "군중 제어 저항",
+        "CrowdControlResistancePercent 5.0",
+        "Defense",
+        "방어력",
+        "Defense 8.0",
+        "MaxHealth",
+        "최대 체력",
+        "MaxHealth 25.0"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2168,7 +4763,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2235,7 +4837,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2290,7 +4899,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2349,7 +4965,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2408,7 +5031,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2459,7 +5089,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2510,7 +5147,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2577,7 +5221,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2644,7 +5295,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2703,7 +5361,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2762,7 +5427,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2821,7 +5493,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2872,7 +5551,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2923,7 +5609,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -2982,7 +5675,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3029,7 +5729,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3076,7 +5783,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3127,7 +5841,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3182,7 +5903,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3233,7 +5961,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3288,7 +6023,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3335,7 +6077,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3382,7 +6131,135 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Implemented",
+        "grades": {
+          "G0-0": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G0-1": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G0-2": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G0-3": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G1-0": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G1-1": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G1-2": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G1-3": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G2-0": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G2-1": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G2-2": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G2-3": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G3-0": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G3-1": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G3-2": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G3-3": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G4-0": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G4-1": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G4-2": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G4-3": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G5-0": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G5-1": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G5-2": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G5-3": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G6-0": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G6-1": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G6-2": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          },
+          "G6-3": {
+            "AccuracyPercent": 4.0,
+            "CriticalChancePercent": 3.0
+          }
+        }
+      },
+      "stats": [
+        "전투 수치 구현",
+        "Implemented",
+        "G0-0",
+        "G6-3",
+        "AccuracyPercent",
+        "명중률",
+        "AccuracyPercent 4.0",
+        "CriticalChancePercent",
+        "치명타 확률",
+        "CriticalChancePercent 3.0"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3429,7 +6306,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3476,7 +6360,14 @@ window.PACKBOUND_ITEM_DB = {
       },
       "combat_art": null,
       "support_effect": null,
-      "stats": [],
+      "combat_stats": {
+        "status": "Planned",
+        "grades": null
+      },
+      "stats": [
+        "전투 수치 예정",
+        "Planned"
+      ],
       "synergies": [],
       "synergy_labels": [],
       "effects": {},
@@ -3491,5 +6382,5 @@ window.PACKBOUND_ITEM_DB = {
     "conditions": [],
     "abilities": []
   },
-  "revision": "6190a010348b071c"
+  "revision": "68a90da7bb116039"
 };
