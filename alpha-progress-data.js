@@ -4,24 +4,19 @@ window.PACKBOUND_ALPHA_PROGRESS = {
   "summary": "PackBound 알파가 실제로 플레이 가능한 한 사이클을 완성하는 데 필요한 시스템, 콘텐츠, 품질 작업을 한 트리에서 추적합니다. 높은 기반 완성도와 아직 부족한 콘텐츠 수량을 분리해 보여 줍니다.",
   "alpha_definition": "새 플레이어가 모바일에서 튜토리얼을 마치고 베이스캠프에서 장비를 준비한 뒤, 완성된 보스가 포함된 스테이지를 끝까지 플레이하고 보상·성장·재도전까지 오류 없이 이어갈 수 있으며, 목표 콘텐츠 수량과 운영·성능·저장 검증이 승인된 상태입니다.",
   "snapshot": {
-    "reviewed_on": "2026-09-01",
-    "baseline_commit": "8b685a2",
-    "scope_note": "완료 판정은 기준 커밋의 저장소·테스트·커밋 위키와 현재 Studio의 읽기 전용 상태를 사용했습니다. 알파 장비 54종의 전투표는 커밋과 Studio 검증을 마쳤지만, 전체 5웨이브와 최신 HEAD를 한 묶음으로 통과한 최종 하네스 기록은 아직 없습니다. 수량 목표와 가중치는 현재 제품 오너 요청을 바탕으로 만든 관리용 임시 기준입니다.",
+    "reviewed_on": "2026-09-02",
+    "baseline_commit": "b64ee32",
+    "scope_note": "완료 판정은 기준 커밋에서 출발한 현재 발행 후보의 저장소·자동 검사·Studio 고정 시나리오 증거를 사용했습니다. 스테이지 1의 클리어·보상·사망·재도전은 두 모바일 화면에서 실제 서버 경로로 연결됐지만, 사용자 방침에 따라 사람처럼 조작하는 플레이 테스트는 제외했고 실제 기기 FPS와 조작 감각은 아직 증명하지 않았습니다. 수량 목표와 가중치는 현재 제품 오너 요청을 바탕으로 만든 관리용 임시 기준입니다.",
     "studio": {
       "place_id": 74789994491954,
       "place_name": "팩 바운드",
       "mode": "Edit",
-      "discrepancies": [
-        {
-          "title": "WaveDB 적용 차이",
-          "detail": "저장소의 WaveDB 리비전은 cdea80108008e31e이지만 Studio 모듈은 059b0540e9562321입니다. 현재 스테이지 자료가 Studio에 최신 적용됐다고 볼 수 없습니다."
-        }
-      ]
+      "discrepancies": []
     }
   },
   "methodology": {
     "aggregation": "각 말단 작업에 0~100의 진행률과 상태를 부여하고, 같은 부모 안에서는 명시된 가중치로 평균을 냅니다. 최상위 12개 파트의 가중치 합은 100입니다. 반복 수량은 각 슬롯을 실제 하위 항목으로 펼쳐 계산하므로 스테이지 1개를 시스템 전체 완성으로 오인하지 않습니다.",
-    "status_rule": "완료·검증은 관련 구현과 필요한 자동 검사·현재 런타임 증거가 모두 있을 때만 100으로 표시합니다. 구현은 있으나 통합 또는 최신 검증이 빠지면 진행 중, 문서만 있으면 계획만 있음, 근거가 없으면 미확인, 승인 조건이 명시적으로 막혀 있으면 차단됨으로 표시합니다. 이 숫자는 일정 약속이 아니라 우선순위 판단을 위한 관리용 추정치입니다."
+    "status_rule": "완료·검증은 관련 구현과 필요한 자동 검사·현재 런타임 증거가 모두 있을 때만 100으로 표시합니다. 구현은 있으나 통합 또는 최신 검증이 빠지면 진행 중, 문서만 있으면 계획만 있음, 근거가 없으면 미확인, 승인 조건이 명시적으로 막혀 있으면 차단됨으로 표시합니다. 모든 개발 작업은 수치가 변하지 않더라도 관련 말단 항목에 날짜가 있는 작업 근거와 다음 완료 관문을 남깁니다. 이 숫자는 일정 약속이 아니라 우선순위 판단을 위한 관리용 추정치입니다."
   },
   "highlights": [
     {
@@ -31,13 +26,13 @@ window.PACKBOUND_ALPHA_PROGRESS = {
     },
     {
       "kind": "priority",
-      "title": "스테이지 1의 보스 포함 종단 간 완주를 먼저 증명해야 합니다.",
-      "body": "과충전 자판두꺼비의 남은 모션과 실제 보스 웨이브를 완성한 뒤, 두 모바일 화면에서 캠프→5웨이브→정산→복귀를 한 번에 통과시키는 작업이 다음 최우선 슬라이스입니다."
+      "title": "스테이지 1 다음에는 후속 콘텐츠와 실기기 품질을 채웁니다.",
+      "body": "과충전 자판두꺼비와 단독 보스 웨이브, 경기장 전환, 클리어·보상·사망·재도전 흐름은 두 모바일 화면의 비조작 자동 시나리오로 연결됐습니다. 다음 관문은 실제 기기 성능과 후속 스테이지 제작입니다."
     },
     {
       "kind": "risk",
       "title": "시스템 수보다 콘텐츠 수량과 실제 소비 연결이 뒤처져 있습니다.",
-      "body": "스테이지는 1/50, 활성 보스는 0/5이며, 540개 룬 보드가 있어도 실제 룬 전투 소비는 한 무기의 5개 노드에 국한됩니다."
+      "body": "스테이지는 1/50, 활성 보스는 1/5이며, 540개 룬 보드가 있어도 실제 룬 전투 소비는 한 무기의 5개 노드에 국한됩니다."
     }
   ],
   "categories": [
@@ -49,7 +44,7 @@ window.PACKBOUND_ALPHA_PROGRESS = {
       "weight": 14,
       "sources": [
         "wiki/content/pages/base-camp-field-hub/v002.md",
-        "wiki/content/pages/stage-run-experience/v001.md",
+        "wiki/content/pages/stage-run-experience/v002.md",
         "src/ServerScriptService/StageRuns/StageRunService.luau",
         "src/ServerScriptService/Economy/EconomyDomain.luau"
       ],
@@ -135,19 +130,21 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "stage-one-full-run",
           "title": "스테이지 1 실제 5웨이브 완주",
-          "progress": 55,
+          "progress": 95,
           "status": "partial",
           "evidence": [
-            "5웨이브 데이터와 실행기는 있지만 게시 place에서 최신 5웨이브를 끝까지 완주한 단일 증거가 없습니다."
+            "5웨이브 데이터와 실행기, 단독 보스전, 경기장 전환, 정산과 복귀가 연결됐습니다.",
+            "[2026-09-02] iPhone 17 Pro 401×776의 고정 자동 시나리오가 실제 1~5웨이브 서버 런, 보스 사망, Clear 1회, 최초 200동·룬 2개·장비 3택1·중복 수령 차단과 베이스캠프 복귀를 통과했습니다.",
+            "[2026-09-02] iPhone 7 374×666의 별도 자동 시나리오가 보스 사망 원인, 4웨이브 완료 패배 35동, 잔여물 0, 베이스캠프 부활과 다른 Run ID의 1웨이브 재도전을 통과했습니다. 사람처럼 캐릭터를 조작하는 플레이 테스트는 사용자 방침에 따라 제외했습니다."
           ],
-          "next_step": "최신 WaveDB를 Studio에 적용하고 보스 포함 5웨이브를 처음부터 끝까지 플레이합니다.",
+          "next_step": "실제 모바일 기기의 렌더링 성능과 회피 조작 감각은 별도 외부 측정으로 확인합니다.",
           "sources": [
             "docs/gameplay/stage-wave-definitions.json",
             "wiki/content/pages/stage-wave-database/v003.md"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 55,
+          "computed_progress": 95,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -270,7 +267,7 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 80,
+      "computed_progress": 84,
       "computed_status": "partial",
       "leaf_count": 11,
       "proven_count": 6,
@@ -333,11 +330,18 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 75,
           "status": "partial",
           "evidence": [
-            "박사와 남녀 플레이어 감정 초상화 대화는 완성됐지만 세계의 장기 목표 설명은 최소 수준입니다."
+            "박사와 남녀 플레이어 감정 초상화 대화는 완성됐지만 세계의 장기 목표 설명은 최소 수준입니다.",
+            "[2026-09-01] 좌우 초상은 화면을 가리는 카드 없이 투명하게 띄우고, 현재 화자만 크게·선명하게 보이며 하단의 단일 말풍선만 화자 방향에 따라 전환되도록 모바일 대화 화면을 개편했습니다.",
+            "[2026-09-01] iPhone 17 Pro 세로 401×776과 Galaxy A06 세로 359×718에서 양쪽 화자 전환, 안전 영역, 52px 이상 조작 버튼, 한국어·영어 전체 19개 대사의 줄바꿈과 텍스트 맞춤을 확인했습니다."
           ],
-          "next_step": "알파의 목표와 고물 세계의 위협을 짧은 행동 중심 대사로 보강합니다.",
+          "next_step": "알파의 목표와 고물 세계의 위협을 짧은 행동 중심 대사로 보강하고, 실제 신규 프로필의 E 상호작용부터 대화 완료 사건까지 한 흐름으로 회귀 검증합니다.",
+          "sources": [
+            "src/ReplicatedStorage/Tutorial/TutorialDialogueScreen.luau",
+            "src/ReplicatedStorage/Tutorial/TutorialEngineerDefinition.luau",
+            "tests/test_tutorial_runtime.py",
+            "tests/test_player_dialogue_portraits.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
           "computed_progress": 75,
           "computed_status": "partial",
@@ -381,19 +385,28 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "tutorial-rune-placement",
           "title": "첫 룬 장착 설명",
-          "progress": 100,
-          "status": "proven",
+          "progress": 95,
+          "status": "partial",
           "evidence": [
-            "G0 시작점과 유효 배치를 직접 수행해야 베이스캠프로 진행합니다."
+            "G0 시작점과 유효 배치를 직접 수행해야 베이스캠프로 진행합니다.",
+            "[2026-09-01] 실제 보유 룬을 소모하지 않는 3페이지 연습 가이드를 추가했습니다. 같은 등급 한 줄 간격 규칙 2종과 다른 등급 인접 허용 규칙을 페이지마다 직접 옮겨 볼 수 있습니다.",
+            "[2026-09-01] iPhone 17 Pro 세로 401×776과 Galaxy A06 세로 359×718에서 한국어·영어 3페이지, 안전 영역, 48px 이상 조작 버튼, 유효 칸 초록 표시와 진단 배치를 확인했습니다. Studio 입력 주입이 Activated/InputBegan을 발생시키지 못해 실제 손가락 드래그 완료 경로만 미검증으로 남겼습니다.",
+            "[2026-09-01] 가이드를 5페이지로 확장했습니다. 4페이지는 G0 블록의 60도 회전으로 능력 2칸을 활성화하고, 5페이지는 선택한 G0·G1 블록을 독립적으로 회전·배치해 색상별 능력 2칸을 활성화해야 체크됩니다. 다른 색 블록이 능력 칸을 덮어도 활성화 수에 포함하지 않는 규칙을 모델 테스트로 고정했습니다."
           ],
-          "next_step": "룬 능력 소비 범위가 늘면 실제 효과 확인 단계도 추가합니다.",
+          "next_step": "Studio 입력 주입이 정상화되면 두 모바일 화면에서 실제 손가락으로 블럭 선택·60도 회전·유효·무효 배치·능력 체크 완료를 수행하고, 5페이지 이동과 닫기까지 한 흐름으로 회귀 검증합니다.",
+          "sources": [
+            "src/ReplicatedStorage/InventoryV2/RunePlacementGuideModel.luau",
+            "src/ReplicatedStorage/InventoryV2/RunePlacementGuideScreen.luau",
+            "src/ReplicatedStorage/InventoryV2/Screen.luau",
+            "tests/InventoryV2.spec.luau",
+            "tests/test_inventory_v2_ui.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 100,
-          "computed_status": "proven",
+          "computed_progress": 95,
+          "computed_status": "partial",
           "leaf_count": 1,
-          "proven_count": 1
+          "proven_count": 0
         },
         {
           "id": "tutorial-basecamp-introduction",
@@ -516,13 +529,13 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 85,
+      "computed_progress": 84,
       "computed_status": "partial",
       "leaf_count": 13,
-      "proven_count": 7,
+      "proven_count": 6,
       "status_counts": {
-        "proven": 7,
-        "partial": 5,
+        "proven": 6,
+        "partial": 6,
         "planned_only": 1,
         "unknown": 0,
         "blocked": 0
@@ -997,9 +1010,9 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 90,
           "status": "partial",
           "evidence": [
-            "활성 16종의 접촉·분출·돌진·투사체·도약·부화 공격이 있으나 실제 전체 웨이브 종단 검증은 없습니다."
+            "[2026-09-02] 활성 17종의 접촉·분출·돌진·투사체·도약·부화·보스 공격이 서버 런타임에 연결됐고 스테이지 1 자동 완주에서 전체 소환·사망 생명주기를 통과했습니다."
           ],
-          "next_step": "스테이지 1 완주에서 모든 중형 패턴과 취소 정리를 확인합니다.",
+          "next_step": "일반 1~4웨이브의 각 공격 패턴 가독성과 취소를 개별 자동 시나리오로 확장합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
@@ -1047,35 +1060,37 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "boss-combat-runtime",
           "title": "보스 전투 패턴",
-          "progress": 35,
-          "status": "blocked",
-          "blocker": "과충전 자판두꺼비의 Walk 외 8개 모션과 실제 모바일 회피 검증이 없어 정규 웨이브 승격이 차단돼 있습니다.",
+          "progress": 95,
+          "status": "partial",
           "evidence": [
-            "다섯 패턴의 서버 계산과 취소 기반은 있지만 활성 MonsterDB·WaveDB에는 보스가 없습니다."
+            "[2026-09-02] 과충전 자판두꺼비가 활성 MonsterDB와 5웨이브에 승격됐고 다섯 패턴, 셔플 백, 직전 반복 방지, 35% 이하 0.85초 휴식, 참가자 한정 피해와 종료 정리가 서버 권한으로 연결됐습니다.",
+            "[2026-09-02] Studio 고정 자동 시나리오에서 다섯 강제 패턴, 자연 선택의 연속 두 주기, 경기장 안전 범위, 효과·투사체 0 정리와 실제 보스·플레이어 사망을 관측했습니다."
           ],
-          "next_step": "남은 모션을 승인·업로드하고 피해 프레임, 경기장 페이즈와 실제 웨이브를 연결합니다.",
+          "next_step": "실제 기기에서 회피 조작의 체감 난이도와 예고 가독성을 외부 측정하고 필요하면 수치만 조정합니다.",
           "sources": [
-            "docs/gameplay/overcharge-vendatoad-boss-design.md"
+            "docs/gameplay/overcharge-vendatoad-boss-design.md",
+            "src/ServerScriptService/Monsters/BossAttackDirector.luau",
+            "tests/test_boss_runtime_contract.py"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 35,
-          "computed_status": "blocked",
+          "computed_progress": 95,
+          "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         }
       ],
       "depth": 0,
-      "computed_progress": 89,
+      "computed_progress": 94,
       "computed_status": "partial",
       "leaf_count": 11,
       "proven_count": 7,
       "status_counts": {
         "proven": 7,
-        "partial": 3,
+        "partial": 4,
         "planned_only": 0,
         "unknown": 0,
-        "blocked": 1
+        "blocked": 0
       }
     },
     {
@@ -1113,9 +1128,10 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 100,
           "status": "proven",
           "evidence": [
-            "최초·반복 클리어, 실패 웨이브, 장비 3택과 룬 보상 규칙이 구현됐습니다."
+            "최초·반복 클리어, 실패 웨이브, 장비 3택과 룬 보상 규칙이 구현됐습니다.",
+            "[2026-09-02] 자동 전체 클리어에서 200동·G0 1칸 룬 2개·장비 3택1과 영수증 중복 방지를, 보스 사망에서 35동·룬/장비 0을 실제 메모리 프로필로 확인했습니다."
           ],
-          "next_step": "보스가 활성화되면 실제 완주 보상과 난이도 대비 가치를 재검증합니다.",
+          "next_step": "후속 스테이지 보상도 같은 정산·중복 방지 계약을 재사용합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
@@ -1401,16 +1417,17 @@ window.PACKBOUND_ALPHA_PROGRESS = {
             {
               "id": "stage-slot-01",
               "title": "스테이지 1 · 고물바람 초원",
-              "progress": 70,
+              "progress": 95,
               "status": "partial",
               "evidence": [
-                "5웨이브·13레이어·83배치와 16종 활성 몬스터 연결이 있지만 보스와 최신 Studio 완주가 없습니다."
+                "[2026-09-02] 5웨이브·12레이어·76개 예약 배치와 사망 파생 포함 80개 전개, 활성 17종, 단독 보스와 boss_arena가 연결됐습니다.",
+                "[2026-09-02] 두 모바일 세로 화면에서 성공·사망·재도전 경로를 사람 조작 없는 실제 서버 런으로 검증했습니다."
               ],
-              "next_step": "과충전 자판두꺼비와 boss_arena 페이즈를 5웨이브에 연결하고 두 모바일 화면에서 완주합니다.",
+              "next_step": "실제 모바일 기기 성능과 회피 감각을 외부 측정한 뒤 스테이지 1 난이도를 최종 승인합니다.",
               "weight": 1,
               "sources": [],
               "depth": 2,
-              "computed_progress": 70,
+              "computed_progress": 95,
               "computed_status": "partial",
               "leaf_count": 1,
               "proven_count": 0
@@ -2250,7 +2267,7 @@ window.PACKBOUND_ALPHA_PROGRESS = {
             }
           ],
           "depth": 1,
-          "computed_progress": 1,
+          "computed_progress": 2,
           "computed_status": "partial",
           "leaf_count": 50,
           "proven_count": 0,
@@ -2330,20 +2347,23 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "boss-arena-field-phase",
           "title": "보스 경기장 전환과 복원",
-          "progress": 45,
-          "status": "blocked",
+          "progress": 100,
+          "status": "proven",
           "weight": 5,
-          "blocker": "boss_arena 데이터는 있으나 어떤 웨이브도 field_phase_id로 활성화하지 않습니다.",
           "evidence": [
-            "장애물 제거·안전 반경·복원 계약과 자동 검사는 존재합니다."
+            "[2026-09-02] 5웨이브 소환 전에 boss_arena가 원자적으로 적용되고 일곱 오브젝트의 패널·충돌·차단 셀이 함께 비활성화됩니다.",
+            "[2026-09-02] 별도 자동 클리어와 사망 실행에서 보스·효과·필드 소유권이 0으로 정리되고 일곱 오브젝트가 모두 원래 상태로 복원됐습니다."
           ],
-          "next_step": "스테이지 1 최종 웨이브에 boss_arena를 연결하고 취소·사망·클리어 후 복원을 검증합니다.",
-          "sources": [],
+          "next_step": "후속 보스 경기장도 같은 원자 적용·종료 복원 계약을 재사용합니다.",
+          "sources": [
+            "src/ServerScriptService/StageRuns/FieldPhaseService.luau",
+            "tests/test_stage_field_phase_integration.py"
+          ],
           "depth": 1,
-          "computed_progress": 45,
-          "computed_status": "blocked",
+          "computed_progress": 100,
+          "computed_status": "proven",
           "leaf_count": 1,
-          "proven_count": 0
+          "proven_count": 1
         },
         {
           "id": "multi-stage-reward-profiles",
@@ -2381,16 +2401,16 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 23,
+      "computed_progress": 26,
       "computed_status": "partial",
       "leaf_count": 56,
-      "proven_count": 1,
+      "proven_count": 2,
       "status_counts": {
-        "proven": 1,
+        "proven": 2,
         "partial": 4,
         "planned_only": 50,
         "unknown": 0,
-        "blocked": 1
+        "blocked": 0
       }
     },
     {
@@ -2974,7 +2994,7 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "title": "보스 몬스터 5종",
           "weight": 25,
           "metric": {
-            "current": 0,
+            "current": 1,
             "target": 5,
             "unit": "활성 보스"
           },
@@ -2985,20 +3005,24 @@ window.PACKBOUND_ALPHA_PROGRESS = {
             {
               "id": "boss-monster-slot-01",
               "title": "과충전 자판두꺼비",
-              "progress": 35,
-              "status": "blocked",
+              "progress": 100,
+              "status": "proven",
               "evidence": [
-                "다섯 서버 패턴과 경기장 안전 기반은 구현됐지만 정규 MonsterDB·WaveDB에는 없습니다."
+                "[2026-09-02] 승인 원화와 Walk에 맞춘 Idle·Hit·Death·공격 5종을 포함한 9개 투명 런타임 클립을 업로드하고 MonsterDB 35bd2978ae98dc40에 활성 보스로 등록했습니다.",
+                "[2026-09-02] 실제 5웨이브 서버 런에서 단독 소환, 다섯 공격, 사망 애니메이션, Clear 대기와 경기장 복원을 자동 검증했습니다."
               ],
-              "next_step": "남은 8모션, 피해 프레임, boss_arena와 두 모바일 회피 검증을 완료합니다.",
-              "blocker": "Walk만 승인됐고 Idle·Hit·Death와 다섯 공격 모션이 없어 ProductionPending입니다.",
+              "next_step": "후속 밸런스 조정에서도 9개 모션의 프레임·피해 시점·자산 해시를 유지합니다.",
+              "sources": [
+                "Assets/Monsters/Runtime/OverchargeVendatoad/atlas-metadata.json",
+                "docs/gameplay/monster-definitions.json",
+                "tests/test_boss_runtime_contract.py"
+              ],
               "weight": 1,
-              "sources": [],
               "depth": 2,
-              "computed_progress": 35,
-              "computed_status": "blocked",
+              "computed_progress": 100,
+              "computed_status": "proven",
               "leaf_count": 1,
-              "proven_count": 0
+              "proven_count": 1
             },
             {
               "id": "boss-monster-slot-02",
@@ -3070,55 +3094,55 @@ window.PACKBOUND_ALPHA_PROGRESS = {
             }
           ],
           "depth": 1,
-          "computed_progress": 7,
+          "computed_progress": 20,
           "computed_status": "partial",
           "leaf_count": 5,
-          "proven_count": 0,
+          "proven_count": 1,
           "status_counts": {
-            "proven": 0,
+            "proven": 1,
             "partial": 0,
             "planned_only": 4,
             "unknown": 0,
-            "blocked": 1
+            "blocked": 0
           }
         },
         {
           "id": "monster-animation-coverage",
           "title": "목표 35종 애니메이션 패키지",
-          "progress": 46,
+          "progress": 49,
           "status": "partial",
           "weight": 10,
           "metric": {
-            "current": 16,
+            "current": 17,
             "target": 35,
             "unit": "활성 몬스터"
           },
           "evidence": [
-            "현재 활성 16종은 82개 런타임 클립을 갖지만 미제작 19종은 패키지가 없습니다."
+            "[2026-09-02] 활성 16종의 기존 82개 클립에 과충전 자판두꺼비 9개 클립을 더해 17종의 런타임 패키지가 활성화됐습니다."
           ],
-          "next_step": "새 몬스터마다 Idle·이동·공격·피격·사망 최소 세트를 같은 승격 관문으로 묶습니다.",
+          "next_step": "남은 18종도 Idle·이동·공격·피격·사망 최소 세트를 같은 승격 관문으로 묶습니다.",
           "sources": [
             "tools/animation_db.py"
           ],
           "depth": 1,
-          "computed_progress": 46,
+          "computed_progress": 49,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         },
         {
           "id": "monster-stage-integration",
-          "title": "활성 16종의 스테이지 연결",
+          "title": "활성 17종의 스테이지 연결",
           "progress": 100,
           "status": "proven",
           "weight": 8,
           "metric": {
-            "current": 16,
-            "target": 16,
+            "current": 17,
+            "target": 17,
             "unit": "종"
           },
           "evidence": [
-            "15종은 직접 웨이브 배치, 새끼 도마뱀은 둥지 사망 생성으로 스테이지 1에 연결됩니다."
+            "[2026-09-02] 15종은 직접 일반 웨이브 배치, 새끼 도마뱀은 둥지 사망 생성, 과충전 자판두꺼비는 5웨이브 단독 예약 소환으로 스테이지 1에 연결됩니다."
           ],
           "next_step": "새 스테이지에서 역할 중복과 밀도를 조정합니다.",
           "sources": [],
@@ -3130,16 +3154,16 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 44,
+      "computed_progress": 48,
       "computed_status": "partial",
       "leaf_count": 37,
-      "proven_count": 17,
+      "proven_count": 18,
       "status_counts": {
-        "proven": 17,
+        "proven": 18,
         "partial": 1,
         "planned_only": 18,
         "unknown": 0,
-        "blocked": 1
+        "blocked": 0
       }
     },
     {
@@ -3244,18 +3268,21 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "boss-balance",
           "title": "보스 몬스터 밸런스",
-          "progress": 15,
-          "status": "blocked",
-          "blocker": "활성 보스와 완성된 실제 전투가 없습니다.",
+          "progress": 70,
+          "status": "partial",
           "evidence": [
-            "과충전 자판두꺼비 패턴 계산 기반만 있습니다."
+            "[2026-09-02] 현재 CombatFormula로 G0-0 비공간 이론 처치 시간 62.22초, G3-0 전체 스테이지 이론 시간 72.78초를 재계산해 회귀 범위에 고정했습니다.",
+            "[2026-09-02] 다섯 예고·피해·회복 규칙과 저체력 0.85 휴식은 자동 런에서 통과했지만 사람 조작을 통한 체감 난이도·실제 처치 시간은 사용자 방침에 따라 측정하지 않았습니다."
           ],
-          "next_step": "보스 1의 완성 모션과 실제 런타임을 만든 뒤 패턴 주기·피해·안전지대를 조정합니다.",
+          "next_step": "외부 실제 기기 측정이 가능할 때 체감 회피와 실제 처치 시간을 확인하고, 필요하면 체력·방어·휴식·공격력만 조정합니다.",
+          "sources": [
+            "docs/gameplay/overcharge-vendatoad-boss-design.md",
+            "tools/combat_balance_sim.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 15,
-          "computed_status": "blocked",
+          "computed_progress": 70,
+          "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         },
@@ -3312,16 +3339,16 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 42,
+      "computed_progress": 48,
       "computed_status": "partial",
       "leaf_count": 9,
       "proven_count": 0,
       "status_counts": {
         "proven": 0,
-        "partial": 8,
+        "partial": 9,
         "planned_only": 0,
         "unknown": 0,
-        "blocked": 1
+        "blocked": 0
       }
     },
     {
@@ -3423,17 +3450,20 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "id": "boss-art-animation",
           "title": "보스 원화·9개 모션·전투 연출",
           "progress": 20,
-          "status": "blocked",
-          "blocker": "보스 1은 기준 원화와 Walk만 있고 8개 모션이 남았습니다.",
+          "status": "partial",
           "evidence": [
-            "다른 네 보스는 원화와 패키지가 없습니다."
+            "[2026-09-02] 보스 1 과충전 자판두꺼비는 승인 원화와 Idle·Walk·Hit·Death·공격 5종, 전투 예고 연출까지 완성됐습니다.",
+            "다른 네 보스는 아직 원화와 패키지가 없습니다."
           ],
-          "next_step": "보스 1의 전체 모션을 먼저 완성한 뒤 나머지 보스 제작 단위를 확정합니다.",
+          "next_step": "보스 1의 아트 계약을 템플릿으로 나머지 네 보스를 순차 제작합니다.",
+          "sources": [
+            "Assets/Monsters/Runtime/OverchargeVendatoad/atlas-metadata.json",
+            "tests/test_boss_runtime_contract.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
           "computed_progress": 20,
-          "computed_status": "blocked",
+          "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         },
@@ -3501,10 +3531,10 @@ window.PACKBOUND_ALPHA_PROGRESS = {
       "proven_count": 3,
       "status_counts": {
         "proven": 3,
-        "partial": 3,
+        "partial": 4,
         "planned_only": 0,
         "unknown": 1,
-        "blocked": 1
+        "blocked": 0
       }
     },
     {
@@ -3521,16 +3551,16 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "mobile-responsive-layouts",
           "title": "핵심 UI의 세로형 반응형 배치",
-          "progress": 90,
+          "progress": 95,
           "status": "partial",
           "evidence": [
-            "iPhone 17 Pro와 iPhone 7에서 7개 시나리오씩 통과했고 이후 전투 수치 변경은 화면 구성을 바꾸지 않았습니다. 다만 전체 알파 루프 화면 검증은 남았습니다."
+            "[2026-09-02] iPhone 17 Pro 401×776의 클리어·장비 3택과 iPhone 7 374×666의 보스 예고·사망·재도전 화면에서 모든 필수 버튼이 안전 영역 안, 48px 이상, 활성·TextFits 상태임을 자동 확인했습니다."
           ],
-          "next_step": "보스 포함 전체 플레이 루프를 두 모바일 크기에서 fresh Play로 통과합니다.",
+          "next_step": "남은 알파 시설 화면과 실제 기기 조작 감각을 같은 두 화면에서 확인합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
-          "computed_progress": 90,
+          "computed_progress": 95,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -3572,16 +3602,16 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "small-tall-phone-matrix",
           "title": "작은 휴대폰·긴 휴대폰 검증 매트릭스",
-          "progress": 90,
+          "progress": 95,
           "status": "partial",
           "evidence": [
-            "iPhone 7과 iPhone 17 Pro clean Gate가 있으나 전체 5웨이브 E2E는 포함하지 않습니다."
+            "[2026-09-02] iPhone 17 Pro와 iPhone 7에서 스테이지 1 성공·사망·재도전 자동 런과 한국어·영어 UI 안전 계약을 통과했습니다. 사람처럼 조작하는 플레이는 사용자 방침에 따라 제외했습니다."
           ],
-          "next_step": "알파 전체 루프를 두 화면에서 실제 플레이합니다.",
+          "next_step": "실제 기기 성능과 손가락 조작 감각만 별도 외부 측정합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
-          "computed_progress": 90,
+          "computed_progress": 95,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -3606,23 +3636,33 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "localization",
           "title": "현지화와 문자열 관리",
-          "progress": 10,
+          "progress": 80,
           "status": "partial",
           "evidence": [
-            "한국어 중심 문구는 있지만 번역 테이블과 언어 전환·문자열 길이 검증이 없습니다."
+            "[2026-09-02] 한국어 원문과 언어 중립 동적 템플릿 총 1,970개를 추출·정리하고 번역기 일괄 변환 대신 수동 영문 번역을 유지했습니다.",
+            "[2026-09-01] 한국어 이용자에게 한국어, 그 밖의 이용자에게 영어 원문을 제공하며 지원되는 다른 언어는 Roblox 자동 번역의 영어 원문을 사용하도록 런타임 선택기와 Roblox CSV를 만들었습니다.",
+            "[2026-09-02] 카탈로그 검사, Python 테스트, Luau 해석기·컴파일 검사를 통과했고 iPhone 17 Pro 401×776과 iPhone 7 374×666의 클리어·보상·사망·재도전 화면에서 한국어·영어 미해결 문자열 0과 텍스트 맞춤을 자동 확인했습니다. Roblox LocalizationTable 운영 반영은 남았습니다."
           ],
-          "next_step": "알파 대상 언어를 결정하고 UI 문자열을 데이터화합니다.",
+          "next_step": "현재 현지화 변경을 승인 커밋에 포함하고 Roblox LocalizationTable에 CSV를 반영한 뒤, 전체 플레이 화면과 비한국어·비영어 로케일의 자동 번역 경로를 두 모바일 화면에서 회귀 검증합니다.",
+          "sources": [
+            "docs/localization/game-text.json",
+            "docs/localization/english-translations.json",
+            "docs/localization/roblox-localization.csv",
+            "src/ReplicatedStorage/Localization/GameTextResolver.luau",
+            "src/StarterPlayer/StarterPlayerScripts/GameLocalizationBootstrap.client.luau",
+            "tools/localization_db.py",
+            "tests/test_localization_db.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 10,
+          "computed_progress": 80,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         }
       ],
       "depth": 0,
-      "computed_progress": 71,
+      "computed_progress": 84,
       "computed_status": "partial",
       "leaf_count": 6,
       "proven_count": 1,
@@ -3734,19 +3774,22 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "studio-bake-revision",
           "title": "저장소와 Studio 베이크 리비전 일치",
-          "progress": 65,
-          "status": "partial",
+          "progress": 100,
+          "status": "proven",
           "evidence": [
-            "ItemDB·MonsterDB는 읽기 전용 점검에서 일치하지만 WaveDB는 저장소와 Studio가 다릅니다."
+            "[2026-09-02] Studio 실제 자동 런이 MonsterDB 35bd2978ae98dc40과 WaveDB e1608046e53f923c를 보고했고 저장소 생성 리비전과 정확히 일치했습니다."
           ],
-          "next_step": "최신 WaveDB를 Studio에 베이크하고 적용 리비전을 다시 읽어 확인합니다.",
+          "next_step": "콘텐츠 DB 변경마다 같은 일회성 베이크와 리비전 확인을 반복합니다.",
+          "sources": [
+            "src/ReplicatedStorage/Monsters/GeneratedMonsterDefinitions.luau",
+            "src/ReplicatedStorage/Waves/GeneratedStageWaves.luau"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 65,
-          "computed_status": "partial",
+          "computed_progress": 100,
+          "computed_status": "proven",
           "leaf_count": 1,
-          "proven_count": 0
+          "proven_count": 1
         },
         {
           "id": "multiplayer-latency-reconnect",
@@ -3801,13 +3844,13 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 58,
+      "computed_progress": 62,
       "computed_status": "partial",
       "leaf_count": 9,
-      "proven_count": 3,
+      "proven_count": 4,
       "status_counts": {
-        "proven": 3,
-        "partial": 4,
+        "proven": 4,
+        "partial": 3,
         "planned_only": 0,
         "unknown": 2,
         "blocked": 0
@@ -3842,6 +3885,28 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "proven_count": 1
         },
         {
+          "id": "development-progress-traceability",
+          "title": "개발 작업의 알파 진행도 추적 운영",
+          "progress": 90,
+          "status": "partial",
+          "evidence": [
+            "[2026-09-01] 구현·콘텐츠·아트·UI·검증·도구·운영 작업마다 가장 작은 관련 말단 항목을 갱신하고, 수치가 그대로여도 날짜·작업 근거·다음 완료 관문을 남기도록 프로젝트 완료 규칙을 추가했습니다.",
+            "[2026-09-01] 기존 항목으로 설명할 수 없는 작업은 새 말단 항목으로 추가하고, 진행도 원본과 공개 데이터를 함께 생성·검사하도록 규정했습니다. 이번 현지화 작업과 이 운영 규칙 자체를 실제 진행도 항목으로 반영해 생성·검사를 통과했습니다."
+          ],
+          "next_step": "이 변경을 승인 커밋에 포함하고, 이후 개발 작업에서도 같은 날짜 근거 갱신이 누락되지 않는지 누적 확인합니다.",
+          "sources": [
+            "AGENTS.md",
+            "docs/planning/alpha-development-progress.json",
+            "tools/alpha_progress.py"
+          ],
+          "weight": 1,
+          "depth": 1,
+          "computed_progress": 90,
+          "computed_status": "partial",
+          "leaf_count": 1,
+          "proven_count": 0
+        },
+        {
           "id": "clean-environment-harness",
           "title": "결정론·Studio 통합 하네스",
           "progress": 100,
@@ -3861,19 +3926,20 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "current-working-tree-gate",
           "title": "현재 기준 커밋의 최종 통합 Gate",
-          "progress": 80,
+          "progress": 95,
           "status": "partial",
           "evidence": [
-            "8b685a2의 54종 전투표는 전체 Python 회귀와 전용 Luau 검사, Studio MCP fresh Play를 통과했습니다. 다만 Gate A/B를 같은 최신 HEAD에 다시 묶은 final-readiness 기록은 없습니다."
+            "[2026-09-02] 현재 발행 후보의 관련 Python·Luau·DB·컴파일 검사와 EnvHarness 결정론 회귀가 통과했습니다.",
+            "[2026-09-02] 같은 구현 후보를 Studio에 적용해 iPhone 17 Pro 401×776의 전체 클리어·보상·복귀와 iPhone 7 374×666의 사망·부활·새 Run ID 재도전을 고정 자동 시나리오로 확인했습니다."
           ],
-          "next_step": "8b685a2 또는 다음 릴리스 후보에서 fresh worker·verifier와 두 모바일 Studio Gate를 한 묶음으로 다시 실행합니다.",
+          "next_step": "커밋 뒤 clean 후보의 Gate A 비교 가능성을 다시 확인하고, 실제 모바일 기기 FPS와 조작 감각은 별도 외부 증거로 관리합니다.",
           "sources": [
-            "wiki/content/pages/backpack-combat-stat-database/v004.md",
-            "wiki/content/pages/environment-harness-qa/v001.md"
+            "wiki/content/pages/environment-harness-qa/v003.md",
+            "tools/packbound_studio_qa/README.md"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 80,
+          "computed_progress": 95,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -3881,16 +3947,20 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "full-five-wave-regression",
           "title": "보스 포함 5웨이브 실전 회귀",
-          "progress": 40,
+          "progress": 95,
           "status": "partial",
           "evidence": [
-            "개별 시나리오는 있으나 실제 보스 포함 전체 완주가 최종 Gate에 없습니다."
+            "[2026-09-02] 실제 서버 런을 사용하는 고정 자동 시나리오로 iPhone 17 Pro 전체 클리어·정산·복귀와 iPhone 7 보스 사망·패배 정산·부활·새 Run ID 재도전을 통과했습니다.",
+            "사람 조작형 플레이 테스트는 사용자 방침에 따라 이번 검증 범위에서 제외했습니다."
           ],
-          "next_step": "새 프로필과 성장 프로필로 성공·사망 양쪽 전체 런을 검증합니다.",
+          "next_step": "같은 소스 해시의 최종 Gate A와 자동 Gate B 결과를 커밋 후보에 묶고 실제 기기 성능만 별도 관리합니다.",
+          "sources": [
+            "tools/packbound_studio_qa/README.md",
+            "tests/test_packbound_studio_qa_bridge.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 40,
+          "computed_progress": 95,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -3898,17 +3968,20 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "performance-budgets-profiling",
           "title": "FPS·메모리·네트워크 예산과 프로파일링",
-          "progress": 0,
-          "status": "unknown",
+          "progress": 25,
+          "status": "partial",
           "evidence": [
-            "VFX 풀과 개수 상한은 있으나 수치 예산과 MicroProfiler 결과가 없습니다."
+            "[2026-09-02] 4웨이브와 보스전에서 각각 10초·600표본을 자동 수집했고 서버 평균 프레임 시간은 16.67ms, 33ms 초과 지속은 0초였습니다.",
+            "Studio 백그라운드 클라이언트는 약 15FPS로 제한돼 실제 모바일 45FPS와 비교할 수 없으므로 합격 근거로 사용하지 않았습니다."
           ],
-          "next_step": "최저 지원 모바일 기준 FPS·메모리·동시 몬스터·투사체 예산을 정하고 측정합니다.",
+          "next_step": "실제 모바일 기기에서 45FPS·30FPS 지속 하한, 메모리와 네트워크 예산을 별도로 측정합니다.",
+          "sources": [
+            "tools/packbound_studio_qa/README.md"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 0,
-          "computed_status": "unknown",
+          "computed_progress": 25,
+          "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         },
@@ -4016,42 +4089,42 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 34,
+      "computed_progress": 46,
       "computed_status": "partial",
-      "leaf_count": 11,
+      "leaf_count": 12,
       "proven_count": 2,
       "status_counts": {
         "proven": 2,
-        "partial": 4,
+        "partial": 6,
         "planned_only": 1,
-        "unknown": 4,
+        "unknown": 3,
         "blocked": 0
       }
     }
   ],
-  "revision": "4b4e9a3cedb00be4",
-  "overall_progress": 60,
+  "revision": "ba8298f4de5cffd8",
+  "overall_progress": 63,
   "category_count": 12,
-  "leaf_count": 200,
-  "proven_count": 58,
+  "leaf_count": 201,
+  "proven_count": 60,
   "status_counts": {
-    "proven": 58,
-    "partial": 54,
+    "proven": 60,
+    "partial": 59,
     "planned_only": 76,
-    "unknown": 7,
-    "blocked": 5
+    "unknown": 6,
+    "blocked": 0
   },
   "track_progress": {
     "content": {
-      "progress": 38,
+      "progress": 42,
       "category_count": 4
     },
     "quality": {
-      "progress": 58,
+      "progress": 69,
       "category_count": 3
     },
     "system": {
-      "progress": 76,
+      "progress": 78,
       "category_count": 5
     }
   },

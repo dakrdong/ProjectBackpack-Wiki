@@ -1,11 +1,11 @@
 window.PACKBOUND_MONSTER_DB = {
   "schema_version": 1,
-  "revision": "eae9202ed1888c2e",
+  "revision": "35bd2978ae98dc40",
   "source": "docs/gameplay/monster-definitions.json",
   "count": 17,
-  "runtime_count": 16,
-  "catalog_only_count": 1,
-  "active_count": 16,
+  "runtime_count": 17,
+  "catalog_only_count": 0,
+  "active_count": 17,
   "groups": [
     {
       "name": "기본 정보",
@@ -6544,11 +6544,12 @@ window.PACKBOUND_MONSTER_DB = {
     },
     {
       "id": "overcharge_vendatoad",
+      "enabled": true,
       "size_class": "Large",
-      "status": "ProductionPending",
+      "size_scale": 1,
       "identity": {
         "display_name": "과충전 자판두꺼비",
-        "description": "고물바람 초원의 첫 정식 보스로 제작 중이며, 남은 애니메이션과 모바일 실전 검증이 끝날 때까지 런타임 등록과 웨이브 활성화를 보류한다.",
+        "description": "고물바람 초원의 중앙 경기장에서 다섯 가지 예고 공격을 번갈아 사용하는 스테이지 1 최종 보스",
         "element": "Lightning",
         "species": "SlimeBeast",
         "faction": "Wild",
@@ -6556,16 +6557,298 @@ window.PACKBOUND_MONSTER_DB = {
         "level": 1,
         "tags": [
           "Boss",
-          "ProductionPending",
-          "BossPatternSet"
+          "StageOne",
+          "BossPatternSet",
+          "TelegraphedAttack"
         ]
       },
+      "stats": {
+        "max_health": 1300,
+        "attack_power": 30,
+        "defense": 4,
+        "knockback_resistance": 1
+      },
+      "detection": {
+        "search_range": 60,
+        "lose_target_range": 64,
+        "target_refresh_seconds": 0.15,
+        "field_of_view_degrees": 360,
+        "require_line_of_sight": false,
+        "hearing_enabled": true,
+        "hearing_range": 20
+      },
+      "movement": {
+        "walk_speed": 5,
+        "chase_speed": 7,
+        "use_pathfinding": true,
+        "repath_interval_seconds": 0.4,
+        "waypoint_spacing": 4,
+        "agent_radius": 3,
+        "agent_height": 5.5,
+        "agent_can_jump": false,
+        "agent_can_climb": false,
+        "leash_range": 64,
+        "return_home_distance": 3,
+        "stuck_timeout_seconds": 2.5,
+        "path_retry_limit": 2,
+        "crowd_separation_enabled": false,
+        "crowd_separation_radius_studs": 1,
+        "crowd_separation_weight": 0
+      },
+      "behavior": {
+        "ai_tick_seconds": 0.08,
+        "target_policy": "Nearest",
+        "can_switch_targets": true,
+        "switch_target_advantage": 6,
+        "forget_target_seconds": 2.5,
+        "return_home_enabled": true,
+        "threat_cost": 20
+      },
+      "spawn": {
+        "enabled": false,
+        "initial_count": 0,
+        "maximum_alive": 1,
+        "respawn_seconds": 0,
+        "random_radius": 0,
+        "minimum_player_distance": 0,
+        "positions": [
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "death_spawn": {
+        "enabled": false,
+        "child_monster_id": "",
+        "count": 1,
+        "trigger_frame_zero_based": 0,
+        "spawn_radius_studs": 1,
+        "activation_delay_seconds": 0,
+        "target_policy": "Nearest",
+        "child_should_respawn": false,
+        "inherit_home": false
+      },
+      "lifecycle": {
+        "corpse_seconds": 1.5,
+        "despawn_distance": 135,
+        "out_of_combat_regen_per_second": 0,
+        "regen_delay_seconds": 8
+      },
       "presentation": {
-        "concept_art_path": "Assets/Monsters/Concepts/overcharge_vendatoad_anchor_v2.png"
+        "concept_art_path": "Assets/Monsters/Concepts/overcharge_vendatoad_anchor_v2.png",
+        "display_width_studs": 10,
+        "display_height_studs": 10,
+        "billboard_pixels_per_stud": 24,
+        "max_render_distance_studs": 512,
+        "billboard_offset_y": 3.5,
+        "show_health_bar": true,
+        "show_nameplate": true,
+        "health_bar_height_pixels": 10,
+        "collision_radius": 3,
+        "collision_height": 5.5,
+        "telegraph_color": "#FF6A00",
+        "telegraph_transparency": 0.34,
+        "telegraph_thickness": 0.14,
+        "animations": {
+          "Idle": {
+            "asset_id": "rbxassetid://119333505856312",
+            "frame_count": 8,
+            "fps": 8,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Walk": {
+            "asset_id": "rbxassetid://92673564223779",
+            "frame_count": 10,
+            "fps": 10,
+            "loop": true,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Hit": {
+            "asset_id": "rbxassetid://132870336110593",
+            "frame_count": 6,
+            "fps": 15,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "Death": {
+            "asset_id": "rbxassetid://98462276873462",
+            "frame_count": 16,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "attack_can_storm": {
+            "asset_id": "rbxassetid://103989166400812",
+            "frame_count": 14,
+            "fps": 14,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "attack_coil_ring": {
+            "asset_id": "rbxassetid://133309447634956",
+            "frame_count": 12,
+            "fps": 12,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "attack_dish_sweep": {
+            "asset_id": "rbxassetid://89873366986489",
+            "frame_count": 16,
+            "fps": 16,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "attack_sold_out_wall": {
+            "asset_id": "rbxassetid://121263088505512",
+            "frame_count": 14,
+            "fps": 14,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          },
+          "attack_jackpot_burst": {
+            "asset_id": "rbxassetid://114775093902380",
+            "frame_count": 14,
+            "fps": 14,
+            "loop": false,
+            "direction": "East",
+            "cell_width": 128,
+            "cell_height": 128
+          }
+        }
+      },
+      "attack": {
+        "kind": "BossPatternSet",
+        "patterns": [
+          {
+            "pattern_id": "can_storm",
+            "animation_id": "attack_can_storm",
+            "cooldown_seconds": 1,
+            "weight": 1,
+            "telegraph_duration_seconds": 1.15,
+            "damage_multiplier": 0.8,
+            "flat_damage_bonus": 0,
+            "damage_frame_zero_based": 9,
+            "event_timing": {
+              "telegraph_start_seconds": 0,
+              "damage_event_seconds": 1.15,
+              "recovery_end_seconds": 1.788889
+            },
+            "config": {
+              "kind": "TargetedCircles",
+              "circle_count": 3,
+              "radius_studs": 4.5,
+              "spread_radius_studs": 6
+            }
+          },
+          {
+            "pattern_id": "coil_ring",
+            "animation_id": "attack_coil_ring",
+            "cooldown_seconds": 1,
+            "weight": 1,
+            "telegraph_duration_seconds": 1.4,
+            "damage_multiplier": 1,
+            "flat_damage_bonus": 0,
+            "damage_frame_zero_based": 6,
+            "event_timing": {
+              "telegraph_start_seconds": 0,
+              "damage_event_seconds": 1.4,
+              "recovery_end_seconds": 2.8
+            },
+            "config": {
+              "kind": "Annulus",
+              "inner_radius_studs": 5,
+              "outer_radius_studs": 13
+            }
+          },
+          {
+            "pattern_id": "dish_sweep",
+            "animation_id": "attack_dish_sweep",
+            "cooldown_seconds": 1,
+            "weight": 1,
+            "telegraph_duration_seconds": 0.9,
+            "damage_multiplier": 0.65,
+            "flat_damage_bonus": 0,
+            "damage_frame_zero_based": 6,
+            "event_timing": {
+              "telegraph_start_seconds": 0.06,
+              "damage_event_seconds": 0.96,
+              "recovery_end_seconds": 2.56
+            },
+            "config": {
+              "kind": "SectorSweep",
+              "inner_radius_studs": 0,
+              "outer_radius_studs": 26,
+              "half_angle_degrees": 35,
+              "sweep_degrees": 210
+            }
+          },
+          {
+            "pattern_id": "sold_out_wall",
+            "animation_id": "attack_sold_out_wall",
+            "cooldown_seconds": 1,
+            "weight": 1,
+            "telegraph_duration_seconds": 1.35,
+            "damage_multiplier": 0.9,
+            "flat_damage_bonus": 0,
+            "damage_frame_zero_based": 10,
+            "event_timing": {
+              "telegraph_start_seconds": 0,
+              "damage_event_seconds": 1.35,
+              "recovery_end_seconds": 1.89
+            },
+            "config": {
+              "kind": "ParallelLanes",
+              "lane_count": 5,
+              "lane_width_studs": 5,
+              "lane_gap_studs": 0,
+              "lane_length_studs": 50
+            }
+          },
+          {
+            "pattern_id": "jackpot_burst",
+            "animation_id": "attack_jackpot_burst",
+            "cooldown_seconds": 1,
+            "weight": 1,
+            "telegraph_duration_seconds": 1,
+            "damage_multiplier": 0.75,
+            "flat_damage_bonus": 0,
+            "damage_frame_zero_based": 10,
+            "event_timing": {
+              "telegraph_start_seconds": 0,
+              "damage_event_seconds": 1,
+              "recovery_end_seconds": 1.4
+            },
+            "config": {
+              "kind": "RadialBurst",
+              "direction_count": 12,
+              "projectile_speed_studs_per_second": 18,
+              "projectile_lifetime_seconds": 2.2,
+              "projectile_radius_studs": 1.1
+            }
+          }
+        ]
       },
       "concept_art_url": "./monster-media/overcharge_vendatoad.png?v=16903756af12",
-      "catalog_only": true,
-      "enabled": false
+      "catalog_only": false
     }
   ]
 };

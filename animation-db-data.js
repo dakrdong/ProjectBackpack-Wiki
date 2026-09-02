@@ -1,12 +1,12 @@
 window.PACKBOUND_ANIMATION_DB = {
   "schema_version": 2,
-  "revision": "0c15cc706984bad2",
+  "revision": "078590a0b2834304",
   "source": "Assets/**/SpriteProduction/Candidates + Assets/Monsters/Runtime",
-  "count": 91,
-  "live_count": 85,
-  "character_count": 17,
-  "active_monster_count": 16,
-  "registered_monster_count": 16,
+  "count": 100,
+  "live_count": 94,
+  "character_count": 18,
+  "active_monster_count": 17,
+  "registered_monster_count": 17,
   "registered_monster_ids": [
     "grass_vine_monster",
     "whirl_dash_spirit",
@@ -23,9 +23,10 @@ window.PACKBOUND_ANIMATION_DB = {
     "screw_snail",
     "zipper_centipede",
     "scouring_pad_fuzz",
-    "plastic_bag_ghost"
+    "plastic_bag_ghost",
+    "overcharge_vendatoad"
   ],
-  "curation_monster_count": 16,
+  "curation_monster_count": 17,
   "curation_monster_ids": [
     "grass_vine_monster",
     "whirl_dash_spirit",
@@ -42,7 +43,8 @@ window.PACKBOUND_ANIMATION_DB = {
     "screw_snail",
     "zipper_centipede",
     "scouring_pad_fuzz",
-    "plastic_bag_ghost"
+    "plastic_bag_ghost",
+    "overcharge_vendatoad"
   ],
   "actions": [
     "Attack",
@@ -62,7 +64,12 @@ window.PACKBOUND_ANIMATION_DB = {
     "Run",
     "Spawn",
     "VineEruption",
-    "Walk"
+    "Walk",
+    "attack_can_storm",
+    "attack_coil_ring",
+    "attack_dish_sweep",
+    "attack_jackpot_burst",
+    "attack_sold_out_wall"
   ],
   "records": [
     {
@@ -1430,6 +1437,348 @@ window.PACKBOUND_ANIMATION_DB = {
         }
       ],
       "selection_group": "monster:NestHatchlingLizard:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-idle-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "Idle",
+      "action_label": "대기",
+      "title": "과충전 자판두꺼비 · 대기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 8,
+      "atlas_columns": 8,
+      "fps": 8.0,
+      "duration_seconds": 1.0,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://119333505856312",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-idle-runtime/east-runtime-preview-c31a770672.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-idle-runtime/east-runtime-atlas-dc9209a33a.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/idle-east-8x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:Idle",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-walk-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "Walk",
+      "action_label": "걷기",
+      "title": "과충전 자판두꺼비 · 걷기",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 10,
+      "atlas_columns": 8,
+      "fps": 10.0,
+      "duration_seconds": 1.0,
+      "directions": [
+        "East"
+      ],
+      "loop": true,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://92673564223779",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-walk-runtime/east-runtime-preview-859a9a3a1f.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-walk-runtime/east-runtime-atlas-a1c61581b5.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/walk-east-10x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:Walk",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-hit-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "Hit",
+      "action_label": "피격",
+      "title": "과충전 자판두꺼비 · 피격",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 6,
+      "atlas_columns": 6,
+      "fps": 15.0,
+      "duration_seconds": 0.4,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://132870336110593",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-hit-runtime/east-runtime-preview-cb511f505e.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-hit-runtime/east-runtime-atlas-a2a79b02cf.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/hit-east-6x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:Hit",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-death-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "Death",
+      "action_label": "사망",
+      "title": "과충전 자판두꺼비 · 사망",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 16,
+      "atlas_columns": 8,
+      "fps": 12.0,
+      "duration_seconds": 1.333,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://98462276873462",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-death-runtime/east-runtime-preview-39f74edf8c.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-death-runtime/east-runtime-atlas-95e997b3b9.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/death-east-16x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:Death",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-attack-can-storm-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "attack_can_storm",
+      "action_label": "attack_can_storm",
+      "title": "과충전 자판두꺼비 · attack_can_storm",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 14,
+      "atlas_columns": 8,
+      "fps": 14.0,
+      "duration_seconds": 1.0,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://103989166400812",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-attack-can-storm-runtime/east-runtime-preview-0289cf3c30.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-attack-can-storm-runtime/east-runtime-atlas-23a1d3de59.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/attack-can-storm-east-14x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:attack_can_storm",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-attack-coil-ring-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "attack_coil_ring",
+      "action_label": "attack_coil_ring",
+      "title": "과충전 자판두꺼비 · attack_coil_ring",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 12,
+      "atlas_columns": 8,
+      "fps": 12.0,
+      "duration_seconds": 1.0,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://133309447634956",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-attack-coil-ring-runtime/east-runtime-preview-f5f7b1bcc7.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-attack-coil-ring-runtime/east-runtime-atlas-53d0b95cc2.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/attack-coil-ring-east-12x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:attack_coil_ring",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-attack-dish-sweep-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "attack_dish_sweep",
+      "action_label": "attack_dish_sweep",
+      "title": "과충전 자판두꺼비 · attack_dish_sweep",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 16,
+      "atlas_columns": 8,
+      "fps": 16.0,
+      "duration_seconds": 1.0,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://89873366986489",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-attack-dish-sweep-runtime/east-runtime-preview-1f9049bce4.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-attack-dish-sweep-runtime/east-runtime-atlas-805951bd7c.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/attack-dish-sweep-east-16x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:attack_dish_sweep",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-attack-jackpot-burst-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "attack_jackpot_burst",
+      "action_label": "attack_jackpot_burst",
+      "title": "과충전 자판두꺼비 · attack_jackpot_burst",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 14,
+      "atlas_columns": 8,
+      "fps": 14.0,
+      "duration_seconds": 1.0,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://114775093902380",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-attack-jackpot-burst-runtime/east-runtime-preview-e4353269d0.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-attack-jackpot-burst-runtime/east-runtime-atlas-e4af4dbd53.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/attack-jackpot-burst-east-14x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:attack_jackpot_burst",
+      "runtime_relation": "live",
+      "selection_state": "current"
+    },
+    {
+      "id": "overchargevendatoad-attack-sold-out-wall-runtime",
+      "entity_type": "monster",
+      "character": "OverchargeVendatoad",
+      "character_label": "과충전 자판두꺼비",
+      "runtime_monster_id": "overcharge_vendatoad",
+      "action": "attack_sold_out_wall",
+      "action_label": "attack_sold_out_wall",
+      "title": "과충전 자판두꺼비 · attack_sold_out_wall",
+      "candidate": "runtime",
+      "status": "live",
+      "status_label": "게임 적용",
+      "frame_count": 14,
+      "atlas_columns": 8,
+      "fps": 14.0,
+      "duration_seconds": 1.0,
+      "directions": [
+        "East"
+      ],
+      "loop": false,
+      "created_at": null,
+      "runtime_asset_id": "rbxassetid://121263088505512",
+      "runtime_source": "",
+      "source_root": "Assets/Monsters/Runtime/OverchargeVendatoad",
+      "variants": [
+        {
+          "id": "east-runtime",
+          "label": "게임 적용본",
+          "direction": "East",
+          "preview_url": "./animation-media/overchargevendatoad-attack-sold-out-wall-runtime/east-runtime-preview-da33f0c543.gif",
+          "contact_sheet_url": "./animation-media/overchargevendatoad-attack-sold-out-wall-runtime/east-runtime-atlas-8b36da1391.png",
+          "source": "Assets/Monsters/Runtime/OverchargeVendatoad/attack-sold-out-wall-east-14x128.png"
+        }
+      ],
+      "selection_group": "monster:OverchargeVendatoad:attack_sold_out_wall",
       "runtime_relation": "live",
       "selection_state": "current"
     },
@@ -3813,6 +4162,69 @@ window.PACKBOUND_ANIMATION_DB = {
       "group": "monster:NestHatchlingLizard:Walk",
       "current_record_id": "nesthatchlinglizard-walk-runtime",
       "selected_record_id": "nesthatchlinglizard-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:Death",
+      "current_record_id": "overchargevendatoad-death-runtime",
+      "selected_record_id": "overchargevendatoad-death-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:Hit",
+      "current_record_id": "overchargevendatoad-hit-runtime",
+      "selected_record_id": "overchargevendatoad-hit-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:Idle",
+      "current_record_id": "overchargevendatoad-idle-runtime",
+      "selected_record_id": "overchargevendatoad-idle-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:Walk",
+      "current_record_id": "overchargevendatoad-walk-runtime",
+      "selected_record_id": "overchargevendatoad-walk-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:attack_can_storm",
+      "current_record_id": "overchargevendatoad-attack-can-storm-runtime",
+      "selected_record_id": "overchargevendatoad-attack-can-storm-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:attack_coil_ring",
+      "current_record_id": "overchargevendatoad-attack-coil-ring-runtime",
+      "selected_record_id": "overchargevendatoad-attack-coil-ring-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:attack_dish_sweep",
+      "current_record_id": "overchargevendatoad-attack-dish-sweep-runtime",
+      "selected_record_id": "overchargevendatoad-attack-dish-sweep-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:attack_jackpot_burst",
+      "current_record_id": "overchargevendatoad-attack-jackpot-burst-runtime",
+      "selected_record_id": "overchargevendatoad-attack-jackpot-burst-runtime",
+      "pending": false,
+      "selected_on": null
+    },
+    {
+      "group": "monster:OverchargeVendatoad:attack_sold_out_wall",
+      "current_record_id": "overchargevendatoad-attack-sold-out-wall-runtime",
+      "selected_record_id": "overchargevendatoad-attack-sold-out-wall-runtime",
       "pending": false,
       "selected_on": null
     },

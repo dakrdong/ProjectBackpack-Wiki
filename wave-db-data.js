@@ -1,14 +1,14 @@
 window.PACKBOUND_WAVE_DB = {
   "schema_version": 5,
-  "revision": "cdea80108008e31e",
+  "revision": "e1608046e53f923c",
   "source": "docs/gameplay/stage-wave-definitions.json",
   "runtime_source": "src/ReplicatedStorage/Waves/GeneratedStageWaves.luau",
   "field_count": 1,
   "stage_count": 1,
   "active_stage_count": 1,
   "wave_count": 5,
-  "layer_count": 13,
-  "spawn_count": 83,
+  "layer_count": 12,
+  "spawn_count": 76,
   "transition_contract": {
     "wave_start": "PreviousWaveClearedThenDelay",
     "wave_clear": "AllScheduledSpawnsResolvedAndAllSpawnedMonstersDead",
@@ -628,8 +628,8 @@ window.PACKBOUND_WAVE_DB = {
                   "id": "placement_003",
                   "monster_id": "bottlecap_beetle",
                   "cell": [
-                    21,
-                    13
+                    19,
+                    14
                   ]
                 },
                 {
@@ -1016,8 +1016,8 @@ window.PACKBOUND_WAVE_DB = {
                   "id": "placement_003",
                   "monster_id": "scouring_pad_fuzz",
                   "cell": [
-                    5,
-                    18
+                    3,
+                    20
                   ]
                 },
                 {
@@ -1060,7 +1060,7 @@ window.PACKBOUND_WAVE_DB = {
           "id": "wave_05",
           "display_name": "과충전 보스전",
           "start_delay_seconds": 3,
-          "field_phase_id": null,
+          "field_phase_id": "boss_arena",
           "layers": [
             {
               "id": "layer_001",
@@ -1068,72 +1068,10 @@ window.PACKBOUND_WAVE_DB = {
               "placements": [
                 {
                   "id": "placement_001",
-                  "monster_id": "scouring_pad_fuzz",
+                  "monster_id": "overcharge_vendatoad",
                   "cell": [
-                    6,
-                    6
-                  ]
-                },
-                {
-                  "id": "placement_002",
-                  "monster_id": "screw_snail",
-                  "cell": [
-                    19,
-                    6
-                  ]
-                },
-                {
-                  "id": "placement_003",
-                  "monster_id": "tire_roller",
-                  "cell": [
-                    5,
-                    18
-                  ]
-                },
-                {
-                  "id": "placement_004",
-                  "monster_id": "paper_cup_hermit",
-                  "cell": [
-                    17,
-                    20
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "layer_002",
-              "at_seconds": 20,
-              "placements": [
-                {
-                  "id": "placement_001",
-                  "monster_id": "bulb_gnat",
-                  "cell": [
-                    3,
-                    10
-                  ]
-                },
-                {
-                  "id": "placement_002",
-                  "monster_id": "plastic_bag_ghost",
-                  "cell": [
-                    21,
-                    10
-                  ]
-                },
-                {
-                  "id": "placement_003",
-                  "monster_id": "zipper_centipede",
-                  "cell": [
-                    6,
-                    20
-                  ]
-                },
-                {
-                  "id": "placement_004",
-                  "monster_id": "cable_worm",
-                  "cell": [
-                    19,
-                    18
+                    11,
+                    11
                   ]
                 }
               ]
