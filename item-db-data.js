@@ -3449,7 +3449,7 @@ window.PACKBOUND_ITEM_DB = {
       "role": "주기적 보호막",
       "weight_kg": 4.8,
       "type_size": "Weapon · Shield · 4칸 · 4.8Kg",
-      "concept": "보호막이 없을 때 10초마다 최대 체력의 8%만큼 보호막을 다시 충전하는 전면 방어 장치",
+      "concept": "보호막이 없을 때 10초마다 최대 체력의 8%만큼 보호막을 다시 충전하고, 4초마다 가까운 적을 친 뒤 근처 적으로 튕겨 최대 3회 타격하는 전면 방어 장치",
       "art_direction": "front-facing compact teal-and-brass gear shield with a broad readable silhouette and central cyan ward core",
       "enabled": true,
       "coordinates": [
@@ -3494,7 +3494,7 @@ window.PACKBOUND_ITEM_DB = {
         "id": "shield_recharge",
         "name": "보루 재충전",
         "mode": "Periodic",
-        "summary": "보호막이 없을 때 10초마다 최대 체력의 8% 보호막을 충전합니다.",
+        "summary": "보호막이 없을 때 10초마다 최대 체력의 8% 보호막을 충전하고, 4초마다 가까운 적 최대 3명을 튕겨 다니며 타격합니다.",
         "magnitude": 8.0,
         "unit": "MaxHealthPercent",
         "interval_seconds": 10.0
@@ -3773,7 +3773,7 @@ window.PACKBOUND_ITEM_DB = {
       "role": "주기적 회복",
       "weight_kg": 2.6,
       "type_size": "Weapon · Cross · 6칸 · 2.6Kg",
-      "concept": "부상 상태일 때 6초마다 최대 체력의 4%를 회복시켜 전투 이탈 없이 버틸 시간을 늘리는 성물",
+      "concept": "10초마다 근처 무작위 지점에 떨어져 지름 6스터드의 생명 원을 6초 동안 만들고, 그 안에 서 있는 동안 체력을 회복시키는 성물",
       "art_direction": "front-facing ivory-and-coral healing cross locked to the exact six-cell mask □■□/■■■/□■□/□■□; the four corner cells stay fully empty",
       "enabled": true,
       "coordinates": [
@@ -3826,7 +3826,7 @@ window.PACKBOUND_ITEM_DB = {
         "id": "periodic_heal",
         "name": "생명 맥동",
         "mode": "Periodic",
-        "summary": "부상 상태일 때 6초마다 최대 체력의 4%를 회복합니다.",
+        "summary": "10초마다 근처에 떨어져 지름 6스터드 생명 원을 6초 동안 만들고, 그 안에 있으면 매초 최대 체력의 1.5%를 회복합니다.",
         "magnitude": 4.0,
         "unit": "MaxHealthPercent",
         "interval_seconds": 6.0
@@ -11045,5 +11045,5 @@ window.PACKBOUND_ITEM_DB = {
     "conditions": [],
     "abilities": []
   },
-  "revision": "214ba84978a5a13d"
+  "revision": "ad34e7b7c1219ded"
 };

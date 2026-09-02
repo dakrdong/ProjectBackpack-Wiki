@@ -793,26 +793,30 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "support-weapons-runtime",
           "title": "보조 무기 6종",
-          "progress": 100,
-          "status": "proven",
+          "progress": 85,
+          "status": "partial",
           "metric": {
             "current": 6,
             "target": 6,
             "unit": "종"
           },
           "evidence": [
-            "보호막·회복·공속·스킬 충전·피해 감소·회복 강화 효과가 런타임과 테스트에 있습니다."
+            "보호막·회복·공속·스킬 충전·피해 감소·회복 강화 효과가 런타임과 테스트에 있습니다.",
+            "[2026-09-02] 보조 무기 6종에 고유 루틴을 부여했습니다. 보루 톱니방패는 4초마다 가까운 적을 튕겨 다니며 최대 3회 타격(접촉 10 피해)하고, 생명회로 십자가는 10초마다 근처에 떨어져 지름 6스터드 생명 원을 6초 유지하며 원 안에서만 초당 1.5% 회복합니다(주기 회복 대체). 지휘메이스·전투뿔·랜턴·깃발은 진자·순회·전방 부유·후방 고정 표현 루틴입니다. 한·영 아이템 문구를 갱신했습니다.",
+            "[2026-09-02] Studio 서버 관측: 보루 톱니방패 튕김 2회 실행에 4명중(접촉 11.8 피해=10×보조 공명 1.2×방어), 생명회로 십자가는 생명 원 안에서 0.5초마다 0.75 회복을 7회 적용(체력 40→49.3), 지휘메이스·전투뿔·랜턴·깃발은 Metronome/Circuit/HoverGuard/Planted 상태를 복제했고 랜턴은 가장 가까운 적 방향을 조준했습니다."
           ],
-          "next_step": "실전 빌드별 효율과 최대 2개 제한의 밸런스를 조정합니다.",
+          "next_step": "Studio에서 튕김 타격과 생명 원 회복이 실제로 적용되는지 관측하고, 4공격+2보조 조합의 밸런스를 다시 비교합니다.",
           "sources": [
-            "src/ReplicatedStorage/Combat/SupportWeaponConfig.luau"
+            "src/ReplicatedStorage/Combat/SupportWeaponConfig.luau",
+            "src/ReplicatedStorage/Combat/WeaponRoutineConfig.luau",
+            "docs/gameplay/weapon-attack-routines.md"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 100,
-          "computed_status": "proven",
+          "computed_progress": 85,
+          "computed_status": "partial",
           "leaf_count": 1,
-          "proven_count": 1
+          "proven_count": 0
         },
         {
           "id": "storage-expansion",
@@ -850,13 +854,13 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 79,
+      "computed_progress": 78,
       "computed_status": "partial",
       "leaf_count": 15,
-      "proven_count": 9,
+      "proven_count": 8,
       "status_counts": {
-        "proven": 9,
-        "partial": 6,
+        "proven": 8,
+        "partial": 7,
         "planned_only": 0,
         "unknown": 0,
         "blocked": 0
@@ -927,41 +931,51 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "weapon-targeting",
           "title": "무기 자동 목표 선택",
-          "progress": 100,
-          "status": "proven",
+          "progress": 90,
+          "status": "partial",
           "evidence": [
-            "탐사 참가자와 범위 안의 유효 몬스터만 서버 권한 공격 대상으로 선택합니다."
+            "탐사 참가자와 범위 안의 유효 몬스터만 서버 권한 공격 대상으로 선택합니다.",
+            "[2026-09-02] 표적 정책은 이제 루틴 주기의 방향을 정하고, 실제 명중은 루틴 기하(휩쓴 선분·직선·부채꼴·원·연쇄)로 판정합니다. 휩쓴 선분과 부채꼴 조회를 WeaponSkillTargeting에 추가했습니다.",
+            "[2026-09-02] Studio 서버 관측: 휩쓴 선분 접촉(회전·왕복), 직선·부채꼴·원 판정, 연쇄·산탄 조회가 실제 몬스터에 명중을 냈습니다. 소환 직후 RunId 없는 몬스터를 비런 플레이어가 공격하는 기존 정책도 유지됩니다."
           ],
-          "next_step": "다중 플레이어에서 소유권과 목표 분리를 검증합니다.",
+          "next_step": "Studio에서 루틴 기하 판정이 작은 몬스터를 관통(터널링)하지 않는지 관측하고, 다중 플레이어 소유권 분리를 검증합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
-          "computed_progress": 100,
-          "computed_status": "proven",
+          "computed_progress": 90,
+          "computed_status": "partial",
           "leaf_count": 1,
-          "proven_count": 1
+          "proven_count": 0
         },
         {
           "id": "weapon-basic-attacks",
-          "title": "공격 무기 14종 기본 공격",
-          "progress": 100,
-          "status": "proven",
+          "title": "공격 무기 14종 고유 공격 루틴",
+          "progress": 80,
+          "status": "partial",
           "metric": {
             "current": 14,
             "target": 14,
             "unit": "종"
           },
           "evidence": [
-            "14개 공격 무기가 등급별 프로필과 공격 실행기에 연결됩니다."
+            "14개 공격 무기가 등급별 프로필과 공격 실행기에 연결됩니다.",
+            "[2026-09-02] 머리 위 고리에서 가장 가까운 적을 때리던 공통 기본 공격을 폐기하고, 회전·숨 쉬는 회전·직선 찌르기·부메랑·좌우 미끄러짐·무한대 궤도·거치 관통·부채꼴 산탄·5초 연사/3초 과열 포탑·도탄·부채꼴 내리치기·원형 내리치기·직선 내리치기·2연속 내리치기의 14개 고유 루틴을 정의했습니다. 서버가 같은 결정적 운동 모듈로 접촉·직선·부채꼴·원 판정을 내리고, 클라이언트는 복제된 주기 상태로 같은 경로를 그립니다(WeaponRoutineConfig/Motion/Runner).",
+            "[2026-09-02] 정적 검증: luau tests/WeaponRoutineMotion.spec.luau, python3 -m unittest tests.test_weapon_routines 통과.",
+            "[2026-09-02] Studio(팩 바운드, Edit→Play) 서버 관측: 8개 스크립트를 저장소와 동일 체크섬으로 적용한 뒤 TutorialField에서 몬스터를 소환해 20종 루틴 전부가 RoutineKind/Active를 복제하고 명중을 냈습니다. 단독 측정 6초: 흡혈 도끼 직선 7주기 7명중, 광전사 도끼 5주기 9명중, 지진 메이스 5주기 4명중, 수호자 메이스 2주기 3명중(0.25초 기절·2스터드 밀침 포함). 복합 장착 8초: 톱니검 회전 12~16명중, 장창 6~7, 질풍 곡궁 12, 추적자 곡궁 6, 공성 석궁 볼트 2, 산탄 석궁 17, 과열 연발총 11, 도탄 권총 9, 투창 왕복 9, 수호검 2. 콘솔 오류 0. 화면 캡처는 Play 중 타임아웃(뷰포트 1×1)으로 얻지 못해 모바일 두 해상도 표현 관측은 미완입니다.",
+            "[2026-09-02] 관측 중 발견해 고친 것: 내리치기·찌르기는 자기 사거리 안에 적이 있을 때만 주기를 시작하고, 충격 순간 선택한 적의 현재 위치로 재조준하며, 몬스터 몸통 반경(1스터드) 만큼 판정 폭을 보정합니다."
           ],
-          "next_step": "실전 DPS와 공격 가독성을 조정합니다.",
+          "next_step": "두 모바일 뷰포트에서 무기 빌보드 궤적과 바닥 형상 연출을 화면으로 관측하고, 루틴별 DPS를 이전 자동 타격 기준과 비교해 수치를 조정합니다.",
+          "sources": [
+            "docs/gameplay/weapon-attack-routines.md",
+            "src/ReplicatedStorage/Combat/WeaponRoutineConfig.luau",
+            "src/ServerScriptService/WeaponRoutineRunner.luau"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 100,
-          "computed_status": "proven",
+          "computed_progress": 80,
+          "computed_status": "partial",
           "leaf_count": 1,
-          "proven_count": 1
+          "proven_count": 0
         },
         {
           "id": "weapon-auto-skills",
@@ -1046,9 +1060,11 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 75,
           "status": "partial",
           "evidence": [
-            "기본 공격과 공용 스킬 VFX는 있으나 42개 스킬별 고유 연출은 부족합니다."
+            "기본 공격과 공용 스킬 VFX는 있으나 42개 스킬별 고유 연출은 부족합니다.",
+            "[2026-09-02] 무기 아이콘이 루틴 경로를 따라 월드에서 움직이고, 직선·부채꼴·원·생명 원은 바닥의 월드 형상으로, 화살·볼트·산탄·도탄은 투사체로, 확정 명중은 기존 충격 연출로 표시합니다. 모바일 두 해상도 관측은 아직 없습니다.",
+            "[2026-09-02] Studio 서버 관측: Contact/Line/Fan/Ring/Cone/Shot/Bolt/Chain/Bounce/Zone 이벤트가 UnreliableRemoteEvent로 전송되고 확정 명중은 RemoteEvent로 전달됐습니다. 클라이언트 화면 관측은 Play 중 캡처 타임아웃으로 미완입니다."
           ],
-          "next_step": "피해 원인·범위·명중 시점을 무기별로 구분할 수 있게 확장합니다.",
+          "next_step": "두 모바일 뷰포트에서 루틴 형상과 명중 연출의 가독성·콘솔을 확인하고 무기별 색·타이밍을 다듬습니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
@@ -1081,13 +1097,13 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 94,
+      "computed_progress": 91,
       "computed_status": "partial",
       "leaf_count": 11,
-      "proven_count": 7,
+      "proven_count": 5,
       "status_counts": {
-        "proven": 7,
-        "partial": 4,
+        "proven": 5,
+        "partial": 6,
         "planned_only": 0,
         "unknown": 0,
         "blocked": 0
@@ -3891,11 +3907,13 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "status": "partial",
           "evidence": [
             "[2026-09-01] 구현·콘텐츠·아트·UI·검증·도구·운영 작업마다 가장 작은 관련 말단 항목을 갱신하고, 수치가 그대로여도 날짜·작업 근거·다음 완료 관문을 남기도록 프로젝트 완료 규칙을 추가했습니다.",
-            "[2026-09-01] 기존 항목으로 설명할 수 없는 작업은 새 말단 항목으로 추가하고, 진행도 원본과 공개 데이터를 함께 생성·검사하도록 규정했습니다. 이번 현지화 작업과 이 운영 규칙 자체를 실제 진행도 항목으로 반영해 생성·검사를 통과했습니다."
+            "[2026-09-01] 기존 항목으로 설명할 수 없는 작업은 새 말단 항목으로 추가하고, 진행도 원본과 공개 데이터를 함께 생성·검사하도록 규정했습니다. 이번 현지화 작업과 이 운영 규칙 자체를 실제 진행도 항목으로 반영해 생성·검사를 통과했습니다.",
+            "[2026-09-02] Claude 세션이 Codex 작업을 이어받을 때 읽는 저장소 안내서 CLAUDE.md를 추가했습니다. AGENTS.md를 대체하지 않는 지도 문서로, 진실의 기준 순서, 저장소 지도, 원본→빌드→생성물 파이프라인 표, Gate A/B와 완료 체크리스트, 현재 알파 상태(63%)를 담고, 커밋 시점에 알파 진행도와 함께 '현재 상태' 절을 갱신하도록 규정했습니다. 11개 DB·위키 최신성 검사와 저장소 정책 테스트 통과를 확인했습니다."
           ],
-          "next_step": "이 변경을 승인 커밋에 포함하고, 이후 개발 작업에서도 같은 날짜 근거 갱신이 누락되지 않는지 누적 확인합니다.",
+          "next_step": "이 변경을 승인 커밋에 포함하고, 이후 개발 작업에서도 같은 날짜 근거 갱신이 누락되지 않는지 누적 확인합니다. CLAUDE.md의 '현재 상태' 절이 커밋마다 알파 진행도와 같은 수치를 가리키는지 함께 확인합니다.",
           "sources": [
             "AGENTS.md",
+            "CLAUDE.md",
             "docs/planning/alpha-development-progress.json",
             "tools/alpha_progress.py"
           ],
@@ -4102,14 +4120,14 @@ window.PACKBOUND_ALPHA_PROGRESS = {
       }
     }
   ],
-  "revision": "ba8298f4de5cffd8",
+  "revision": "aa118fda7e56c87f",
   "overall_progress": 63,
   "category_count": 12,
   "leaf_count": 201,
-  "proven_count": 60,
+  "proven_count": 57,
   "status_counts": {
-    "proven": 60,
-    "partial": 59,
+    "proven": 57,
+    "partial": 62,
     "planned_only": 76,
     "unknown": 6,
     "blocked": 0
@@ -4124,7 +4142,7 @@ window.PACKBOUND_ALPHA_PROGRESS = {
       "category_count": 3
     },
     "system": {
-      "progress": 78,
+      "progress": 77,
       "category_count": 5
     }
   },
