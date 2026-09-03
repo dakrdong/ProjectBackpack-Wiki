@@ -4,9 +4,9 @@ window.PACKBOUND_ALPHA_PROGRESS = {
   "summary": "PackBound 알파가 실제로 플레이 가능한 한 사이클을 완성하는 데 필요한 시스템, 콘텐츠, 품질 작업을 한 트리에서 추적합니다. 높은 기반 완성도와 아직 부족한 콘텐츠 수량을 분리해 보여 줍니다.",
   "alpha_definition": "새 플레이어가 모바일에서 튜토리얼을 마치고 베이스캠프에서 장비를 준비한 뒤, 완성된 보스가 포함된 스테이지를 끝까지 플레이하고 보상·성장·재도전까지 오류 없이 이어갈 수 있으며, 목표 콘텐츠 수량과 운영·성능·저장 검증이 승인된 상태입니다.",
   "snapshot": {
-    "reviewed_on": "2026-09-02",
-    "baseline_commit": "b64ee32",
-    "scope_note": "완료 판정은 기준 커밋에서 출발한 현재 발행 후보의 저장소·자동 검사·Studio 고정 시나리오 증거를 사용했습니다. 스테이지 1의 클리어·보상·사망·재도전은 두 모바일 화면에서 실제 서버 경로로 연결됐지만, 사용자 방침에 따라 사람처럼 조작하는 플레이 테스트는 제외했고 실제 기기 FPS와 조작 감각은 아직 증명하지 않았습니다. 수량 목표와 가중치는 현재 제품 오너 요청을 바탕으로 만든 관리용 임시 기준입니다.",
+    "reviewed_on": "2026-09-03",
+    "baseline_commit": "493ce4e",
+    "scope_note": "완료 판정은 기준 커밋에서 출발한 현재 발행 후보의 저장소·자동 검사·Studio 서버 관측 증거를 사용했습니다. 스테이지 1의 클리어·보상·사망·재도전은 두 모바일 화면에서 실제 서버 경로로 연결됐고, 튜토리얼을 건너뛰지 않은 새 프로필의 첫 세션(박사 무기→3회 클리어→마스터리 투자)도 서버 관측으로 완주했습니다. 사용자 방침에 따라 제품 오너 검수가 필요 없는 결정적 작업을 우선했고, 사람처럼 조작하는 플레이 테스트는 제외했으며 실제 기기 FPS와 조작 감각은 아직 증명하지 않았습니다. 수량 목표와 가중치는 현재 제품 오너 요청을 바탕으로 만든 관리용 임시 기준입니다.",
     "studio": {
       "place_id": 74789994491954,
       "place_name": "팩 바운드",
@@ -22,17 +22,17 @@ window.PACKBOUND_ALPHA_PROGRESS = {
     {
       "kind": "strength",
       "title": "준비·전투·보상 시스템의 뼈대는 연결돼 있습니다.",
-      "body": "모바일 인벤토리, 장착, 알파 장비 54종의 전투 수치, 웨이브, 사망·클리어 결과, 보상, 룬 합성, 마스터리가 각각 서버 권한 계약과 자동 검사를 갖고 있습니다."
+      "body": "모바일 인벤토리, 장착, 알파 장비 54종의 전투 수치, 룬 보드 능력 369개의 전투 채널, 웨이브, 사망·클리어 결과, 보상, 룬 합성, 마스터리, 프로필 이관·Remote 위협 모델이 각각 서버 권한 계약과 자동 검사를 갖고 있습니다."
     },
     {
       "kind": "priority",
       "title": "스테이지 1 다음에는 후속 콘텐츠와 실기기 품질을 채웁니다.",
-      "body": "과충전 자판두꺼비와 단독 보스 웨이브, 경기장 전환, 클리어·보상·사망·재도전 흐름은 두 모바일 화면의 비조작 자동 시나리오로 연결됐습니다. 다음 관문은 실제 기기 성능과 후속 스테이지 제작입니다."
+      "body": "스테이지 1 완주·사망·재도전과 튜토리얼 첫 세션 전체가 비조작 자동 시나리오로 연결됐고, 완주 관측은 서버 측 작업으로 요청 두 번·71초로 줄었습니다. 다음 관문은 두 모바일 화면 관측, 실제 기기 성능, 후속 스테이지 제작입니다."
     },
     {
       "kind": "risk",
       "title": "시스템 수보다 콘텐츠 수량과 실제 소비 연결이 뒤처져 있습니다.",
-      "body": "스테이지는 1/50, 활성 보스는 1/5이며, 540개 룬 보드가 있어도 실제 룬 전투 소비는 한 무기의 5개 노드에 국한됩니다."
+      "body": "스테이지는 1/50, 활성 보스는 1/5입니다. 540개 룬 보드의 능력 552개 중 369개가 실제 전투 채널에 연결됐지만 나머지 183개는 아직 소비처가 없고, 마스터리 포인트의 반복 공급원과 룬 상점은 미결입니다."
     }
   ],
   "categories": [
@@ -230,18 +230,19 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "return-and-retry",
           "title": "베이스캠프 복귀와 재도전",
-          "progress": 70,
+          "progress": 88,
           "status": "partial",
           "evidence": [
-            "생존자 즉시 복귀와 사망자 부활 후 캠프 배치는 구현됐지만 전체 재도전 기록이 없습니다."
+            "생존자 즉시 복귀와 사망자 부활 후 캠프 배치는 구현됐지만 전체 재도전 기록이 없습니다.",
+            "[2026-09-03] Studio Play 한 세션에서 클리어 3회와 1웨이브 사망 2회를 섞어 캠프 복귀→재도전을 5회 반복했습니다. 매 회 LastStageRunOutcome(Clear/Failure)과 LastStageRunReturnCode(Returned/ParticipantNotAlive)가 기록되고 CurrentPackBoundZone이 BaseCamp로 돌아왔으며, 사망 시에는 새 캐릭터로 부활한 뒤 복귀했고, 다음 런은 항상 새 Run ID로 시작했습니다. 프로필은 첫 클리어 200동 뒤 클리어마다 100동(총 400동), 장비 대기 보상 3건, 룬 6개로 정확히 누적됐습니다."
           ],
-          "next_step": "클리어와 사망 양쪽에서 캠프 복귀→재도전을 실제로 반복합니다.",
+          "next_step": "재도전 반복은 자동 증명됐고, 실기기 조작 감각과 화면 전환 관측만 남았습니다.",
           "sources": [
             "src/ServerScriptService/StageRuns/StageRunService.luau"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 70,
+          "computed_progress": 88,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -249,25 +250,33 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "mobile-end-to-end-loop",
           "title": "모바일 종단 간 플레이 루프 검증",
-          "progress": 45,
+          "progress": 70,
           "status": "partial",
           "evidence": [
-            "개별 화면과 하네스는 강하지만 캠프→5웨이브→정산→복귀를 한 세션에서 증명하지 않았습니다."
+            "개별 화면과 하네스는 강하지만 캠프→5웨이브→정산→복귀를 한 세션에서 증명하지 않았습니다.",
+            "[2026-09-03] Studio Play 한 세션(새 메모리 프로필, 튜토리얼은 Studio 건너뛰기)에서 장비 준비→5웨이브 런→보스 처치→정산→복귀를 3회 연속, 사망→복귀를 2회 연속 서버 경로로 완주하고 콘솔 오류 0(회귀 1건 수정 후)과 잔여 상태 0을 확인했습니다. 화면 관측과 튜토리얼을 건너뛰지 않은 새 프로필의 흐름은 포함하지 않았습니다.",
+            "[2026-09-03] Studio Play 한 세션에서 튜토리얼을 건너뛰지 않은 새 메모리 프로필로 dash_fire→(박사 활 0-0 지급·장착·첫 룬 배치·캠프 도착)→ready_stage_1→스테이지 1 클리어 3회(각 5웨이브+보스, 정산 RunSettled)→룬 합성·장비 합성 수업 사건→mastery_spend→시설 프롬프트+AllocatePoint→튜토리얼 complete까지 서버 경로로 완주했습니다. 최종 프로필: 400동, 룬 9, 아이템 2(중복 활 포함), 대기 장비 보상 3, 마스터리 노드 1. 콘솔 오류 0, 남은 몬스터 0, Workspace 후손 4766(기준선 동일), 메모리 3967MB. 브리지 픽스처가 첫 무기 등급을 G3로 올리던 문제로 두 번째 클리어 정산이 TutorialProgressionFailed로 거부되는 함정을 찾아 픽스처를 고쳤고(PackBoundStudioQABridge), 정산 거부 경고에 사유를 함께 남기도록 StageRunService 로그를 보강했습니다. 화면 관측은 여전히 포함하지 않았습니다.",
+            "[2026-09-03] Gate B 레지스트리에 tutorial_full_flow 시나리오를 등록했습니다(tools/packbound_studio_qa registry: 필수 action 순서 25단계, 최소 호출 횟수, 구조화 predicate 6종 tutorial_stage_one_ready/first_clear/second_clear/third_clear_exact·tutorial_mastery_spend_exact·tutorial_complete_exact, 허용 프로필 변경 경로 9개; contract가 저작 보상표 0동/1룬→200동/5룬→300동/7룬/중복 활→400동/9룬/포인트 1→complete/노드 1을 재계산). 서버 브리지에 BeginStageOneAutomatedClear/ObserveStageOneAutomatedClear(서버 측 완주 작업: 고정 웨이브 진행·보스 사망 경로 연쇄, 600초 상한, 드리프트·이탈 fail-closed)를, 클라이언트 브리지에 SpendFirstMasteryPointAutomated(실제 시설 프롬프트+AllocatePoint mastery_a, 고정 RequestId)를 추가하고 문자열 계약 테스트 4건과 contract 테스트 3건을 더했습니다. Studio Play 드라이런: 튜토리얼 미건너뛰기 프로필로 완주 작업 3회가 각 71초에 RunSettled로 끝나 단계별 ProfileSnapshot이 6종 predicate 기대값과 정확히 일치했고 콘솔 오류 0. 클라이언트 마스터리 액션은 RequestId에 콜론을 써 MasteryService 식별자 규칙([%w_-])에 걸려 InvalidRequest로 1회 실패 → 하이픈 ID로 고치고 규칙을 테스트로 고정. 고친 액션의 재관측은 실행 중 Studio Play가 외부에서 종료되어 미완료(수동 동일 호출은 앞서 성공)."
           ],
-          "next_step": "iPhone 17 Pro와 작은 휴대폰에서 새 프로필의 전체 루프를 각각 완주하고 콘솔·잔여 상태를 확인합니다.",
+          "next_step": "고친 SpendFirstMasteryPointAutomated를 포함한 tutorial_full_flow 전 구간을 한 번 다시 관측해 결과를 StudioQAResult v1으로 기록하고, 두 모바일 뷰포트 화면 관측을 더합니다.",
           "sources": [
-            "wiki/content/pages/environment-harness-qa/v001.md"
+            "wiki/content/pages/environment-harness-qa/v001.md",
+            "src/ServerScriptService/PackBoundStudioQABridge.server.luau",
+            "src/ServerScriptService/StageRuns/StageRunService.luau",
+            "tools/packbound_studio_qa/src/packbound_studio_qa/registry.py",
+            "tools/packbound_studio_qa/src/packbound_studio_qa/contract.py",
+            "src/StarterPlayer/StarterPlayerScripts/PackBoundStudioQABridge.client.luau"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 45,
+          "computed_progress": 70,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         }
       ],
       "depth": 0,
-      "computed_progress": 84,
+      "computed_progress": 88,
       "computed_status": "partial",
       "leaf_count": 11,
       "proven_count": 6,
@@ -296,9 +305,11 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 100,
           "status": "proven",
           "evidence": [
-            "화면 밖 박사 방향 안내와 첫 이동 목표가 실제 모바일 화면에서 검증됐습니다."
+            "화면 밖 박사 방향 안내와 첫 이동 목표가 실제 모바일 화면에서 검증됐습니다.",
+            "[2026-09-02] 튜토리얼 필드에서 박사 캐릭터가 보이지 않고 E 상호작용 표시만 남던 원인을 찾았습니다. 쿼터뷰 카메라가 플레이어에서 140스터드 떨어져 있어 박사 빌보드까지 약 170~180스터드인데, 빌보드 최대 표시 거리가 120이라 렌더링이 생략됐습니다. 최대 표시 거리를 플레이어 스프라이트와 같은 512로 올렸습니다.",
+            "[2026-09-02] Studio Play(팩 바운드, 클라이언트 뷰포트 400×776) 관측: 카메라-박사 거리 172스터드에서 박사 스프라이트 빌보드가 106×106px로 그려지고 아틀라스 로드 완료(IsLoaded=true)를 확인했습니다."
           ],
-          "next_step": "동선 변경 시 방향 안내 회귀 검증을 유지합니다.",
+          "next_step": "다른 모바일 해상도(iPhone 7 374×666)에서도 박사 빌보드 크기와 이름표 가독성을 화면으로 확인합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
@@ -313,9 +324,11 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 100,
           "status": "proven",
           "evidence": [
-            "걸어서 넘을 수 없는 불길과 대시 무적 통과 목표가 서버 사건으로 연결됩니다."
+            "걸어서 넘을 수 없는 불길과 대시 무적 통과 목표가 서버 사건으로 연결됩니다.",
+            "[2026-09-02] 불길 규칙을 '대시 중일 때만 피해가 없다'로 단순화했습니다. 서버가 승인한 대시 창(DashAuthority.GetActiveDash)이 열려 있지 않은 상태로 불길에 닿으면 최대 체력 20% 피해를 받고 들어온 쪽 가장자리 밖 4스터드로 되돌아갑니다. 대시 중 닿으면 대시가 끝난 뒤 착지 위치로 판정해 반대편이면 관문 완료, 불길 안이면 피해·복귀, 진입 쪽이면 아무 일도 없습니다. 속도·변위 추정 조건(MINIMUM_SAFE_DASH_SPEED 등)은 제거했습니다.",
+            "[2026-09-02] Studio Play 서버 관측(고정 자동 시나리오): 대시 없이 불길 안으로 이동 → 체력 100→80, 0.65초 안에 진입 쪽 가장자리 밖(along=-8.5)으로 복귀, 단계 유지. 불길 10.5스터드 앞에서 실제 클라이언트 컨트롤러로 대시 → 21스터드 이동 후 관문 완료(단계 doctor_intro, TutorialDashGateCleared=true), '대시 성공' 안내 수신. 착지 판정은 복제 지연을 감안해 대시 종료 0.3초 뒤 판정하고 '안'이면 0.3초 뒤 한 번 더 확인합니다."
           ],
-          "next_step": "다른 기기에서도 목표와 위험 구역이 겹치지 않게 유지합니다.",
+          "next_step": "실기기에서 지연이 있을 때 착지 판정 지연(0.3+0.3초)이 체감상 늦지 않은지 확인하고, 필요하면 대시 창 여유값을 조정합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
@@ -332,7 +345,8 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "evidence": [
             "박사와 남녀 플레이어 감정 초상화 대화는 완성됐지만 세계의 장기 목표 설명은 최소 수준입니다.",
             "[2026-09-01] 좌우 초상은 화면을 가리는 카드 없이 투명하게 띄우고, 현재 화자만 크게·선명하게 보이며 하단의 단일 말풍선만 화자 방향에 따라 전환되도록 모바일 대화 화면을 개편했습니다.",
-            "[2026-09-01] iPhone 17 Pro 세로 401×776과 Galaxy A06 세로 359×718에서 양쪽 화자 전환, 안전 영역, 52px 이상 조작 버튼, 한국어·영어 전체 19개 대사의 줄바꿈과 텍스트 맞춤을 확인했습니다."
+            "[2026-09-01] iPhone 17 Pro 세로 401×776과 Galaxy A06 세로 359×718에서 양쪽 화자 전환, 안전 영역, 52px 이상 조작 버튼, 한국어·영어 전체 19개 대사의 줄바꿈과 텍스트 맞춤을 확인했습니다.",
+            "[2026-09-02] 첫 만남 대사를 '무기를 먼저 건네는' 흐름으로 바꿨습니다. 박사가 소개 뒤 무기를 건네고(대화 완료 시 서버가 0-0 무기를 보관함에 생성), 장착 뒤 다시 말을 걸면 전투가 시작되며, 전투 후 대사에서 첫 룬을 건넵니다. 대사 3종(first_meeting·equipment_equipped·combat_clear)과 목표·안내 문구를 한국어·영어 쌍으로 갱신했습니다(현지화 19항목 추가, 1971항목)."
           ],
           "next_step": "알파의 목표와 고물 세계의 위협을 짧은 행동 중심 대사로 보강하고, 실제 신규 프로필의 E 상호작용부터 대화 완료 사건까지 한 흐름으로 회귀 검증합니다.",
           "sources": [
@@ -354,9 +368,11 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 100,
           "status": "proven",
           "evidence": [
-            "전투 완료를 서버가 확인하고 첫 장비와 인벤토리를 한 번만 지급합니다."
+            "전투 완료를 서버가 확인하고 첫 장비와 인벤토리를 한 번만 지급합니다.",
+            "[2026-09-02] 첫 전투는 무기를 장착한 뒤 박사에게 말을 걸어야 시작되며(접속·부활 시 자동 시작 제거), 3웨이브 클리어 보상은 첫 장비가 아니라 G0 한 칸 룬 1개로 바뀌었습니다. 전투 중에는 박사 방향 화살표를 숨깁니다.",
+            "[2026-09-02] Studio Play 관측: 장착 후 박사 프롬프트 → 튜토리얼 런 시작(웨이브 1/3) → 장착한 질풍 곡궁의 자동 공격으로 3웨이브 종료 → 단계 place_first_rune, 룬 보관함 1개(G0 1칸), 전투 후 대사(combat_clear)와 룬 보드 열림, 콘솔 오류 0."
           ],
-          "next_step": "몬스터 교체 뒤에도 난이도와 보상 사건을 유지합니다.",
+          "next_step": "몬스터 교체 뒤에도 난이도와 룬 보상 사건을 유지하고, 사망 후 박사에게 다시 말을 걸어 재시작하는 경로를 자동 시나리오에 추가합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
@@ -371,9 +387,11 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 100,
           "status": "proven",
           "evidence": [
-            "첫 장비를 장착판에 놓는 행동이 다음 단계와 룬 보상으로 연결됩니다."
+            "첫 장비를 장착판에 놓는 행동이 다음 단계와 룬 보상으로 연결됩니다.",
+            "[2026-09-02] 새 프로필은 아이템 0개로 시작합니다(PlayerProfileSchema의 시작 검 제거). 박사 대화 완료(doctor_intro 이정표)에 무기가 보관함에 생성되고 Inventory 기능이 열리며, 그 전에는 인벤토리 버튼이 보이지 않고 PC Tab 단축키도 무시됩니다(서버 속성 TutorialInventoryUnlocked를 클라이언트가 읽음). 장착은 보상 없이 다음 단계(전투)로만 이어집니다. Studio 전용 F2 튜토리얼 스킵은 메모리 프로필이 빈손이면 시작 검 1개를 장착 상태로 넣어 기존 QA 장비 계약을 유지합니다.",
+            "[2026-09-02] Studio Play 관측: 새 프로필 items=0·인벤토리 런처 숨김·접근 속성 false → 박사 대화 완료 → 질풍 곡궁 1개 보관함 생성, TutorialInventoryUnlocked=true, 인벤토리 자동 열림(OpenFeature Equipment) → 실제 Mutate 리모트로 3,3 배치 → 단계 tutorial_combat, 장착 대사(equipment_equipped) 수신. 인벤토리를 닫으면 런처 버튼이 다시 보입니다."
           ],
-          "next_step": "장착판 규칙 변경 시 안내 문구를 동기화합니다.",
+          "next_step": "두 모바일 해상도에서 인벤토리 버튼이 잠금 해제 직후 나타나는 순간과 첫 장착 드래그를 화면으로 확인합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
@@ -391,7 +409,8 @@ window.PACKBOUND_ALPHA_PROGRESS = {
             "G0 시작점과 유효 배치를 직접 수행해야 베이스캠프로 진행합니다.",
             "[2026-09-01] 실제 보유 룬을 소모하지 않는 3페이지 연습 가이드를 추가했습니다. 같은 등급 한 줄 간격 규칙 2종과 다른 등급 인접 허용 규칙을 페이지마다 직접 옮겨 볼 수 있습니다.",
             "[2026-09-01] iPhone 17 Pro 세로 401×776과 Galaxy A06 세로 359×718에서 한국어·영어 3페이지, 안전 영역, 48px 이상 조작 버튼, 유효 칸 초록 표시와 진단 배치를 확인했습니다. Studio 입력 주입이 Activated/InputBegan을 발생시키지 못해 실제 손가락 드래그 완료 경로만 미검증으로 남겼습니다.",
-            "[2026-09-01] 가이드를 5페이지로 확장했습니다. 4페이지는 G0 블록의 60도 회전으로 능력 2칸을 활성화하고, 5페이지는 선택한 G0·G1 블록을 독립적으로 회전·배치해 색상별 능력 2칸을 활성화해야 체크됩니다. 다른 색 블록이 능력 칸을 덮어도 활성화 수에 포함하지 않는 규칙을 모델 테스트로 고정했습니다."
+            "[2026-09-01] 가이드를 5페이지로 확장했습니다. 4페이지는 G0 블록의 60도 회전으로 능력 2칸을 활성화하고, 5페이지는 선택한 G0·G1 블록을 독립적으로 회전·배치해 색상별 능력 2칸을 활성화해야 체크됩니다. 다른 색 블록이 능력 칸을 덮어도 활성화 수에 포함하지 않는 규칙을 모델 테스트로 고정했습니다.",
+            "[2026-09-02] 첫 룬은 첫 전투 클리어 보상으로 지급되며, 전투 종료 시 룬 보드가 열리고 첫 무기의 룬 보드로 바로 이동합니다(OpenFeature RuneBoard)."
           ],
           "next_step": "Studio 입력 주입이 정상화되면 두 모바일 화면에서 실제 손가락으로 블럭 선택·60도 회전·유효·무효 배치·능력 체크 완료를 수행하고, 5페이지 이동과 닫기까지 한 흐름으로 회귀 검증합니다.",
           "sources": [
@@ -428,16 +447,20 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "tutorial-first-clear",
           "title": "첫 클리어와 룬 합성 해금",
-          "progress": 85,
+          "progress": 95,
           "status": "partial",
           "evidence": [
-            "해금·보상 규칙은 구현됐지만 실제 5웨이브 완주와 한 흐름으로 검증되지 않았습니다."
+            "해금·보상 규칙은 구현됐지만 실제 5웨이브 완주와 한 흐름으로 검증되지 않았습니다.",
+            "[2026-09-03] Studio Play(팩 바운드, 새 메모리 프로필, 튜토리얼 건너뛰기 없음)에서 브리지 SetupTutorialStageOneReady로 dash_fire→ready_stage_1까지 실제 튜토리얼 사건(박사 활 0-0 지급·장착·첫 룬 배치·캠프 도착)을 통과시킨 뒤 StartStageOneAutomatedRun→5웨이브→보스 처치로 첫 클리어를 완주했습니다. 정산 코드 RunSettled, TutorialStep rune_fusion_merge, TutorialStageClearCount 1, RuneFusion 해금, 200동·룬 +4(첫 클리어 룬 2 + 튜토리얼 룬 2)·대기 장비 보상 1을 ProfileSnapshot과 플레이어 속성(TutorialStepId·TutorialStageClearCount)에서 함께 확인했습니다. 화면 관측은 하지 않았습니다."
           ],
-          "next_step": "스테이지 1 실제 완주에서 룬 합성 해금과 보상 수령을 확인합니다.",
+          "next_step": "두 모바일 뷰포트에서 첫 클리어 직후 룬 합성 해금 안내와 보상 화면을 화면으로 확인합니다.",
+          "sources": [
+            "src/ServerScriptService/PackBoundStudioQABridge.server.luau",
+            "tests/test_packbound_studio_qa_bridge.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 85,
+          "computed_progress": 95,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -462,16 +485,20 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "tutorial-equipment-fusion",
           "title": "장비 합성 설명",
-          "progress": 75,
+          "progress": 85,
           "status": "partial",
           "evidence": [
-            "같은 아이템·같은 등급 합성 규칙은 있지만 전용 모바일 튜토리얼의 최종 증거가 부족합니다."
+            "같은 아이템·같은 등급 합성 규칙은 있지만 전용 모바일 튜토리얼의 최종 증거가 부족합니다.",
+            "[2026-09-03] Studio Play(새 메모리 프로필, 튜토리얼 건너뛰기 없음) 같은 세션에서 두 번째 스테이지 1 클리어가 RunSettled로 정산되며 TutorialStep equipment_fusion, TutorialStageClearCount 2, EquipmentFusion 해금, 박사 활과 정의·등급(0-0)이 같은 중복 활 1개가 보관함에 지급(ItemCount 2, StorageItemCount 1), 300동·룬 7·대기 장비 보상 2를 확인했습니다. 합성 완료 사건(EquipmentFusionCompleted)은 브리지 AdvanceTutorialLesson이 서비스 경로로 적용해 ready_stage_3으로 넘어갔고, 실제 MergeItems 터치는 수행하지 않았습니다. 발견한 함정: 첫 무기 등급을 클리어 2 이전에 바꾸면(자동화 G3 지름길) 튜토리얼 중복 장비 검증이 실패해 정산 전체가 TutorialProgressionFailed로 거부되므로 브리지 픽스처가 등급을 건드리지 않게 고쳤습니다(실제 플레이어는 장비 합성 해금 전 등급 변경 경로가 없음)."
           ],
-          "next_step": "두 번째 클리어→중복 장비 지급→장비 합성 전체를 실제 터치로 검증합니다.",
+          "next_step": "두 모바일 뷰포트에서 중복 활 두 개를 실제 터치로 선택→합성→결과 확인까지 검증하고, 튜토리얼 보상 실패가 정산 전체를 거부하는 fail-closed 동작을 운영 문서에 명시합니다.",
+          "sources": [
+            "src/ServerScriptService/PackBoundStudioQABridge.server.luau",
+            "src/ServerScriptService/Tutorial/TutorialProgressionDomain.luau"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 75,
+          "computed_progress": 85,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -479,16 +506,20 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "tutorial-mastery-spend",
           "title": "세 번째 클리어와 첫 마스터리 투자",
-          "progress": 80,
+          "progress": 95,
           "status": "partial",
           "evidence": [
-            "1포인트 지급·저장·투자는 구현됐지만 전체 튜토리얼 종단 간 증거가 없습니다."
+            "1포인트 지급·저장·투자는 구현됐지만 전체 튜토리얼 종단 간 증거가 없습니다.",
+            "[2026-09-03] Studio Play(새 메모리 프로필, 튜토리얼 건너뛰기 없음) 같은 세션에서 세 번째 스테이지 1 클리어가 RunSettled로 정산되며 TutorialStep mastery_spend, TutorialStageClearCount 3, Mastery·CharacterUpgrade 해금, MasteryUnspentPoints 1(프로필)을 확인했습니다. 이어서 클라이언트가 캐릭터 업그레이드 시설 프롬프트(BaseCampPrompt, 거리 4.9스터드)를 실제로 눌러 시설 세션을 받고 MasteryRemotes.AllocatePoint({NodeId=mastery_a, RequestId})로 포인트를 썼습니다: 응답 Allocated·Level 1, TutorialStep complete, TutorialComplete 속성 true, MasteryNodeCount 1, 캐릭터 속성 MasteryAttackPowerPercent 2. 시설 세션 없이 보낸 요청과 문자열 인수 요청은 InvalidRequest로 거부됐습니다. 참고: 플레이어 속성 MasteryUnspentPoints는 정산 직후 0으로 남고 포인트 사용 시 갱신되며, 클라이언트는 이 속성을 읽지 않습니다(GetState 원격 사용)."
           ],
-          "next_step": "세 번째 클리어부터 첫 능력치 반영까지 한 세션에서 검증합니다.",
+          "next_step": "두 모바일 뷰포트에서 세 번째 클리어 직후 마스터리 화면 진입과 첫 노드 투자 반영을 화면으로 확인하고, 마스터리 포인트 반복 공급원을 정합니다.",
+          "sources": [
+            "src/ServerScriptService/MasteryService.server.luau",
+            "src/ServerScriptService/PackBoundStudioQABridge.server.luau"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 80,
+          "computed_progress": 95,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -513,23 +544,27 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "tutorial-save-resume",
           "title": "튜토리얼 저장·재접속 재개",
-          "progress": 85,
+          "progress": 92,
           "status": "partial",
           "evidence": [
-            "단계와 보상 영수증 저장 계약은 있으나 실제 서비스 DataStore 재접속 증거가 없습니다."
+            "단계와 보상 영수증 저장 계약은 있으나 실제 서비스 DataStore 재접속 증거가 없습니다.",
+            "[2026-09-02] 튜토리얼 상태 버전을 2로 올리고 v1 저장 문서의 검증·이관을 추가했습니다. v1 순서(대시→박사→전투→장착→룬)로 저장된 프로필은 로드 시 검증을 통과하고, 진행 도메인이 v2 순서(대시→박사→장착→전투→룬)로 옮기며 보상 영수증 키(tutorial_combat→doctor_intro, equip_first_item→tutorial_combat)를 재명명합니다. 전투 대기 중이던 v1 플레이어는 무기가 없으므로 박사 단계로 되돌립니다. 결정적 스펙(tests/TutorialProgressionDomain.spec.luau)으로 고정했습니다.",
+            "[2026-09-03] tests/TutorialSaveResume.spec.luau가 튜토리얼 13단계 각각에서 중단·재접속을 실제 저장소 경로(PlayerProfileStore 메모리 백엔드: 저장 → 임대 해제 → 새 JobId 서버 적재 → ReconcileProfile)로 재현합니다. 매 단계에서 재적재 프로필이 저장 직전과 완전히 같고(조정은 무변경), 스냅샷 단계가 유지되고, 직전 사건·보상 청구 재전송이 Replay로 멱등하며, 앞선 사건은 멱등·뒤의 사건은 거부되고, 마지막에 튜토리얼이 완료되며 마스터리 투자가 남는 것, 그리고 중단 없이 진행한 프로필과 튜토리얼 상태가 같음을 검사합니다. 저장된 v1 문서를 v1 7단계 각각에서 중단한 fixture로 재적재해 v2 단계 매핑(전투 대기 중이던 플레이어는 박사에게 되돌아감), 보상 청구 키 개명(tutorial_combat→doctor_intro, equip_first_item→tutorial_combat), 재개 후 다음 사건 적용을 확인합니다. tests/test_tutorial_runtime.py가 spec을 실행합니다. 배포 환경 DataStore 재접속은 여전히 별도 안전 환경이 필요합니다."
           ],
-          "next_step": "배포 환경에서 각 주요 단계 중단 후 재접속을 검증합니다.",
+          "next_step": "실서비스 DataStore가 준비되면 같은 단계 목록으로 재접속 훈련을 수행하고, 튜토리얼 단계가 추가되면 spec의 steps 목록에 한 항목을 추가합니다.",
+          "sources": [
+            "tests/TutorialSaveResume.spec.luau"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 85,
+          "computed_progress": 92,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         }
       ],
       "depth": 0,
-      "computed_progress": 84,
+      "computed_progress": 87,
       "computed_status": "partial",
       "leaf_count": 13,
       "proven_count": 6,
@@ -685,18 +720,31 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "rune-combat-consumers",
           "title": "룬 능력의 실제 전투 적용",
-          "progress": 10,
+          "progress": 66,
           "status": "partial",
           "evidence": [
-            "552개 능력 정의가 있지만 확실한 전투 소비는 rapid_gear_sword의 A1·A2·B1·B2·E1 다섯 노드입니다."
+            "552개 능력 정의가 있지만 확실한 전투 소비는 rapid_gear_sword의 A1·A2·B1·B2·E1 다섯 노드입니다.",
+            "[2026-09-03] 룬 능력의 전투 연결을 아이템별 화이트리스트(연격의 톱니검 5노드)에서 저작된 runtime_hook·stat_id 기반 라우팅 규칙으로 바꿨습니다. rune_board_db.py가 GeneratedRuneBoards에 능력별 Hook·StatId와 아이템별 BoardKind를 내보내고(문자열 인턴으로 모듈 187KB, 200KB 상한 유지), ItemRuneCombatStatResolver.SUPPORTED_STAT_HOOKS가 공격 무기 보드(BoardKind Weapon)에서만 StatModifier:AddPercent:SourceItem(공격 피해·공격 속도·치명타 확률·근거리 사거리)과 SkillModifier:AddPercent:SourceItem(스킬 피해, E1은 1등급 채널·그 외는 전 등급 채널)을 WeaponCombatService가 읽는 공격 슬롯 채널로 연결합니다. 새 채널 RuneSkillDamagePercent를 InventoryV2Service가 발행하고 WeaponCombatService가 1등급 보너스에 더합니다. 보조무기·방어구·장신구 보드가 같은 stat_id를 쓰더라도 소비자가 없으므로 미지원으로 유지해 UI의 '전투 적용 준비 중' 표시가 거짓이 되지 않게 했습니다. tests/test_rune_combat_consumers.py가 DB와 리졸버에서 커버리지를 재계산합니다: 552개 능력 중 53개(공격 피해 20·공격 속도 8·치명타 7·사거리 3·1등급 스킬 피해 14·전 등급 스킬 피해 1)가 공격 무기 14종 전부에 걸쳐 전투에 들어가고, 나머지 499개(Owner 범위 스탯, 패시브, 콤보, 조건부 피해, 투사체, 스킬 지속·효용, 비무기 보드)는 UnsupportedActiveNodeCount로 계속 집계됩니다. Luau spec은 훅 없는 능력·미지원 훅·미지원 스탯·비무기 보드의 fail-closed와 채널별 노드 합산을 검사합니다. Studio 관측은 사용자 방침에 따라 생략했습니다.",
+            "[2026-09-03] 2차 슬라이스: Owner 범위 룬 능력을 장착 아이템 전체 보드에서 합산해 기존 Equipment* 채널로 넘겼습니다. ItemRuneCombatStatResolver.ClassifyNode가 노드를 Weapon(공격 슬롯 채널)·Owner(장비 합산 채널)·미지원으로 분류하고, OWNER_STAT_HOOKS가 이동 속도·방어 후 피해 감소→최종 피해 감소·회복량·보호막 위력→보호막 획득·10초 재생·회피 굴림→회피 확률·방어 굴림→방어 확률·가시 피해·대시 거리·대시 무적·사용자 저체력 피해를, NON_WEAPON_SOURCE_ITEM_HOOKS가 비무기 보드(방어구·장신구·보조무기)의 아이템 범위 공격 피해→전역 공격력·공격 속도→전역 공격 속도·치명타·명중·스킬 피해를 PlayerCombatStatus가 이미 읽는 채널로 연결합니다. ResolveOwnerStats가 Board.Placements의 모든 아이템(무효 장착 제외)을 순회해 합산하고 InventoryV2Service가 MergeOwnerStats로 아이템 전투 수치와 더해 Equipment 26채널을 발행하며 RuneOwner* 카운트 속성을 남깁니다. 퍼센트 방어력·최대 체력·상태 저항·전체 저항·적재량은 런타임 의미가 없어 의도적으로 미지원입니다. 커버리지(tests/test_rune_combat_consumers.py 재계산): 552개 중 211개(무기 슬롯 53 + Owner 158)가 전투에 들어가고 53개 아이템에 최소 1개 연결 능력이 있고, armor.retribution_heavy_top 한 종만 아직 소비자 없는 훅만 저작돼 있습니다. Luau spec은 방어구 fixture로 채널별 합산·무효 아이템 제외·미지원 집계·병합을 검사합니다. Studio 관측은 사용자 방침에 따라 생략했습니다.",
+            "[2026-09-03] Studio Play(Server DM) 관측: 새 리졸버·서비스가 라이브로 동작했습니다. QA 브리지 SetupInventoryFixture(Supported)가 반환한 실시간 스냅샷은 ActiveNodeCount 1·AttackSpeedPercent 1(시작 셀 능력 A2, G0 값)·UnsupportedActiveNodeCount 0·Owner 테이블 존재였고, 장비 폴더 EquippedWeapons에 RuneOwnerItemCount 1·RuneOwnerActiveNodeCount 0·Equipment* 26채널과 슬롯 값의 RuneSkillDamagePercent 속성이 발행됐습니다. 콘솔 오류 0. 룬을 장착 무기에 실제 배치한 상태의 전투 수치 변화 관측은 하지 않았습니다.",
+            "[2026-09-03] 3차 슬라이스: 스킬 수정자 훅을 실행기 파라미터에 연결했습니다. Roblox 의존 없는 Combat/SkillRuntimeScaling이 스킬 Runtime 사본을 만들어 SkillUtility(넉백·당김·기절·둔화 강도·자가 강화 수치)·SkillDuration(BuffSeconds·SlowSeconds·BleedSeconds, 지속형 실행기는 PulseCount 반올림 증가)·SkillArea(Radius)를 배율로 적용하고, WeaponSkillExecutors.Execute가 디스패치 전에 이를 호출합니다. 리졸버는 무기 보드의 E2→3등급 제어 채널, E3→5등급 지속 채널, 그 외 코드는 전 등급 채널(지속·제어·범위)로 라우팅하고, 비무기 보드의 스킬 수정자는 새 장비 합산 채널 EquipmentSkillUtility/Duration/AreaPercent(LoadoutCombatStatResolver 집계 ID·PlayerCombatStatus 발행 목록 추가)로 갑니다. WeaponCombatService.slotCombatModifiers가 등급별 슬롯 채널과 캐릭터의 Equipment 채널을 합쳐 CombatModifiers(SkillUtility/Duration/AreaBonusPercent)로 넘깁니다. 커버리지: 552개 중 253개(무기 슬롯 83 + Owner 170), 53개 아이템. tests/SkillRuntimeScaling.spec.luau가 배율 규칙·비변경 필드·지속형 펄스 반올림·NaN/음수/상한 방어를 검사하고 리졸버 spec에 E2·E3·D2·D3·방어구 스킬 지속 케이스를 추가했습니다. Studio 관측은 사용자 방침에 따라 생략했습니다.",
+            "[2026-09-03] 4차 슬라이스: 패시브 수정자 중 런타임 파라미터가 실제로 있는 세 갈래를 연결했습니다. 보조무기 보드의 패시브 위력은 SupportWeaponConfig 효과 위력(공격 속도·스킬 충전·피해 감소·회복 증폭 합산, 주기 보호막·주기 회복 펄스, 루틴 GradeScale)에 배율로 붙고, 내부 쿨다운 감소는 주기 효과 IntervalSeconds와 루틴 휴식 간격(Bounce·HealZone·GravityWell의 restInterval)에 50% 상한으로 붙습니다(서버 전용 타이밍만 건드리고 클라이언트가 함께 계산하는 공유 모션 타이밍은 그대로). 방어구 보드의 패시브 위력은 ResolveOwnerStats.ItemModifiers로 아이템별로 넘어가 LoadoutCombatStatResolver가 그 아이템의 고정(비스케일링) 스탯, 즉 패시브 효과만 1+x% 배율로 합산합니다(Defense·MaxHealth·AttackPower는 제외, ItemGradeStatResolver.IsScalingStat). 패시브 지속시간(방어구 35·보조 6)과 방어구 내부 쿨다운(24)은 아이템별 런타임이 없어 미지원으로 남겼습니다. 커버리지: 552개 중 292개(무기 슬롯 83·Owner 170·Support 18·Item 21), 54개 아이템 전부. 리졸버·로드아웃 spec에 보조 fixture·아이템 배율·음수 무시 케이스를 추가했습니다. Studio 관측은 사용자 방침에 따라 생략했습니다.",
+            "[2026-09-03] 5차 슬라이스: 런타임 의미가 정확히 일치하는 무기 수치·조건부 훅을 연결했습니다. 무기 슬롯 채널 8개(명중, 치명타 피해, 넉백, 산포 감소, 발사체 피해, 저체력 대상 피해, 고체력 대상 피해, 기절 지속)를 새로 두고, 비무기 보드의 같은 훅은 장비 합산 채널(CriticalDamage·ProjectileDamage·SpreadReduction·HighHealthTargetDamage 신설, Execute·Accuracy 기존)로 보냅니다. DamageResolver가 명중 굴림에 무기 명중 보너스를, 대상 체력 ≤35%·≥70% 조건에 실행·고체력 보너스를, 치명타 배율에 +x%p(기본 1.5)를 적용하고 PlayerCombatStatus가 장비 고체력 조건과 산포 감소(룬 80% 상한 뒤 기존 90% 상한)를 처리합니다. 발사체 피해는 AttackKind가 Throw·BowShot·CrossbowShot·GunShot인 슬롯에만 붙고, 넉백·기절은 서버 전용 지면 강타(RingSlam·FanSlam)와 스킬 Runtime(KnockbackStuds·StunSeconds)에 배율로 붙습니다. 범위·투사체 속도(공유 모션)와 콤보 스택(상한 미정)은 미지원으로 남겼습니다. 커버리지: 552개 중 348개(무기 슬롯 119·Owner 190·Support 18·Item 21), 54개 아이템. 리졸버·스킬 배율 spec과 계약 테스트를 확장했습니다. Studio 관측은 사용자 방침에 따라 생략했습니다.",
+            "[2026-09-03] 6차 슬라이스: 공유 모션에 걸린 훅을 서버·클라이언트 공용 배율로 연결했습니다. WeaponRoutineConfig.ScaleRoutine이 루틴의 고정 사본을 만들어 DurationScale(ZoneSeconds·WellSeconds), AreaScale(Radius·RadiusMin·RadiusMax·Length·Width), ProjectileSpeedScale(Boomerang CycleSeconds·Ricochet LinkSeconds를 나눔, 상한 4배)을 적용하고, WeaponRoutineRunner가 슬롯마다 BaseRoutine과 배율을 보관해 RoutineDurationScale·RoutineAreaScale·RoutineProjectileSpeedScale 속성을 발행하며, EquippedWeaponBillboard가 ReadScales로 같은 사본을 재구성해 두 쪽 기하가 일치합니다. 발사 무기의 투사체 속도는 무기 프로파일(ProjectileSpeed)에 배율을 곱합니다. 리졸버는 무기 보드의 AreaPercent·ProjectileSpeedPercent를 슬롯 채널로, 보조 보드의 PassiveDurationPercent를 SupportDurationPercent로, 방어구·장신구의 같은 스탯을 장비 합산 채널(EquipmentAreaPercent·EquipmentProjectileSpeedPercent)로 보냅니다. 커버리지: 552개 중 369개(무기 슬롯 130·Owner 194·Support 24·Item 21). WeaponRoutineMotion.spec이 배율 사본의 항등성·동결·기하 효과(궤도 1.5배, 생명 원 2배, 부메랑 주기 절반)·상한·속성 읽기 기본값을 검사합니다. Studio 관측은 사용자 방침에 따라 생략했습니다.",
+            "[2026-09-03] Play 관측이 5차 슬라이스의 회귀를 잡았습니다: 산포 감소 룬 보너스를 _emitRoutineEvent 안에 넣었는데 그 함수에는 slot 변수가 없어 루틴 이벤트마다 'attempt to index nil with RuneSpreadReductionPercent' 오류가 났습니다. 슬롯 인덱스로 공격 슬롯 상태를 찾아 nil-안전하게 고치고(보조 루틴은 0), tests/test_rune_combat_consumers.py에 _emitRoutineEvent 안의 bare slot 접근을 금지하는 회귀 테스트를 추가했으며, 수정 적용 뒤 Play 재확인에서 오류 0을 봤습니다."
           ],
-          "next_step": "54개 아이템의 승인 능력마다 서버 전투 소비자와 테스트를 연결합니다.",
+          "next_step": "WeaponCombatService를 건드린 슬라이스는 Play 연기 1회(런 시작·웨이브 1회·콘솔 확인)를 완료 조건에 포함합니다.",
           "sources": [
-            "src/ReplicatedStorage/InventoryV2/ItemRuneCombatStatResolver.luau"
+            "src/ReplicatedStorage/InventoryV2/ItemRuneCombatStatResolver.luau",
+            "tools/rune_board_db.py",
+            "tests/test_rune_combat_consumers.py",
+            "tests/ItemRuneCombatStatResolver.spec.luau",
+            "src/ReplicatedStorage/Combat/SkillRuntimeScaling.luau",
+            "tests/SkillRuntimeScaling.spec.luau"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 10,
+          "computed_progress": 66,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -777,9 +825,10 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 90,
           "status": "partial",
           "evidence": [
-            "26개 아이콘과 장착 조합 판정은 있지만 모든 시너지의 실제 전투 체감 검증은 부족합니다."
+            "26개 아이콘과 장착 조합 판정은 있지만 모든 시너지의 실제 전투 체감 검증은 부족합니다.",
+            "[2026-09-03] 판정 로직은 tests/BackpackUI.spec.luau가 이미 임계값 해금·무효 아이템 배제·중복 가방·수정자 블록을 검사하고 있어 새 spec을 추가하지 않았습니다. 시너지 판정과 전투 효과 소비는 레거시 백팩 경로(InventoryService)에만 있고 InventoryV2 서비스에는 시너지 소비가 없으므로, 남은 '실제 전투 체감 검증'은 V2 경로에 시너지 효과를 연결할지 결정한 뒤에 의미가 있습니다."
           ],
-          "next_step": "활성 시너지별 전투 효과와 중첩 규칙을 대표 빌드로 검증합니다.",
+          "next_step": "InventoryV2 경로에 시너지 효과를 연결할지 제품 오너와 결정하고, 연결한다면 대표 빌드의 시너지별 전투 효과·중첩을 spec으로 고정합니다.",
           "sources": [
             "src/ReplicatedStorage/BackpackUI/SynergyCatalog.luau"
           ],
@@ -803,9 +852,10 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "evidence": [
             "보호막·회복·공속·스킬 충전·피해 감소·회복 강화 효과가 런타임과 테스트에 있습니다.",
             "[2026-09-02] 보조 무기 6종에 고유 루틴을 부여했습니다. 보루 톱니방패는 4초마다 가까운 적을 튕겨 다니며 최대 3회 타격(접촉 10 피해)하고, 생명회로 십자가는 10초마다 근처에 떨어져 지름 6스터드 생명 원을 6초 유지하며 원 안에서만 초당 1.5% 회복합니다(주기 회복 대체). 지휘메이스·전투뿔·랜턴·깃발은 진자·순회·전방 부유·후방 고정 표현 루틴입니다. 한·영 아이템 문구를 갱신했습니다.",
-            "[2026-09-02] Studio 서버 관측: 보루 톱니방패 튕김 2회 실행에 4명중(접촉 11.8 피해=10×보조 공명 1.2×방어), 생명회로 십자가는 생명 원 안에서 0.5초마다 0.75 회복을 7회 적용(체력 40→49.3), 지휘메이스·전투뿔·랜턴·깃발은 Metronome/Circuit/HoverGuard/Planted 상태를 복제했고 랜턴은 가장 가까운 적 방향을 조준했습니다."
+            "[2026-09-02] Studio 서버 관측: 보루 톱니방패 튕김 2회 실행에 4명중(접촉 11.8 피해=10×보조 공명 1.2×방어), 생명회로 십자가는 생명 원 안에서 0.5초마다 0.75 회복을 7회 적용(체력 40→49.3), 지휘메이스·전투뿔·랜턴·깃발은 Metronome/Circuit/HoverGuard/Planted 상태를 복제했고 랜턴은 가장 가까운 적 방향을 조준했습니다.",
+            "[2026-09-02] 제품 오너 지시로 수호등 랜턴 컨셉을 변경했습니다. 6초마다 14스터드 안에서 가장 밀집한 몬스터 집단의 중심으로 떨어져 3초 동안 반경 6(+몸통 보정 1)의 몬스터를 초당 6스터드씩 랜턴 중심 1.2까지 끌어당기고(제어 저항 비례 감소), 피해 감소 12% 패시브는 유지합니다. 한·영 문구 3건 갱신. Studio 서버 관측: 두 마리 사이 중심에 낙하, 거리 2.06→1.20으로 끌어당김, Well 이벤트 1회, 콘솔 오류 0."
           ],
-          "next_step": "Studio에서 튕김 타격과 생명 원 회복이 실제로 적용되는지 관측하고, 4공격+2보조 조합의 밸런스를 다시 비교합니다.",
+          "next_step": "모바일 두 해상도에서 랜턴 낙하·끌어당김 연출과 튕김·생명 원을 화면으로 관측하고, 4공격+2보조 조합의 밸런스를 다시 비교합니다.",
           "sources": [
             "src/ReplicatedStorage/Combat/SupportWeaponConfig.luau",
             "src/ReplicatedStorage/Combat/WeaponRoutineConfig.luau",
@@ -854,7 +904,7 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 78,
+      "computed_progress": 82,
       "computed_status": "partial",
       "leaf_count": 15,
       "proven_count": 8,
@@ -900,9 +950,11 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 100,
           "status": "proven",
           "evidence": [
-            "대시 거리·쿨다운·무적과 요청 제한을 서버가 검증합니다."
+            "대시 거리·쿨다운·무적과 요청 제한을 서버가 검증합니다.",
+            "[2026-09-02] 대시 이동을 서버 네트워크 소유권 전환·속도 주입에서 클라이언트 Humanoid 구동(WalkSpeed=거리/시간, Stepped마다 Move)으로 바꿔 순간이동처럼 보이던 끊김을 없앴습니다. 승인·쿨다운·무적 창·대시 창(PackBoundDashActiveUntil, GetActiveDash)은 서버가 계속 소유하며, 서버는 승인 응답에 속도를 함께 보냅니다.",
+            "[2026-09-02] Studio Play 클라이언트 관측: 대시 1회에 Heartbeat 28~29프레임 연속 이동, 프레임당 최대 1.27~1.39스터드(약 78스터드/초 피크), 총 21스터드, 승인 일련번호 1. 서버 대시 창 속성과 무적 속성이 같은 승인에서 기록됐습니다."
           ],
-          "next_step": "능력치 확장 뒤에도 허용 범위와 시각 타이밍을 일치시킵니다.",
+          "next_step": "실기기 지연 환경에서 승인 거부 시 되감김 체감과 대시 거리 상한 검증(서버 사후 변위 확인) 필요성을 평가합니다.",
           "weight": 1,
           "sources": [],
           "depth": 1,
@@ -931,18 +983,24 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "weapon-targeting",
           "title": "무기 자동 목표 선택",
-          "progress": 90,
+          "progress": 95,
           "status": "partial",
           "evidence": [
             "탐사 참가자와 범위 안의 유효 몬스터만 서버 권한 공격 대상으로 선택합니다.",
             "[2026-09-02] 표적 정책은 이제 루틴 주기의 방향을 정하고, 실제 명중은 루틴 기하(휩쓴 선분·직선·부채꼴·원·연쇄)로 판정합니다. 휩쓴 선분과 부채꼴 조회를 WeaponSkillTargeting에 추가했습니다.",
-            "[2026-09-02] Studio 서버 관측: 휩쓴 선분 접촉(회전·왕복), 직선·부채꼴·원 판정, 연쇄·산탄 조회가 실제 몬스터에 명중을 냈습니다. 소환 직후 RunId 없는 몬스터를 비런 플레이어가 공격하는 기존 정책도 유지됩니다."
+            "[2026-09-02] Studio 서버 관측: 휩쓴 선분 접촉(회전·왕복), 직선·부채꼴·원 판정, 연쇄·산탄 조회가 실제 몬스터에 명중을 냈습니다. 소환 직후 RunId 없는 몬스터를 비런 플레이어가 공격하는 기존 정책도 유지됩니다.",
+            "[2026-09-03] 휩쓴 선분 접촉 기하를 Roblox 의존이 없는 Combat/SweptContact 모듈로 분리하고(WeaponSkillTargeting.GetSweptTargets가 사용, 동작 동일) tests/SweptContact.spec.luau로 터널링 방지 계약을 증명했습니다: 24스터드 한 프레임 이동이 경로 옆 0.3스터드의 반경 0.4 몬스터를 명중하고 양 끝 점 표본만으로는 놓치는 경우, 접촉 반경 경계, 끝점 클램프, 퇴화 선분, 0 크기 루트 기본 반경, 탐색 범위 포함성을 검사합니다. tests/test_weapon_targeting.py가 러너가 연속 표본을 넘기는지와 spec 통과를 함께 확인합니다. Studio 관측은 사용자 방침(MCP 플레이 관측 최소화)에 따라 생략했습니다.",
+            "[2026-09-03] Studio Play(Server DM) 관측: 저장소와 체크섬 일치 상태(244개 파일 동일, SweptContact·PlayerProfileMigrations 신규 생성, ItemDB 굽기 7672999fb273d6fd)로 맞춘 뒤, QA 브리지(ServerStorage.PackBoundStudioQABridge)로 스테이지 1 장비(연격의 톱니검 3등급)를 적용하고 MonsterService.Spawn으로 소환한 전구 날파리(루트 1.6×1.5×1.6, 반경 0.8)를 회전 궤도 반경 6스터드 위에 두자 5초 안에 WeaponHitVFX 속성 HitCount 1·DefinitionHitCount_weapon_rapid_gear_sword 1·LastDamage 24로 명중해 처치(체력 24→0)됐습니다. 궤도 안쪽 3스터드에 둔 첫 시도는 접촉 반경 0.5+0.8 밖이라 명중하지 않았고 이는 기하학적으로 올바른 결과입니다. 콘솔 오류 0. 뷰포트 화면 관측은 하지 않았습니다."
           ],
-          "next_step": "Studio에서 루틴 기하 판정이 작은 몬스터를 관통(터널링)하지 않는지 관측하고, 다중 플레이어 소유권 분리를 검증합니다.",
+          "next_step": "다중 플레이어 소유권 분리는 RunTargetPolicy.spec·WeaponTargeting·DamageResolver 이중 검사로 유지하고, 모바일 두 해상도 화면 관측은 실기기 검증 단계로 미룹니다.",
+          "sources": [
+            "src/ReplicatedStorage/Combat/SweptContact.luau",
+            "tests/SweptContact.spec.luau",
+            "tests/test_weapon_targeting.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 90,
+          "computed_progress": 95,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -962,7 +1020,8 @@ window.PACKBOUND_ALPHA_PROGRESS = {
             "[2026-09-02] 머리 위 고리에서 가장 가까운 적을 때리던 공통 기본 공격을 폐기하고, 회전·숨 쉬는 회전·직선 찌르기·부메랑·좌우 미끄러짐·무한대 궤도·거치 관통·부채꼴 산탄·5초 연사/3초 과열 포탑·도탄·부채꼴 내리치기·원형 내리치기·직선 내리치기·2연속 내리치기의 14개 고유 루틴을 정의했습니다. 서버가 같은 결정적 운동 모듈로 접촉·직선·부채꼴·원 판정을 내리고, 클라이언트는 복제된 주기 상태로 같은 경로를 그립니다(WeaponRoutineConfig/Motion/Runner).",
             "[2026-09-02] 정적 검증: luau tests/WeaponRoutineMotion.spec.luau, python3 -m unittest tests.test_weapon_routines 통과.",
             "[2026-09-02] Studio(팩 바운드, Edit→Play) 서버 관측: 8개 스크립트를 저장소와 동일 체크섬으로 적용한 뒤 TutorialField에서 몬스터를 소환해 20종 루틴 전부가 RoutineKind/Active를 복제하고 명중을 냈습니다. 단독 측정 6초: 흡혈 도끼 직선 7주기 7명중, 광전사 도끼 5주기 9명중, 지진 메이스 5주기 4명중, 수호자 메이스 2주기 3명중(0.25초 기절·2스터드 밀침 포함). 복합 장착 8초: 톱니검 회전 12~16명중, 장창 6~7, 질풍 곡궁 12, 추적자 곡궁 6, 공성 석궁 볼트 2, 산탄 석궁 17, 과열 연발총 11, 도탄 권총 9, 투창 왕복 9, 수호검 2. 콘솔 오류 0. 화면 캡처는 Play 중 타임아웃(뷰포트 1×1)으로 얻지 못해 모바일 두 해상도 표현 관측은 미완입니다.",
-            "[2026-09-02] 관측 중 발견해 고친 것: 내리치기·찌르기는 자기 사거리 안에 적이 있을 때만 주기를 시작하고, 충격 순간 선택한 적의 현재 위치로 재조준하며, 몬스터 몸통 반경(1스터드) 만큼 판정 폭을 보정합니다."
+            "[2026-09-02] 관측 중 발견해 고친 것: 내리치기·찌르기는 자기 사거리 안에 적이 있을 때만 주기를 시작하고, 충격 순간 선택한 적의 현재 위치로 재조준하며, 몬스터 몸통 반경(1스터드) 만큼 판정 폭을 보정합니다.",
+            "[2026-09-02] 루틴 수치를 하드코딩에서 무기 루틴 DB(JSON 원본 → 생성 Luau)로 옮겼습니다. 생성 결과는 기존 19종 수치와 완전히 같고(Luau 비교), 랜턴은 새 중력 우물 수치를 씁니다."
           ],
           "next_step": "두 모바일 뷰포트에서 무기 빌보드 궤적과 바닥 형상 연출을 화면으로 관측하고, 루틴별 DPS를 이전 자동 타격 기준과 비교해 수치를 조정합니다.",
           "sources": [
@@ -1021,16 +1080,19 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "monster-attack-runtime",
           "title": "활성 몬스터 공격 실행",
-          "progress": 90,
+          "progress": 92,
           "status": "partial",
           "evidence": [
-            "[2026-09-02] 활성 17종의 접촉·분출·돌진·투사체·도약·부화·보스 공격이 서버 런타임에 연결됐고 스테이지 1 자동 완주에서 전체 소환·사망 생명주기를 통과했습니다."
+            "[2026-09-02] 활성 17종의 접촉·분출·돌진·투사체·도약·부화·보스 공격이 서버 런타임에 연결됐고 스테이지 1 자동 완주에서 전체 소환·사망 생명주기를 통과했습니다.",
+            "[2026-09-03] tests/test_monster_attack_cancel.py가 활성 공격 패턴 5종(접촉·분출·돌진·부채탄·도약)의 취소 계약을 소스에 고정했습니다: 모든 패턴은 새 공격 순번(beginSerial)으로 시작해 이전 공격 인스턴스를 정리하고, 단계 진행·완료·Update는 생존·체력·현재 공격·순번 일치를 함께 확인하며, 돌진·도약 취소 사유(BlockedAtStart·ArcBlocked·InvalidLanding)를 속성으로 발행하고, 예고·분출·충격 인스턴스는 런 소유 태그로 만들어 Cancel이 정리합니다. 패턴별 가독성 관측과 개별 자동 시나리오는 Studio Play가 필요해 남겨 두었습니다."
           ],
-          "next_step": "일반 1~4웨이브의 각 공격 패턴 가독성과 취소를 개별 자동 시나리오로 확장합니다.",
+          "next_step": "일반 1~4웨이브의 각 공격 패턴 가독성과 취소를 개별 자동 시나리오(Gate B)로 확장합니다.",
+          "sources": [
+            "tests/test_monster_attack_cancel.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 90,
+          "computed_progress": 92,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -1097,7 +1159,7 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 91,
+      "computed_progress": 92,
       "computed_status": "partial",
       "leaf_count": 11,
       "proven_count": 5,
@@ -3635,16 +3697,21 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "accessibility-contrast-settings",
           "title": "대비·색상 의존·텍스트 크기·설정",
-          "progress": 45,
+          "progress": 60,
           "status": "partial",
           "evidence": [
-            "현재 UI는 대비와 상태 라벨을 사용하지만 공식 접근성 검사와 크기·색약 옵션은 없습니다."
+            "현재 UI는 대비와 상태 라벨을 사용하지만 공식 접근성 검사와 크기·색약 옵션은 없습니다.",
+            "[2026-09-03] tools/ui_contrast_audit.py가 InventoryV2 색 토큰에서 WCAG 2.x 대비 비율을 계산해 docs/art/ui-contrast-audit.md를 생성하고 check로 최신성·기준 미달을 검사합니다. 본문 Text는 8개 표면(배경·패널 3종·보드 셀 2종·룬 스톤 2종)에서 11.8~17.3, 보조 MutedText는 6.0~8.8로 모두 AA 기준(4.5·3.0)을 통과했고, 강조색 6종도 큰 글자 기준 3.0에 미달하는 표면 조합이 없습니다. 토큰 밖 원시 Color3 리터럴 60여 개(튜토리얼·마스터리·상점·스테이지 화면)는 짝을 알 수 없어 판정 없이 이관 대상 목록으로 남겼습니다. tests/test_ui_contrast.py가 공식 기준값·전체 쌍·보고서 최신성을 검사합니다. 색만으로 상태를 전달하지 않는지, 텍스트 크기·효과·오디오 옵션은 제품 결정이 필요해 다루지 않았습니다."
           ],
-          "next_step": "색만으로 상태를 전달하지 않는지 점검하고 텍스트·효과·오디오 옵션을 정합니다.",
+          "next_step": "원시 색 리터럴을 토큰으로 이관하고, 상태 표시가 아이콘·라벨을 함께 쓰는지 화면별로 점검한 뒤 텍스트 크기·색약 옵션 범위를 제품 오너와 정합니다.",
+          "sources": [
+            "tools/ui_contrast_audit.py",
+            "docs/art/ui-contrast-audit.md",
+            "tests/test_ui_contrast.py"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 45,
+          "computed_progress": 60,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -3652,14 +3719,15 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "localization",
           "title": "현지화와 문자열 관리",
-          "progress": 80,
+          "progress": 88,
           "status": "partial",
           "evidence": [
             "[2026-09-02] 한국어 원문과 언어 중립 동적 템플릿 총 1,970개를 추출·정리하고 번역기 일괄 변환 대신 수동 영문 번역을 유지했습니다.",
             "[2026-09-01] 한국어 이용자에게 한국어, 그 밖의 이용자에게 영어 원문을 제공하며 지원되는 다른 언어는 Roblox 자동 번역의 영어 원문을 사용하도록 런타임 선택기와 Roblox CSV를 만들었습니다.",
-            "[2026-09-02] 카탈로그 검사, Python 테스트, Luau 해석기·컴파일 검사를 통과했고 iPhone 17 Pro 401×776과 iPhone 7 374×666의 클리어·보상·사망·재도전 화면에서 한국어·영어 미해결 문자열 0과 텍스트 맞춤을 자동 확인했습니다. Roblox LocalizationTable 운영 반영은 남았습니다."
+            "[2026-09-02] 카탈로그 검사, Python 테스트, Luau 해석기·컴파일 검사를 통과했고 iPhone 17 Pro 401×776과 iPhone 7 374×666의 클리어·보상·사망·재도전 화면에서 한국어·영어 미해결 문자열 0과 텍스트 맞춤을 자동 확인했습니다. Roblox LocalizationTable 운영 반영은 남았습니다.",
+            "[2026-09-03] tools/localization_db.py에 bake 명령을 추가해 CSV와 같은 원본에서 Studio Command Bar용 굽기 스크립트를 생성하고, LocalizationService.PackBoundGameText LocalizationTable(SourceLocaleId en-us, ko-kr·en-us 값)과 ReplicatedStorage.Localization.GeneratedGameText 모듈을 한 번에 갱신하도록 했습니다. Roblox 표 규칙에 따라 {tostring(x)}처럼 식별자가 아닌 매개변수를 가진 런타임 전용 템플릿 237건은 표·CSV에서 제외하고(모듈의 TEMPLATES가 계속 처리), 200KB Source 상한을 넘는 모듈은 ScriptEditorService:UpdateSourceAsync로 씁니다. 라이브 Studio(Edit)에 적용해 표 항목 1746개, 표·모듈 GameTextRevision 4de7d436ea944f7b 일치, 모듈 239,536바이트, HttpEnabled 원복을 확인했습니다. tests/GameTextResolver.spec.luau는 전체 1983항목을 ko-kr·en-gb와 자동 번역 로케일 11종(ja·fr·de·zh-cn·zh-tw·pt·es·id·th·vi·ru)으로 해석해 한국어 통과, 영어 수동, 자동 로케일의 영어 원문+자동 허용, 영어 문자열의 한글 누출 0을 검사합니다. 6번 작업의 영어 개발자 오류 문자열 12건을 refresh로 카탈로그에 등록했습니다(1971→1983)."
           ],
-          "next_step": "현재 현지화 변경을 승인 커밋에 포함하고 Roblox LocalizationTable에 CSV를 반영한 뒤, 전체 플레이 화면과 비한국어·비영어 로케일의 자동 번역 경로를 두 모바일 화면에서 회귀 검증합니다.",
+          "next_step": "현재 현지화 변경을 승인 커밋에 포함하고, 클라우드 LocalizationTable 업로드가 필요하면 같은 CSV를 사용합니다. 두 모바일 화면의 비한국어 로케일 표시 관측은 실기기 검증 단계로 미룹니다.",
           "sources": [
             "docs/localization/game-text.json",
             "docs/localization/english-translations.json",
@@ -3667,18 +3735,19 @@ window.PACKBOUND_ALPHA_PROGRESS = {
             "src/ReplicatedStorage/Localization/GameTextResolver.luau",
             "src/StarterPlayer/StarterPlayerScripts/GameLocalizationBootstrap.client.luau",
             "tools/localization_db.py",
-            "tests/test_localization_db.py"
+            "tests/test_localization_db.py",
+            "tests/GameTextResolver.spec.luau"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 80,
+          "computed_progress": 88,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         }
       ],
       "depth": 0,
-      "computed_progress": 84,
+      "computed_progress": 88,
       "computed_status": "partial",
       "leaf_count": 6,
       "proven_count": 1,
@@ -3722,16 +3791,23 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "profile-migration-backup",
           "title": "저장 마이그레이션·백업·복구",
-          "progress": 40,
+          "progress": 70,
           "status": "partial",
           "evidence": [
-            "스키마 조정과 실패 폐쇄형 검사는 있지만 운영 백업·롤백 훈련이 없습니다."
+            "스키마 조정과 실패 폐쇄형 검사는 있지만 운영 백업·롤백 훈련이 없습니다.",
+            "[2026-09-03] 프로필 스키마 이관 레지스트리 Economy/PlayerProfileMigrations(앞으로만 진행, 복사본에만 적용, 단계 예외 시 전체 중단, 미래 버전 fail-closed)를 추가하고 PlayerProfileStore.Load가 봉투 검증 전에 분류하도록 연결했습니다. Migratable 문서는 이관 뒤 원본 프로필을 봉투의 MigrationBackup 한 칸에 보존하고 Revision을 올려 저장하며, Future 문서는 읽거나 덮어쓰지 않고 FutureVersion으로 거부합니다. GetMigrationBackup·RestoreMigrationBackup 메서드로 수정된 단계를 백업에서 재적용하는 복구 경로를 만들었고, InventoryStorageAdapter가 운영 레지스트리를 전달합니다. tests/PlayerProfileMigrations.spec.luau가 사슬 이관·비변경·실패 폐쇄·저장소 적재 이관·백업·복구·왕복 불변·미래 문서 무변경·단계 실패 무변경·레지스트리 없는 과거 동작을 검사하고, 기존 PlayerProfileStore.spec은 그대로 통과합니다. 운영 절차는 docs/operations/player-profile-migration-and-recovery.md에 버전 지도, 적재 결과 상태표, DataStore 버전 이력(ListVersionsAsync/GetVersionAsync) 복구 절차, 새 버전 추가 체크리스트로 남겼습니다."
           ],
-          "next_step": "버전별 마이그레이션, 백업 보존과 복구 절차를 문서·테스트로 만듭니다.",
+          "next_step": "실서비스 DataStore에서 재접속·서버 종료·세션 충돌 복구 훈련은 별도 안전 환경이 확보될 때 수행하고, 다음 스키마 버전 인상 시 체크리스트대로 fixture와 단계를 함께 추가합니다.",
+          "sources": [
+            "src/ServerScriptService/Economy/PlayerProfileMigrations.luau",
+            "src/ServerScriptService/Economy/PlayerProfileStore.luau",
+            "tests/PlayerProfileMigrations.spec.luau",
+            "tests/test_profile_migrations.py",
+            "docs/operations/player-profile-migration-and-recovery.md"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 40,
+          "computed_progress": 70,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -3776,11 +3852,15 @@ window.PACKBOUND_ALPHA_PROGRESS = {
           "progress": 100,
           "status": "proven",
           "evidence": [
-            "주요 콘텐츠 DB가 원본·생성물 최신성 검사를 통과합니다."
+            "주요 콘텐츠 DB가 원본·생성물 최신성 검사를 통과합니다.",
+            "[2026-09-02] 무기 루틴 DB를 추가했습니다. docs/gameplay/weapon-routine-definitions.json 이 20종 루틴의 162개 조정 수치(간격·거리·범위·시간·힘·단계 비중·투사체 모양 등)의 단일 원본이고, tools/weapon_routine_db.py build/check 가 GeneratedWeaponRoutines.luau 와 wiki/site/weapon-routine-db-data.js 를 생성·검사합니다. 위키 '무기 루틴 DB' 페이지에서 무기별로 수치를 바꿔 저장하면 허용 범위·단계 합·시간 합을 검증한 뒤 원본과 런타임 모듈이 함께 갱신됩니다(로컬 서버 전용)."
           ],
-          "next_step": "신규 DB도 같은 원본·생성·검사 계약을 따릅니다.",
+          "next_step": "신규 DB도 같은 원본·생성·검사 계약을 따르고, 루틴 DB 저장 후 Studio 적용 경로(생성 모듈 한 번 적용)를 문서대로 유지합니다.",
+          "sources": [
+            "tools/weapon_routine_db.py",
+            "docs/gameplay/weapon-routine-definitions.json"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
           "computed_progress": 100,
           "computed_status": "proven",
@@ -3810,33 +3890,43 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "multiplayer-latency-reconnect",
           "title": "멀티플레이·지연·재접속 검증",
-          "progress": 0,
-          "status": "unknown",
+          "progress": 35,
+          "status": "partial",
           "evidence": [
-            "최종 Studio Gate는 단일 플레이어·메모리 백엔드이며 지연·재접속 보고서가 없습니다."
+            "최종 Studio Gate는 단일 플레이어·메모리 백엔드이며 지연·재접속 보고서가 없습니다.",
+            "[2026-09-03] docs/operations/multiplayer-reconnect-scenarios.md에 현재 구조의 전제(서버당 필드·런 하나, 참가자 한 명, 플레이어별 프로필 임대 120초·하트비트 30초)와 시나리오 M1~M13을 정의했습니다: 두 플레이어 프로필 격리(M1), 필드 점유 시 ServerFieldBusy(M2), 런 ID 격리(M3), 참가자 이탈 시 런 실패·정산 후 잊기(M4), 임대 생존 중 재접속 Locked(M5), 정상 종료 뒤 즉시 인수(M6), 비정상 종료 뒤 만료 인수와 이전 서버 SessionLost(M7), 같은 서버 재접속 AlreadyLoaded·임대 갱신(M8), 다른 사람 문서 불변(M9), 지연 중 조작 계약(대시 승인 0.75초·순번·버킷, 패리 버킷)(M10), 예측 이동 정책(M11), 실서비스 DataStore(M12 보류), 협동 참가(M13 보류). tests/MultiplayerReconnect.spec.luau가 실제 PlayerProfileStore(메모리 백엔드)·RunTargetPolicy·StageRunLifecycleDomain으로 M1·M3·M4(도메인)·M5~M9를 통제된 시계로 증명하고, tests/test_stage_run_service.py가 문서의 시나리오 표와 spec의 일치를 검사합니다. 실제 지연·패킷 손실 측정과 실서비스 DataStore는 별도 환경이 필요해 보류로 남겼습니다."
           ],
-          "next_step": "2명 이상, 지연·패킷 손실, 중도 이탈·재접속 시나리오를 정의합니다.",
+          "next_step": "협동 참가(M13) 포함 여부를 제품 오너와 결정하고, 실서비스 DataStore 안전 환경이 생기면 M12를 같은 시나리오 ID로 수행합니다. 실기기 네트워크 조건 도구가 준비되면 M10·M11의 측정 결과를 문서에 추가합니다.",
+          "sources": [
+            "docs/operations/multiplayer-reconnect-scenarios.md",
+            "tests/MultiplayerReconnect.spec.luau"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 0,
-          "computed_status": "unknown",
+          "computed_progress": 35,
+          "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         },
         {
           "id": "exploit-penetration-review",
           "title": "공격적 exploit·침투 검증",
-          "progress": 30,
+          "progress": 60,
           "status": "partial",
           "evidence": [
-            "방어 계약은 강하지만 전용 위협 모델·퍼징·악성 클라이언트 실행 보고서가 없습니다."
+            "방어 계약은 강하지만 전용 위협 모델·퍼징·악성 클라이언트 실행 보고서가 없습니다.",
+            "[2026-09-03] 서버 Remote 핸들러 18개(인벤토리 6·베이스캠프 3·튜토리얼 2·마스터리 2·몬스터 2·무기 1·대시 1·패리 1)를 docs/security/remote-threat-model.md에 위협 범주 T1~T7(형식 위조·수치 오염·권한 상승·재사용·연타·개발 전용 노출·상태 오염)과 함수별 방어 계층·코드 가드·남은 위험·테스트 참조로 정리했습니다. tests/test_remote_threat_model.py가 저장소의 OnServerEvent/OnServerInvoke 집합과 문서 표를 양방향으로 대조하고(행을 지우면 실패함을 변이 검사로 확인), 표에 적힌 가드 스니펫이 소스에 실재하는지, 개발 전용 4개가 RunService:IsStudio()로 막히는지, 참조 테스트 파일이 존재하는지 검사합니다. tests/RemotePayloadHardening.spec.luau는 경제 프로토콜 검증기·런 대상 정책·프로필 Validate·저장소 Save 경계에 악성 페이로드 74건(타입 위조, 여분 키, NaN·무한대·음수·소수·안전 정수 초과, 제어 문자·경로 구분자·비ASCII 식별자, 클라이언트 가격·수량·아이템, 미래 스키마 버전)을 보내 전부 거부되고 백엔드가 변하지 않음을 증명합니다. 살아 있는 악성 클라이언트로 실제 Remote를 호출하는 퍼징은 사용자 방침(MCP 플레이 최소화)에 따라 수행하지 않았습니다.",
+            "[2026-09-03] 마지막으로 빈도 제한이 없던 읽기 Remote 두 곳을 막았습니다. BaseCampService.requestStageBriefing은 인수 0개 검사와 플레이어별 토큰 버킷(초당 2회 재충전·버스트 3회, RateLimited 응답, 퇴장 시 정리)을 상태 검사 앞에 두고, TutorialService.getStateRemote는 0.1초 쿨다운을 둡니다. 위협 모델 표의 두 행을 갱신해 '빈도 제한 없음' 위험을 제거했고, tests/test_remote_threat_model.py가 버킷이 상태 검사보다 먼저 실행되는지와 표에 빈도 제한 없음이 남지 않았는지 검사합니다. 새 한국어 안내 문구는 영어 쌍과 함께 카탈로그에 등록했습니다(1985항목)."
           ],
-          "next_step": "경제·보상·대시·패리·포털 Remote를 우선순위로 위협 모델과 공격 테스트를 수행합니다.",
+          "next_step": "새 Remote 추가 시 위협 모델 표에 행과 빈도 제한을 함께 적습니다. 실제 두 클라이언트 세션 퍼징은 별도 세션 계획으로 남깁니다.",
+          "sources": [
+            "docs/security/remote-threat-model.md",
+            "tests/test_remote_threat_model.py",
+            "tests/RemotePayloadHardening.spec.luau"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 30,
+          "computed_progress": 60,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -3860,15 +3950,15 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 62,
+      "computed_progress": 73,
       "computed_status": "partial",
       "leaf_count": 9,
       "proven_count": 4,
       "status_counts": {
         "proven": 4,
-        "partial": 3,
+        "partial": 4,
         "planned_only": 0,
-        "unknown": 2,
+        "unknown": 1,
         "blocked": 0
       }
     },
@@ -3903,23 +3993,25 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "development-progress-traceability",
           "title": "개발 작업의 알파 진행도 추적 운영",
-          "progress": 90,
+          "progress": 92,
           "status": "partial",
           "evidence": [
             "[2026-09-01] 구현·콘텐츠·아트·UI·검증·도구·운영 작업마다 가장 작은 관련 말단 항목을 갱신하고, 수치가 그대로여도 날짜·작업 근거·다음 완료 관문을 남기도록 프로젝트 완료 규칙을 추가했습니다.",
             "[2026-09-01] 기존 항목으로 설명할 수 없는 작업은 새 말단 항목으로 추가하고, 진행도 원본과 공개 데이터를 함께 생성·검사하도록 규정했습니다. 이번 현지화 작업과 이 운영 규칙 자체를 실제 진행도 항목으로 반영해 생성·검사를 통과했습니다.",
-            "[2026-09-02] Claude 세션이 Codex 작업을 이어받을 때 읽는 저장소 안내서 CLAUDE.md를 추가했습니다. AGENTS.md를 대체하지 않는 지도 문서로, 진실의 기준 순서, 저장소 지도, 원본→빌드→생성물 파이프라인 표, Gate A/B와 완료 체크리스트, 현재 알파 상태(63%)를 담고, 커밋 시점에 알파 진행도와 함께 '현재 상태' 절을 갱신하도록 규정했습니다. 11개 DB·위키 최신성 검사와 저장소 정책 테스트 통과를 확인했습니다."
+            "[2026-09-02] Claude 세션이 Codex 작업을 이어받을 때 읽는 저장소 안내서 CLAUDE.md를 추가했습니다. AGENTS.md를 대체하지 않는 지도 문서로, 진실의 기준 순서, 저장소 지도, 원본→빌드→생성물 파이프라인 표, Gate A/B와 완료 체크리스트, 현재 알파 상태(63%)를 담고, 커밋 시점에 알파 진행도와 함께 '현재 상태' 절을 갱신하도록 규정했습니다. 11개 DB·위키 최신성 검사와 저장소 정책 테스트 통과를 확인했습니다.",
+            "[2026-09-03] tests/test_repository_policy.py에 CLAUDE.md '현재 상태' 절의 완성도·파트 수·말단 작업 수가 alpha_progress.build_catalog 결과와 일치하는지 검사하는 정책 테스트를 추가했습니다. 수치를 일부러 어긋나게 바꾸면 실패하고, 현재 상태(63%·12·201)에서는 통과합니다. 이후 커밋 전 대조는 사람이 아니라 테스트가 수행합니다."
           ],
-          "next_step": "이 변경을 승인 커밋에 포함하고, 이후 개발 작업에서도 같은 날짜 근거 갱신이 누락되지 않는지 누적 확인합니다. CLAUDE.md의 '현재 상태' 절이 커밋마다 알파 진행도와 같은 수치를 가리키는지 함께 확인합니다.",
+          "next_step": "커밋 시점마다 python3 -m unittest tests.test_repository_policy를 통과시키고, 진행도 수치가 바뀌면 CLAUDE.md 완성도 한 줄을 같은 작업에서 맞춥니다.",
           "sources": [
             "AGENTS.md",
             "CLAUDE.md",
             "docs/planning/alpha-development-progress.json",
-            "tools/alpha_progress.py"
+            "tools/alpha_progress.py",
+            "tests/test_repository_policy.py"
           ],
           "weight": 1,
           "depth": 1,
-          "computed_progress": 90,
+          "computed_progress": 92,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -4006,17 +4098,21 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "long-session-memory",
           "title": "장시간 플레이·메모리 누수",
-          "progress": 0,
-          "status": "unknown",
+          "progress": 40,
+          "status": "partial",
           "evidence": [
-            "반복 10회 이상 스테이지와 장시간 세션의 메모리 추적 근거가 없습니다."
+            "반복 10회 이상 스테이지와 장시간 세션의 메모리 추적 근거가 없습니다.",
+            "[2026-09-03] Studio Play(Server DM) 한 세션에서 스테이지 1 런 5회(클리어 3·1웨이브 사망 2)를 QA 브리지 자동 진행과 허용된 사망 경로(Humanoid.Health=0)로 반복하며 매 회 복귀 직후 표본을 남겼습니다. workspace 후손 수는 기준 4766에서 5회 내내 4766으로 복귀했고, PackBoundMonster 태그 0·예고 0·런 소속 잔여 몬스터 0을 매 회 확인했습니다. 서버 총 메모리는 기준 4074MB → 4127.7(첫 클리어) → 4130.9 → 4279.0(첫 사망·부활) → 4243.5 → 4243.0MB로, 첫 런과 첫 부활의 예열 뒤 안정됐습니다. 콘솔 오류는 5차 슬라이스 회귀 1건을 제외하면 0이며, 수정 뒤 재확인 런에서도 0입니다. 10회 이상·UI 반복 열기·장시간 세션은 다음 관측 대상입니다.",
+            "[2026-09-03] 서버 브리지 BeginStageOneAutomatedClear/ObserveStageOneAutomatedClear로 스테이지 1 완주 1회가 호출 2~4회·약 71초로 줄었습니다(기존 15회 호출·약 260초). 10회 이상 반복 소크는 아직 수행하지 않았습니다."
           ],
-          "next_step": "반복 진입·사망·클리어·UI 열기 후 인스턴스와 메모리 증가를 측정합니다.",
+          "next_step": "BeginStageOneAutomatedClear를 10회 이상 반복하며 Workspace 후손 수·메모리·잔여 몬스터를 매 회 기록하고, 인벤토리·룬 보드 UI 반복 열기를 클라이언트 브리지 액션으로 추가합니다.",
+          "sources": [
+            "src/ServerScriptService/PackBoundStudioQABridge.server.luau"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 0,
-          "computed_status": "unknown",
+          "computed_progress": 40,
+          "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
         },
@@ -4040,16 +4136,19 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         {
           "id": "release-checklist-versioning",
           "title": "알파 릴리스 체크리스트와 버전 기준",
-          "progress": 20,
+          "progress": 45,
           "status": "partial",
           "evidence": [
-            "개발 하네스는 있지만 게임 알파 버전 번호·승인자·필수 게이트를 묶은 체크리스트가 없습니다."
+            "개발 하네스는 있지만 게임 알파 버전 번호·승인자·필수 게이트를 묶은 체크리스트가 없습니다.",
+            "[2026-09-03] docs/operations/alpha-release-checklist.md 초안을 작성했습니다: 버전 기준(형식 제안·기준 커밋·데이터 리비전 지문·플레이스 저장 책임), 후보 생성 전 필수 게이트 6개(정적 검사, 최신성 루프, Gate A, Gate B 두 뷰포트, 위협 모델 일치, 커밋 시점 의무), 승인 근거, 배포 4단계(백업·스키마 이관 체크리스트·게시·직후 확인), 철회 조건 4종과 절차, 이력 표. 승인자·버전 형식·배포 창·성능 미달 시 대응은 '결정 필요'로 표시했습니다."
           ],
-          "next_step": "릴리스 후보 생성, 승인, 배포, 확인과 철회 조건을 문서화합니다.",
+          "next_step": "제품 오너가 승인자·버전 형식·배포 창·성능 미달 대응을 결정하면 초안을 확정하고, 첫 릴리스 후보에서 이력 표를 채웁니다.",
+          "sources": [
+            "docs/operations/alpha-release-checklist.md"
+          ],
           "weight": 1,
-          "sources": [],
           "depth": 1,
-          "computed_progress": 20,
+          "computed_progress": 45,
           "computed_status": "partial",
           "leaf_count": 1,
           "proven_count": 0
@@ -4107,29 +4206,29 @@ window.PACKBOUND_ALPHA_PROGRESS = {
         }
       ],
       "depth": 0,
-      "computed_progress": 46,
+      "computed_progress": 52,
       "computed_status": "partial",
       "leaf_count": 12,
       "proven_count": 2,
       "status_counts": {
         "proven": 2,
-        "partial": 6,
+        "partial": 7,
         "planned_only": 1,
-        "unknown": 3,
+        "unknown": 2,
         "blocked": 0
       }
     }
   ],
-  "revision": "aa118fda7e56c87f",
-  "overall_progress": 63,
+  "revision": "890c3175369be803",
+  "overall_progress": 65,
   "category_count": 12,
   "leaf_count": 201,
   "proven_count": 57,
   "status_counts": {
     "proven": 57,
-    "partial": 62,
+    "partial": 64,
     "planned_only": 76,
-    "unknown": 6,
+    "unknown": 4,
     "blocked": 0
   },
   "track_progress": {
@@ -4138,11 +4237,11 @@ window.PACKBOUND_ALPHA_PROGRESS = {
       "category_count": 4
     },
     "quality": {
-      "progress": 69,
+      "progress": 75,
       "category_count": 3
     },
     "system": {
-      "progress": 77,
+      "progress": 80,
       "category_count": 5
     }
   },

@@ -1,5 +1,5 @@
 window.PACKBOUND_RUNE_BOARD_DB = {
-  "revision": "7c5388ffd96c280d",
+  "revision": "f81eae115f985cdb",
   "explorer": {
     "contract": {
       "selection": "아이템 생성 시 DefinitionId의 고정 후보 10개 중 하나를 균등 무작위 선택하고 VariantId와 Seed를 인스턴스에 영구 저장",
@@ -44320,7 +44320,7 @@ window.PACKBOUND_RUNE_BOARD_DB = {
         "item_name": "수호등 랜턴",
         "family": "support",
         "slot": "Weapon",
-        "role": "피해 경감",
+        "role": "피해 경감·집결",
         "board_kind": "Support",
         "normal_to_feature_ratio": "70:30",
         "ability_definitions": {

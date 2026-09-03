@@ -2418,3 +2418,65 @@ body.itemdb-editor-open { overflow: hidden; }
   .wavedb-map-panel .wavedb-field-grid { min-width: 600px; }
   .wavedb-monster-panel > div { grid-template-columns: 1fr; }
 }
+
+/* Weapon routine database editor */
+.routine-db-layout { width: 100%; max-width: 1500px; margin: 0 auto; padding: 44px clamp(20px, 3vw, 54px) 84px; }
+.routine-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 34px; margin-bottom: 20px; }
+.routine-hero h1 { margin: 8px 0 7px; font-size: clamp(30px, 3.6vw, 50px); line-height: 1.02; letter-spacing: -0.045em; }
+.routine-hero p { max-width: 760px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+.routine-hero-meta { display: grid; flex: 0 0 auto; justify-items: end; }
+.routine-hero-meta strong { color: var(--cyan); font: 800 46px/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.routine-hero-meta span { margin-top: 4px; color: var(--muted); font: 800 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
+.routine-hero-meta small { margin-top: 7px; color: var(--faint); font: 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.routine-guide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 12px; border: 1px solid var(--line); border-radius: 11px; background: rgba(16, 27, 44, .62); }
+.routine-guide > div { padding: 12px 15px; }
+.routine-guide > div + div { border-left: 1px solid var(--line); }
+.routine-guide strong, .routine-guide span { display: block; }
+.routine-guide strong { color: var(--text); font-size: 10px; }
+.routine-guide span { margin-top: 4px; color: var(--faint); font-size: 9px; line-height: 1.5; }
+.routine-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 11px; background: #101b2c; }
+.routine-filters { display: flex; gap: 6px; }
+.routine-filters button { min-height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--panel); color: var(--muted); font-size: 10px; cursor: pointer; }
+.routine-filters button.active { border-color: var(--cyan); color: var(--cyan); }
+.routine-toolbar input[type="search"] { flex: 1 1 260px; max-width: 360px; min-height: 32px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: var(--panel-soft); color: var(--text); font-size: 10px; }
+.routine-notice { margin-top: 8px; padding: 9px 12px; border: 1px solid rgba(115, 211, 145, .28); border-radius: 8px; background: rgba(115, 211, 145, .06); color: #a8dfb9; font-size: 9px; }
+.routine-notice.dirty { border-color: rgba(241, 186, 99, .32); background: rgba(241, 186, 99, .06); color: var(--amber); }
+.routine-cards { display: grid; gap: 14px; margin-top: 12px; }
+.routine-card { border: 1px solid var(--line); border-radius: 12px; background: rgba(15, 27, 44, .7); }
+.routine-card.dirty { border-color: rgba(241, 186, 99, .45); }
+.routine-card > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 14px 16px 10px; border-bottom: 1px solid var(--line-soft); }
+.routine-card > header h2 { margin: 4px 0 4px; font-size: 16px; letter-spacing: -0.02em; }
+.routine-card > header p { margin: 0 0 6px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+.routine-card > header small { color: var(--faint); font-size: 8.5px; }
+.routine-family { display: inline-block; padding: 2px 8px; border-radius: 99px; font: 800 8px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; }
+.routine-family.attack { background: rgba(255, 126, 54, .14); color: #ffb37f; }
+.routine-family.support { background: rgba(69, 214, 202, .14); color: var(--cyan); }
+.routine-card-actions { display: flex; flex: 0 0 auto; gap: 7px; }
+.routine-card-actions button { min-height: 32px; padding: 0 12px; border: 1px solid rgba(69, 214, 202, .28); border-radius: 7px; background: var(--panel); color: var(--cyan); font-size: 10px; cursor: pointer; }
+.routine-card-actions button.primary { border-color: var(--cyan); background: var(--cyan); color: #07121c; }
+.routine-card-actions button:disabled { opacity: .45; cursor: default; }
+.routine-readonly { display: inline-flex; align-items: center; min-height: 30px; padding: 0 10px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); font-size: 9px; }
+.routine-problems { margin: 8px 16px 0; padding: 8px 10px; border: 1px solid rgba(255, 104, 119, .35); border-radius: 8px; background: rgba(255, 104, 119, .08); color: #ffb3bd; font-size: 9px; }
+.routine-parameters { width: 100%; border-collapse: collapse; font-size: 10px; }
+.routine-parameters th, .routine-parameters td { padding: 8px 12px; border-bottom: 1px solid var(--line-soft); text-align: left; vertical-align: middle; }
+.routine-parameters thead th { color: var(--faint); font-size: 8.5px; letter-spacing: .06em; text-transform: uppercase; }
+.routine-parameters tbody th { width: 220px; font-weight: 600; }
+.routine-parameters tbody th strong { display: block; color: var(--text); }
+.routine-parameters tbody th code { color: var(--faint); font-size: 8.5px; }
+.routine-parameter.dirty th strong { color: var(--amber); }
+.routine-parameter-control { width: 200px; white-space: nowrap; }
+.routine-parameter-control input, .routine-parameter-control select { width: 120px; min-height: 30px; padding: 0 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-soft); color: var(--text); font: 600 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
+.routine-parameter.dirty .routine-parameter-control input, .routine-parameter.dirty .routine-parameter-control select { border-color: var(--amber); }
+.routine-parameter-control span { margin-left: 6px; color: var(--faint); font-size: 9px; }
+.routine-parameter-range { width: 150px; color: var(--muted); font: 600 9px ui-monospace, SFMono-Regular, Menlo, monospace; }
+.routine-parameter-description { color: var(--muted); font-size: 9.5px; line-height: 1.5; }
+@media (max-width: 900px) {
+  .routine-hero, .routine-card > header { flex-direction: column; align-items: stretch; }
+  .routine-guide { grid-template-columns: 1fr; }
+  .routine-guide > div + div { border-left: 0; border-top: 1px solid var(--line); }
+  .routine-parameters thead { display: none; }
+  .routine-parameters tr { display: grid; grid-template-columns: 1fr; padding: 8px 0; }
+  .routine-parameters th, .routine-parameters td { padding: 3px 12px; border-bottom: 0; }
+  .routine-parameters tbody th, .routine-parameter-control, .routine-parameter-range { width: auto; }
+  .routine-parameters tr + tr { border-top: 1px solid var(--line-soft); }
+}

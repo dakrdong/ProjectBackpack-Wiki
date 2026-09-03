@@ -19,6 +19,8 @@
   const runeBoardDb = window.PACKBOUND_RUNE_BOARD_DB;
   const masteryDb = window.PACKBOUND_MASTERY_DB;
   const masteryDbTools = window.PACKBOUND_MASTERY_DB_TOOLS;
+  const weaponRoutineDb = window.PACKBOUND_WEAPON_ROUTINE_DB;
+  const weaponRoutineDbTools = window.PACKBOUND_WEAPON_ROUTINE_DB_TOOLS;
   const tagExplorer = window.PACKBOUND_TAG_EXPLORER;
   const localAccess = window.PACKBOUND_LOCAL_ACCESS;
   const markdownMedia = window.PACKBOUND_MARKDOWN_MEDIA;
@@ -69,6 +71,7 @@
   let canEditWaveDb = false;
   let canEditAnimationDb = false;
   let canEditMasteryDb = false;
+  let canEditWeaponRoutineDb = false;
   let canEditRuneBoardDb = false;
   let canOpenAnimationCuration = false;
   let searchMode = "pages";
@@ -150,6 +153,7 @@
   let tagByName = new Map();
   let alphaProgressState = { query: "", status: "all" };
   const masteryDbEditor = masteryDbTools?.createEditor(masteryDb, combatDb) || null;
+  const weaponRoutineDbEditor = weaponRoutineDbTools?.createEditor(weaponRoutineDb) || null;
 
   async function refreshMonsterDbApiAccess() {
     if (!hasLocalAccess) return;
@@ -263,6 +267,30 @@
     }
     const route = readRoute();
     if (route.kind === "database" && route.slug === "mastery-db") renderMasteryDb();
+  }
+
+  async function refreshWeaponRoutineDbApiAccess() {
+    if (!hasLocalAccess || !weaponRoutineDbEditor) return;
+    try {
+      const response = await fetch("/api/weapon-routine-db/status", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      const payload = await response.json().catch(() => ({}));
+      canEditWeaponRoutineDb = response.ok && payload.editable === true && payload.api_version === 1;
+      weaponRoutineDbEditor.setEditable(canEditWeaponRoutineDb);
+      if (!canEditWeaponRoutineDb) {
+        weaponRoutineDbEditor.notice = response.status === 404
+          ? "실행 중인 로컬 위키 서버가 무기 루틴 DB 저장 API보다 오래되었습니다. 서버를 재시작해 주세요."
+          : payload.error || `무기 루틴 DB 저장 API를 확인하지 못했습니다. (${response.status})`;
+      }
+    } catch (error) {
+      canEditWeaponRoutineDb = false;
+      weaponRoutineDbEditor.setEditable(false);
+      weaponRoutineDbEditor.notice = `무기 루틴 DB 저장 API에 연결하지 못했습니다. (${String(error.message || error)})`;
+    }
+    const route = readRoute();
+    if (route.kind === "database" && route.slug === "weapon-routine-db") renderWeaponRoutineDb();
   }
 
   async function refreshRuneBoardDbApiAccess() {
@@ -539,7 +567,8 @@
   }
 
   function readRoute() {
-    const raw = location.hash.slice(1) || `/page/${defaultPage}`;
+    // The whole-wiki tree is the front page; the brand button and an empty hash both lead here.
+    const raw = location.hash.slice(1) || "/tree";
     const [path, query = ""] = raw.split("?");
     const segments = path.split("/").filter(Boolean);
     const params = new URLSearchParams(query);
@@ -634,6 +663,14 @@
         count: masteryDb?.node_count || 0,
         unit: "SKILLS",
         href: databaseHref("mastery-db"),
+      },
+      {
+        id: "weapon-routine-db",
+        title: "무기 루틴 DB",
+        description: "20종 공격·보조 무기 루틴 · 모든 조정 수치",
+        count: weaponRoutineDb?.count || 0,
+        unit: "WEAPONS",
+        href: databaseHref("weapon-routine-db"),
       },
       ...[...(combatDb.databases || []), ...(runeBoardDb.databases || [])].map((database) => ({
         id: database.id,
@@ -4801,6 +4838,19 @@
     document.body.classList.remove("menu-open");
   }
 
+  function renderWeaponRoutineDb() {
+    document.title = "무기 루틴 DB · PackBound Wiki";
+    renderNavigation("weapon-routine-db", "database");
+    if (!weaponRoutineDbEditor) {
+      main.innerHTML = '<div class="empty-state">무기 루틴 DB 데이터를 불러오지 못했습니다. <code>python3 tools/wiki.py build</code>를 실행하세요.</div>';
+      return;
+    }
+    weaponRoutineDbEditor.setEditable(canEditWeaponRoutineDb);
+    weaponRoutineDbEditor.render(main);
+    document.body.classList.remove("menu-open");
+    window.scrollTo(0, 0);
+  }
+
   function renderPage() {
     const route = readRoute();
     document.body.classList.toggle("animationdb-open", route.kind === "database" && route.slug === "animation-db");
@@ -4829,6 +4879,7 @@
       else if (route.slug === "wave-db") renderWaveDb();
       else if (route.slug === "animation-db") renderAnimationDb();
       else if (route.slug === "mastery-db") renderMasteryDb();
+      else if (route.slug === "weapon-routine-db") renderWeaponRoutineDb();
       else renderStructuredDatabase(route.slug);
       return;
     }
@@ -5151,12 +5202,13 @@
   });
   window.addEventListener("hashchange", renderPage);
 
-  if (!location.hash && defaultPage) location.replace(pageHref(defaultPage));
+  if (!location.hash) location.replace(treeHref());
   else renderPage();
   void refreshMonsterDbApiAccess();
   void refreshWaveDbApiAccess();
   void refreshAnimationDbApiAccess();
   void refreshAnimationCurationApiAccess();
   void refreshMasteryDbApiAccess();
+  void refreshWeaponRoutineDbApiAccess();
   void refreshRuneBoardDbApiAccess();
 })();

@@ -4262,10 +4262,10 @@ window.PACKBOUND_ITEM_DB = {
       "category": "Weapon",
       "slot": "Weapon",
       "form": "Lantern",
-      "role": "피해 경감",
+      "role": "피해 경감·집결",
       "weight_kg": 3.0,
       "type_size": "Weapon · Lantern · 4칸 · 3.0Kg",
-      "concept": "푸른 방호광으로 충격을 분산해 받는 피해를 12% 줄이는 휴대형 수호등",
+      "concept": "6초마다 가까운 몬스터 집단 사이에 떨어져 3초 동안 주변 몬스터를 랜턴 중심으로 끌어당기고, 푸른 방호광으로 받는 피해를 12% 줄이는 휴대형 수호등",
       "art_direction": "compact teal ward lantern with cyan core, brass cage, and coral handle accents; no flame or scenery",
       "enabled": true,
       "coordinates": [
@@ -4310,7 +4310,7 @@ window.PACKBOUND_ITEM_DB = {
         "id": "damage_reduction",
         "name": "수호광",
         "mode": "Passive",
-        "summary": "받는 피해가 12% 감소합니다.",
+        "summary": "받는 피해가 12% 감소하고, 6초마다 가까운 몬스터 집단 사이에 떨어져 3초 동안 반경 6스터드의 몬스터를 랜턴 중심으로 끌어당깁니다.",
         "magnitude": 12.0,
         "unit": "Percent",
         "interval_seconds": 0.0
@@ -11045,5 +11045,5 @@ window.PACKBOUND_ITEM_DB = {
     "conditions": [],
     "abilities": []
   },
-  "revision": "ad34e7b7c1219ded"
+  "revision": "7672999fb273d6fd"
 };

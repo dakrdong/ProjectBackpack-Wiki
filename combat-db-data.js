@@ -1,9 +1,9 @@
 window.PACKBOUND_COMBAT_DB = {
   "source_page_id": "backpack-combat-stat-database",
-  "source_title": "알파 장비 54종의 고정 전투 스펙과 공용 패시브",
-  "source": "wiki/content/pages/backpack-combat-stat-database/v004.md",
-  "source_version": 4,
-  "source_updated_at": "2026-09-01",
+  "source_title": "룬 보드 능력 369개가 실제 전투 수치로 흐른다",
+  "source": "wiki/content/pages/backpack-combat-stat-database/v005.md",
+  "source_version": 5,
+  "source_updated_at": "2026-09-03",
   "database_count": 6,
   "record_count": 178,
   "databases": [
